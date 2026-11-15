@@ -31,6 +31,8 @@ Check the following where applicable:
 - form validation preserves entered data and Cancel returns predictably;
 - destructive actions require confirmation and reject duplicate submission;
 - progress updates use monotonic revisions and finish in a terminal state;
+- terminal job history survives a stale or deleted progress post;
+- queued and running cancellation follow the repository contract, and memory queues are confined to tests/local demos;
 - secrets, cookies, tokens, and passwords are absent from posts, logs, errors, and fixtures.
 
 Use the repository's existing focused tests first. Add regression tests at the narrowest layer that proves the behavior. Do not replace a protocol or client check with a permissive fake.
@@ -81,6 +83,7 @@ Use these as smoke prompts when the skill changes:
 - Review a bot that edits one old post for every reply-keyboard action.
 - Add an admin role flow without coupling feature handlers to the keyboard plugin.
 - Design a long account check when the total number of stages is unknown.
+- Wire a production queue consumer to feature-specific Game Admin jobs without inventing a generic `JobsPlugin`.
 
 The guidance should route each prompt to the appropriate reference, preserve Mattermost semantics, and avoid inventing planned APIs.
 

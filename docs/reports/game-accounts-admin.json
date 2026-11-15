@@ -2,14 +2,16 @@
   "schema_version": 1,
   "result": "passed",
   "checked_at": "2026-11-16",
-  "scope": "offline contract tests for the declarative game-account administration example",
+  "scope": "offline contract tests for the modular game-account administration feature and its background jobs",
   "scenario": [
     "administrator access and last-admin invariant",
     "team-scoped user picker and push-route management",
     "JSONL account import and import history",
     "single, all and import-scoped account checks",
     "account cards and check history",
-    "credential redaction from render data and verifier summaries"
+    "credential redaction from render data and verifier summaries",
+    "queued import and batch-check progress, cancellation and terminal history",
+    "stale DialogRef detaches UI delivery without losing the job result"
   ],
   "ux": {
     "maximum_depth_below_home": 2,
@@ -19,7 +21,10 @@
     "check_import_clicks": 3,
     "home_row_shape": [2, 2, 2],
     "selected_account_local_row_shape": [5, 6, 2],
-    "maximum_observed_account_actions": 16
+    "maximum_observed_account_actions": 16,
+    "background_job_start_clicks": 1,
+    "background_job_cancel_clicks": 1,
+    "progress_window_actions": 3
   },
   "checks": [
     "explicit enabled administrator is required before dialog start",
@@ -32,15 +37,20 @@
     "checker summaries are redacted before persistence and rendering",
     "a stale checker result cannot overwrite changed credentials",
     "push subscriptions receive only their selected events",
-    "declared dashboard and account action rows preserve their expected shapes"
+    "declared dashboard and account action rows preserve their expected shapes",
+    "job revisions are monotonic and terminal snapshots are immutable",
+    "running cancellation reaches terminal history",
+    "an outdated dialog post does not abort the business operation"
   ],
   "verification": [
     "tests/unit/test_game_accounts_admin_example.py",
+    "tests/unit/test_game_admin_jobs.py",
     "tests/integration/test_high_level_api.py",
     "Ruff",
     "strict mypy"
   ],
   "live_mattermost": true,
+  "live_background_jobs": false,
   "server_version": "12.0.2",
   "live_checks": [
     "owned administrator login returned 200",
@@ -51,10 +61,12 @@
   "limitations": [
     "MemoryAdminRepository is non-durable and intended only for tests or local demos",
     "production file reading, account verification and push delivery require injected adapters",
-    "large check batches should use a durable worker queue and progress updates",
+    "production must implement GameAdminJobRepository and GameAdminJobQueue with durable infrastructure",
+    "the local memory queue and worker are process-local and lose jobs on restart",
     "exact button rows require a proven Blocks client profile",
     "account import requires a proven forms.file capability",
-    "the new team-scoped picker and GetUsers read have offline HTTP coverage but were not rerun on the live stand"
+    "the new team-scoped picker and GetUsers read have offline HTTP coverage but were not rerun on the live stand",
+    "the background job progress window was not rerun on the live stand after worker integration"
   ],
   "credentials": "omitted"
 }

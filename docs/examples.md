@@ -22,7 +22,7 @@ This generated index distinguishes runnable, declaration-only, offline, contract
 | [examples/ui_menu_bot.py](../examples/ui_menu_bot.py) | Send a signed button and handle its callback | Mattermost 11.1 legacy actions | `live-verified` | [guide](native-ui.md) |
 | [examples/upload_document.py](../examples/upload_document.py) | Upload and attach one local file | Mattermost 11.1 files API | `live-verified` | [guide](high-level-api.md) |
 | [examples/game_accounts_admin.py](../examples/game_accounts_admin.py) | Administer bot users, push routes, account imports and checks in one editable post | Mattermost 11.1 legacy post actions plus forms.file; exact rows require proven Blocks | `contract-verified` | [guide](game-accounts-admin.md) |
-| [examples/game_accounts_admin_bot.py](../examples/game_accounts_admin_bot.py) | Run the administrator panel on an owned local Mattermost 12.0.2 stand | Owned Mattermost 12.0.2 with Blocks, forms.file and host.docker.internal callback access | `live-verified` | [guide](game-accounts-admin.md) |
+| [examples/game_accounts_admin_bot.py](../examples/game_accounts_admin_bot.py) | Run the administrator panel on an owned local Mattermost 12.0.2 stand | Owned Mattermost 12.0.2 with Blocks, forms.file and host.docker.internal callback access | `contract-verified` | [guide](game-accounts-admin.md) |
 
 ## `examples/bootstrap.py`
 
@@ -219,7 +219,7 @@ Compatibility imports for the extracted Game Admin feature.
 - Dependencies: `core`
 - Environment: none
 - Permissions: registered administrator-only slash command; trusted callback and form ingress; bot can create and edit the post; bot can read the submitted import file
-- Assertions: only an explicit enabled administrator can enter; account cards never render password or cookie values; import and check histories contain aggregate results; single, all and import-scoped checks use the injected verifier; push rules select exact destinations and events
+- Assertions: only an explicit enabled administrator can enter; account cards never render password or cookie values; import and check histories contain aggregate results; single, all and import-scoped checks use the injected verifier; batch imports and checks use monotonic background job progress; push rules select exact destinations and events
 - Evidence: [docs/reports/game-accounts-admin.json](reports/game-accounts-admin.json)
 
 ## `examples/game_accounts_admin_bot.py`
@@ -230,5 +230,5 @@ Run the game-account admin dialog on an owned local Mattermost stand.
 - Dependencies: `core`
 - Environment: none
 - Permissions: local stand administrator can register slash commands; bot can create and edit posts; bot can read submitted import files; bot can create direct channels for configured pushes
-- Assertions: replaces only the owned /game-admin command; binds the exact fixture administrator; serves trusted slash, callback and form ingress; uses deterministic demo verification and in-memory storage only
+- Assertions: replaces only the owned /game-admin command; binds the exact fixture administrator; serves trusted slash, callback and form ingress; uses deterministic demo verification and explicitly ephemeral job storage only
 - Evidence: [docs/reports/game-accounts-admin.json](reports/game-accounts-admin.json)

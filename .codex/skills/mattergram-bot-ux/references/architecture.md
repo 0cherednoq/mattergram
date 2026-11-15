@@ -92,13 +92,13 @@ The interaction handler validates, creates a job, captures a safe `DialogRef`, a
 
 Do not redirect a user's active flow from a worker without an explicit product requirement. Prefer updating the owned progress post or sending a terminal notification.
 
+For the implemented Game Admin contracts, production adapters, cancellation, and stale-post behavior, read [background-jobs.md](background-jobs.md).
+
 ## Current versus planned APIs
 
-Inspect the checkout before using plugin or callback conveniences. In the current baseline:
+Inspect the checkout before using plugin or callback conveniences. In the current baseline, Routers, Dispatcher DI, `PluginManager`, dialog registry/runtime, `ComposerKeyboard`, manager-only `Button` callbacks, `DialogRef`, and progress update APIs exist. `Button` supports both `callback(manager)` and `callback(event, button, manager)` when the signature is unambiguous.
 
-- Routers, Dispatcher DI, dialog registry/runtime, `ComposerKeyboard`, and progress update APIs exist;
-- a generic Python `PluginManager` and manager-only `Button` callback may still be planned;
-- current `Button` callbacks may require `(event, button, manager)`.
+Game Admin exposes feature-specific job repository/queue ports and a runner. A generic `JobsPlugin`, durable account repository, notifications plugin, settings plugin, S3 provider, and AI provider are not implemented by that feature.
 
 Never generate imports from an architecture plan alone.
 

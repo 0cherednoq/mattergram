@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–7 реализованы и contract-verified; этап 8 остаётся в работе.
+**Статус:** этапы 0–8 реализованы и contract-verified.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -509,7 +509,9 @@ Secrets нельзя читать обратно через администра
 - этап 7: добавлены durable repository/queue ports, явно ephemeral local adapters, typed jobs для
   import/check, cooperative cancellation, terminal history и progress через существующие
   `CoalescingDialogUpdater`/`DialogRef`; local demo запускает process-local worker;
-- следующий незавершённый этап — документация и обновление skill по стабилизированным API.
+- этап 8: public guides обновлены фактическими imports и job contracts; repository skill
+  `mattergram-bot-ux` разделяет архитектуру, components, verification и background jobs по отдельным
+  references и не объявляет общий `JobsPlugin` либо другие отложенные APIs реализованными.
 
 ### Этап 0. Зафиксировать contracts
 
@@ -602,6 +604,11 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 Этот этап не означает реализацию общего `JobsPlugin`. Сначала проверить job contract на импорте и batch-проверках, затем решать, достаточно ли evidence для отдельного reusable plugin.
 
 ### Этап 8. Документация и skill
+
+Статус: завершён. `game-accounts-admin.md`, `dialog-ui-design.md`, `application-plugins.md`,
+documentation manifest/evidence и repository skill синхронизированы с contract-verified API.
+Новый job-progress flow после worker integration не объявляется live-verified до повторного прогона
+на Mattermost stand.
 
 После стабилизации API:
 

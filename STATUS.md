@@ -519,3 +519,25 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   documentation drift (`24 modules / 352 exports / 544 members / 19 examples / 29 guides`) прошли.
 - Следующий конкретный шаг Game Admin: этап 8 — обновить public guide и skill только фактическими
   import paths и явно показать production adapters, worker loop и local-demo composition.
+
+## Документация и repository skill Game Admin — этап 8 реализован
+
+- `docs/game-accounts-admin.md` теперь использует public imports из
+  `mattergram.contrib.game_accounts_admin`, показывает фактическое подключение dialog/jobs и
+  разделяет local ephemeral worker от production repository/queue consumer.
+- `docs/dialog-ui-design.md` фиксирует границу `Router entry events -> declarative widget navigation
+  -> controller business actions -> service authorization`. `docs/application-plugins.md` явно
+  отличает feature-specific Game Admin jobs от отсутствующего общего `JobsPlugin`.
+- Repository skill `.codex/skills/mattergram-bot-ux` получил отдельный progressive-disclosure
+  reference для background jobs. Устаревшие утверждения о планируемых `PluginManager` и коротких
+  callbacks удалены; отложенные Settings/Notifications/S3/AI APIs не объявлены доступными.
+- Documentation manifest понижает обновлённый local runner с `live-verified` до `contract-verified`:
+  базовый `/game-admin` ранее проходил Mattermost 12.0.2, но job-progress после подключения worker
+  на live stand не перезапускался.
+- Основной читатель guide — implementer, тип страницы — how-to; skill ориентирован на implementer и
+  reviewer с отдельными architecture/component/verification references. Проверка по docs rubric:
+  19/20, оставшийся риск — отсутствие повторного live-client прогона background progress.
+- Проверки: `537 passed, 23 skipped, 309 subtests`, Ruff/format, strict mypy, documentation drift
+  (`24 modules / 352 exports / 544 members / 19 examples / 29 guides`) и skill `quick_validate`
+  прошли. План `docs/game-admin-routing-refactor.md` завершён; E7-04 остаётся отдельной отложенной
+  задачей из `docs/IMPLEMENTATION_PLAN.md`.

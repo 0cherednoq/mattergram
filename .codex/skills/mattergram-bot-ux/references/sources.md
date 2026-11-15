@@ -17,7 +17,7 @@ If a pattern conflicts with the current checkout or Mattermost semantics, adapt 
 
 ### mattergram repository
 
-Relevant local sources include `docs/dialog-ui-design.md`, `docs/dialog-navigation.md`, `docs/dialog-porting.md`, `docs/composer-keyboards.md`, `docs/game-admin-routing-refactor.md`, current exports in `src/mattergram_dialog`, and their behavioral tests.
+Relevant local sources include `docs/dialog-ui-design.md`, `docs/dialog-navigation.md`, `docs/dialog-porting.md`, `docs/composer-keyboards.md`, `docs/game-admin-routing-refactor.md`, `src/mattergram/contrib/game_accounts_admin/jobs.py`, current exports in `src/mattergram_dialog`, and their behavioral tests.
 
 Adopted directly: one-post local navigation, native forms, reusable pagination/filter/progress widgets, capability-aware rendering, ordinary-message keyboard boundary, service-level authorization, and the distinction between implemented and planned APIs.
 

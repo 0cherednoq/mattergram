@@ -140,6 +140,8 @@ For work that can exceed an interaction deadline:
 
 Do not invent a percentage when total work is unknown. Use stage text and an indeterminate state instead.
 
+Use the shared `CoalescingDialogUpdater` for frequent presentation snapshots; it is not a queue or durable store. Game Admin's implemented job types and production boundary are documented in [background-jobs.md](background-jobs.md). Never default a production application to an ephemeral memory queue.
+
 ## Notifications and durable results
 
 Navigation stays in the owning editable post. A notification, receipt, import report, or export result may be a new durable post. Include one clear next action and an optional dismiss/archive action only when the platform and audit requirements allow it.

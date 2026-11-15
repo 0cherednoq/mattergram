@@ -35,6 +35,7 @@ For a material multi-screen bot, use the `.mattergram-design/` structure describ
 5. Choose components from [references/component-selection.md](references/component-selection.md).
 6. Define success, empty, validation, stale, permission-denied, retry, and cancellation states.
 7. Separate Router entry events, dialog navigation, service rules, repositories, and external adapters using [references/architecture.md](references/architecture.md).
+   For work that outlasts an interaction, also read [references/background-jobs.md](references/background-jobs.md).
 8. Implement with stable IDs and explicit capability assumptions.
 9. Verify contracts and, when visual/client behavior changed, the real target client.
 
@@ -68,6 +69,7 @@ These are design budgets, not transport limits. Record justified exceptions.
 - Tables, lists, buttons, forms, confirmations, empty states, progress: [references/component-selection.md](references/component-selection.md)
 - Labels, feedback, accessibility, i18n, errors: [references/content-feedback.md](references/content-feedback.md)
 - Router/dialog/service/plugin/provider boundaries and state: [references/architecture.md](references/architecture.md)
+- Durable jobs, cancellation, progress revisions, and stale posts: [references/background-jobs.md](references/background-jobs.md)
 - Review checklist, tests, live-client proof, handoff format: [references/verification.md](references/verification.md)
 - External sources and Mattermost adaptations: [references/sources.md](references/sources.md)
 

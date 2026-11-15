@@ -14,6 +14,31 @@ dialog, keyboard и router. [`examples/game_accounts_admin.py`](../examples/game
 
 Для локальной проверки на owned Mattermost 12.0.2 используйте [`examples/game_accounts_admin_bot.py`](../examples/game_accounts_admin_bot.py). Runner заменяет только `/game-admin` и `/app-users` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
 
+## Подключить Game Admin
+
+Импортируйте feature из публичного package, а не из compatibility-модуля `examples`:
+
+```python
+from mattergram.contrib.game_accounts_admin import (
+    GameAccountsAdminService,
+    GameAdminJobs,
+    build_admin_dialog,
+    register_admin_panel,
+)
+from mattergram_dialog import DialogRegistry, setup_dialogs
+
+jobs = GameAdminJobs(service, job_repository, job_queue)
+registry = DialogRegistry(build_admin_dialog(service, jobs=jobs))
+
+# Создайте один DialogRuntime с registry, затем подключите его к Dispatcher.
+setup_dialogs(dispatcher, runtime)
+register_admin_panel(dispatcher, runtime, service)
+```
+
+`service`, `job_repository` и `job_queue` создаёт composition root. `build_admin_dialog(...)` только объявляет окна и связывает getters/actions. `register_admin_panel(...)` подключает module-level router и DI context; он не создаёт service или runtime.
+
+Текущий `MemoryAdminRepository` хранит пользователей, аккаунты, imports, checks и push routes только в памяти. Он подходит для тестов и локального demo, но не является production repository. Публичный durable protocol для этих доменных данных пока не реализован.
+
 ## Карта интерфейса
 
 Глобальная навигация вынесена из поста в постоянный `ComposerKeyboard` над полем ввода. Раскладка `3 / 2 / 2` содержит обзор и шесть рабочих разделов:
@@ -56,7 +81,7 @@ async def respond_to_game_admin_keyboard(
 `GameAdminHandlerContext` приходит через стандартный dispatcher DI. `register_admin_panel(dispatcher, runtime, service)` только кладёт этот immutable context в `dispatcher.workflow_data` и один раз подключает `game_admin_router`; сами handlers больше не создаются внутри setup-функции и не замыкают зависимости. Обычные прикладные callback handlers также можно объявлять глобально через `@router.callback_query(...)`. Декларативные кнопки `mattergram_dialog` остаются на общем runtime callback handler, установленном `setup_dialogs(...)`.
 
 План и фактический прогресс рефакторинга, включая Python plugin architecture, reusable
-`AdminUsersPlugin`, разделение Router/dialog actions и будущий background progress:
+`AdminUsersPlugin`, разделение Router/dialog actions и реализованный background progress:
 [game-admin-routing-refactor.md](game-admin-routing-refactor.md).
 
 Локальные действия уже созданного post — фильтры, pager, формы и `Назад` — продолжают редактировать только этот post, потому что они являются inline callback-навигацией, а не reply keyboard. Следующее нажатие постоянной клавиатуры снова создаёт новую пару `user message → bot post`.
@@ -112,9 +137,10 @@ form submission не считается доверенным.
 Вход регистрируется отдельной slash-командой и до старта dialog требует точного `Mattermost user_id` включённого администратора:
 
 ```python
-dialog = build_admin_dialog(service)
-registry.include(dialog)
-register_admin_panel(router, runtime, service, command="game-admin")
+jobs = GameAdminJobs(service, job_repository, job_queue)
+registry = DialogRegistry(build_admin_dialog(service, jobs=jobs))
+setup_dialogs(dispatcher, runtime)
+register_admin_panel(dispatcher, runtime, service, command="game-admin")
 ```
 
 Начального администратора нужно создать явно. В runtime нет административного fallback. Сервис не позволяет выключить или понизить последнего активного администратора. Роли `operator` и `viewer` сохранены для прикладной авторизации остального бота; этот административный интерфейс доступен только роли `admin`.
@@ -170,8 +196,36 @@ Checker является внешней границей, а не заглушк
 
 Push-текст содержит только игру/login или агрегированные счётчики. Dispatcher должен сам обеспечивать retry/idempotency в соответствии с транспортом; пример не притворяется durable delivery.
 
+## Фоновые импорты и batch-проверки
+
+Импорт, проверка всех аккаунтов и проверка конкретного импорта используют feature-specific jobs. Callback авторизует actor, создаёт job, сохраняет `DialogRef`, переключает post в `AdminPanel.job_progress` и возвращает управление. Worker публикует `queued/running/completed/failed/cancelled` snapshots с монотонной revision.
+
+```python
+from mattergram.contrib.game_accounts_admin import (
+    CoalescingDialogJobUpdater,
+    GameAdminJobRunner,
+)
+from mattergram_dialog import CoalescingDialogUpdater
+
+updates = CoalescingDialogUpdater(runtime, interval=1.0)
+runner = GameAdminJobRunner(
+    service,
+    job_repository,
+    CoalescingDialogJobUpdater(updates),
+)
+
+# Queue consumer получает job_id из durable transport.
+finished = await runner.run(job_id)
+```
+
+`GameAdminJobRepository` обязан применять compare-and-swap по `revision`, запрещать изменение terminal snapshot и хранить terminal history независимо от post. `GameAdminJobQueue` является producer-side портом; способ получения, lease, acknowledgement и retry определяет production transport. Повторная доставка допустима только вместе с repository contract, который не позволяет двум workers применить одну и ту же revision.
+
+`EphemeralMemoryGameAdminJobRepository` и `EphemeralMemoryGameAdminJobQueue` существуют только для тестов и owned local demo. Они теряют задания при перезапуске и не подходят для нескольких процессов. Local demo запускает отдельный process-local consumer через `run_ephemeral_job_worker(...)`; не копируйте этот adapter в production.
+
+Отмена queued job становится terminal немедленно. Running job проверяет cancellation между bounded единицами работы. Если post удалён или `DialogRef` относится к старому intent, runner прекращает UI updates, но завершает операцию и сохраняет terminal history. Он не создаёт новый post автоматически.
+
 ## Проверки и масштабирование
 
-Доступны три команды: проверить выбранный аккаунт, все аккаунты или аккаунты конкретного импорта. Результат внешнего checker применяется только если запись всё ещё существует и credentials не изменились во время запроса. Для сотен аккаунтов не запускайте весь batch внутри callback: положите job в durable queue, обновляйте декларативный `Progress` через `DialogRuntime.update`, а terminal snapshot отправляйте немедленно. Текущий inline batch подходит для небольшого административного набора.
+Доступны три команды: проверить выбранный аккаунт, все аккаунты или аккаунты конкретного импорта. Проверка одного выбранного аккаунта выполняется inline. Batch-проверки идут через `GameAdminJobs`. Результат внешнего checker применяется только если запись всё ещё существует и credentials не изменились во время запроса.
 
-Post-часть работает на legacy actions Mattermost 11.1, но точное расположение рядов гарантируется только подтверждённым Blocks-профилем. `FileInput` требует подтверждённую capability `forms.file` целевой версии. Контракт проверен unit-тестами и type checking; `/game-admin` дополнительно выполнен на owned Mattermost 12.0.2 с HTTP 200 и созданием интерактивного Blocks-поста.
+Post-часть работает на legacy actions Mattermost 11.1, но точное расположение рядов гарантируется только подтверждённым Blocks-профилем. `FileInput` требует подтверждённую capability `forms.file` целевой версии. Базовый `/game-admin` ранее выполнен на owned Mattermost 12.0.2 с HTTP 200 и созданием интерактивного Blocks-поста. Новый job-progress flow проверен contract-тестами и type checking, но после подключения worker не перезапускался на live stand; не считайте Web/Desktop/mobile поведение этого окна подтверждённым.

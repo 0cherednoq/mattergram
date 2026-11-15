@@ -198,7 +198,7 @@ Initial administrators всегда задаются точными Mattermost u
 
 - Plugins перечисляются явно; Python entry-point discovery, hot reload и runtime install отсутствуют.
 - Mattermost server/webapp bundle устанавливает system administrator отдельно от bot runtime.
-- Settings, notifications, jobs, S3 и AI plugins ещё не входят в реализованный API.
+- Settings, notifications, S3 и AI plugins ещё не входят в реализованный API. Game Admin имеет собственные `GameAdminJobRepository`, `GameAdminJobQueue` и runner, но общего `JobsPlugin` нет.
 - Наличие кнопки не является авторизацией.
 - Production code не должен хранить secrets в provider values, render data или health errors.
 
