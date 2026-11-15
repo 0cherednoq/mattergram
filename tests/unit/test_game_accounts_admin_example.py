@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from dataclasses import dataclass
+from types import SimpleNamespace
 from typing import Any
 
 import pytest
@@ -20,6 +21,7 @@ from examples.game_accounts_admin import (
     build_admin_keyboard,
     game_admin_router,
 )
+from mattergram.contrib import game_accounts_admin as extracted_game_admin
 from mattergram.fsm.storage.base import StorageKey
 from mattergram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 from mattergram_dialog import DialogManager, DialogRegistry, DialogStorage, OpenForm, ShowMode
@@ -104,6 +106,30 @@ def service() -> tuple[GameAccountsAdminService, Pushes]:
         ),
         pushes,
     )
+
+
+@pytest.mark.asyncio
+async def test_extracted_getters_and_actions_work_without_http_ingress() -> None:
+    admin, _ = service()
+    imported = await admin.import_accounts("human", game="ExampleGame", file_id="file-1")
+    manager = SimpleNamespace(
+        actor_id="human",
+        dialog_data={"selected_account_id": imported.account_ids[0]},
+    )
+
+    getters = extracted_game_admin.GameAdminGetters(admin)
+    actions = extracted_game_admin.GameAdminActions(admin)
+    accounts = await getters.accounts(manager)
+    await actions.check_selected(manager)
+
+    assert accounts["accounts"][0]["login"] == "alice"
+    assert manager.dialog_data["check_summary"].startswith("Проверка: valid 1")
+    assert GameAccountsAdminService is extracted_game_admin.GameAccountsAdminService
+    assert build_admin_dialog is extracted_game_admin.build_admin_dialog
+    assert extracted_game_admin.GameAdminGetters.__module__.endswith(".getters")
+    assert extracted_game_admin.GameAdminActions.__module__.endswith(".actions")
+    assert extracted_game_admin.build_admin_dialog.__module__.endswith(".dialog")
+    assert extracted_game_admin.register_admin_panel.__module__.endswith(".router")
 
 
 @pytest.mark.asyncio

@@ -15,6 +15,7 @@
     {"name": "mattergram.plugins", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.contrib.admin_users", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.contrib.composer_keyboard", "exports": "__all__", "dependency": "core"},
+    {"name": "mattergram.contrib.game_accounts_admin", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.ui", "exports": "__all__", "dependency": "core"},
     {
       "name": "mattergram.ui.actions",

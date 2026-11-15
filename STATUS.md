@@ -451,6 +451,7 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Проверки: полный suite `531 passed, 23 skipped, 309 subtests`; Ruff lint/format для 269 файлов,
   strict mypy для 215 source files, dialog extraction replay и documentation drift
   (`300 exports / 478 members / 19 examples / 29 guides`) прошли.
+
 ## Декларативная навигация Game Admin — этап 5 реализован
 
 - Три статических edit-перехода больше не проходят через imperative callbacks:
@@ -471,6 +472,28 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Проверки: полный suite `531 passed, 23 skipped, 309 subtests`; Ruff lint/format для 269 файлов,
   strict mypy для 215 source files, E8-03 evidence receipt и documentation drift
   (`300 exports / 478 members / 19 examples / 29 guides`) прошли.
-- Следующий конкретный шаг плана: этап 6 — вынести accounts/imports/checks из большого
-  `build_admin_dialog`, сохранив совместимые re-exports и поведение service.
+
+## Модульный Game Admin — этап 6 реализован
+
+- Добавлен публичный package `mattergram.contrib.game_accounts_admin`: models, ports, memory
+  repository, service facade, отдельные import/check orchestration, getters, actions, dialog,
+  keyboard, states и router. `examples/game_accounts_admin.py` сокращён до compatibility re-export
+  на один migration cycle; локальный runner и старые импорты не изменены.
+- `build_admin_dialog` теперь содержит только декларацию окон и связывает готовые
+  `GameAdminGetters`/`GameAdminActions`. Getters и actions доступны для unit-тестов без HTTP ingress;
+  router владеет только entry handlers и DI context.
+- JSONL parsing/persistence вынесены в `imports.py`, snapshot-safe account verification и redaction —
+  в `checks.py`. Публичный `GameAccountsAdminService` сохранил прежние методы, authorization и
+  возможность заменить verifier в тесте; service уменьшен с 517 до 366 строк без изменения
+  business semantics.
+- Compatibility test подтверждает тождество старых и новых imports. Отдельный unit-сценарий вызывает
+  getters/actions напрямую; прежние import/check/push, last-admin, secret masking, credential-race,
+  rows/forms и router tests продолжают проходить.
+- UX не изменён: клик-бюджет, глубина форм, widget IDs, states, row shapes и capability requirements
+  остались прежними. Live Mattermost на этом структурном этапе не запускался.
+- Проверки: полный suite `532 passed, 23 skipped, 309 subtests`; Ruff lint/format для 283 файлов,
+  strict mypy для 229 source files и documentation drift
+  (`24 modules / 334 exports / 520 members / 19 examples / 29 guides`) прошли.
+- Следующий конкретный шаг плана: этап 7 — определить durable job contract для import/check
+  progress, cancellation, monotonic revisions и terminal history.
 

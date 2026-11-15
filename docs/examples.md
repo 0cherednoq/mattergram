@@ -213,7 +213,7 @@ Upload one local file and attach it to a native Mattermost post.
 
 ## `examples/game_accounts_admin.py`
 
-Declarative administrator panel for users, pushes and game accounts.
+Compatibility imports for the extracted Game Admin feature.
 
 - Kind: `declaration`
 - Dependencies: `core`

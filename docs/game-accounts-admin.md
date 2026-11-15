@@ -2,11 +2,15 @@
 
 Управление app-scoped пользователями вынесено в reusable
 `mattergram.contrib.admin_users.AdminUsersPlugin`. Local demo временно делит прежнюю in-memory
-repository через compatibility adapter; accounts, imports, checks и push rules остаются в
-`examples/game_accounts_admin.py`. Composer keyboard только отправляет точный текст
+repository через compatibility adapter; accounts, imports, checks и push rules находятся в
+`mattergram.contrib.game_accounts_admin`. Composer keyboard только отправляет точный текст
 `Пользователи` и не является зависимостью или источником авторизации users plugin.
 
-[`examples/game_accounts_admin.py`](../examples/game_accounts_admin.py) — декларативный каркас админки с Telegram-подобной reply-клавиатурой. Каждая глобальная команда создаёт новый bot-post; локальные inline-действия редактируют только post своего экрана. Пример покрывает пользователей, push-маршруты, импорт игровых аккаунтов, проверки и обе истории. Реальные хранилище, чтение файла, checker и доставка уведомлений намеренно передаются снаружи.
+Пакет разделён на models, ports, repository, service, import/check orchestration, getters, actions,
+dialog, keyboard и router. [`examples/game_accounts_admin.py`](../examples/game_accounts_admin.py)
+остаётся тонким compatibility re-export на один migration cycle. Каждая глобальная команда создаёт
+новый bot-post; локальные inline-действия редактируют только post своего экрана. Реальные хранилище,
+чтение файла, checker и доставка уведомлений намеренно передаются снаружи.
 
 Для локальной проверки на owned Mattermost 12.0.2 используйте [`examples/game_accounts_admin_bot.py`](../examples/game_accounts_admin_bot.py). Runner заменяет только `/game-admin` и `/app-users` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
 
@@ -21,7 +25,7 @@ repository через compatibility adapter; accounts, imports, checks и push r
 Клавиатура и её установка описываются декларативно:
 
 ```python
-from examples.game_accounts_admin import build_admin_keyboard
+from mattergram.contrib.game_accounts_admin import build_admin_keyboard
 
 direct = await bot.create_direct_channel(admin_user_id)
 keyboard = build_admin_keyboard()
@@ -51,7 +55,9 @@ async def respond_to_game_admin_keyboard(
 
 `GameAdminHandlerContext` приходит через стандартный dispatcher DI. `register_admin_panel(dispatcher, runtime, service)` только кладёт этот immutable context в `dispatcher.workflow_data` и один раз подключает `game_admin_router`; сами handlers больше не создаются внутри setup-функции и не замыкают зависимости. Обычные прикладные callback handlers также можно объявлять глобально через `@router.callback_query(...)`. Декларативные кнопки `mattergram_dialog` остаются на общем runtime callback handler, установленном `setup_dialogs(...)`.
 
-План следующего рефакторинга, включая минимальную Python plugin architecture, первый reusable `AdminUsersPlugin`, разделение Router и dialog actions, короткую callback-сигнатуру без `del event, button`, background progress и критерии совместимости: [game-admin-routing-refactor.md](game-admin-routing-refactor.md). Документ описывает планируемое состояние и не подменяет текущий API.
+План и фактический прогресс рефакторинга, включая Python plugin architecture, reusable
+`AdminUsersPlugin`, разделение Router/dialog actions и будущий background progress:
+[game-admin-routing-refactor.md](game-admin-routing-refactor.md).
 
 Локальные действия уже созданного post — фильтры, pager, формы и `Назад` — продолжают редактировать только этот post, потому что они являются inline callback-навигацией, а не reply keyboard. Следующее нажатие постоянной клавиатуры снова создаёт новую пару `user message → bot post`.
 

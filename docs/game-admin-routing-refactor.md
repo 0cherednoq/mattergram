@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–5 реализованы и contract-verified; этапы 6–8 остаются в работе.
+**Статус:** этапы 0–6 реализованы и contract-verified; этапы 7–8 остаются в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -21,7 +21,7 @@ Game Admin должен сохранить текущую семантику Mat
 
 ## Что есть сейчас
 
-Текущий пример уже правильно разделяет внешние события и dialog runtime:
+Текущий package разделяет внешние события, dialog runtime и прикладные collaborators:
 
 - `game_admin_router` объявлен на уровне модуля;
 - `open_game_admin` обрабатывает `/game-admin`;
@@ -29,15 +29,16 @@ Game Admin должен сохранить текущую семантику Mat
 - `register_admin_panel` связывает `GameAdminHandlerContext` через `Dispatcher.workflow_data` и подключает router;
 - `setup_dialogs` регистрирует один общий обработчик только для данных, которые распознаёт `DialogActions.matches`, поэтому чужие callbacks продолжают проходить по router tree.
 
-Основная проблема осталась внутри [`build_admin_dialog`](../examples/game_accounts_admin.py). Текущий размер основных блоков, измеренный по Python AST:
+Монолит из example устранён. Текущий размер package-модулей после этапа 6:
 
-| Блок | Размер | Почему требует правки |
+| Модуль | Строк | Ответственность |
 | --- | ---: | --- |
-| `build_admin_dialog` | 673 строки | Смешивает getters, бизнес-действия, form submissions и декларацию окон в одном замыкании |
-| `GameAccountsAdminService` | 481 строка | Класс отвечает за несколько прикладных областей, хотя отдельные методы имеют умеренный размер |
-| `_check_ids` | 66 строк | Содержит orchestration batch-проверки и является кандидатом на отдельный job boundary |
-| `import_accounts` сервиса | 65 строк | Совмещает parsing, validation, persistence и итоговый audit record |
-| `register_admin_panel` | 20 строк | Уже мал и не должен снова получать прикладную логику |
+| `dialog.py` | 537 | Только декларация окон, widgets и связывание getters/actions |
+| `service.py` | 366 | Публичный authorization facade и короткие application use cases |
+| `imports.py` | 127 | Bounded JSONL parsing, validation и persistence orchestration |
+| `checks.py` | 105 | Snapshot-safe verification, redaction и aggregate history |
+| `actions.py` / `getters.py` | 151 / 66 | Form/button side effects отдельно от render-only reads |
+| `router.py` | 86 | Entry handlers, DI context и подключение router |
 
 `Button` принимает полную callback-сигнатуру и короткую manager-only форму:
 
@@ -49,9 +50,8 @@ async def simple_click(manager: DialogManager) -> None:
     ...
 ```
 
-Существующие полные callbacks остаются совместимыми. Новым callbacks, которым нужен только manager,
-не требуются фиктивные `event`, `button` и строки `del event, button`: они используют короткую форму.
-Оставшиеся такие строки в Game Admin удаляются на этапе 5 вместе с imperative navigation callbacks.
+Существующие полные callbacks остаются совместимыми. Game Admin callbacks, которым нужен только
+manager, используют короткую форму без фиктивных `event`, `button` и `del event, button`.
 
 ## Граница между Router и Dialog
 
@@ -503,7 +503,10 @@ Secrets нельзя читать обратно через администра
   `TypeError` из прикладного кода;
 - этап 5: edit-переходы пользователя, push-маршрута и аккаунта выражены через `OpenForm` с
   прежними widget IDs и states; оставшиеся refresh/check callbacks принимают только manager;
-- следующий незавершённый этап — разделение оставшихся accounts/imports/checks частей Game Admin.
+- этап 6: оставшийся feature разделён на package-модули models/ports/repository/service,
+  import/check orchestration, getters/actions/dialog/keyboard/router; старый example сохранил
+  совместимые re-exports;
+- следующий незавершённый этап — background jobs для длительных импортов и batch-проверок.
 
 ### Этап 0. Зафиксировать contracts
 
@@ -644,10 +647,10 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 - [x] Неподдерживаемые сигнатуры отклоняются при создании widget.
 - [x] В Game Admin нет `del event, button` для `Button` callbacks.
 - [x] Статическая навигация выражена widgets, а не ручными manager calls.
-- [ ] `build_admin_dialog` содержит декларацию, но не service implementation.
-- [ ] Getters и actions тестируются отдельно без запуска HTTP ingress.
+- [x] `build_admin_dialog` содержит декларацию, но не service implementation.
+- [x] Getters и actions тестируются отдельно без запуска HTTP ingress.
 - [x] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
-- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–5.
+- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–6.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
 - [x] `STATUS.md` различает planned, implemented и live-verified состояние.

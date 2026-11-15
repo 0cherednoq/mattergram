@@ -4766,6 +4766,854 @@
       ]
     },
     {
+      "name": "mattergram.contrib.game_accounts_admin",
+      "dependency": "core",
+      "exports": [
+        {
+          "name": "AccountCredentials",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCredentials",
+          "kind": "class",
+          "signature": "(login: str, password: SecretStr, cookies: tuple[StoredCookie, ...] = ()) -> None",
+          "summary": "AccountCredentials(login: 'str', password: 'SecretStr', cookies: 'tuple[StoredCookie, ...]' = ())",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 94
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountStatus",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountStatus",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "AccountVerifier",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountVerifier",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+            "line": 9
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "verify",
+              "kind": "async-method",
+              "signature": "(self, game: str, credentials: AccountCredentials) -> VerificationResult",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+                "line": 10
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminInputError",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AdminInputError",
+          "kind": "class",
+          "signature": "(field_errors: Mapping[str, str]) -> None",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/errors.py",
+            "line": 6
+          },
+          "bases": [
+            "builtins.ValueError"
+          ]
+        },
+        {
+          "name": "AdminPanel",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AdminPanel",
+          "kind": "class",
+          "signature": "()",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/states.py",
+            "line": 6
+          },
+          "bases": [
+            "mattergram.fsm.state.StatesGroup"
+          ]
+        },
+        {
+          "name": "AdminRole",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AdminRole",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "AdminUser",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AdminUser",
+          "kind": "class",
+          "signature": "(id: str, mattermost_user_id: str, username: str, role: AdminRole, enabled: bool = True) -> None",
+          "summary": "AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'AdminRole', enabled: 'bool' = True)",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 46
+          },
+          "bases": []
+        },
+        {
+          "name": "CheckRun",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CheckRun",
+          "kind": "class",
+          "signature": "(id: str, created_at: str, actor_id: str, scope: str, total: int, valid: int, invalid: int, errors: int, status: RunStatus) -> None",
+          "summary": "CheckRun(id: 'str', created_at: 'str', actor_id: 'str', scope: 'str', total: 'int', valid: 'int', invalid: 'int', errors: 'int', status: 'RunStatus')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 131
+          },
+          "bases": []
+        },
+        {
+          "name": "GameAccount",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAccount",
+          "kind": "class",
+          "signature": "(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str | None = None, last_error: str | None = None) -> None",
+          "summary": "GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 101
+          },
+          "bases": []
+        },
+        {
+          "name": "GameAccountsAdminService",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAccountsAdminService",
+          "kind": "class",
+          "signature": "(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory) -> None",
+          "summary": "Administrator-only application service with an explicit secret boundary.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+            "line": 31
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "add_user",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, *, mattermost_user_id: str, role: AdminRole, enabled: bool) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 101
+              }
+            },
+            {
+              "name": "check_account",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, account_id: str) -> CheckRun",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 320
+              }
+            },
+            {
+              "name": "check_all",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> CheckRun",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 323
+              }
+            },
+            {
+              "name": "check_import",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, import_id: str) -> CheckRun",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 328
+              }
+            },
+            {
+              "name": "dashboard",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> dict[str, int]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 59
+              }
+            },
+            {
+              "name": "import_accounts",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, *, game: str, file_id: str) -> ImportRun",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 236
+              }
+            },
+            {
+              "name": "list_accounts",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[dict[str, Any]]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 264
+              }
+            },
+            {
+              "name": "list_available_team_users",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[TeamUser]",
+              "summary": "Read current active team members and exclude application users already assigned.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 87
+              }
+            },
+            {
+              "name": "list_checks",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[dict[str, Any]]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 352
+              }
+            },
+            {
+              "name": "list_imports",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[dict[str, Any]]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 336
+              }
+            },
+            {
+              "name": "list_push_rules",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[dict[str, Any]]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 172
+              }
+            },
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> list[dict[str, Any]]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 71
+              }
+            },
+            {
+              "name": "require_admin",
+              "kind": "method",
+              "signature": "(self, actor_id: str) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 53
+              }
+            },
+            {
+              "name": "save_push_rule",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, *, rule_id: str | None, destination_kind: PushDestinationKind, destination_id: str, events: Sequence[str], enabled: bool) -> PushRule",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 194
+              }
+            },
+            {
+              "name": "update_account",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, account_id: str, *, login: str, password: str | None, cookies_json: str | None) -> GameAccount",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 273
+              }
+            },
+            {
+              "name": "update_user",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, user_id: str, *, username: str, role: AdminRole, enabled: bool) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 135
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminActions",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminActions",
+          "kind": "class",
+          "signature": "(service: GameAccountsAdminService) -> None",
+          "summary": "Apply business actions and form submissions for the dialog declaration.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+            "line": 14
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "add_push",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 103
+              }
+            },
+            {
+              "name": "add_user",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 47
+              }
+            },
+            {
+              "name": "check_all",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 32
+              }
+            },
+            {
+              "name": "check_imported",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 38
+              }
+            },
+            {
+              "name": "check_selected",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 23
+              }
+            },
+            {
+              "name": "edit_account",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 109
+              }
+            },
+            {
+              "name": "edit_push",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 106
+              }
+            },
+            {
+              "name": "edit_user",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 61
+              }
+            },
+            {
+              "name": "import_accounts",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 128
+              }
+            },
+            {
+              "name": "refresh_home",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 20
+              }
+            },
+            {
+              "name": "save_push",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager, *, edit: bool) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 80
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminGetters",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminGetters",
+          "kind": "class",
+          "signature": "(service: GameAccountsAdminService) -> None",
+          "summary": "Load render-only data without owning navigation or form side effects.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+            "line": 13
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "accounts",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 44
+              }
+            },
+            {
+              "name": "available_user_options",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 32
+              }
+            },
+            {
+              "name": "checks",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 50
+              }
+            },
+            {
+              "name": "home",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 19
+              }
+            },
+            {
+              "name": "imports",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 47
+              }
+            },
+            {
+              "name": "pushes",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 41
+              }
+            },
+            {
+              "name": "selected_account",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 63
+              }
+            },
+            {
+              "name": "selected_push",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 58
+              }
+            },
+            {
+              "name": "selected_user",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 53
+              }
+            },
+            {
+              "name": "users",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
+                "line": 25
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminHandlerContext",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminHandlerContext",
+          "kind": "class",
+          "signature": "(runtime: DialogRuntime, service: GameAccountsAdminService) -> None",
+          "summary": "Dependencies injected into module-level game-admin handlers.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/router.py",
+            "line": 26
+          },
+          "bases": []
+        },
+        {
+          "name": "GAME_ADMIN_KEYBOARD_ROUTES",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GAME_ADMIN_KEYBOARD_ROUTES",
+          "kind": "mapping",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "GAME_ADMIN_SLASH_ROUTES",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GAME_ADMIN_SLASH_ROUTES",
+          "kind": "mapping",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "ImportFileReader",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.ImportFileReader",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+            "line": 13
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "read",
+              "kind": "async-method",
+              "signature": "(self, file_id: str) -> bytes",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+                "line": 14
+              }
+            }
+          ]
+        },
+        {
+          "name": "ImportRun",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.ImportRun",
+          "kind": "class",
+          "signature": "(id: str, created_at: str, actor_id: str, game: str, total: int, imported: int, rejected: int, status: RunStatus, account_ids: tuple[str, ...] = (), issues: tuple[str, ...] = ()) -> None",
+          "summary": "ImportRun(id: 'str', created_at: 'str', actor_id: 'str', game: 'str', total: 'int', imported: 'int', rejected: 'int', status: 'RunStatus', account_ids: 'tuple[str, ...]' = (), issues: 'tuple[str, ...]' = ())",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 117
+          },
+          "bases": []
+        },
+        {
+          "name": "MemoryAdminRepository",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.MemoryAdminRepository",
+          "kind": "class",
+          "signature": "(*, users: Sequence[AdminUser] = ()) -> None",
+          "summary": "Explicit non-durable repository for tests and local development.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/repository.py",
+            "line": 9
+          },
+          "bases": []
+        },
+        {
+          "name": "PUSH_EVENTS",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.PUSH_EVENTS",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "PushDestinationKind",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.PushDestinationKind",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "PushDispatcher",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.PushDispatcher",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+            "line": 17
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "send",
+              "kind": "async-method",
+              "signature": "(self, rule: PushRule, event: PushEvent, text: str) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+                "line": 18
+              }
+            }
+          ]
+        },
+        {
+          "name": "PushEvent",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.PushEvent",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "PushRule",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.PushRule",
+          "kind": "class",
+          "signature": "(id: str, destination_kind: PushDestinationKind, destination_id: str, events: tuple[PushEvent, ...], enabled: bool = True) -> None",
+          "summary": "PushRule(id: 'str', destination_kind: 'PushDestinationKind', destination_id: 'str', events: 'tuple[PushEvent, ...]', enabled: 'bool' = True)",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 78
+          },
+          "bases": []
+        },
+        {
+          "name": "RunStatus",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.RunStatus",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "StoredCookie",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.StoredCookie",
+          "kind": "class",
+          "signature": "(domain: str, name: str, value: SecretStr) -> None",
+          "summary": "StoredCookie(domain: 'str', name: 'str', value: 'SecretStr')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 87
+          },
+          "bases": []
+        },
+        {
+          "name": "TeamUser",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.TeamUser",
+          "kind": "class",
+          "signature": "(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None",
+          "summary": "One active human Mattermost account available to this application.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 55
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "option_label",
+              "kind": "property",
+              "signature": "(self) -> str",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+                "line": 68
+              }
+            }
+          ]
+        },
+        {
+          "name": "TeamUserDirectory",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.TeamUserDirectory",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+            "line": 21
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> Sequence[TeamUser]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+                "line": 22
+              }
+            }
+          ]
+        },
+        {
+          "name": "VerificationResult",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.VerificationResult",
+          "kind": "class",
+          "signature": "(valid: bool, summary: str) -> None",
+          "summary": "VerificationResult(valid: 'bool', summary: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 111
+          },
+          "bases": []
+        },
+        {
+          "name": "build_admin_dialog",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.build_admin_dialog",
+          "kind": "function",
+          "signature": "(service: GameAccountsAdminService) -> Dialog",
+          "summary": "Build the complete administrator panel against one application service.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/dialog.py",
+            "line": 51
+          }
+        },
+        {
+          "name": "build_admin_keyboard",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.build_admin_keyboard",
+          "kind": "function",
+          "signature": "() -> ComposerKeyboard",
+          "summary": "Declare the persistent global navigation for the administrator panel.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/keyboard.py",
+            "line": 6
+          }
+        },
+        {
+          "name": "game_admin_router",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.game_admin_router",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "open_game_admin",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.open_game_admin",
+          "kind": "async-function",
+          "signature": "(event: SlashCommand, game_admin: GameAdminHandlerContext) -> None",
+          "summary": "Open the panel from the globally registered native slash command.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/router.py",
+            "line": 43
+          }
+        },
+        {
+          "name": "register_admin_panel",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.register_admin_panel",
+          "kind": "function",
+          "signature": "(dispatcher: Dispatcher, runtime: DialogRuntime, service: GameAccountsAdminService, *, command: str = 'game-admin') -> None",
+          "summary": "Bind dependencies and include the globally declared game-admin router.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/router.py",
+            "line": 67
+          }
+        },
+        {
+          "name": "respond_to_game_admin_keyboard",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.respond_to_game_admin_keyboard",
+          "kind": "async-function",
+          "signature": "(event: Message, game_admin: GameAdminHandlerContext) -> None",
+          "summary": "Create a fresh panel post for one visible reply-keyboard message.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/router.py",
+            "line": 56
+          }
+        }
+      ]
+    },
+    {
       "name": "mattergram.ui",
       "dependency": "core",
       "exports": [

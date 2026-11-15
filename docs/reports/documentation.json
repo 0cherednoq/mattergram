@@ -2,10 +2,10 @@
   "schema_version": 1,
   "result": "generated-reference-current",
   "version": "0.1.0a1",
-  "manifest_sha256": "068dccc9de77ad071c5c041c7a97dc65685b3814df90852a2d925f2dcac3181e",
-  "public_modules": 23,
-  "public_exports": 300,
-  "public_members": 478,
+  "manifest_sha256": "1768d5e51e039c61f5f80f2649ea1aa9980a2b164de78d46fc59b388dc39162b",
+  "public_modules": 24,
+  "public_exports": 334,
+  "public_members": 520,
   "guides": 29,
   "examples": 19,
   "example_statuses": {
@@ -16,11 +16,11 @@
     "real-redis-verified": 1
   },
   "artifacts": {
-    "docs/examples.md": "a39c106c16e6cb1264f8a35aa74c29412f1a09c01ccbf58b4429d732e62fdfae",
-    "docs/reference/api.md": "5b907953ce1210331e6d1f9b694ab7ccf58ae3cd05b9369250b273e24f5015f2",
+    "docs/examples.md": "d8911ca848bf8338d5a0789798c4aecb9029f099eb7d9c105c47ef952acc995a",
+    "docs/reference/api.md": "49da2ec34471079ff96a55a2bb608d043582330a08efd68c0baf0eb8f64865d3",
     "docs/reference/capabilities.md": "da4cd7b1ebc544c575cc9ac25b21179698a594bfe3265ccbe0dfcbedff7f501e",
     "docs/reference/exceptions.md": "a3b50fd05e23efe523dfd701b32db9b58719499a4e21dcc541cdba9607b9b74a",
-    "docs/reference/public-api.json": "8ba8b7f87868ceb2a89db40357a092ad51fc2964e4f4a71e58b94454304a5a93",
+    "docs/reference/public-api.json": "97c71e8108fad17590b74bdd38ef66d2ccd021d8114d1682436c064e7247fb06",
     "llms.txt": "6a62fdba0904eec3d9146f26793636137fa0391578f8efa519875205aaf6ae9f"
   },
   "network_access": "none",

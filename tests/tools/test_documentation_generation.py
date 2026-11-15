@@ -18,9 +18,9 @@ class DocumentationGenerationTests(unittest.TestCase):
         for relative, content in outputs.items():
             self.assertEqual(content, (ROOT / relative).read_text(encoding="utf-8"), relative)
             self.assertIsNone(ADDRESS.search(content), relative)
-        self.assertEqual(report["public_modules"], 23)
-        self.assertEqual(report["public_exports"], 300)
-        self.assertEqual(report["public_members"], 478)
+        self.assertEqual(report["public_modules"], 24)
+        self.assertEqual(report["public_exports"], 334)
+        self.assertEqual(report["public_members"], 520)
         self.assertEqual(report["guides"], 29)
         self.assertEqual(report["examples"], 19)
         self.assertEqual(report["network_access"], "none")
