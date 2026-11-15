@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain intent/stack identity, start_data, dialog_data and widget_data; bind to mattergram State and JSON-safe persisted data. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "44166b4b8a900ffb44f7bc359dbc485367d45ea5916e66e8546079388bc28eb5",
+  "output_sha256": "756c4c334e83199b546bce1c9fc4527bb201504ea24c1aa08da8c2a2e19f65f3",
+  "replacements": [
+    {
+      "before": "from dataclasses import dataclass, field\n\nfrom aiogram.fsm.state import State\n\nfrom .access import AccessSettings\n\nData = dict | list | int | str | float | None\nDataDict = dict[str, Data]\n\n\n@dataclass(unsafe_hash=True)\nclass Context:\n    _intent_id: str = field(compare=True)\n    _stack_id: str = field(compare=True)\n    state: State = field(compare=False)\n    start_data: Data = field(compare=False)\n    dialog_data: DataDict = field(compare=False, default_factory=dict)\n    widget_data: DataDict = field(compare=False, default_factory=dict)\n    access_settings: AccessSettings | None = field(\n        compare=False, default=None,\n    )\n\n    @property\n    def id(self) -> str:\n        return self._intent_id\n\n    @property\n    def stack_id(self) -> str:\n        return self._stack_id\n",
+      "after": "from __future__ import annotations\n\nfrom dataclasses import dataclass, field\nfrom typing import Any\n\nfrom mattergram.fsm.state import State\n\nfrom .access import AccessSettings\n\nData = dict[str, Any] | list[Any] | str | int | float | bool | None\nDataDict = dict[str, Any]\n\n\n@dataclass(slots=True)\nclass Context:\n    intent_id: str\n    stack_id: str\n    state: State\n    start_data: Data = None\n    dialog_data: DataDict = field(default_factory=dict)\n    widget_data: DataDict = field(default_factory=dict)\n    access_settings: AccessSettings | None = None\n\n    def __post_init__(self) -> None:\n        if not self.intent_id or not self.stack_id:\n            raise ValueError(\"Dialog intent_id and stack_id must be nonempty strings\")\n\n    @property\n    def id(self) -> str:\n        return self.intent_id\n",
+      "occurrences": 1
+    }
+  ]
+}

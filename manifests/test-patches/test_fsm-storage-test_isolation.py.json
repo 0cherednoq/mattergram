@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Namespace rewrite; native fixtures. Generic memory/disabled/real Redis lock profiles and complete Redis construction/lifecycle class retained. URL pool construction assertion includes the native finite socket timeouts and no-retry object.",
+  "input_sha256": "22b71f650b873ab82b6ddf265567a2c1d22cb00eb04e47242fda6fb7bf51d14d",
+  "output_sha256": "cdecbf704e377c010d33f23cb2149df81fb5161dc754fbddc6839bc389ff3d3b",
+  "replacements": [
+    {
+      "before": "from unittest.mock import AsyncMock, patch\n\nimport pytest\n\nfrom aiogram.fsm.storage.base import BaseEventIsolation, StorageKey\nfrom aiogram.fsm.storage.redis import RedisEventIsolation, RedisStorage\n\n\n@pytest.mark.parametrize(\n",
+      "after": "from unittest.mock import ANY, AsyncMock, patch\n\nimport pytest\n\nfrom mattergram.fsm.storage.base import BaseEventIsolation, StorageKey\nfrom mattergram.fsm.storage.redis import RedisEventIsolation, RedisStorage\n\n\n@pytest.mark.parametrize(\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            assert isolation.redis is not None\n            assert isolation.key_builder is not None\n\n            pool.assert_called_once_with(\"redis://localhost:6379/0\")\n\n    async def test_close(self):\n        isolation = RedisEventIsolation(redis=AsyncMock())\n",
+      "after": "            assert isolation.redis is not None\n            assert isolation.key_builder is not None\n\n            pool.assert_called_once_with(\n                \"redis://localhost:6379/0\", socket_connect_timeout=5.0, socket_timeout=5.0, retry=ANY\n            )\n\n    async def test_close(self):\n        isolation = RedisEventIsolation(redis=AsyncMock())\n",
+      "occurrences": 1
+    }
+  ]
+}

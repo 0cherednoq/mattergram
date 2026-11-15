@@ -1,0 +1,15 @@
+version: 1
+id: c5f0fe6f-61e7-4e5c-8c78-6f5d9a77e6cc
+name: mattermost-native
+slug: mattermost-native
+protocol: http
+port: 4500
+interceptRequests: true
+scenarios:
+  - name: default
+    path: ./handler.js
+    default: true
+generatedFrom:
+  type: spec
+  mode: static
+  path: ../../../contracts/native-rest.openapi.json

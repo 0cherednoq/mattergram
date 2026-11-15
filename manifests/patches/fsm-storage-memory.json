@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reason": "Retain memory storage and locks with native keys and native DataNotDictLikeError; verify cancellation and reuse. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "f25de29c2f934a52f88f9db37d8ce84095a0959ae0e00b0903caa88d40b6d937",
+  "output_sha256": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+  "replacements": [
+    {
+      "before": "from collections import defaultdict\nfrom collections.abc import AsyncGenerator, Hashable, Mapping\nfrom contextlib import asynccontextmanager\nfrom copy import copy\nfrom dataclasses import dataclass, field\nfrom typing import Any, overload\n\n",
+      "after": "from collections import defaultdict\nfrom collections.abc import AsyncGenerator, Hashable, Mapping\nfrom contextlib import asynccontextmanager\nfrom copy import deepcopy\nfrom dataclasses import dataclass, field\nfrom typing import Any, overload\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        )\n\n    async def close(self) -> None:\n        pass\n\n    async def set_state(self, key: StorageKey, state: StateType = None) -> None:\n        self.storage[key].state = state.state if isinstance(state, State) else state\n",
+      "after": "        )\n\n    async def close(self) -> None:\n        self.storage.clear()\n\n    async def set_state(self, key: StorageKey, state: StateType = None) -> None:\n        self.storage[key].state = state.state if isinstance(state, State) else state\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        return self.storage[key].state\n\n    async def set_data(self, key: StorageKey, data: Mapping[str, Any]) -> None:\n        if not isinstance(data, dict):\n            msg = f\"Data must be a dict or dict-like object, got {type(data).__name__}\"\n            raise DataNotDictLikeError(msg)\n        self.storage[key].data = data.copy()\n\n    async def get_data(self, key: StorageKey) -> dict[str, Any]:\n        return self.storage[key].data.copy()\n\n    @overload\n    async def get_value(self, storage_key: StorageKey, dict_key: str) -> Any | None: ...\n",
+      "after": "        return self.storage[key].state\n\n    async def set_data(self, key: StorageKey, data: Mapping[str, Any]) -> None:\n        if not isinstance(data, Mapping):\n            msg = f\"Data must be a dict or dict-like object, got {type(data).__name__}\"\n            raise DataNotDictLikeError(msg)\n        self.storage[key].data = deepcopy(dict(data))\n\n    async def get_data(self, key: StorageKey) -> dict[str, Any]:\n        return deepcopy(self.storage[key].data)\n\n    @overload\n    async def get_value(self, storage_key: StorageKey, dict_key: str) -> Any | None: ...\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        default: Any | None = None,\n    ) -> Any | None:\n        data = self.storage[storage_key].data\n        return copy(data.get(dict_key, default))\n\n\nclass DisabledEventIsolation(BaseEventIsolation):\n",
+      "after": "        default: Any | None = None,\n    ) -> Any | None:\n        data = self.storage[storage_key].data\n        return deepcopy(data.get(dict_key, default))\n\n\nclass DisabledEventIsolation(BaseEventIsolation):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\nclass SimpleEventIsolation(BaseEventIsolation):\n    def __init__(self) -> None:\n        # TODO: Unused locks cleaner is needed\n        self._locks: defaultdict[Hashable, Lock] = defaultdict(Lock)\n\n    @asynccontextmanager\n    async def lock(self, key: StorageKey) -> AsyncGenerator[None, None]:\n        lock = self._locks[key]\n        async with lock:\n            yield\n\n    async def close(self) -> None:\n        self._locks.clear()\n",
+      "after": "\nclass SimpleEventIsolation(BaseEventIsolation):\n    def __init__(self) -> None:\n        self._locks: dict[Hashable, tuple[Lock, int]] = {}\n        self._closed = False\n\n    @asynccontextmanager\n    async def lock(self, key: StorageKey) -> AsyncGenerator[None, None]:\n        if self._closed:\n            raise RuntimeError(\"Event isolation is closed\")\n        lock, references = self._locks.get(key, (Lock(), 0))\n        self._locks[key] = (lock, references + 1)\n        try:\n            async with lock:\n                yield\n        finally:\n            current = self._locks.get(key)\n            if current is not None:\n                if current[1] == 1:\n                    del self._locks[key]\n                else:\n                    self._locks[key] = (lock, current[1] - 1)\n\n    async def close(self) -> None:\n        if self._locks:\n            raise RuntimeError(\"Drain handlers before closing event isolation\")\n        self._closed = True\n",
+      "occurrences": 1
+    }
+  ]
+}

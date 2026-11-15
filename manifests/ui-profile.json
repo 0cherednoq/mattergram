@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12",
+  "scope": "Authored native Form/Blocks/legacy schemas, capability-selected serialization and linked supported-subset source adapters. Actual client execution remains E5-03.",
+  "primary_references": [
+    {
+      "version": "11.1.0",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "files": [
+        {
+          "path": "server/public/model/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/integration_action.go",
+          "sha256": "9c80f2f1fd463e33b10ec81b320fedd59e793520f8adc8fa3763bccfb1458d83"
+        },
+        {
+          "path": "server/public/model/slack_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/slack_attachment.go",
+          "sha256": "12f72cb6d797284b0cf43895e90c67a075706a40986b6688296fc875466a1ddb"
+        },
+        {
+          "path": "server/public/model/message_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/message_attachment.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/integration_action.go",
+          "sha256": "5757285e2020708c1cc09e2d40e65d1e34b255f33ea86626d043354ea50aeb3c"
+        },
+        {
+          "path": "server/public/model/mm_blocks_actions.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/mm_blocks_actions.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/public/model/post_interactive_blocks.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/post_interactive_blocks.go",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/platform/types/src/mm_blocks.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/platform/types/src/mm_blocks.ts",
+          "error_status": 404
+        }
+      ]
+    },
+    {
+      "version": "11.7.0",
+      "commit": "a9e574a82633915f22071f0d7ca2b006f249ec2a",
+      "files": [
+        {
+          "path": "server/public/model/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/public/model/integration_action.go",
+          "sha256": "841b8916c6189f36b2f6fb86f9c049ee4fc9711dcf5a49ccb55491d748d0f994"
+        },
+        {
+          "path": "server/public/model/slack_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/public/model/slack_attachment.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/public/model/message_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/public/model/message_attachment.go",
+          "sha256": "6da472526f9cd6c61ca95ce4887eccceacb759720d99d71e1f0e3506c9619d7f"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/channels/app/integration_action.go",
+          "sha256": "172506d6c9c773cf98d71959c119360c2182f148fc7ad242f64194503835b8dc"
+        },
+        {
+          "path": "server/public/model/mm_blocks_actions.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/public/model/mm_blocks_actions.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/public/model/post_interactive_blocks.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/public/model/post_interactive_blocks.go",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/platform/types/src/mm_blocks.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/platform/types/src/mm_blocks.ts",
+          "error_status": 404
+        }
+      ]
+    },
+    {
+      "version": "11.11.0",
+      "commit": "50cec2b3aa1737a7eb54d165875357560cba5f82",
+      "files": [
+        {
+          "path": "server/public/model/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/public/model/integration_action.go",
+          "sha256": "e5840e59ed2d7d6d96e60e008b8f417928d0a6e4eefd6d4bf11d170e096093cc"
+        },
+        {
+          "path": "server/public/model/slack_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/public/model/slack_attachment.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/public/model/message_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/public/model/message_attachment.go",
+          "sha256": "6da472526f9cd6c61ca95ce4887eccceacb759720d99d71e1f0e3506c9619d7f"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/channels/app/integration_action.go",
+          "sha256": "41d6c91ee181909a6e9bf5f088dfe8b19d5775bdf4c15cb446101aa143f80edd"
+        },
+        {
+          "path": "server/public/model/mm_blocks_actions.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/public/model/mm_blocks_actions.go",
+          "sha256": "83de48bf45e8b664f0407883197dc3e2f2945b4870df553518ee7eb6255da236"
+        },
+        {
+          "path": "server/public/model/post_interactive_blocks.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/public/model/post_interactive_blocks.go",
+          "sha256": "dda7884fc94a3f900fe421b27594c4410a6a575b3d27ba8de5cbd3d31356e74f"
+        },
+        {
+          "path": "webapp/platform/types/src/mm_blocks.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/platform/types/src/mm_blocks.ts",
+          "sha256": "f914633d34807a78c938f67692123f8d6da1bde86a6c42a7f6033ebc270dc041"
+        }
+      ]
+    },
+    {
+      "version": "12.0.2",
+      "commit": "13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd",
+      "files": [
+        {
+          "path": "server/public/model/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/public/model/integration_action.go",
+          "sha256": "e9f8a38044f90c2d530085c30315316269d7dba79a51462762c0683e8c320264"
+        },
+        {
+          "path": "server/public/model/slack_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/public/model/slack_attachment.go",
+          "error_status": 404
+        },
+        {
+          "path": "server/public/model/message_attachment.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/public/model/message_attachment.go",
+          "sha256": "6da472526f9cd6c61ca95ce4887eccceacb759720d99d71e1f0e3506c9619d7f"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/channels/app/integration_action.go",
+          "sha256": "4046cb726083b3511b86f583a3409ffd5f4b8ca24fd91cfa6da7dae220c4a13f"
+        },
+        {
+          "path": "server/public/model/mm_blocks_actions.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/public/model/mm_blocks_actions.go",
+          "sha256": "83de48bf45e8b664f0407883197dc3e2f2945b4870df553518ee7eb6255da236"
+        },
+        {
+          "path": "server/public/model/post_interactive_blocks.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/public/model/post_interactive_blocks.go",
+          "sha256": "dda7884fc94a3f900fe421b27594c4410a6a575b3d27ba8de5cbd3d31356e74f"
+        },
+        {
+          "path": "webapp/platform/types/src/mm_blocks.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/platform/types/src/mm_blocks.ts",
+          "sha256": "f914633d34807a78c938f67692123f8d6da1bde86a6c42a7f6033ebc270dc041"
+        }
+      ]
+    }
+  ],
+  "reference_policy": "Only field/format facts are implemented; server/client source is kept in ignored build/ui-refs, not copied into runtime or immutable donor snapshots. Optional missing renamed files are recorded as 404, not interpreted as absent features.",
+  "server_features": {
+    "11.1.0": [
+      "forms.basic",
+      "forms.date",
+      "forms.lookup",
+      "forms.multi",
+      "forms.refresh",
+      "forms.steps"
+    ],
+    "11.7.0": [
+      "forms.basic",
+      "forms.date",
+      "forms.datetime_config",
+      "forms.lookup",
+      "forms.manual_time",
+      "forms.multi",
+      "forms.refresh",
+      "forms.steps",
+      "forms.timezone"
+    ],
+    "11.11.0": [
+      "blocks",
+      "forms.action_button",
+      "forms.basic",
+      "forms.date",
+      "forms.date_bounds_config",
+      "forms.datetime_config",
+      "forms.file",
+      "forms.lookup",
+      "forms.manual_time",
+      "forms.multi",
+      "forms.refresh",
+      "forms.steps",
+      "forms.timezone"
+    ],
+    "12.0.2": [
+      "blocks",
+      "forms.action_button",
+      "forms.basic",
+      "forms.checkbox_group",
+      "forms.checkbox_matrix",
+      "forms.collapsible",
+      "forms.date",
+      "forms.date_bounds_config",
+      "forms.datetime_config",
+      "forms.file",
+      "forms.label_position",
+      "forms.lookup",
+      "forms.manual_time",
+      "forms.multi",
+      "forms.refresh",
+      "forms.steps",
+      "forms.timezone"
+    ]
+  },
+  "client_support": {
+    "web": "unknown until actual client scenarios are run",
+    "desktop": "unknown",
+    "mobile": "unknown"
+  },
+  "default_policy": "Unknown client support/flags fails before HTTP. Explicit per-feature application overrides permit experiments but cannot override known server unsupported fields or server permissions.",
+  "form_types": [
+    "text",
+    "textarea",
+    "select",
+    "select+multiselect",
+    "bool",
+    "radio",
+    "checkbox_group",
+    "checkbox_matrix",
+    "date",
+    "datetime",
+    "file",
+    "action_button",
+    "collapsible"
+  ],
+  "block_types": [
+    "text",
+    "image",
+    "divider",
+    "button",
+    "static_select",
+    "container",
+    "collapsible",
+    "column_set",
+    "column"
+  ],
+  "datetime_profiles": {
+    "11.1.0": "Top-level min_date/max_date/time_interval; no location_timezone/manual entry.",
+    "11.7.0": "Top-level min_date/max_date; nested time_interval/location_timezone/allow_manual_time_entry.",
+    "11.11.0": "Nested min_date/max_date/time_interval/location_timezone/manual_time_entry; deprecated fields deliberately not emitted.",
+    "12.0.2": "Nested datetime_config only; removed legacy fields are not emitted."
+  },
+  "limits": {
+    "form_title_utf8_bytes": {
+      "11.1.0": 24,
+      "11.7.0": 24,
+      "11.11.0": 24,
+      "12.0.2": 80
+    },
+    "label_utf8_bytes": 24,
+    "field_name_utf8_bytes": 300,
+    "help_utf8_bytes": 150,
+    "text_default_utf8_bytes": 150,
+    "textarea_default_utf8_bytes": 3000,
+    "checkbox_group_options": 50,
+    "matrix_rows": 30,
+    "matrix_columns": 10,
+    "collapsible_levels": 3,
+    "post_blocks": 100,
+    "block_levels": 32,
+    "block_text_characters": 16000,
+    "action_id": "[A-Za-z0-9_-]{1,64}",
+    "action_id_scope": "Blocks registry IDs; legacy HTTP route IDs have separate versioned syntax below."
+  },
+  "legacy_action_ids": {
+    "11.1.0": "[A-Za-z0-9]+",
+    "11.7.0": "[A-Za-z0-9]+",
+    "11.11.0": "[A-Za-z0-9_-]+",
+    "12.0.2": "[A-Za-z0-9_-]+",
+    "unknown_or_no_profile": "Only alphanumeric explicit IDs; omitted IDs are generated by Mattermost.",
+    "extended_ids": "Require an explicit referenced 11.11/12 UIProfile; this is a server route property, independent of Blocks/client feature flags.",
+    "policy": "Reject invalid syntax or incompatible IDs before HTTP write; never silently rename an application ID.",
+    "source": "Pinned server/channels/api4/integration_action.go InitAction in manifests/forms-profile.json and ui-profile.json."
+  },
+  "planned_unimplemented": [
+    "Actual web/desktop/mobile execution matrix, including newer server/client profiles.",
+    "UNSET/None UI edit contract and expanded native/dialog extension scope."
+  ],
+  "tests": [
+    "tests/unit/test_ui.py",
+    "tests/integration/test_native_http.py",
+    "tools/verify_http_stand.py",
+    "tools/verify_native_simulation.py"
+  ],
+  "managed_forms_profile": "manifests/forms-profile.json",
+  "input_adapters_profile": "manifests/ui-input-profile.json"
+}

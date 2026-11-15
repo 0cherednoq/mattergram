@@ -1,0 +1,19 @@
+{
+  "type": "dialog_submission",
+  "callback_id": "validation",
+  "state": "removed-state",
+  "user_id": "fixture-user",
+  "channel_id": "fixture-channel",
+  "team_id": "fixture-team",
+  "submission": {
+    "choices": [
+      "a",
+      "b"
+    ],
+    "date": "2026-11-12",
+    "flag": false,
+    "time": "2026-11-12T10:30:00+03:00",
+    "title": ""
+  },
+  "cancelled": false
+}

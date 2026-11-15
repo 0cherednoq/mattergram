@@ -1,0 +1,13 @@
+{
+  "server": "12.0.2",
+  "client": "Chrome 157 web, ordinary owned actor",
+  "scope": "Actual successful HTTPS SDK ingress lookup after UI refresh; structural parser excerpt, not authentication proof",
+  "private_capture_sha256": "a1397361a1c8d39c2d3e336c11efaff2e6f8ce7ec01581396f4b00265dc27eca",
+  "fixture_sha256": "9fc804855e2416e61a68985f9d12323e0212a6efa1e965dae167cb448cb3b3d5",
+  "retained": [
+    "submission.category",
+    "submission.selected_field"
+  ],
+  "omitted": "All outer/state/identity/URL data and unrelated submission fields omitted. Raw private capture frozen in ignored build/ui-private-http-web12-main.json before subsequent runs.",
+  "source_reference": "manifests/forms-profile.json: pinned 12.0.2 interactive_dialog_adapter.tsx performLookupCall and dialog_conversion.ts"
+}

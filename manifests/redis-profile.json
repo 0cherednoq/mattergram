@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "scope": "E3-02 single-server Redis FSM/storage/isolation plus E5 managed dialog replay records; advisory leases, no cross-resource transaction/exactly-once claims.",
+  "source_id": "aiogram",
+  "source_commit": "97cfe79fa0ac9459d498bdb15cb7cb0530dbaac7",
+  "selected_module": "aiogram.fsm.storage.redis",
+  "source_sha256": "4b7c5d6eb38dfa3d25039f77e6ad348f8e31547b4a3553def2b9812212adc8c5",
+  "extra": "redis",
+  "dependency": "redis>=5.3,<9",
+  "server_image": "redis:7@sha256:b6b6e3dc0c0952737748e55d5d885272840c7e42ba41ab1d5489f693419882f5",
+  "compose_project": "mattergram-native-stand",
+  "compose_service": "redis",
+  "env": "MATTERGRAM_REDIS_URL",
+  "required_native_cases": [
+    "test_state_mapping_data_clear_and_client_reconnect",
+    "test_ttl_is_applied_and_really_expires",
+    "test_all_native_key_scopes_and_two_form_sessions_are_isolated",
+    "test_decode_modes_custom_serializer_and_corrupt_values",
+    "test_borrowed_and_owned_pool_lifecycle",
+    "test_independent_clients_serialize_read_modify_write",
+    "test_cancelled_waiter_never_releases_another_owners_lock",
+    "test_active_close_rejected_and_cancelled_holder_releases",
+    "test_wait_and_handler_bounds_release_before_lease_expiry",
+    "test_lost_lock_is_reported_instead_of_silently_committing",
+    "test_second_cancellation_during_release_still_releases_real_lock",
+    "test_acquisition_latency_does_not_extend_handler_lease",
+    "test_dispatcher_strategies_preserve_the_native_scope"
+  ],
+  "upstream_receipt": "manifests/ported-tests.json",
+  "required_dialog_cases": [
+    "test_shared_session_claim_and_terminal_replay_across_independent_clients",
+    "test_unknown_claim_survives_worker_change_and_requires_reconciliation",
+    "test_manager_borrows_shared_store_and_wrapper_rejects_active_close"
+  ],
+  "boundaries": [
+    "Native server/bot/channel/user/thread/team/dialog/destiny keys always namespaced",
+    "Only from_url-created clients are owned by default; provided clients are borrowed",
+    "Finite acquire, handler budget below lease and bounded release; abandoned/unknown acquired lock expires by server TTL",
+    "Handlers must cooperate with asyncio cancellation; advisory lease is not fencing or business transaction",
+    "No Mongo/PyMongo/Redis Cluster or Redis failover durability claims"
+  ],
+  "dialog_profile": "manifests/forms-profile.json"
+}

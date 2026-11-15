@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain stack access validator protocol; bind event and actor data to native mattergram events. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "03fbdc191759de677c3190470281f961087f56e41738cf4118ea84d43e8db54d",
+  "output_sha256": "20807fbd644affb6dee5d0eba1570ab36a113420e90d7a98744267158c56aeb2",
+  "replacements": [
+    {
+      "before": "from abc import abstractmethod\nfrom typing import Protocol\n\nfrom mattergram_dialog import ChatEvent\nfrom mattergram_dialog.api.entities import Context, Stack\n\n\nclass StackAccessValidator(Protocol):\n    @abstractmethod\n    async def is_allowed(\n            self,\n            stack: Stack,\n            context: Context | None,\n            event: ChatEvent,\n            data: dict,\n    ) -> bool:\n        \"\"\"Check if current user is allowed to interactor with dialog.\"\"\"\n        raise NotImplementedError\n",
+      "after": "from __future__ import annotations\n\nfrom typing import Any, Protocol\n\nfrom mattergram_dialog.api.entities import AccessSettings\n\n\nclass StackAccessValidator(Protocol):\n    def is_allowed(self, actor_id: str, settings: AccessSettings | None, event: Any = None) -> bool: ...\n\n\n__all__ = [\"StackAccessValidator\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

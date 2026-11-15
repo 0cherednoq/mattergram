@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained. Observer renamed; Telegram DTO fixture replaced with native Message. Filtering/registration/Skip/DI assertions retained.",
+  "input_sha256": "6fd7ddf51af77ef0a56afaf39acb1f5bf1b271e047929b1401b212495327f65f",
+  "output_sha256": "450842ecc86547da60270a5216ac7889f03a14c9c5d45999830d0847ebe6e119",
+  "replacements": [
+    {
+      "before": "import datetime\nimport functools\nfrom typing import Any, NoReturn\n\nimport pytest\nfrom pydantic import BaseModel\n\nfrom aiogram.dispatcher.event.bases import UNHANDLED, SkipHandler\nfrom aiogram.dispatcher.event.handler import HandlerObject\nfrom aiogram.dispatcher.event.telegram import TelegramEventObserver\nfrom aiogram.dispatcher.router import Router\nfrom aiogram.exceptions import UnsupportedKeywordArgument\nfrom aiogram.filters import Filter\nfrom aiogram.types import Chat, Message, User\n\n# TODO: Test middlewares in routers tree\n\n",
+      "after": "import functools\nfrom typing import Any, NoReturn\n\nimport pytest\nfrom pydantic import BaseModel\n\nfrom mattergram.dispatcher.event.bases import UNHANDLED, SkipHandler\nfrom mattergram.dispatcher.event.handler import HandlerObject\nfrom mattergram.dispatcher.event.message import NativeEventObserver\nfrom mattergram.dispatcher.router import Router\nfrom mattergram.exceptions import UnsupportedKeywordArgument\nfrom mattergram.filters import Filter\nfrom mattergram.types import Message\n\n# TODO: Test middlewares in routers tree\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        return True\n\n\nclass TestTelegramEventObserver:\n    def test_register(self):\n        router = Router()\n        observer = router.message\n",
+      "after": "        return True\n\n\nclass TestNativeEventObserver:\n    def test_register(self):\n        router = Router()\n        observer = router.message\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        observer = router.message\n        observer.register(my_handler, MyFilter1(test=\"ok\"))\n\n        message = Message(\n            message_id=42,\n            date=datetime.datetime.now(),\n            text=\"test\",\n            chat=Chat(id=42, type=\"private\"),\n            from_user=User(id=42, is_bot=False, first_name=\"Test\"),\n        )\n\n        results = await observer.trigger(message)\n",
+      "after": "        observer = router.message\n        observer.register(my_handler, MyFilter1(test=\"ok\"))\n\n        message = Message.from_wire(\n            {\n                \"id\": \"post-native\",\n                \"channel_id\": \"channel\",\n                \"user_id\": \"user\",\n                \"message\": \"test\",\n                \"create_at\": 0,\n            }\n        )\n\n        results = await observer.trigger(message)\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        async def handler(event, **kwargs):\n            return False\n\n        observer.register(\n            pipe_handler, mix_unnecessary_data, handler\n        )  # {\"a\": 1} should not be in result\n        observer.register(pipe_handler, mix_data)\n\n        results = await observer.trigger(42)\n",
+      "after": "        async def handler(event, **kwargs):\n            return False\n\n        observer.register(pipe_handler, mix_unnecessary_data, handler)  # {\"a\": 1} should not be in result\n        observer.register(pipe_handler, mix_data)\n\n        results = await observer.trigger(42)\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    @pytest.mark.parametrize(\"middleware_type\", (\"middleware\", \"outer_middleware\"))\n    def test_register_middleware(self, middleware_type):\n        event_observer = TelegramEventObserver(Router(), \"test\")\n\n        middlewares = getattr(event_observer, middleware_type)\n\n",
+      "after": "\n    @pytest.mark.parametrize(\"middleware_type\", (\"middleware\", \"outer_middleware\"))\n    def test_register_middleware(self, middleware_type):\n        event_observer = NativeEventObserver(Router(), \"test\")\n\n        middlewares = getattr(event_observer, middleware_type)\n\n",
+      "occurrences": 1
+    }
+  ]
+}

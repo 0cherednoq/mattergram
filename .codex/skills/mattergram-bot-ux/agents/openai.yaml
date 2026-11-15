@@ -1,0 +1,5 @@
+interface:
+  display_name: "Mattergram Bot UX"
+  short_description: "Design and review usable Mattermost bots"
+  default_prompt: "Use $mattergram-bot-ux to design a clear Mattermost bot flow and implement it with mattergram."
+

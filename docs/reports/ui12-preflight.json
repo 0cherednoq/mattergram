@@ -1,0 +1,19 @@
+{
+  "scope": "E5-03 preparation only; no form/Blocks/UI client capability verification yet",
+  "server": "12.0.2",
+  "base_url": "http://127.0.0.1:27869",
+  "compose_overlay": "infra/ui-stand.compose.yml",
+  "image": "mattermost/mattermost-team-edition:12.0.2@sha256:08c0b4b93a14196b0850f62faa4a437d2643533f009cac4868a0b793aad61fc3",
+  "services": [
+    "db_ui",
+    "mattermost_ui"
+  ],
+  "state": "Both healthy; separate database/data volumes, existing baseline healthy; HTTP ping 200, native X-Version-Id starts 12.0.2",
+  "playwright_cli": "0.1.24",
+  "web": "Chrome headless opened actual new-server registration page, screenshot visually inspected; owned browser session closed after capture",
+  "screenshot": "output/playwright/ui12/initial-signup.png",
+  "screenshot_sha256": "0147bdad0721f196b05820db4676daec21cf68490ecb44953078aacd9fc28053",
+  "next": "Create separate isolated setup/admin, ordinary actor and runtime bot fixtures in build/ui-stand-state.json; authenticate ordinary actor browser with real server session, exercise UI via SDK callback/form ingress, capture screenshots/protocol. Do not reuse baseline credentials/state or infer native desktop/mobile support from web viewport.",
+  "browser_user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+  "all_owned_services": "db, redis, mattermost baseline, db_ui, mattermost_ui: running/healthy"
+}

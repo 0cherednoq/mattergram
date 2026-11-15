@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "reason": "Namespace rewrite; native fixtures. Memory and optional real Redis profiles enabled; Mongo/PyMongo excluded because no implementations are claimed. All state/data/update assertions retained.",
+  "input_sha256": "5409075f8d01e306251b779f23ac41c676cf60a98634d93d9f29cca6a4e73411",
+  "output_sha256": "2e1a4293d21d66bd3776ea4ddbdaebc3d731d791f5903f74e0e4caeec223901a",
+  "replacements": [
+    {
+      "before": "\nimport pytest\n\nfrom aiogram.exceptions import DataNotDictLikeError\nfrom aiogram.fsm.storage.base import BaseStorage, StorageKey\n\n\n@pytest.mark.parametrize(\n    \"storage\",\n    [\"memory_storage\", \"redis_storage\", \"mongo_storage\", \"pymongo_storage\"],\n    indirect=True,\n)\nclass TestStorages:\n",
+      "after": "\nimport pytest\n\nfrom mattergram.exceptions import DataNotDictLikeError\nfrom mattergram.fsm.storage.base import BaseStorage, StorageKey\n\n\n@pytest.mark.parametrize(\n    \"storage\",\n    [\"memory_storage\", \"redis_storage\"],\n    indirect=True,\n)\nclass TestStorages:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    async def test_set_data(self, storage: BaseStorage, storage_key: StorageKey):\n        assert await storage.get_data(key=storage_key) == {}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") is None\n        assert (\n            await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\")\n            == \"baz\"\n        )\n\n        await storage.set_data(key=storage_key, data={\"foo\": \"bar\"})\n        assert await storage.get_data(key=storage_key) == {\"foo\": \"bar\"}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") == \"bar\"\n        assert (\n            await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\")\n            == \"bar\"\n        )\n\n        await storage.set_data(key=storage_key, data={})\n        assert await storage.get_data(key=storage_key) == {}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") is None\n        assert (\n            await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\")\n            == \"baz\"\n        )\n\n        class CustomTypedDict(TypedDict, total=False):\n            foo: str\n",
+      "after": "    async def test_set_data(self, storage: BaseStorage, storage_key: StorageKey):\n        assert await storage.get_data(key=storage_key) == {}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") is None\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\") == \"baz\"\n\n        await storage.set_data(key=storage_key, data={\"foo\": \"bar\"})\n        assert await storage.get_data(key=storage_key) == {\"foo\": \"bar\"}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") == \"bar\"\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\") == \"bar\"\n\n        await storage.set_data(key=storage_key, data={})\n        assert await storage.get_data(key=storage_key) == {}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") is None\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\") == \"baz\"\n\n        class CustomTypedDict(TypedDict, total=False):\n            foo: str\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        await storage.set_data(key=storage_key, data=CustomTypedDict(foo=\"bar\", bar=\"baz\"))\n        assert await storage.get_data(key=storage_key) == {\"foo\": \"bar\", \"bar\": \"baz\"}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") == \"bar\"\n        assert (\n            await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\")\n            == \"bar\"\n        )\n\n        with pytest.raises(DataNotDictLikeError):\n            await storage.set_data(key=storage_key, data=())\n",
+      "after": "        await storage.set_data(key=storage_key, data=CustomTypedDict(foo=\"bar\", bar=\"baz\"))\n        assert await storage.get_data(key=storage_key) == {\"foo\": \"bar\", \"bar\": \"baz\"}\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\") == \"bar\"\n        assert await storage.get_value(storage_key=storage_key, dict_key=\"foo\", default=\"baz\") == \"bar\"\n\n        with pytest.raises(DataNotDictLikeError):\n            await storage.set_data(key=storage_key, data=())\n",
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain state-to-dialog registry lookup and state-group inventory using mattergram State/StatesGroup. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "049213893472684269b0e07ef59019ecab1e82f89b389bc9a37d53daa0da46fd",
+  "output_sha256": "b80b902fc5e60edbb835306bbb80c0ae89504024238a077b2363f7b8dfe02057",
+  "replacements": [
+    {
+      "before": "from abc import abstractmethod\nfrom typing import Protocol\n\nfrom aiogram.fsm.state import State, StatesGroup\n\nfrom .dialog import DialogProtocol\n\n\nclass DialogRegistryProtocol(Protocol):\n    @abstractmethod\n    def find_dialog(self, state: State | str) -> DialogProtocol:\n        raise NotImplementedError\n\n    @abstractmethod\n    def states_groups(self) -> dict[str, type[StatesGroup]]:\n        raise NotImplementedError\n",
+      "after": "from __future__ import annotations\n\nfrom typing import Protocol\n\nfrom mattergram.fsm.state import State, StatesGroup\n\nfrom .dialog import DialogProtocol\n\n\nclass DialogRegistryProtocol(Protocol):\n    def find_dialog(self, state: State | str) -> DialogProtocol: ...\n\n    def states(self, group: type[StatesGroup] | None = None) -> tuple[State, ...]: ...\n\n\n__all__ = [\"DialogRegistryProtocol\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

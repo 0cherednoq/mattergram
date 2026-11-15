@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "checked_at": "2026-11-16",
+  "scope": "offline contract tests for the declarative game-account administration example",
+  "scenario": [
+    "administrator access and last-admin invariant",
+    "team-scoped user picker and push-route management",
+    "JSONL account import and import history",
+    "single, all and import-scoped account checks",
+    "account cards and check history",
+    "credential redaction from render data and verifier summaries"
+  ],
+  "ux": {
+    "maximum_depth_below_home": 2,
+    "account_card_clicks": 2,
+    "account_action_clicks": 3,
+    "import_clicks": 2,
+    "check_import_clicks": 3,
+    "home_row_shape": [2, 2, 2],
+    "selected_account_local_row_shape": [5, 6, 2],
+    "maximum_observed_account_actions": 16
+  },
+  "checks": [
+    "explicit enabled administrator is required before dialog start",
+    "the final enabled administrator cannot be disabled or demoted",
+    "the team user picker excludes bots and already assigned application users",
+    "submitted user IDs are revalidated against the configured team and usernames come from Mattermost",
+    "import stores accepted accounts and aggregate issues without raw source rows",
+    "password and cookie values are absent from account render data and repr",
+    "account card shows only password presence, cookie count and unique domains",
+    "checker summaries are redacted before persistence and rendering",
+    "a stale checker result cannot overwrite changed credentials",
+    "push subscriptions receive only their selected events",
+    "declared dashboard and account action rows preserve their expected shapes"
+  ],
+  "verification": [
+    "tests/unit/test_game_accounts_admin_example.py",
+    "tests/integration/test_high_level_api.py",
+    "Ruff",
+    "strict mypy"
+  ],
+  "live_mattermost": true,
+  "server_version": "12.0.2",
+  "live_checks": [
+    "owned administrator login returned 200",
+    "owned bot was added to the fixture team and UI scenarios channel",
+    "server-side /game-admin execution returned 200",
+    "the resulting bot post contained native mm_blocks actions"
+  ],
+  "limitations": [
+    "MemoryAdminRepository is non-durable and intended only for tests or local demos",
+    "production file reading, account verification and push delivery require injected adapters",
+    "large check batches should use a durable worker queue and progress updates",
+    "exact button rows require a proven Blocks client profile",
+    "account import requires a proven forms.file capability",
+    "the new team-scoped picker and GetUsers read have offline HTTP coverage but were not rerun on the live stand"
+  ],
+  "credentials": "omitted"
+}

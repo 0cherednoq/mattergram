@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Define explicit Mattermost channel/user/thread strategies with string IDs; no integer surrogate IDs. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "cc2087b594e259895c7ec1e1046961557abf4a88180edfb98371f11a380d65cc",
+  "output_sha256": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+  "replacements": [
+    {
+      "before": "    FSM strategy for storage key generation.\n    \"\"\"\n\n    USER_IN_CHAT = auto()\n    \"\"\"State will be stored for each user in chat.\"\"\"\n    CHAT = auto()\n    \"\"\"State will be stored for each chat globally without separating by users.\"\"\"\n    GLOBAL_USER = auto()\n    \"\"\"State will be stored globally for each user globally.\"\"\"\n    USER_IN_TOPIC = auto()\n    \"\"\"State will be stored for each user in chat and topic.\"\"\"\n    CHAT_TOPIC = auto()\n    \"\"\"State will be stored for each chat and topic, but not separated by users.\"\"\"\n\n\ndef apply_strategy(\n    strategy: FSMStrategy,\n    chat_id: int,\n    user_id: int,\n    thread_id: int | None = None,\n) -> tuple[int, int, int | None]:\n    if strategy == FSMStrategy.CHAT:\n        return chat_id, chat_id, None\n    if strategy == FSMStrategy.GLOBAL_USER:\n        return user_id, user_id, None\n    if strategy == FSMStrategy.USER_IN_TOPIC:\n        return chat_id, user_id, thread_id\n    if strategy == FSMStrategy.CHAT_TOPIC:\n        return chat_id, chat_id, thread_id\n\n    return chat_id, user_id, None\n",
+      "after": "    FSM strategy for storage key generation.\n    \"\"\"\n\n    USER_IN_CHANNEL = auto()\n    \"\"\"State will be stored for each user in channel.\"\"\"\n    CHANNEL = auto()\n    \"\"\"State will be stored for each channel globally without separating by users.\"\"\"\n    GLOBAL_USER = auto()\n    \"\"\"State will be stored globally for each user globally.\"\"\"\n    USER_IN_THREAD = auto()\n    \"\"\"State will be stored for each user in channel and thread.\"\"\"\n    CHANNEL_THREAD = auto()\n    \"\"\"State will be stored for each channel and thread, but not separated by users.\"\"\"\n\n\ndef apply_strategy(\n    strategy: FSMStrategy,\n    channel_id: str,\n    user_id: str,\n    thread_id: str | None = None,\n) -> tuple[str | None, str | None, str | None]:\n    if strategy == FSMStrategy.CHANNEL:\n        return channel_id, None, None\n    if strategy == FSMStrategy.GLOBAL_USER:\n        return None, user_id, None\n    if strategy == FSMStrategy.USER_IN_THREAD:\n        return channel_id, user_id, thread_id\n    if strategy == FSMStrategy.CHANNEL_THREAD:\n        return channel_id, None, thread_id\n\n    return channel_id, user_id, None\n",
+      "occurrences": 1
+    }
+  ]
+}

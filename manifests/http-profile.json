@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "provider": "Mattermost 11.1.0",
+  "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+  "scope": "Native slash command and post-action HTTP integration, not forms/UI rendering or provisioning.",
+  "primary_source_references": [
+    {
+      "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/integration_action.go",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "path": "server/public/model/integration_action.go",
+      "sha256": "9c80f2f1fd463e33b10ec81b320fedd59e793520f8adc8fa3763bccfb1458d83"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/command.go",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "path": "server/public/model/command.go",
+      "sha256": "c16bd4fbd845a4f6e29be8cb9fd4653a9bb4b75bfe8412e62ed8d0664da62b31"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/command_response.go",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "path": "server/public/model/command_response.go",
+      "sha256": "470e8760773455e38406c764c991e44fd941284d2b3caae579b22adf51d54f49"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/command.go",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "path": "server/channels/app/command.go",
+      "sha256": "2d0d87604e2e980fc6ce87764ebb4c0297db809c2c7f43a1cf45f1c4a2bb15c2"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/integration_action.go",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "path": "server/channels/app/integration_action.go",
+      "sha256": "5757285e2020708c1cc09e2d40e65d1e34b255f33ea86626d043354ea50aeb3c"
+    }
+  ],
+  "reference_policy": "URLs and content hashes only; referenced server source is not copied into the MIT runtime or donor snapshots.",
+  "auth": {
+    "slash": "Issued per-command SecretStr token, native team/trigger/method binding, Token header cross-check when present.",
+    "callback": "Versioned HMAC-SHA256 canonical context with key rotation, expiry and native instance/bot/channel/optional post/user/team/thread binding.",
+    "transport": "Required trusted peers on controlled/authenticated transport; no trust in forwarded actor headers. HMAC authenticates context, not unrelated HTTP actor fields.",
+    "repeated_actions": "Intentional repeated presses are delivered; no exactly-once or durable queue claim."
+  },
+  "baseline_post_action_fields": [
+    "update",
+    "ephemeral_text",
+    "skip_slack_parsing"
+  ],
+  "baseline_capabilities": {
+    "post_action_navigation": false,
+    "post_action_error": false
+  },
+  "sdk_defaults": {
+    "request_timeout_seconds": 2.5,
+    "max_body_bytes": 65536,
+    "max_inflight": 64,
+    "max_deferred": 16,
+    "deferred_timeout_seconds": 60,
+    "shutdown_timeout_seconds": 10,
+    "callback_ttl_seconds": 900,
+    "callback_max_ttl_seconds": 3600,
+    "callback_data_max_utf8_bytes": 4096
+  },
+  "delayed_response": {
+    "local_max_attempts": 5,
+    "local_max_age_seconds": 1800,
+    "policy": "No bot Authorization/cookies, no redirect, no retry; unknown outcome consumes attempt. Provider quota remains authoritative across workers/recreated handles.",
+    "measured": "Five actual server hook writes and read-backs; sixth blocked locally. Full real-time 30-minute boundary and provider sixth rejection not measured."
+  },
+  "fixtures": "tests/fixtures/mattermost-11.1-http.provenance.json",
+  "real_verifier": "tools/verify_http_stand.py",
+  "fault_verifier": "tools/verify_http_simulation.py",
+  "contract": "contracts/http-ingress.openapi.json"
+}

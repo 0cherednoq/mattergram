@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "source_id": "mattermost",
+  "source_commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+  "license_policy": "Pinned CC BY-NC-SA API documentation is verification-only input. The distributed coverage report records operation identifiers and authored support classifications only; it copies no descriptions or schemas.",
+  "generated_facades": {
+    "CreatePost": [
+      "Bot.send_message",
+      "Bot.send_document"
+    ],
+    "DeletePost": [
+      "Bot.delete_message",
+      "Message.delete"
+    ],
+    "GetChannel": [
+      "Bot.get_channel"
+    ],
+    "GetPost": [
+      "Bot.edit_message_text",
+      "Bot.delete_message",
+      "Message.edit_text",
+      "Message.delete"
+    ],
+    "GetUser": [
+      "Bot.get_me",
+      "Bot.get_user"
+    ],
+    "PatchPost": [
+      "Bot.edit_message_text",
+      "Message.edit_text"
+    ]
+  },
+  "high_level_only": [
+    {
+      "operation_id": "GetUsers",
+      "method": "GET",
+      "path": "/api/v4/users",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/users.yaml",
+      "facades": [
+        "Bot.get_users_in_team"
+      ],
+      "evidence": "docs/reports/game-accounts-admin.json"
+    },
+    {
+      "operation_id": "CreateDirectChannel",
+      "method": "POST",
+      "path": "/api/v4/channels/direct",
+      "success_status": 201,
+      "body": "required",
+      "source": "api/v4/source/channels.yaml",
+      "facades": [
+        "Bot.create_direct_channel"
+      ],
+      "evidence": "build/reports/high-level-api-stand.json"
+    },
+    {
+      "operation_id": "UploadFile",
+      "method": "POST",
+      "path": "/api/v4/files",
+      "success_status": 201,
+      "body": "required",
+      "source": "api/v4/source/files.yaml",
+      "facades": [
+        "Bot.send_document"
+      ],
+      "evidence": "build/reports/high-level-api-stand.json"
+    }
+  ],
+  "unsupported_policy": {
+    "classification": "unsupported_not_reviewed",
+    "reason": "The operation is not in the generated overlay and has no separately reviewed high-level implementation.",
+    "runtime_behavior": "NativeAPI rejects its operationId before opening a network session; arbitrary URL escape hatches are not provided.",
+    "promotion": "Add exact structural facts to the authored overlay or high-level coverage manifest, tests, documentation and real-provider evidence before claiming support."
+  },
+  "ambiguous_policy": {
+    "classification": "unsupported_upstream_collision",
+    "reason": "More than one pinned endpoint declares the same operationId, so selection by identifier alone is ambiguous.",
+    "promotion": "Resolve with an authored exact source/method/path selection and a distinct runtime name; never choose the first candidate implicitly."
+  }
+}

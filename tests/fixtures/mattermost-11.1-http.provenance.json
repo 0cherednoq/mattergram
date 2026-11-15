@@ -1,0 +1,24 @@
+{
+  "provider": "Mattermost 11.1.0, own pinned mattergram-native-stand",
+  "captured_at": "2026-11-12T06:53:05.147075+00:00",
+  "harness": "tools/verify_http_stand.py",
+  "raw_capture_sha256": "6ed6f531e55dd1760e3b2ab4f75e501b4159501d094e8fabf67dfd6b40ba66e7",
+  "raw_capture": "ignored build/http-private-captures.json; intentionally not distributed",
+  "transport": "Real command execute -> server HTTP integration; real post action -> server HTTP callback",
+  "replacements": [
+    "Tokens, trigger IDs, response URL capability and signature removed.",
+    "Native IDs, deployment URL, command trigger and names replaced with inert fixture values.",
+    "Arguments replaced; signed timestamps/key ID normalized; signed context is deliberately invalid. Tests must re-sign with a local test key."
+  ],
+  "proof_scope": "Structural regression fixtures after sanitization; actual authentication/HTTP acceptance is separately established by the real stand report. Not a client UI rendering check.",
+  "fixtures": [
+    {
+      "path": "tests/fixtures/mattermost-11.1-slash.json",
+      "sha256": "578f7ca3913db667052b1f33d4ba153e9001a22b9e2ec94aaa660d96daa38061"
+    },
+    {
+      "path": "tests/fixtures/mattermost-11.1-callback-select.json",
+      "sha256": "4181a5a008fd6ae91d033530d40ed6556835700e21cedc7b81fd3fd6ee5d0b16"
+    }
+  ]
+}

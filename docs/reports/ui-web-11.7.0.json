@@ -1,0 +1,436 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T11:46:12.425550+00:00",
+  "status": "passed for recorded scenarios after discovered legacy-route fix; full E5-03 open",
+  "server": "11.7.0",
+  "image": "mattermost/mattermost-team-edition:11.7.0@sha256:495c748914b2acc4c3d77f73437c6e949aed9a4f2ec53e27019a520d7eb745d0",
+  "actual_version_header": "11.7.0.25394005513.e0b2dd83fa089b804e6c35cb21f0f19b22307798dc2c104e8a52c61a05f35b75.false",
+  "browser": "Windows HeadlessChrome/157.0.0.0",
+  "viewport": [
+    1440,
+    1080
+  ],
+  "actor": "Ordinary system_user, distinct setup admin/runtime bot",
+  "tls": "Normal outgoing certificate validation, local fixture CA mounted only in owned container",
+  "executed": [
+    "Eight applicable form field types rendered and submitted; field error/correction preserves entered values.",
+    "Wizard retains the first-step value across the changed logical callback declaration.",
+    "Dynamic lookup/search, refresh prefill and final selected option submission.",
+    "Native date bounds disable 9/15 November; inclusive 10/14 boundaries both submitted.",
+    "11.7 allow_manual_time_entry true exposes text entry; 11:30 AM GMT+3 -> 08:30 UTC.",
+    "Asia/Kolkata GMT+5:30, manual time off, 48 half-hour choices; selected 19:30 -> 14:00 UTC.",
+    "Native cancel notification; legacy rich attachment and disabled-button click guard.",
+    "Post-fix alphanumeric legacy fixture IDs deliver signed button/select callbacks; selected_option b stays separate."
+  ],
+  "before_fix": {
+    "callback_http_requests": 24,
+    "all_ingress_status_200": true,
+    "native_action_failure": {
+      "action_id": "legacy_run",
+      "status": 404,
+      "sdk_callback_received": false,
+      "cause": "11.7 InitAction route accepts only [A-Za-z0-9]+, while stored PostAction ID retained underscore"
+    },
+    "events": [
+      {
+        "kind": "slash",
+        "mode": "basic",
+        "actor_matches": true
+      },
+      {
+        "kind": "field_error",
+        "mode": "basic"
+      },
+      {
+        "kind": "submit",
+        "mode": "basic",
+        "values": {
+          "title": "accepted-117",
+          "detail": "11.7 browser detail",
+          "choice": "a",
+          "choices": [
+            "a",
+            "b"
+          ],
+          "enabled": true,
+          "plan": "b"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "wizard",
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "wizard",
+        "values": {
+          "project": "project-117"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "wizard-final",
+        "values": {
+          "project": "project-117",
+          "summary": "summary-117"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "lookup",
+        "actor_matches": true
+      },
+      {
+        "kind": "lookup",
+        "query": "",
+        "field": "pick"
+      },
+      {
+        "kind": "refresh",
+        "category": "b"
+      },
+      {
+        "kind": "lookup",
+        "query": "",
+        "field": "pick"
+      },
+      {
+        "kind": "lookup",
+        "query": "",
+        "field": "pick"
+      },
+      {
+        "kind": "lookup",
+        "query": "remote",
+        "field": "pick"
+      },
+      {
+        "kind": "submit",
+        "mode": "lookup",
+        "values": {
+          "category": "b",
+          "pick": "remote-b",
+          "comment": "11.7 retained comment"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "bounds",
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "bounds",
+        "values": {
+          "bounded_date": "2026-11-10"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "bounds",
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "bounds",
+        "values": {
+          "bounded_date": "2026-11-14"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "dates",
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "dates",
+        "values": {
+          "date": "2026-11-12",
+          "time": "2026-11-12T08:30:00+00:00"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "timezone",
+        "actor_matches": true
+      },
+      {
+        "kind": "submit",
+        "mode": "timezone",
+        "values": {
+          "offset_time": "2026-11-12T14:00:00+00:00"
+        },
+        "file_ids_count": 0,
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "legacy",
+        "actor_matches": true
+      },
+      {
+        "kind": "slash",
+        "mode": "cancel",
+        "actor_matches": true
+      },
+      {
+        "kind": "cancel",
+        "mode": "cancel"
+      }
+    ],
+    "private_capture_sha256": "53c0ffd351e747dcd6c6b1737f81a17b4c5bae02334e459b39ff132cfdb6c26a"
+  },
+  "after_fix": {
+    "callback_http_requests": 3,
+    "all_statuses_200": true,
+    "events": [
+      {
+        "kind": "slash",
+        "mode": "legacy",
+        "actor_matches": true
+      },
+      {
+        "kind": "callback",
+        "data": "ui:legacy",
+        "selected_option": null,
+        "actor_matches": true
+      },
+      {
+        "kind": "callback",
+        "data": "ui:legacy-select",
+        "selected_option": "b",
+        "actor_matches": true
+      }
+    ],
+    "private_capture_sha256": "0b4d88188d6cbad399b5ce32c715831062851e996965f0ba34332025b8b81b95",
+    "fixture_policy": "Explicit alphanumeric fixture IDs; SDK rejects incompatible IDs before POST rather than rewriting them"
+  },
+  "route_fix": {
+    "source": "Pinned server/channels/api4/integration_action.go InitAction in all four versions",
+    "syntax": "[A-Za-z0-9]+ for 11.1/11.7; [A-Za-z0-9_-]+ for explicit 11.11/12 profile",
+    "regressions": [
+      "tests/unit/test_ui.py",
+      "tests/integration/test_native_http.py"
+    ],
+    "schema": "contracts/ui-legacy-declarations.schema.json",
+    "changed_runtime_files": [
+      "src/mattergram/ui/actions.py",
+      "src/mattergram/ui/blocks.py"
+    ]
+  },
+  "source": {
+    "files": 63,
+    "sha256_by_path": {
+      "src/mattergram/bot.py": "601f32f16ac39ccadae4b09fa98312aa661f83adeb48d1b86019800954581beb",
+      "src/mattergram/exceptions.py": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58",
+      "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+      "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+      "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+      "src/mattergram/dispatcher/dispatcher.py": "2595aeba29a24555070e493fbd11209b4065903f85b45d291551234905697985",
+      "src/mattergram/dispatcher/flags.py": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+      "src/mattergram/dispatcher/router.py": "f3484719487a67a8231688f229651fe26ee3ec96d0d5083e80233270faab08b1",
+      "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+      "src/mattergram/filters/base.py": "cea2ab1cf3aaceaeed13c6b75adefb04d1df4149fb169d4928a8de3e1293d822",
+      "src/mattergram/filters/callback_data.py": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+      "src/mattergram/filters/command.py": "a0f1b8ddafcfc5f15cfe62c9bbd23d6dae9d24a2164ccd14f01ba2a51eddf90b",
+      "src/mattergram/filters/logic.py": "e572ec3e59136e8821fa4559d9f6fbc846ee099d2a8f61f1a3a04bbbedcb1606",
+      "src/mattergram/filters/__init__.py": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6",
+      "src/mattergram/fsm/context.py": "d24eb42669b57de5beb77687be6bd068be79dfc872bc119dabcf2f733fdfcd54",
+      "src/mattergram/fsm/state.py": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+      "src/mattergram/fsm/strategy.py": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+      "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+      "src/mattergram/handlers/base.py": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+      "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+      "src/mattergram/http/adapter.py": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129",
+      "src/mattergram/http/asgi.py": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde",
+      "src/mattergram/http/auth.py": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016",
+      "src/mattergram/http/delayed.py": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e",
+      "src/mattergram/http/dialogs.py": "a022d88d8ee1cc3dd973fd18cd690974d7f64190ec3d6682a1874cb1a2efde5f",
+      "src/mattergram/http/dialog_store.py": "d4352f4c4431ed3942e815eaac8ca07bf66dca6dfa119382216386079bad5bed",
+      "src/mattergram/http/normalizers.py": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118",
+      "src/mattergram/http/redis_dialogs.py": "83a8762adde2494682126ee24341bc7fd095237092e34846869b547fe3a6d4f1",
+      "src/mattergram/http/responses.py": "244cd44eb5d1a53ee6604e17a21b96cc29d6c6193138010b8bb3678add6b0ad5",
+      "src/mattergram/http/server.py": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b",
+      "src/mattergram/http/__init__.py": "dcaaa50fc893d2b821948d35dec91785fb31c25eec0cb5161580d433d3988111",
+      "src/mattergram/types/base.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+      "src/mattergram/types/dialogs.py": "88298d14eb9b85b67ad4a17dc9b957aea72a7f2b0efb53223c4bbf37f9362c61",
+      "src/mattergram/types/http.py": "7116b249dc08aeab27277b76133a8d4d465b9f9c323e73c3abac5e56e0ce36bc",
+      "src/mattergram/types/__init__.py": "54f69cf9b7f9a92fff146f2d4c190e2bc2316e589ae21bf8138d51920344d17f",
+      "src/mattergram/ui/actions.py": "68e13c5562fe192e9e3f362bffae69167f3e22beca2e89792905f8d2b0fc97ed",
+      "src/mattergram/ui/adaptive.py": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c",
+      "src/mattergram/ui/base.py": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6",
+      "src/mattergram/ui/blocks.py": "6a23763ac11b8f69de114e99de00aeb63d215614204af41eb1d8e22903668c2e",
+      "src/mattergram/ui/capabilities.py": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626",
+      "src/mattergram/ui/forms.py": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf",
+      "src/mattergram/ui/form_defaults.py": "044cac81ee8717b0e08395730fd9cfed719a89dc23de515948fe1a2afd0d3445",
+      "src/mattergram/ui/form_snapshot.py": "183af011a16cce6eed6c705a28d4510dbdb5def809127ee1f6fca336589b0c9a",
+      "src/mattergram/ui/form_values.py": "651d41a75ac3832850e6ec9191aaf73692f901a074388542774176a100b58be2",
+      "src/mattergram/ui/input_base.py": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9",
+      "src/mattergram/ui/slack.py": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a",
+      "src/mattergram/ui/__init__.py": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252",
+      "src/mattergram/utils/magic_filter.py": "25811666ec78ad5c32b2bcff1a71947e2da27a683f469fb7d9ac968df42aece9",
+      "src/mattergram/utils/warnings.py": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82",
+      "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+      "src/mattergram/fsm/storage/base.py": "4aa5a00d706583a5b02cc55ae2f60d274d448258b491e78120cc96bbe36825cd",
+      "src/mattergram/fsm/storage/memory.py": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+      "src/mattergram/fsm/storage/redis.py": "e83f3f70bae95440942c08094a77b63d28d199aabdff3b5633d8e5885b5e378a",
+      "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+      "src/mattergram/dispatcher/event/bases.py": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+      "src/mattergram/dispatcher/event/event.py": "c6dc3c6812ca044cdf54333866fa9bea97e6c4ad846d5d63b0d33e083b86eae7",
+      "src/mattergram/dispatcher/event/handler.py": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+      "src/mattergram/dispatcher/event/message.py": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+      "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+      "src/mattergram/dispatcher/middlewares/base.py": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+      "src/mattergram/dispatcher/middlewares/manager.py": "4fd046b6c0a77090dd0ccb9542875027c5cf2cb939a6caf68f9d93de13642916",
+      "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0"
+    },
+    "unchanged_files_between_UI_phases": 61,
+    "form_runtime": "Unchanged across phases; only legacy actions and post compiler changed"
+  },
+  "screenshots": [
+    {
+      "path": "docs/reports/ui-web-11.7.0/basic-validation.png",
+      "sha256": "8a5c3c68f74c293fb9658c5caa4379d9c70619dbd62911d7e947df6693486a48"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/wizard-final.png",
+      "sha256": "caf2c9fae5277d100115a33fe22e357f8e25de6d1d3e944709d262ca472115e9"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/lookup-refreshed.png",
+      "sha256": "6a7f9d77f56481888a6294fc4c4339a98ecfe8474d2ec6898804502f53bc0abb"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/bounds-calendar.png",
+      "sha256": "3fb75292e988c9f0afae58e99c7204f9b16b5c2a9767f09b9a083455a1b1eee3"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/dates-manual.png",
+      "sha256": "a12241fe796b204a77bd03a475d72e3fc18aeda2f97ba6d7ea64ac10d60b6126"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/timezone-offset.png",
+      "sha256": "fb099f94a031c90e2f4ffbff8747cb9d8d2691f5c1447495c091c4aad95ee9f7"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/legacy-fixed.png",
+      "sha256": "47f085d675c4fe6ae286d0e37b082b059667b3dc0acce9f0cd900644559925eb"
+    }
+  ],
+  "accessibility_snapshots": [
+    {
+      "path": "docs/reports/ui-web-11.7.0/bounds-calendar.yml",
+      "sha256": "f1e0189fc8d21c617a5caab401f1f74a7565aa6f80349d557ec6785e0027ce09",
+      "original_sha256": "ba42f581f8bfc40604de6af6822af383ee1b5e57507ff16a106d34996db51e18",
+      "scope": "Unchanged relevant accessibility-tree suffix; unrelated channel DOM omitted"
+    },
+    {
+      "path": "docs/reports/ui-web-11.7.0/timezone-menu.yml",
+      "sha256": "9584f2f8146c87592a97577b9a70b8cc9fa14b6acf3226329bff8b664fdebe95",
+      "original_sha256": "d43737434a4482a441c0b383b28f790e6cd55c080b744fb303ff82bc1531fdc0",
+      "scope": "Unchanged relevant accessibility-tree suffix; unrelated channel DOM omitted"
+    }
+  ],
+  "full_test_matrix": [
+    {
+      "python": "3.11",
+      "os": "Windows",
+      "real_redis": true,
+      "tests": 391,
+      "subtests": 225,
+      "skipped": 0,
+      "seconds": 33.223,
+      "receipt": {
+        "path": "build/reports/legacy-id-all-311.xml",
+        "sha256": "db116b44323c07e782ec38966a3c360319aa0e3a29c2a0830e6e87b2aa817dc1"
+      }
+    },
+    {
+      "python": "3.13",
+      "os": "Windows",
+      "real_redis": true,
+      "tests": 391,
+      "subtests": 225,
+      "skipped": 0,
+      "seconds": 21.831,
+      "receipt": {
+        "path": "build/reports/legacy-id-all-313.xml",
+        "sha256": "493b36334da2d57146204fc31474ef705e14d8d62bd74cb18b24361086cedb33"
+      }
+    },
+    {
+      "python": "3.14",
+      "os": "Windows",
+      "real_redis": true,
+      "tests": 391,
+      "subtests": 225,
+      "skipped": 0,
+      "seconds": 22.391,
+      "receipt": {
+        "path": "build/reports/legacy-id-all-314.xml",
+        "sha256": "1236b73167a3300efd03ed1f055bc24399c94bcc76e50b0fa203e9b73d7096c8"
+      }
+    }
+  ],
+  "baseline_regression": {
+    "server": "11.1.0",
+    "scope": "Real HTTP/actor WS, not UI rendering",
+    "receipt": {
+      "path": "build/reports/http-stand.json",
+      "sha256": "2192e4a698c0ec6e1134b9c7affb464c2aef62e123e4fbbf9e251d37eef1df58"
+    }
+  },
+  "quality": {
+    "ruff": "passed",
+    "format": "126 files formatted",
+    "strict_mypy": "94 source files passed",
+    "reviewed_port": "21 modules / 15 suites; replay/static audit ready",
+    "primary_references": 47
+  },
+  "cleanup": "Both callback hosts exited 0, issued commands deleted, browser closed; failed owned fixture post retained as historical evidence",
+  "observations": [
+    "Calendar uses nested day buttons, unlike the later gridcell control; initial locator timeout was corrected against the observed tree.",
+    "Three browser console errors predated scenarios; legacy 404 added a fourth before fix. No new errors appeared during corrected legacy exercise."
+  ],
+  "remaining": [
+    "Native desktop/mobile app execution",
+    "Additional browser/OS/dependency and optional parameter combinations"
+  ],
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "E5-03": "open"
+  },
+  "package_verification": {
+    "checked_at": "2026-11-12T11:52:24.226890+00:00",
+    "result": "passed",
+    "source_file_count": 63,
+    "exact_wheel_bytes_match": true,
+    "installed_checks_per_archive": 134,
+    "twine_strict": "passed",
+    "artifacts": {
+      "mattergram-0.1.0a1-py3-none-any.whl": "e0130e67f99ddd9709f1760e08ca627024f89e538ce51c4ea6c6fc8785e09e5c",
+      "mattergram-0.1.0a1.tar.gz": "a62ed5f1b2549ee83da0b1563ab18bee0b061aea0d909e42c93d1bd2a13af01f"
+    },
+    "receipt": "build/reports/ui117-distributions.json",
+    "directory": "build/final-dist/e5-web117",
+    "post_build_receipt": "Added after archives were closed; archived report precedes its own package receipt"
+  }
+}

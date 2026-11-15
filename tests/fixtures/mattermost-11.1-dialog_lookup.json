@@ -1,0 +1,13 @@
+{
+  "type": "dialog_lookup",
+  "callback_id": "fields",
+  "state": "removed-state",
+  "user_id": "fixture-user",
+  "channel_id": "fixture-channel",
+  "team_id": "fixture-team",
+  "submission": {
+    "query": "redacted query",
+    "selected_field": "pick"
+  },
+  "cancelled": false
+}

@@ -1,0 +1,59 @@
+# Local development stand only. Ports are exposed on loopback, never the LAN.
+services:
+  redis:
+    profiles: [redis]
+    image: redis:7@sha256:b6b6e3dc0c0952737748e55d5d885272840c7e42ba41ab1d5489f693419882f5
+    command: [redis-server, --save, '', --appendonly, 'no']
+    ports:
+      - '127.0.0.1::6379'
+    healthcheck:
+      test: [CMD, redis-cli, ping]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  db:
+    image: postgres:16-alpine@sha256:20edbde7749f822887a1a022ad526fde0a47d6b2be9a8364433605cf65099416
+    environment:
+      POSTGRES_USER: mattergram
+      POSTGRES_PASSWORD: ${MATTERGRAM_STAND_DB_PASSWORD:?Generate build/native-stand.env first}
+      POSTGRES_DB: mattergram
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U mattergram -d mattergram"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  mattermost:
+    image: mattermost/mattermost-team-edition:11.1.0@sha256:4862f28825a7d5d4624d48493061587344605a14f060d9b0cf0b189d896efe9e
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: postgres://mattergram:${MATTERGRAM_STAND_DB_PASSWORD}@db:5432/mattergram?sslmode=disable
+      MM_SERVICESETTINGS_LISTENADDRESS: :8065
+      MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: 'true'
+      MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: 'true'
+      MM_SERVICESETTINGS_ENABLECOMMANDS: 'true'
+      MM_SERVICESETTINGS_ALLOWEDUNTRUSTEDINTERNALCONNECTIONS: host.docker.internal
+      MM_SERVICESETTINGS_ENABLEEMAILINVITATIONS: 'false'
+      MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS: 'false'
+      MM_EMAILSETTINGS_REQUIREEMAILVERIFICATION: 'false'
+      MM_LOGSETTINGS_CONSOLELEVEL: ERROR
+      MM_LOGSETTINGS_ENABLEFILE: 'false'
+      MM_PLUGINSETTINGS_ENABLEUPLOADS: 'false'
+    ports:
+      - '127.0.0.1::8065'
+    volumes:
+      - mattermost-data:/mattermost/data
+volumes:
+  postgres-data:
+  mattermost-data:
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${MATTERGRAM_STAND_SUBNET:?Choose a free local subnet}

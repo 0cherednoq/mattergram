@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "reason": "Retain typed CallbackData pack/unpack/filter and nullable/scalar encoding. Bind native CallbackQuery and standard typing.Self. Replace Telegram 64-byte cap with explicit 4096-byte SDK budget and validate prefix/separator; packed data is signed context, never a Blocks action_id or selected_option. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "ac2e1bba6616fde75725d88b4e2d65f00fb326ac6328e6f11e0dd945cea806e8",
+  "output_sha256": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+  "replacements": [
+    {
+      "before": "from decimal import Decimal\nfrom enum import Enum\nfrom fractions import Fraction\nfrom typing import TYPE_CHECKING, Any, ClassVar, Literal, TypeVar\nfrom uuid import UUID\n\nfrom pydantic import BaseModel\nfrom pydantic_core import PydanticUndefined\nfrom typing_extensions import Self\n\nfrom mattergram.filters.base import Filter\nfrom mattergram.types import CallbackQuery\n",
+      "after": "from decimal import Decimal\nfrom enum import Enum\nfrom fractions import Fraction\nfrom typing import TYPE_CHECKING, Any, ClassVar, Literal, Self, TypeVar\nfrom uuid import UUID\n\nfrom pydantic import BaseModel\n\nfrom mattergram.filters.base import Filter\nfrom mattergram.types import CallbackQuery\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\nT = TypeVar(\"T\", bound=\"CallbackData\")\n\nMAX_CALLBACK_LENGTH: int = 64\n\n\n_UNION_TYPES = {typing.Union, types.UnionType}\n",
+      "after": "\nT = TypeVar(\"T\", bound=\"CallbackData\")\n\nMAX_CALLBACK_LENGTH: int = 4096\n\n\n_UNION_TYPES = {typing.Union, types.UnionType}\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            raise ValueError(msg)\n        cls.__separator__ = kwargs.pop(\"sep\", \":\")\n        cls.__prefix__ = kwargs.pop(\"prefix\")\n        if cls.__separator__ in cls.__prefix__:\n            msg = (\n                f\"Separator symbol {cls.__separator__!r} can not be used \"\n                f\"inside prefix {cls.__prefix__!r}\"\n            )\n            raise ValueError(msg)\n        super().__init_subclass__(**kwargs)\n\n",
+      "after": "            raise ValueError(msg)\n        cls.__separator__ = kwargs.pop(\"sep\", \":\")\n        cls.__prefix__ = kwargs.pop(\"prefix\")\n        if (\n            not isinstance(cls.__separator__, str)\n            or not cls.__separator__\n            or not isinstance(cls.__prefix__, str)\n            or not cls.__prefix__\n        ):\n            raise ValueError(\"Callback prefix and separator must be nonempty strings\")\n        if cls.__separator__ in cls.__prefix__:\n            msg = f\"Separator symbol {cls.__separator__!r} can not be used inside prefix {cls.__prefix__!r}\"\n            raise ValueError(msg)\n        super().__init_subclass__(**kwargs)\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            return str(int(value))\n        if isinstance(value, (int, str, float, Decimal, Fraction)):\n            return str(value)\n        msg = (\n            f\"Attribute {key}={value!r} of type {type(value).__name__!r}\"\n            f\" can not be packed to callback data\"\n        )\n        raise ValueError(msg)\n\n    def pack(self) -> str:\n        \"\"\"\n        Generate callback data string\n\n        :return: valid callback data for Telegram Bot API\n        \"\"\"\n        result = [self.__prefix__]\n        for key, value in self.model_dump(mode=\"python\").items():\n            encoded = self._encode_value(key, value)\n            if self.__separator__ in encoded:\n                msg = (\n                    f\"Separator symbol {self.__separator__!r} can not be used \"\n                    f\"in value {key}={encoded!r}\"\n                )\n                raise ValueError(msg)\n            result.append(encoded)\n        callback_data = self.__separator__.join(result)\n        if len(callback_data.encode()) > MAX_CALLBACK_LENGTH:\n            msg = (\n                f\"Resulted callback data is too long! \"\n                f\"len({callback_data!r}.encode()) > {MAX_CALLBACK_LENGTH}\"\n            )\n            raise ValueError(msg)\n        return callback_data\n",
+      "after": "            return str(int(value))\n        if isinstance(value, (int, str, float, Decimal, Fraction)):\n            return str(value)\n        msg = f\"Attribute {key}={value!r} of type {type(value).__name__!r} can not be packed to callback data\"\n        raise ValueError(msg)\n\n    def pack(self) -> str:\n        \"\"\"\n        Generate callback data string\n\n        :return: application callback data (SDK limit: 4096 UTF-8 bytes)\n        \"\"\"\n        result = [self.__prefix__]\n        for key, value in self.model_dump(mode=\"python\").items():\n            encoded = self._encode_value(key, value)\n            if self.__separator__ in encoded:\n                msg = f\"Separator symbol {self.__separator__!r} can not be used in value {key}={encoded!r}\"\n                raise ValueError(msg)\n            result.append(encoded)\n        callback_data = self.__separator__.join(result)\n        if len(callback_data.encode()) > MAX_CALLBACK_LENGTH:\n            msg = (\n                f\"Resulted callback data is too long! len({callback_data!r}.encode()) > {MAX_CALLBACK_LENGTH}\"\n            )\n            raise ValueError(msg)\n        return callback_data\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        \"\"\"\n        Parse callback data string\n\n        :param value: value from Telegram\n        :return: instance of CallbackData\n        \"\"\"\n        prefix, *parts = value.split(cls.__separator__)\n        names = cls.model_fields.keys()\n        if len(parts) != len(names):\n            msg = (\n                f\"Callback data {cls.__name__!r} takes {len(names)} arguments \"\n                f\"but {len(parts)} were given\"\n            )\n            raise TypeError(msg)\n        if prefix != cls.__prefix__:\n            msg = f\"Bad prefix ({prefix!r} != {cls.__prefix__!r})\"\n",
+      "after": "        \"\"\"\n        Parse callback data string\n\n        :param value: application callback data value\n        :return: instance of CallbackData\n        \"\"\"\n        prefix, *parts = value.split(cls.__separator__)\n        names = cls.model_fields.keys()\n        if len(parts) != len(names):\n            msg = f\"Callback data {cls.__name__!r} takes {len(names)} arguments but {len(parts)} were given\"\n            raise TypeError(msg)\n        if prefix != cls.__prefix__:\n            msg = f\"Bad prefix ({prefix!r} != {cls.__prefix__!r})\"\n",
+      "occurrences": 1
+    },
+    {
+      "before": "                and _check_field_is_nullable(field)\n                and field.default != \"\"\n            ):\n                parsed_value = field.default if field.default is not PydanticUndefined else None\n            payload[k] = parsed_value\n        return cls(**payload)\n\n",
+      "after": "                and _check_field_is_nullable(field)\n                and field.default != \"\"\n            ):\n                parsed_value = (\n                    field.get_default(call_default_factory=True) if not field.is_required() else None\n                )\n            payload[k] = parsed_value\n        return cls(**payload)\n\n",
+      "occurrences": 1
+    }
+  ]
+}

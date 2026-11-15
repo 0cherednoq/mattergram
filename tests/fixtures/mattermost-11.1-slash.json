@@ -1,0 +1,14 @@
+{
+  "channel_id": "fixture-channel",
+  "channel_name": "fixture-channel_name",
+  "command": "/fixture",
+  "response_url": "https://mattermost.test/hooks/commands/removed-capability",
+  "root_id": "",
+  "team_domain": "fixture-team_domain",
+  "team_id": "fixture-team",
+  "text": "captured argument",
+  "token": "removed-token",
+  "trigger_id": "removed-trigger_id",
+  "user_id": "fixture-user",
+  "user_name": "fixture-user_name"
+}

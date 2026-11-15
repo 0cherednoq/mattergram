@@ -1,0 +1,91 @@
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mattergram"
+version = "0.1.0a1"
+description = "Native Mattermost bot framework with an aiogram-style programming model (under development)"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE", "LICENSES/*"]
+authors = [{ name = "mattergram contributors" }]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Framework :: AsyncIO",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Typing :: Typed",
+]
+dependencies = [
+    "aiohttp>=3.12,<4",
+    "magic-filter>=1.0.12,<1.1",
+    "pydantic>=2.11,<3",
+]
+
+[project.optional-dependencies]
+redis = ["redis>=5.3,<9"]
+provisioning = [
+    "cryptography>=46,<51",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.14,<1",
+  "mypy>=1.18,<3",
+  "pytest>=8,<10",
+  "build>=1.3,<2",
+  "twine>=7,<8",
+  "packaging>=25,<27",
+  "pytest-asyncio>=1.2,<2",
+  "redis>=5.3,<9",
+  "cryptography>=46,<51",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mattergram", "src/mattergram_dialog"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"THIRD_PARTY_NOTICES.md" = "mattergram/THIRD_PARTY_NOTICES.md"
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/src", "/tools", "/tests", "/examples", "/manifests", "/docs", "/contracts", "/infra", "/postman", "/plugins",
+  "/LICENSE", "/LICENSES", "/THIRD_PARTY_NOTICES.md", "/README.md",
+  "/CONTRIBUTING.md", "/CHANGELOG.md", "/STATUS.md", "/AGENTS.md",
+  "/llms.txt",
+  "/pyproject.toml", "/uv.lock", "/upstream.lock.json",
+]
+exclude = [
+  "/plugins/mattergram-menu/server/dist",
+  "/plugins/mattergram-menu/webapp/dist",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 110
+extend-exclude = ["upstream", "build", "dist", ".venv"]
+force-exclude = true
+include = ["tools/**/*.py", "src/**/*.py", "tests/**/*.py", "examples/**/*.py", "contracts/**/*.pyi", "pyproject.toml"]
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "UP"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["tools", "src", "contracts", "examples"]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = ["--import-mode=importlib", "-ra"]
+filterwarnings = ["error"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"

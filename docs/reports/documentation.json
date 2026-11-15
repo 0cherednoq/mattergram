@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "result": "generated-reference-current",
+  "version": "0.1.0a1",
+  "manifest_sha256": "a2325aaab9b08ab9253d3bf3d7fd2d0071af3f7c20a69cefd456c74f49ca06b9",
+  "public_modules": 20,
+  "public_exports": 255,
+  "public_members": 429,
+  "guides": 28,
+  "examples": 19,
+  "example_statuses": {
+    "contract-verified": 7,
+    "declaration-only": 1,
+    "live-verified": 8,
+    "offline-verified": 2,
+    "real-redis-verified": 1
+  },
+  "artifacts": {
+    "docs/examples.md": "a39c106c16e6cb1264f8a35aa74c29412f1a09c01ccbf58b4429d732e62fdfae",
+    "docs/reference/api.md": "8cd84a057e5cee01fa27d51f338f2b01ac160f4df0dbacba4a4416441c21daec",
+    "docs/reference/capabilities.md": "da4cd7b1ebc544c575cc9ac25b21179698a594bfe3265ccbe0dfcbedff7f501e",
+    "docs/reference/exceptions.md": "a3b50fd05e23efe523dfd701b32db9b58719499a4e21dcc541cdba9607b9b74a",
+    "docs/reference/public-api.json": "4c3572fef25e6f3bc2d8887739de36eb6935d33898ebc748869eff615e551d44",
+    "llms.txt": "c35a11e8d450a9791908ac9627c2a82b0175dceb144ae020da73c118d3fa0448"
+  },
+  "network_access": "none",
+  "mutating_operations": "none"
+}

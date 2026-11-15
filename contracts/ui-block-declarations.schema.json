@@ -1,0 +1,868 @@
+{
+  "$defs": {
+    "Button": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "button",
+          "default": "button",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/External"
+            },
+            {
+              "$ref": "#/$defs/OpenURL"
+            }
+          ],
+          "title": "Action"
+        },
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Style"
+        },
+        "tooltip": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tooltip"
+        },
+        "disabled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disabled"
+        },
+        "query": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Query",
+          "type": "object"
+        }
+      },
+      "required": [
+        "text",
+        "action"
+      ],
+      "title": "Button",
+      "type": "object"
+    },
+    "Collapsible": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "collapsible",
+          "default": "collapsible",
+          "title": "Type",
+          "type": "string"
+        },
+        "header": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Text"
+              },
+              {
+                "$ref": "#/$defs/Image"
+              },
+              {
+                "$ref": "#/$defs/Divider"
+              },
+              {
+                "$ref": "#/$defs/Button"
+              },
+              {
+                "$ref": "#/$defs/StaticSelect"
+              },
+              {
+                "$ref": "#/$defs/Container"
+              },
+              {
+                "$ref": "#/$defs/Collapsible"
+              },
+              {
+                "$ref": "#/$defs/Column"
+              },
+              {
+                "$ref": "#/$defs/ColumnSet"
+              }
+            ]
+          },
+          "title": "Header",
+          "type": "array"
+        },
+        "content": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Text"
+              },
+              {
+                "$ref": "#/$defs/Image"
+              },
+              {
+                "$ref": "#/$defs/Divider"
+              },
+              {
+                "$ref": "#/$defs/Button"
+              },
+              {
+                "$ref": "#/$defs/StaticSelect"
+              },
+              {
+                "$ref": "#/$defs/Container"
+              },
+              {
+                "$ref": "#/$defs/Collapsible"
+              },
+              {
+                "$ref": "#/$defs/Column"
+              },
+              {
+                "$ref": "#/$defs/ColumnSet"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        },
+        "collapsed": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Collapsed"
+        }
+      },
+      "required": [
+        "header",
+        "content"
+      ],
+      "title": "Collapsible",
+      "type": "object"
+    },
+    "Column": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "column",
+          "default": "column",
+          "title": "Type",
+          "type": "string"
+        },
+        "items": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Text"
+              },
+              {
+                "$ref": "#/$defs/Image"
+              },
+              {
+                "$ref": "#/$defs/Divider"
+              },
+              {
+                "$ref": "#/$defs/Button"
+              },
+              {
+                "$ref": "#/$defs/StaticSelect"
+              },
+              {
+                "$ref": "#/$defs/Container"
+              },
+              {
+                "$ref": "#/$defs/Collapsible"
+              },
+              {
+                "$ref": "#/$defs/Column"
+              },
+              {
+                "$ref": "#/$defs/ColumnSet"
+              }
+            ]
+          },
+          "title": "Items",
+          "type": "array"
+        },
+        "width": {
+          "anyOf": [
+            {
+              "enum": [
+                "auto",
+                "stretch"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Width"
+        },
+        "gap": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "small",
+                "medium",
+                "large",
+                "xlarge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gap"
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "title": "Column",
+      "type": "object"
+    },
+    "ColumnSet": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "column_set",
+          "default": "column_set",
+          "title": "Type",
+          "type": "string"
+        },
+        "columns": {
+          "items": {
+            "$ref": "#/$defs/Column"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "gap": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "small",
+                "medium",
+                "large",
+                "xlarge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gap"
+        }
+      },
+      "required": [
+        "columns"
+      ],
+      "title": "ColumnSet",
+      "type": "object"
+    },
+    "Container": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "container",
+          "default": "container",
+          "title": "Type",
+          "type": "string"
+        },
+        "content": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Text"
+              },
+              {
+                "$ref": "#/$defs/Image"
+              },
+              {
+                "$ref": "#/$defs/Divider"
+              },
+              {
+                "$ref": "#/$defs/Button"
+              },
+              {
+                "$ref": "#/$defs/StaticSelect"
+              },
+              {
+                "$ref": "#/$defs/Container"
+              },
+              {
+                "$ref": "#/$defs/Collapsible"
+              },
+              {
+                "$ref": "#/$defs/Column"
+              },
+              {
+                "$ref": "#/$defs/ColumnSet"
+              }
+            ]
+          },
+          "title": "Content",
+          "type": "array"
+        },
+        "border": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Border"
+        },
+        "accent_color": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Accent Color"
+        },
+        "flow": {
+          "anyOf": [
+            {
+              "enum": [
+                "horizontal",
+                "vertical"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Flow"
+        },
+        "gap": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "small",
+                "medium",
+                "large",
+                "xlarge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gap"
+        },
+        "background": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "gray"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Background"
+        },
+        "max_height": {
+          "anyOf": [
+            {
+              "enum": [
+                "none",
+                "small",
+                "medium",
+                "large"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Height"
+        }
+      },
+      "required": [
+        "content"
+      ],
+      "title": "Container",
+      "type": "object"
+    },
+    "Divider": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "divider",
+          "default": "divider",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "Divider",
+      "type": "object"
+    },
+    "External": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "external",
+          "default": "external",
+          "title": "Type",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "context": {
+          "additionalProperties": true,
+          "title": "Context",
+          "type": "object"
+        },
+        "data": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data"
+        },
+        "query": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Query",
+          "type": "object"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "External",
+      "type": "object"
+    },
+    "Image": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "image",
+          "default": "image",
+          "title": "Type",
+          "type": "string"
+        },
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "alt_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Alt Text"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "enum": [
+                "auto",
+                "xsmall",
+                "small",
+                "medium",
+                "large",
+                "stretch"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size"
+        },
+        "max_width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Width"
+        },
+        "max_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Height"
+        },
+        "image_style": {
+          "anyOf": [
+            {
+              "enum": [
+                "default",
+                "person"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Image Style"
+        },
+        "horizontal_alignment": {
+          "anyOf": [
+            {
+              "enum": [
+                "left",
+                "center",
+                "right"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Horizontal Alignment"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "Image",
+      "type": "object"
+    },
+    "OpenURL": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "openURL",
+          "default": "openURL",
+          "title": "Type",
+          "type": "string"
+        },
+        "url": {
+          "minLength": 1,
+          "title": "Url",
+          "type": "string"
+        },
+        "query": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Query",
+          "type": "object"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "OpenURL",
+      "type": "object"
+    },
+    "Option": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "value"
+      ],
+      "title": "Option",
+      "type": "object"
+    },
+    "StaticSelect": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "static_select",
+          "default": "static_select",
+          "title": "Type",
+          "type": "string"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/External"
+            },
+            {
+              "$ref": "#/$defs/OpenURL"
+            }
+          ],
+          "title": "Action"
+        },
+        "action_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Action Id"
+        },
+        "placeholder": {
+          "title": "Placeholder",
+          "type": "string"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "initial_option": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Initial Option"
+        },
+        "disabled": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Disabled"
+        },
+        "data_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "users",
+                "channels"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Source"
+        },
+        "query": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Query",
+          "type": "object"
+        }
+      },
+      "required": [
+        "action",
+        "placeholder"
+      ],
+      "title": "StaticSelect",
+      "type": "object"
+    },
+    "Text": {
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "text",
+          "default": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "is_subtle": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Is Subtle"
+        },
+        "size": {
+          "anyOf": [
+            {
+              "enum": [
+                "small",
+                "default"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Text",
+      "type": "object"
+    }
+  },
+  "anyOf": [
+    {
+      "$ref": "#/$defs/Text"
+    },
+    {
+      "$ref": "#/$defs/Image"
+    },
+    {
+      "$ref": "#/$defs/Divider"
+    },
+    {
+      "$ref": "#/$defs/Button"
+    },
+    {
+      "$ref": "#/$defs/StaticSelect"
+    },
+    {
+      "$ref": "#/$defs/Container"
+    },
+    {
+      "$ref": "#/$defs/Collapsible"
+    },
+    {
+      "$ref": "#/$defs/Column"
+    },
+    {
+      "$ref": "#/$defs/ColumnSet"
+    }
+  ]
+}

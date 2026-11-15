@@ -1,0 +1,19 @@
+{
+  "openapi": "3.1.0",
+  "info": {"title": "mattergram native HTTP ingress", "version": "0.1.0a1", "description": "Authored SDK boundary for the Mattermost 11.1 baseline; not copied provider documentation."},
+  "servers": [{"url": "http://127.0.0.1:8080"}],
+  "x-authentication": {"transport": "Explicit trusted peer CIDRs plus an authenticated/controlled server path; forwarded headers ignored.", "slash": "Constant-time comparison of per-command issued body token, team, command and bound method. Token Authorization, if supplied, must also match.", "callback": "HMAC-SHA256 canonical context with expiry and native scope binding; does not independently authenticate actor fields outside context."},
+  "paths": {
+    "/mattergram/slash": {
+      "post": {"operationId": "receiveSlash", "requestBody": {"required": true, "content": {"application/x-www-form-urlencoded": {"schema": {"$ref": "#/components/schemas/Slash"}}}}, "responses": {"200": {"description": "One completed native response or explicit empty ephemeral JSON ACK"}, "400": {"description": "Malformed or ambiguous payload"}, "403": {"description": "Untrusted peer or rejected binding"}, "404": {"description": "Unhandled event"}, "413": {"description": "Body limit exceeded"}, "415": {"description": "Unsupported media type"}, "500": {"description": "Handler failure or invalid response lifecycle"}, "503": {"description": "Unavailable or bounded capacity exhausted"}, "504": {"description": "Initial response deadline expired"}}},
+      "get": {"operationId": "receiveGetSlash", "description": "Only bindings explicitly configured for GET; native slash fields in the query. Disable URL access logging.", "responses": {"200": {"description": "Same response lifecycle and authentication as POST"}, "403": {"description": "Unbound GET method or invalid authentication"}}}
+    },
+    "/mattergram/callback": {
+      "post": {"operationId": "receivePostAction", "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/PostAction"}}}}, "responses": {"200": {"description": "Native update, ephemeral_text, skip_slack_parsing, or empty JSON ACK"}, "400": {"description": "Malformed payload"}, "403": {"description": "Untrusted transport, invalid or expired signature, rejected scope or selection"}, "500": {"description": "Unhandled handler/capability error"}, "503": {"description": "Admission unavailable"}, "504": {"description": "Deadline expired"}}}
+    }
+  },
+  "components": {"schemas": {
+    "Slash": {"type": "object", "required": ["token", "command", "user_id", "channel_id"], "properties": {"token": {"type": "string", "writeOnly": true}, "command": {"type": "string", "pattern": "^/\\S+$"}, "user_id": {"type": "string", "minLength": 1}, "channel_id": {"type": "string", "minLength": 1}, "team_id": {"type": "string"}, "root_id": {"type": "string"}, "text": {"type": "string", "writeOnly": true}, "response_url": {"type": "string", "writeOnly": true}, "trigger_id": {"type": "string", "writeOnly": true}}, "additionalProperties": true},
+    "PostAction": {"type": "object", "required": ["user_id", "channel_id", "post_id", "context"], "properties": {"user_id": {"type": "string", "minLength": 1}, "channel_id": {"type": "string", "minLength": 1}, "post_id": {"type": "string", "minLength": 1}, "team_id": {"type": "string"}, "context": {"type": "object", "writeOnly": true, "required": ["mattergram"], "properties": {"mattergram": {"type": "object", "required": ["payload", "signature"]}, "selected_option": {"type": "string"}}, "additionalProperties": true}}, "additionalProperties": true}
+  }}
+}

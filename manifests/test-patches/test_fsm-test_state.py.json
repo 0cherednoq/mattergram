@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "e98e429d484ce4066f6b2fce34d4639292540f77eec1b1dffac6010166998680",
+  "output_sha256": "9347e96b37210a06264b4becf6badf0301b06fe244911e1e3c811b9f13def66c",
+  "replacements": [
+    {
+      "before": "\nimport pytest\n\nfrom aiogram.fsm.state import State, StatesGroup, any_state\n\nPY312_OR_GREATER = sys.version_info >= (3, 12)\n\n",
+      "after": "\nimport pytest\n\nfrom mattergram.fsm.state import State, StatesGroup, any_state\n\nPY312_OR_GREATER = sys.version_info >= (3, 12)\n\n",
+      "occurrences": 1
+    }
+  ]
+}

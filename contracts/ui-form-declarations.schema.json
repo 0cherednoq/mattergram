@@ -1,0 +1,1356 @@
+{
+  "$defs": {
+    "Checkbox": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "bool",
+          "default": "bool",
+          "title": "Type",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "label_position": {
+          "anyOf": [
+            {
+              "enum": [
+                "before",
+                "after"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label Position"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "Checkbox",
+      "type": "object"
+    },
+    "CheckboxGroup": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "checkbox_group",
+          "default": "checkbox_group",
+          "title": "Type",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "default_values": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Default Values",
+          "type": "array"
+        },
+        "label_position": {
+          "anyOf": [
+            {
+              "enum": [
+                "before",
+                "after"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label Position"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "options"
+      ],
+      "title": "CheckboxGroup",
+      "type": "object"
+    },
+    "CheckboxMatrix": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "checkbox_matrix",
+          "default": "checkbox_matrix",
+          "title": "Type",
+          "type": "string"
+        },
+        "matrix_config": {
+          "$ref": "#/$defs/MatrixConfig"
+        },
+        "default_values": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Default Values",
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "matrix_config"
+      ],
+      "title": "CheckboxMatrix",
+      "type": "object"
+    },
+    "Collapsible": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "collapsible",
+          "default": "collapsible",
+          "title": "Type",
+          "type": "string"
+        },
+        "elements": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TextInput"
+              },
+              {
+                "$ref": "#/$defs/TextArea"
+              },
+              {
+                "$ref": "#/$defs/Select"
+              },
+              {
+                "$ref": "#/$defs/MultiSelect"
+              },
+              {
+                "$ref": "#/$defs/Checkbox"
+              },
+              {
+                "$ref": "#/$defs/Radio"
+              },
+              {
+                "$ref": "#/$defs/CheckboxGroup"
+              },
+              {
+                "$ref": "#/$defs/CheckboxMatrix"
+              },
+              {
+                "$ref": "#/$defs/DatePicker"
+              },
+              {
+                "$ref": "#/$defs/DateTimePicker"
+              },
+              {
+                "$ref": "#/$defs/FileInput"
+              },
+              {
+                "$ref": "#/$defs/DialogButton"
+              },
+              {
+                "$ref": "#/$defs/Collapsible"
+              }
+            ]
+          },
+          "minItems": 1,
+          "title": "Elements",
+          "type": "array"
+        },
+        "collapsed": {
+          "default": false,
+          "title": "Collapsed",
+          "type": "boolean"
+        },
+        "borderless": {
+          "default": false,
+          "title": "Borderless",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "elements"
+      ],
+      "title": "Collapsible",
+      "type": "object"
+    },
+    "DatePicker": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "date",
+          "default": "date",
+          "title": "Type",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "min_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Date"
+        },
+        "max_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Date"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "DatePicker",
+      "type": "object"
+    },
+    "DateTimePicker": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "datetime",
+          "default": "datetime",
+          "title": "Type",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "maxLength": 150,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "min_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Min Date"
+        },
+        "max_date": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Date"
+        },
+        "time_interval": {
+          "default": 60,
+          "maximum": 1440,
+          "minimum": 1,
+          "title": "Time Interval",
+          "type": "integer"
+        },
+        "location_timezone": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Location Timezone"
+        },
+        "manual_time_entry": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Manual Time Entry"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "DateTimePicker",
+      "type": "object"
+    },
+    "DialogAction": {
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "title": "Url",
+          "type": "string"
+        },
+        "context": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Context",
+          "type": "object"
+        }
+      },
+      "required": [
+        "url"
+      ],
+      "title": "DialogAction",
+      "type": "object"
+    },
+    "DialogButton": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "action_button",
+          "default": "action_button",
+          "title": "Type",
+          "type": "string"
+        },
+        "action_button": {
+          "$ref": "#/$defs/DialogAction"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "action_button"
+      ],
+      "title": "DialogButton",
+      "type": "object"
+    },
+    "FileInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "file",
+          "default": "file",
+          "title": "Type",
+          "type": "string"
+        },
+        "allow_multiple": {
+          "default": false,
+          "title": "Allow Multiple",
+          "type": "boolean"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "maxLength": 300,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "FileInput",
+      "type": "object"
+    },
+    "MatrixConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Rows",
+          "type": "array"
+        },
+        "columns": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Columns",
+          "type": "array"
+        },
+        "row_selection": {
+          "default": "multiple",
+          "enum": [
+            "multiple",
+            "single"
+          ],
+          "title": "Row Selection",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rows",
+        "columns"
+      ],
+      "title": "MatrixConfig",
+      "type": "object"
+    },
+    "MultiSelect": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "select",
+          "default": "select",
+          "title": "Type",
+          "type": "string"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "data_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "users",
+                "channels",
+                "dynamic"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Source"
+        },
+        "data_source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Source Url"
+        },
+        "default": {
+          "type": "null",
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "refresh": {
+          "default": false,
+          "title": "Refresh",
+          "type": "boolean"
+        },
+        "default_values": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Default Values",
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "MultiSelect",
+      "type": "object"
+    },
+    "Option": {
+      "additionalProperties": false,
+      "properties": {
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "value"
+      ],
+      "title": "Option",
+      "type": "object"
+    },
+    "Radio": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "radio",
+          "default": "radio",
+          "title": "Type",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "label_position": {
+          "anyOf": [
+            {
+              "enum": [
+                "before",
+                "after"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Label Position"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "options"
+      ],
+      "title": "Radio",
+      "type": "object"
+    },
+    "Select": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "select",
+          "default": "select",
+          "title": "Type",
+          "type": "string"
+        },
+        "options": {
+          "default": [],
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "data_source": {
+          "anyOf": [
+            {
+              "enum": [
+                "users",
+                "channels",
+                "dynamic"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Source"
+        },
+        "data_source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Data Source Url"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "refresh": {
+          "default": false,
+          "title": "Refresh",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "Select",
+      "type": "object"
+    },
+    "TextArea": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "textarea",
+          "default": "textarea",
+          "title": "Type",
+          "type": "string"
+        },
+        "subtype": {
+          "default": "text",
+          "enum": [
+            "text",
+            "email",
+            "number",
+            "password",
+            "tel",
+            "url"
+          ],
+          "title": "Subtype",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "min_length": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Min Length",
+          "type": "integer"
+        },
+        "max_length": {
+          "default": 3000,
+          "maximum": 3000,
+          "minimum": 0,
+          "title": "Max Length",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "TextArea",
+      "type": "object"
+    },
+    "TextInput": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "help_text": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Help Text"
+        },
+        "optional": {
+          "default": false,
+          "title": "Optional",
+          "type": "boolean"
+        },
+        "type": {
+          "const": "text",
+          "default": "text",
+          "title": "Type",
+          "type": "string"
+        },
+        "subtype": {
+          "default": "text",
+          "enum": [
+            "text",
+            "email",
+            "number",
+            "password",
+            "tel",
+            "url"
+          ],
+          "title": "Subtype",
+          "type": "string"
+        },
+        "default": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Default"
+        },
+        "placeholder": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Placeholder"
+        },
+        "min_length": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Min Length",
+          "type": "integer"
+        },
+        "max_length": {
+          "default": 150,
+          "maximum": 150,
+          "minimum": 0,
+          "title": "Max Length",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "name",
+        "label"
+      ],
+      "title": "TextInput",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "callback_id": {
+      "minLength": 1,
+      "title": "Callback Id",
+      "type": "string"
+    },
+    "title": {
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "elements": {
+      "default": [],
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/TextInput"
+          },
+          {
+            "$ref": "#/$defs/TextArea"
+          },
+          {
+            "$ref": "#/$defs/Select"
+          },
+          {
+            "$ref": "#/$defs/MultiSelect"
+          },
+          {
+            "$ref": "#/$defs/Checkbox"
+          },
+          {
+            "$ref": "#/$defs/Radio"
+          },
+          {
+            "$ref": "#/$defs/CheckboxGroup"
+          },
+          {
+            "$ref": "#/$defs/CheckboxMatrix"
+          },
+          {
+            "$ref": "#/$defs/DatePicker"
+          },
+          {
+            "$ref": "#/$defs/DateTimePicker"
+          },
+          {
+            "$ref": "#/$defs/FileInput"
+          },
+          {
+            "$ref": "#/$defs/DialogButton"
+          },
+          {
+            "$ref": "#/$defs/Collapsible"
+          }
+        ]
+      },
+      "title": "Elements",
+      "type": "array"
+    },
+    "introduction_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Introduction Text"
+    },
+    "icon_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Icon Url"
+    },
+    "submit_label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Submit Label"
+    },
+    "notify_on_cancel": {
+      "default": false,
+      "title": "Notify On Cancel",
+      "type": "boolean"
+    },
+    "state": {
+      "default": "",
+      "title": "State",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    }
+  },
+  "required": [
+    "callback_id",
+    "title"
+  ],
+  "title": "Form",
+  "type": "object"
+}

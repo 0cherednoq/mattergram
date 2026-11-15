@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T09:09:13.945910+00:00",
+  "scope": "E5-01 completed: all declared native schemas/compiler/gates plus authored supported-subset Slack/Adaptive input adapters. E5-03 actual UI clients remain open; the original full product goal is not complete.",
+  "public_api": [
+    "from_slack_blocks",
+    "from_adaptive_cards",
+    "UIConversionError(path, reason)"
+  ],
+  "implemented": [
+    "Strict source-property, type and declared-version validation, no silently dropped siblings or unsupported semantics.",
+    "Native layout trees and common Slack text conversion, explicit application renderer for workspace IDs/dates/mentions.",
+    "Explicit External/OpenURL bindings, exact embedded data including JSON type distinctions, deep-copied action context.",
+    "Missing/unused/duplicate/invalid action IDs rejected, technical IDs for navigation, existing native compiler/signing/capability gates retained.",
+    "Bounded JSON/text conversion and sanitized source-path errors, explicit distinction between absent and null action IDs."
+  ],
+  "matrix": {
+    "platform": "Windows",
+    "python": {
+      "3.11": {
+        "passed": 387,
+        "subtests": 193,
+        "skipped": 0,
+        "duration_seconds": 32.529,
+        "junit_sha256": "85f0ee7d8c79e4115b321dea2a880efb5e30ae35c301e88e704cc98ff6d8a5f1"
+      },
+      "3.13": {
+        "passed": 387,
+        "subtests": 193,
+        "skipped": 0,
+        "duration_seconds": 22.85,
+        "junit_sha256": "f85dfa2ca37954b9f243680c75cee3c9c6b335ac982fe9253e295350de08fab2"
+      },
+      "3.14": {
+        "passed": 387,
+        "subtests": 193,
+        "skipped": 0,
+        "duration_seconds": 21.941,
+        "junit_sha256": "5104b03e8b383bdc76879332428532d1c5171e031776808f0d9e89d19ed9f85c"
+      }
+    },
+    "redis": "Real 7.4.12, locked redis-py 8.1.0"
+  },
+  "targeted_tests": {
+    "unit_importer_cases": 10,
+    "new_local_HTTP_cases": 2,
+    "scope": "Real local aiohttp HTTP boundary with native compiled wire and signer verification; not an actual Mattermost Blocks server/client run."
+  },
+  "quality": {
+    "ruff": "lint and format passed",
+    "mypy": "strict, 92 source files",
+    "port": "21 reviewed modules; 28 decisions; 15 behavioral suites; repeatability and unchanged maintained source; static ready, 0 findings",
+    "upstream": "3711 immutable donor/reference files verified",
+    "ui_references": "45 immutable files across UI/forms/input profiles"
+  },
+  "offline_example": {
+    "path": "examples/ui_input_formats.py",
+    "execution": "passed: both formats compiled and signed callbacks verified; no HTTP or UI rendering claimed"
+  },
+  "contracts": [
+    "manifests/ui-input-profile.json",
+    "docs/ui-input-formats.md",
+    "manifests/ui-profile.json"
+  ],
+  "source_sha256": {
+    "src/mattergram/ui/input_base.py": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9",
+    "src/mattergram/ui/slack.py": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a",
+    "src/mattergram/ui/adaptive.py": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c",
+    "src/mattergram/ui/__init__.py": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252",
+    "tools/fetch_ui_references.py": "bf46a5ffc59b311631702e68240449c77cc0344e21940c3a528d524bcae8a6b5",
+    "tests/unit/test_ui_importers.py": "86b419febe6d319ef6b6621e7917ae7a980f514c94171877a5eb5905370bda92",
+    "tests/integration/test_native_http.py": "d5c9ecf33cb3858c874366c12ee5c1a31eb498dd564f06fd423349f21b6adb29"
+  },
+  "artifact_verification": {
+    "result": "passed",
+    "artifacts": {
+      "mattergram-0.1.0a1-py3-none-any.whl": "8e8bf9f571f40b2589f17a8330ef69ec615f9f71f0de0d62bf7cd36e36dc3eb5",
+      "mattergram-0.1.0a1.tar.gz": "199920dfe53eb054ae8c7d15bc2e1222fd304486fed5dfb255944bb3d7b1ac13"
+    },
+    "source_files_identical_to_wheel": 62,
+    "installed_outside_checkout": true,
+    "consumer_checks_per_artifact": 130,
+    "unit": 55,
+    "integration": 58,
+    "redis_config": 1,
+    "real_redis": 16,
+    "receipt": "build/reports/ui-input-distributions.json",
+    "integrity_receipt": "build/reports/ui-input-package-integrity.json",
+    "note": "Artifact results recorded after build; this external evidence addition does not change runtime source bytes."
+  },
+  "limitations": [
+    "Supported subset only, not a Slack/Microsoft interaction backend or universal renderer.",
+    "Navigation does not reproduce Slack click telemetry. External.context remains an explicit native escape hatch, not SDK signed callback data.",
+    "Pixel dimensions target native maximum dimensions; exact rendering requires E5-03 client execution.",
+    "No real web/desktop/mobile UI execution or 11.11/12.0.2 server execution claimed in this report.",
+    "External CI, full dependency/OS matrix, provisioning, full API, dialog extension, docs/evaluations and publication remain in original scope."
+  ]
+}

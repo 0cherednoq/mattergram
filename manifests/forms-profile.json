@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12",
+  "scope": "E5 native open_dialog and managed form events, validation, immediate responses, schema-directed parsing, scoped opaque capabilities and Memory/Redis replay records.",
+  "primary_references": [
+    {
+      "version": "11.1.0",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/channels/src/utils/dialog_conversion.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/utils/dialog_conversion.ts",
+          "sha256": "eb09d01f688c208048afff5974672cb6b3cec251ac88acf7ed7f933b2aff700c"
+        },
+        {
+          "path": "webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "sha256": "f1158d6afc8d745a163dc2eab02f9a1d59f124b876db02e8a2d5decf455d0061"
+        },
+        {
+          "path": "webapp/channels/src/utils/interactive_dialog.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/utils/interactive_dialog.ts",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "sha256": "5c68d0d191ad141572f5217d38db0f60688437ccc5e3a3d403db0124b81aac23"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "sha256": "2c384a12d55a2d93196df40e72690bc7e054fb13b3458ccd89f5085abf1754df"
+        },
+        {
+          "path": "server/channels/api4/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/integration_action.go",
+          "sha256": "ea7a7f12cb63fc3d4725ea7f1c438ff18b0be61cfc75734452407dd904575009"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/integration_action.go",
+          "sha256": "5757285e2020708c1cc09e2d40e65d1e34b255f33ea86626d043354ea50aeb3c"
+        }
+      ]
+    },
+    {
+      "version": "11.7.0",
+      "commit": "a9e574a82633915f22071f0d7ca2b006f249ec2a",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/channels/src/utils/dialog_conversion.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/utils/dialog_conversion.ts",
+          "sha256": "013ef64a5e256e2da805e3c0fdec156b3a3434af62e52ee2a4d178e87dd8bf11"
+        },
+        {
+          "path": "webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "sha256": "00a6a7774d4879e252ed079f6f9ac8ff8f9863782d2275df46394328b45ff35a"
+        },
+        {
+          "path": "webapp/channels/src/utils/interactive_dialog.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/utils/interactive_dialog.ts",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "sha256": "0f037b70a72faada834b60a20f8afa202fe6320c48d448c1283b660e428cbddc"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "sha256": "f440f652206c2ea62b3caed3058549ee8fa0b0bd343228828d58aae248287f39"
+        },
+        {
+          "path": "server/channels/api4/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/channels/api4/integration_action.go",
+          "sha256": "dbe1717b4c5916a499edfc527f8de0a106eb8ac2b046794ff64a93e4d7b98fe4"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/a9e574a82633915f22071f0d7ca2b006f249ec2a/server/channels/app/integration_action.go",
+          "sha256": "172506d6c9c773cf98d71959c119360c2182f148fc7ad242f64194503835b8dc"
+        }
+      ]
+    },
+    {
+      "version": "11.11.0",
+      "commit": "50cec2b3aa1737a7eb54d165875357560cba5f82",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "error_status": 404
+        },
+        {
+          "path": "webapp/channels/src/utils/dialog_conversion.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/utils/dialog_conversion.ts",
+          "sha256": "0546180c3f9a853107f148ebc6d921394c6eb2cfea13b8df83188d91b6459c75"
+        },
+        {
+          "path": "webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "sha256": "ba701e6928692c72ae557848c750983fbe1e59b6e1ed3ea40f5d1e4e6975a4e7"
+        },
+        {
+          "path": "webapp/channels/src/utils/interactive_dialog.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/utils/interactive_dialog.ts",
+          "sha256": "dad955565ad05277587eaafc3d0667969d09640e29b5160fbc98fe4e6b2f0738"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "sha256": "f5db3bc66fb33be1b1559c0794998bef4fd166a7070aaba57d54a9410c37b888"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "sha256": "49c65f4c2ad64213a7f72039e36a49b849920b559db109399241b1d857201860"
+        },
+        {
+          "path": "server/channels/api4/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/channels/api4/integration_action.go",
+          "sha256": "b4812dd581faecf70e9b10baa196870b11d5a4a1e8a7b231a42e4afd803e7bf0"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/server/channels/app/integration_action.go",
+          "sha256": "41d6c91ee181909a6e9bf5f088dfe8b19d5775bdf4c15cb446101aa143f80edd"
+        }
+      ]
+    },
+    {
+      "version": "12.0.2",
+      "commit": "13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/widgets/settings/checkbox_matrix_setting.tsx",
+          "sha256": "7c96226fc8ab2d3dfb9e9994ccde7af2375879a7de2ffa9217d6a6e49232db47"
+        },
+        {
+          "path": "webapp/channels/src/utils/dialog_conversion.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/utils/dialog_conversion.ts",
+          "sha256": "c355ac09b695cc2ec51987568660c6537b03b74e91bcff18fb57b926f47a60ec"
+        },
+        {
+          "path": "webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/dialog_router/interactive_dialog_adapter.tsx",
+          "sha256": "8496d28d3afbc4402b8f6514c4fe0a7db761b5fa163b5c32e44789ee458f501e"
+        },
+        {
+          "path": "webapp/channels/src/utils/interactive_dialog.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/utils/interactive_dialog.ts",
+          "sha256": "dad955565ad05277587eaafc3d0667969d09640e29b5160fbc98fe4e6b2f0738"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/apps_form/apps_form_container.tsx",
+          "sha256": "a1962feb9a230336e1f68248f5f155836c35493a7bde070019ea4a87257b89a7"
+        },
+        {
+          "path": "webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/apps_form/apps_form_component.tsx",
+          "sha256": "a025439bf9256964028070f003955a10c8af07f37ac65c6fab38ab97247ba38b"
+        },
+        {
+          "path": "server/channels/api4/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/channels/api4/integration_action.go",
+          "sha256": "b4812dd581faecf70e9b10baa196870b11d5a4a1e8a7b231a42e4afd803e7bf0"
+        },
+        {
+          "path": "server/channels/app/integration_action.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/channels/app/integration_action.go",
+          "sha256": "4046cb726083b3511b86f583a3409ffd5f4b8ca24fd91cfa6da7dae220c4a13f"
+        }
+      ]
+    }
+  ],
+  "reference_policy": "Pinned primary Go/TypeScript facts only; source is fetched to ignored build/, never executed or copied into the MIT package.",
+  "native_events": {
+    "dialog_submission": "DialogSubmission or DialogCancel according to the native cancelled boolean",
+    "refresh": "DialogRefresh",
+    "dialog_lookup": "DialogLookup",
+    "dialog_action": "DialogAction, 11.11/12 profiles only"
+  },
+  "native_responses": {
+    "submit": [
+      "{}",
+      "error string",
+      "errors map",
+      "type=form with managed form"
+    ],
+    "refresh": [
+      "error string",
+      "errors map",
+      "type=form with managed form"
+    ],
+    "lookup": [
+      "items array of text/value options"
+    ],
+    "cancel": [
+      "{}"
+    ],
+    "action": [
+      "{} after opening a child with its new native user trigger, or explicit ACK"
+    ]
+  },
+  "wire_values": {
+    "bool": "Actual boolean or explicit lowercase true/false compatibility strings, no Python truthiness.",
+    "text_number_subtype": "Native client may send JSON number; domain text remains str, original retained. No invented numeric min/max/step.",
+    "multiselect": "Native array of strings in all four referenced clients. CSV is a default format, not a generic submission parser.",
+    "checkbox_matrix": "Native array of row:column1,column2 entries -> schema-checked mapping.",
+    "date": "ISO date -> datetime.date; relative expressions not resolved in the bot timezone.",
+    "datetime": "RFC3339 with offset -> aware datetime.",
+    "file": "Native field string retained; confirmed top-level file_ids exposed separately without fabricated per-field association.",
+    "missing_empty_false": "MISSING, null, empty string/array and false remain distinct; schema defaults never replace missing input.",
+    "lookup_option_objects": "Only dialog_lookup context accepts exact label/value string objects (or arrays for multiselect), retaining raw input and validating value membership. Submission and refresh remain primitive-only."
+  },
+  "sessions": {
+    "state": "mgd1.local-session-id.256-bit-random-capability; only SHA256 capability digest is accepted against the stored record. Not a fabricated platform dialog ID.",
+    "binding": [
+      "server/deployment",
+      "bot",
+      "authenticated user",
+      "channel",
+      "team",
+      "callback ID",
+      "form revision",
+      "allowed form/action operation",
+      "declared action field"
+    ],
+    "default_ttl_seconds": 900,
+    "memory_capacity": 1024,
+    "maximum_managed_steps": 32,
+    "maximum_capability_history": 512,
+    "nonterminal_response_cache": 16,
+    "modal_depth": 3,
+    "terminal_replay": "Stored final result returned without business re-execution while session record/capability remains valid.",
+    "transport_callback_id": "Opening native callback ID stays stable through managed transitions. event.form.callback_id is the logical current declaration.",
+    "opening_state_exception": "Revision-zero form capability may read current dynamic lookup fields or cancel the active session after transitions. Current schema, actor/scope/callback/operation/profile/TTL/status checks remain mandatory; stale submit/refresh/action writes stay rejected.",
+    "refresh_prefill": "Compatible entered same-name/type values populate only implicit defaults, with explicit defaults including null/empty/false taking precedence. Recursive collapsible fields and explicit-field snapshot metadata preserve repeated edits; no per-field file association is invented.",
+    "indeterminate": "Claim persisted before business dispatch. Timeout/cancellation/error after claim requires explicit application reconciliation; no automatic replay.",
+    "limits": "Not an atomic transaction with business systems or fencing. Custom stores must provide bounded I/O and per-session isolation. Redis leases/record TTL/server clock assumptions remain explicit. Same config and stable shared backend are required across workers."
+  },
+  "ownership": "Adapter borrows manager unless own_dialogs=True. Manager owns only its default Memory store; provided stores are borrowed. RedisDialogStore.from_url owns its pool/isolation; constructor borrows.",
+  "security": "Trusted transport peer is required before session verification. Raw form values, state capabilities and trigger IDs are excluded from normal event dumps/repr. Full wire access is explicit unsafe_raw(). Action application_context comes from the stored declaration, not arbitrary client context.",
+  "real_evidence": "build/reports/forms-stand.json: API/actor-WS on 11.1. docs/reports/ui-web-12.0.2.json: recorded Windows Chrome 157 UI scenarios on 12.0.2. Other client profiles remain open in manifests/ui-client-profile.json.",
+  "tests": [
+    "tests/unit/test_form_values.py",
+    "tests/integration/test_dialogs.py",
+    "tests/redis/test_dialogs.py",
+    "tools/verify_http_stand.py",
+    "tools/verify_form_simulation.py",
+    "tools/ui_stand.py"
+  ],
+  "remaining_scope": [
+    "E5-03 actual web/desktop/mobile interaction and newer-server scenario matrix.",
+    "Business transaction/idempotency, durable queue and workflow recovery policy remain application responsibilities; SDK replay control is bounded by the valid stored session."
+  ]
+}

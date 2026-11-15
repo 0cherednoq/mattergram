@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain actor allowlist checks; replace Telegram private-chat inference with explicit native channel/direct-channel context. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "971b57f85fba5d1c77b53752366bf0d4dc4158485a4c423f4a1e2516cc82f251",
+  "output_sha256": "e85d8b7101e7e4504b95bb88e08065639824f7f7327693c674f0adf63bafd83f",
+  "replacements": [
+    {
+      "before": "from logging import getLogger\n\nfrom aiogram.enums import ChatType\n\nfrom mattergram_dialog import ChatEvent\nfrom mattergram_dialog.api.entities import (\n    Context,\n    Stack,\n)\nfrom mattergram_dialog.api.protocols import StackAccessValidator\n\nlogger = getLogger(__name__)\n\n\nclass DefaultAccessValidator(StackAccessValidator):\n    async def is_allowed(\n            self,\n            stack: Stack,\n            context: Context | None,\n            event: ChatEvent,\n            data: dict,\n    ) -> bool:\n        if context:\n            access_settings = context.access_settings\n        else:\n            access_settings = stack.access_settings\n\n        if not access_settings:\n            return True\n        chat = data[\"event_chat\"]\n        if chat.type is ChatType.PRIVATE:\n            return True\n        if access_settings.user_ids:\n            user = data[\"event_from_user\"]\n            if user.id not in access_settings.user_ids:\n                return False\n        return True\n",
+      "after": "from __future__ import annotations\n\nfrom typing import Any\n\nfrom mattergram_dialog.api.entities import AccessSettings\n\n\nclass DefaultStackAccessValidator:\n    def is_allowed(self, actor_id: str, settings: AccessSettings | None, event: Any = None) -> bool:\n        del event\n        if not actor_id:\n            return False\n        return settings is None or not settings.actor_ids or actor_id in settings.actor_ids\n\n\n__all__ = [\"DefaultStackAccessValidator\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

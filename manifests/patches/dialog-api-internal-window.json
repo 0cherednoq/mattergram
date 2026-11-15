@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain window protocol and state/result lifecycle; split rendering and events across native post and form backends. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "75df40afce3093ca6e9e7a821574e4652837121ae97c86eca6d60505a307a889",
+  "output_sha256": "828891eb84ec6c1e4723e4631b439e77b75bb7ab8f255077e60e909a77349b34",
+  "replacements": [
+    {
+      "before": "from abc import abstractmethod\nfrom typing import (\n    Any,\n    Protocol,\n)\n\nfrom aiogram.fsm.state import State\nfrom aiogram.types import CallbackQuery, Message\n\nfrom mattergram_dialog.api.entities import Data, NewMessage\nfrom mattergram_dialog.api.protocols import DialogProtocol\nfrom .manager import DialogManager\n\n\nclass WindowProtocol(Protocol):\n    @abstractmethod\n    async def process_message(\n            self,\n            message: Message,\n            dialog: \"DialogProtocol\",\n            manager: DialogManager,\n    ) -> bool:\n        \"\"\"Return True if message in handled.\"\"\"\n        raise NotImplementedError\n\n    @abstractmethod\n    async def process_callback(\n            self,\n            callback: CallbackQuery,\n            dialog: \"DialogProtocol\",\n            manager: DialogManager,\n    ) -> bool:\n        \"\"\"Return True if callback in handled.\"\"\"\n        raise NotImplementedError\n\n    @abstractmethod\n    async def process_result(\n            self, start_data: Data, result: Any,\n            manager: \"DialogManager\",\n    ) -> None:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def render(\n            self,\n            dialog: \"DialogProtocol\",\n            manager: DialogManager,\n    ) -> NewMessage:\n        raise NotImplementedError\n\n    @abstractmethod\n    def get_state(self) -> State:\n        raise NotImplementedError\n\n    @abstractmethod\n    def find(self, widget_id) -> Any:\n        raise NotImplementedError\n",
+      "after": "from __future__ import annotations\n\nfrom typing import Any, Protocol\n\nfrom mattergram.fsm.state import State\n\n\nclass WindowProtocol(Protocol):\n    state: State\n\n    async def render(self, manager: Any) -> Any: ...\n\n    def find(self, widget_id: str) -> Any: ...\n\n\n__all__ = [\"WindowProtocol\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

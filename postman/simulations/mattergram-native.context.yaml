@@ -1,0 +1,188 @@
+# Simulation context — mattergram-native
+#
+# Generated 2026-11-12.
+#
+# What is believed to be true about the services this simulation stands in for,
+# and what each belief rests on. A `null` is something nobody has established
+# yet.
+#
+# Written from a fixed template and never recreated. How to read it, and how to
+# write a run back into it, is in the api-simulation skill
+# (skills/api-simulation/reference/context_file.md).
+
+simulation: "mattergram-native"
+generated: "2026-11-12"
+
+# What this simulation stands in for and what work it unblocks. Both need
+# hindsight, so they are the last thing to write. The members it serves, their
+# route keys and the hosts they answer for are in the .sim.yaml beside this file.
+purpose:
+  stands_in_for: The initial Mattermost REST slice, dialog open, command CRUD, response_url and Bootstrap resource boundaries; not the full server.
+  unblocks: Real runtime/setup SDK HTTP serialization, error mapping, Bootstrap reconciliation and post-write timeout checks without production credentials.
+
+# What the code relies on about a dependency's behaviour — one claim per entry,
+# each { id, status, claim, reason, verification, source, updated_at }.
+#
+#   status        supported     evidence supports it, within a stated scope
+#                 contradicted  evidence gives a counterexample
+#                 unknown       available evidence cannot establish or reject it
+#                 conflicting   applicable sources disagree
+#
+#   reason        why the evidence adds up to that status
+#   verification  what was checked and what it showed — a contract read, a
+#                 request made and its response, a handler inspected. Name what
+#                 is still planned or blocked, and what has gone stale and why.
+#   source        where to go to re-check it: a file and line range, a run, a
+#                 published contract. A claim with nothing to point at is
+#                 `unknown`.
+#   updated_at    the day this entry was last written, YYYY-MM-DD. Set it when
+#                 you add a claim and again whenever you change one, so a claim
+#                 nobody has touched in months is visible as such.
+#
+# A claim is about the dependency, not about the simulation — what the caller
+# is taken to be, which plan or permission is assumed, the order calls go in,
+# what gets retried, the shape of the data.
+#
+#   - id: charges-idempotent-for-24h
+#     status: supported
+#     claim: Payments treats a repeated Idempotency-Key as the same charge for
+#       24 hours. Beyond that it is a new charge.
+#     reason: The contract guarantees it for that window, and a run inside the
+#       window agreed. The 24-hour boundary itself is untested.
+#     verification: Read the provider's API reference for POST /charges, then
+#       sent the same key twice 10 minutes apart and got the first charge id
+#       back both times.
+#     source: the provider's API reference for POST /charges; runs/idempotency-001
+#     updated_at: "2026-11-12"
+assumptions:
+  - id: bearer-identity-and-channel-post
+    status: supported
+    claim: The pinned Mattermost 11.1.0 stand accepts its issued bot token as Bearer auth for users/me and channel post creation.
+    reason: Both the pinned API contract and a real owned server run agree for these two operations.
+    verification: On 2026-11-12 native client got bot identity, created a post, and the harness read the post back through a separate administrative HTTP request. The captured own posted WS event was ignored by the normalizer. Router/Dispatcher is not part of this result.
+    source: contracts/native-rest.openapi.json; upstream.lock.json; tools/verify_native_stand.py; build/reports/native-stand.json
+    updated_at: '2026-11-12'
+  - id: thread-root-is-native-post-id
+    status: supported
+    claim: On the pinned stand, root_id identifies the thread root; nested replies retain the original root rather than the immediate parent's ID.
+    reason: The createPost contract and real stand's reply/root fields agree in the scenario run.
+    verification: A top-level answer had no root; reply and nested reply returned the original human post ID as root_id. Local Postman simulation also recorded the expected root in its state.
+    source: tools/verify_native_stand.py; tools/verify_native_simulation.py; build/reports/native-stand.json; build/reports/native-simulation.json
+    updated_at: '2026-11-12'
+  - id: timeout-does-not-prove-no-write
+    status: unknown
+    claim: A particular timed-out createPost against the real provider may have committed before the response was lost.
+    reason: The caller cannot infer server commit state from a missing response; this run did not inject faults into the real server.
+    verification: Authored local Postman mock committed one post and delayed its response. SDK returned RequestOutcomeUnknown and the mock state/log showed one POST attempt, with no retry. This demonstrates caller behavior under that model, not a measured real-provider timeout outcome.
+    source: postman/mocks/mattermost/handler.js; tools/verify_native_simulation.py; tests/integration/test_native_http.py; build/reports/native-simulation.json
+    updated_at: '2026-11-12'
+  - id: owner-mock-search
+    status: unknown
+    claim: An owner-published Postman mock for this exact pinned provider version exists.
+    reason: CLI is a guest session; signed-in owner/workspace search was skipped. The local mock was authored from the checked-in minimal contract.
+    verification: postman status reported guest mode on 2026-11-12. No cloud resource was searched, pushed or deployed.
+    source: contracts/native-rest.openapi.json; postman/mocks/mattermost/config.yaml
+    updated_at: '2026-11-12'
+  - id: command-response-capability-acceptance
+    status: supported
+    claim: On the owned pinned 11.1.0 stand, an actual slash response_url accepts SDK in_channel followups without a Bot Bearer header.
+    reason: The real server accepted the issued command hook and the harness read the resulting posts back through a separate control client.
+    verification: On 2026-11-12 tools.verify_http_stand exercised initial slash response, explicit defer/followup and five real hook writes. The sixth SDK attempt was blocked locally. No claim about measured server-side sixth-call rejection or the complete 30-minute interval.
+    source: tools/verify_http_stand.py; build/reports/http-stand.json; docs/reports/http-core.json
+    updated_at: '2026-11-12'
+  - id: delayed-response-fault-outcome
+    status: unknown
+    claim: A particular timed-out response_url request may already have produced a real-provider post.
+    reason: Local injection demonstrates caller behavior but did not inject a lost response into Mattermost itself.
+    verification: The E4 local run recorded one delayed response before withholding the reply for 1500ms. SDK raised RequestOutcomeUnknown after 1000ms and did not retry. Separate 401/403/429/302 cases each showed one call and no write; Retry-After was retained. Five sequential sends had no Authorization or Cookie header and a sixth SDK attempt made no HTTP call. An earlier concurrent probe exposed read/modify/write races in the authored mock's pm.state list; evidence uses sequential calls here, while SDK concurrency is covered by local aiohttp tests.
+    source: tools/verify_http_simulation.py; postman/mocks/mattermost/handler.js; build/reports/http-simulation.json; build/reports/http-simulation-cli.ndjson; tests/integration/test_http_ingress.py
+    updated_at: '2026-11-12'
+  - id: post-action-11-1-response-shape
+    status: supported
+    claim: The pinned Mattermost 11.1 response model has update, ephemeral_text and skip_slack_parsing; SDK baseline rejects post-action goto_location and inline error fields.
+    reason: Version-pinned model source determines this baseline. Newer web documentation describes a wider shape and is not sufficient evidence for 11.1 support.
+    verification: Read integration_action.go at e62f350cd7a896c45a0e025f44cb8915f5597854. Real post-action ACK, update/read-back and ephemeral actor WS event passed. Unsupported navigation raised locally and the explicit app error observer responded ephemerally; unsupported wire navigation was not sent to the server.
+    source: manifests/http-profile.json; src/mattergram/http/responses.py; tools/verify_http_stand.py; build/reports/http-stand.json
+    updated_at: '2026-11-12'
+  - id: compiled-legacy-ui-post
+    status: supported
+    claim: The pinned 11.1.0 stand accepts the SDK rich attachment shape and dispatches SDK-compiled signed native button/select actions.
+    reason: Actual runtime Bot.send_message created the attachment and real post action requests reached the SDK normalizer through Mattermost. This establishes API/transport acceptance, not client rendering.
+    verification: On 2026-11-12 tools.verify_http_stand ran again with Attachment/Actions/External/ActionContext and the common compiler. ACK/update/selected_option/repeated presses/ephemeral actor WS and tamper rejection passed. Local Postman simulation separately preserved the actual SDK-created action props in mock state; its 401/403/429/timeout/no-retry cases still passed. The mock validates only the modeled request boundary; it is not a complete UI renderer or full provider schema validator.
+    source: tools/verify_http_stand.py; build/reports/http-stand.json; tools/verify_native_simulation.py; build/reports/native-simulation.json; build/reports/ui-simulation-cli.ndjson
+    updated_at: '2026-11-12'
+
+# What the claims above were written against: { id, date, commit, cli }, from
+# `git rev-parse HEAD` and `postman --version`. Append an entry when either
+# differs, and say so when the tree is dirty — a sha alone reads as a clean
+# checkout. A claim carried over from an older fingerprint is one nothing has
+# re-checked since.
+  - id: native-managed-form-protocol
+    status: supported
+    claim: The owned pinned 11.1.0 server forwards native form submission/lookup/refresh/cancel requests and accepts the SDK managed responses in the scenarios exercised.
+    reason: Actual slash trigger opened a form over the actor WebSocket; native submit/lookup APIs then reached the SDK through the trusted server transport. API/WS evidence does not establish client rendering.
+    verification: On 2026-11-12 ran tools.verify_http_stand with FormsStandScenario. Required/parser error, business field error, corrected input, bool/array/date/offset parsing, next-step state rotation/prior-value preservation, immediate lookup/refresh, duplicate cancel, deadline/uncertain replay/reconciliation and tampered-state rejection passed. Forged client user_id was overwritten by Mattermost with the authenticated actor. Fixture business effects are in-memory harness counters; no cross-system transaction is claimed.
+    source: tools/_forms_stand.py; tools/verify_http_stand.py; build/reports/forms-stand.json; docs/reports/forms-core.json; manifests/forms-profile.json
+    updated_at: '2026-11-12'
+  - id: lost-form-open-response
+    status: unknown
+    claim: A particular timed-out real open_dialog request may already have published an actor form event.
+    reason: Pinned provider source publishes before returning status, but this run did not inject a lost response into the real server. Local fault injection establishes SDK behavior only.
+    verification: Postman mock recorded one native open, withheld its response for 1500ms, and the SDK timed out at 1000ms without retry. The session became indeterminate and a subsequent submit was blocked before business dispatch. Separate 403/429/302 cases each made one write attempt and followed no redirect. Existing REST/response_url simulations also passed again.
+    source: postman/mocks/mattermost/handler.js; tools/verify_form_simulation.py; build/reports/form-simulation.json; build/reports/forms-simulation-cli.ndjson; manifests/forms-profile.json
+    updated_at: '2026-11-12'
+
+  - id: explicit-setup-native-operations
+    status: supported
+    claim: The owned Mattermost 12.0.2 accepts the explicit SetupClient bot/token/team/private-channel/membership/command operations in the recorded scenario, with a separate runtime credential.
+    reason: SDK operations ran against the native server; the ordinary actor executed the command and read the runtime bot post. The provider response, not a mock, establishes these shapes and statuses.
+    verification: On 2026-11-12 tools.verify_setup_stand created a bot and PAT (HTTP 200), team and private channel, added four memberships, created/read/updated/listed the command, and preserved its integration token on update. Callback reached SDK and a runtime-token post was read by an ordinary actor. An ordinary setup identity entered the client but create_bot returned 403; revoked runtime token returned 401 without fallback. Owned command/token cleaned, team/channel archived and bot disabled. This is explicit operations, not durable Bootstrap or reconciliation.
+    source: tools/verify_setup_stand.py; build/reports/setup-stand.json; manifests/provisioning-profile.json
+    updated_at: '2026-11-12'
+  - id: lost-setup-write-response
+    status: unknown
+    claim: A particular lost POST/PUT/DELETE response against the real provider may follow a committed mutation.
+    reason: Real-provider response loss was not injected. The local authored mock demonstrates caller uncertainty and no-retry behavior under a committed-write model only.
+    verification: On 2026-11-12 tools.verify_setup_simulation observed one committed creation/update/deletion before each timeout, RequestOutcomeUnknown and exactly one write attempt. Independent mock state showed the creation, changed hint and deletion. Separate 403/429/302 made one attempt with no write/redirect. CLI log confirmed 13 command requests (7 POST, 2 GET, 2 PUT, 2 DELETE). Prior REST/response_url/form simulations passed with the shared transport. Local aiohttp tests additionally cover PATCH, disconnect, cancellation, malformed successful writes and independent credential/pool lifecycle.
+    source: tools/verify_setup_simulation.py; tests/integration/test_setup_http.py; postman/mocks/mattermost/handler.js; build/reports/setup-simulation.json; build/reports/setup-simulation-cli.ndjson; build/reports/setup-simulation-log-check.json
+    updated_at: '2026-11-12'
+  - id: automatic-bootstrap-native-reconciliation
+    status: supported
+    claim: The owned Mattermost 12.0.2 accepts the automatic bot, token, team, private-channel, membership and multi-team command reconciliation used by Bootstrap in the recorded deployment scenario.
+    reason: The SDK ran against the native server, repeated the same manifest without duplicate resources, updated command metadata, then served callbacks and runtime posts with non-administrative credentials.
+    verification: On 2026-11-12 tools.verify_bootstrap_stand recorded 18 created/2 reused on the first run, 20 reused on the identical run and 4 updated/18 reused after a manifest change. Two teams, two private channels and four commands retained their native IDs and bot/command tokens. Four commands reached the SDK and four runtime posts were read by an ordinary actor. Only owned fixtures were cleaned. Callback reachability during the run does not establish deployment readiness before the listener is serving.
+    source: tools/verify_bootstrap_stand.py; build/reports/bootstrap-stand.json; docs/reports/bootstrap.json; manifests/provisioning-profile.json
+    updated_at: '2026-11-12'
+  - id: bootstrap-write-fault-outcome
+    status: unknown
+    claim: A timed-out Bootstrap write against the real provider may have committed before its response was lost.
+    reason: The real-provider run did not inject response loss. The authored local stand-in establishes SDK journaling, no blind retry and explicit recovery behavior under that model, not Mattermost provider fault behavior.
+    verification: On 2026-11-12 tools.verify_bootstrap_simulation checked 437 request events. A conclusive 403 aborted cleanly and allowed a corrected retry; a write-then-timeout remained indeterminate and blocked automatic retry; explicit recovery by native ID avoided duplication. The run also covered foreign triggers, feature/config allowlists, least-privileged success/denial, runtime without setup credential and two Bootstrap instances serialized by their shared OS lock.
+    source: tools/verify_bootstrap_simulation.py; postman/mocks/bootstrap/handler.js; build/reports/bootstrap-simulation.json; build/reports/bootstrap-simulation-cli.ndjson; build/reports/bootstrap-simulation-log-check.json; docs/reports/bootstrap.json
+    updated_at: '2026-11-12'
+
+fingerprints:
+  - id: native-e2-client
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0; unversioned local worktree; source version pinned in upstream.lock.json'
+  - id: native-e4-http
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0; unversioned local worktree; E4 file hashes and provider references in docs/reports/http-core.json and manifests/http-profile.json'
+  - id: native-e5-ui-schemas-draft
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0; unversioned local worktree; native schemas/profile/compiler draft, facts in manifests/ui-profile.json; no client rendering claim'
+  - id: native-e5-managed-forms
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0; unversioned local worktree; forms profile, runtime and protocol evidence in manifests/forms-profile.json and docs/reports/forms-core.json'
+  - id: native-e6-explicit-setup
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0 guest/local; unversioned worktree; setup/native/simulation hashes recorded in docs/reports/setup-client.json; no cloud owner search or publish'
+  - id: native-e6-bootstrap
+    date: '2026-11-12'
+    commit: null
+    cli: '1.82.0 guest/local; unversioned worktree; native and authored-fault evidence recorded in docs/reports/bootstrap.json; no cloud owner search or publish'

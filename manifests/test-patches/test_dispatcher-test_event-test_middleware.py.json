@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "199077313c9a2ef03a8bf3d810cbc32e95554e7be3c1822e83ac0de80126ca23",
+  "output_sha256": "b3267566da114c5e7ab8b74138d7ec74c6a7ae1be3701f877fd2d37d9f7d458a",
+  "replacements": [
+    {
+      "before": "from functools import partial\n\nfrom aiogram.dispatcher.middlewares.manager import MiddlewareManager\n\n\nclass TestMiddlewareManager:\n",
+      "after": "from functools import partial\n\nfrom mattergram.dispatcher.middlewares.manager import MiddlewareManager\n\n\nclass TestMiddlewareManager:\n",
+      "occurrences": 1
+    }
+  ]
+}

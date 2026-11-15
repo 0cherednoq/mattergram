@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "task": "E7-02",
+  "status": "complete",
+  "checked_at": "2026-11-12",
+  "scope": "Typed high-level reads/writes, direct channels, message edit/delete shortcuts and streaming multipart document upload; full generated operationId coverage remains E7-03.",
+  "runtime_contract": {
+    "methods": [
+      "Bot.get_user",
+      "Bot.get_channel",
+      "Bot.create_direct_channel",
+      "Bot.edit_message_text",
+      "Bot.delete_message",
+      "Bot.send_document",
+      "Message.edit_text",
+      "Message.delete"
+    ],
+    "input_files": "Reusable BufferedInputFile and FSInputFile with bounded chunks, explicit/guessed MIME type and one fresh owned handle per filesystem read.",
+    "ownership": "FSInputFile closes its handle on completion/cancellation; caller retains ownership of the path and file. BufferedInputFile.from_file is eager.",
+    "writes": "No automatic retry. Malformed or mismatched successful writes become RequestOutcomeUnknown; an upload confirmed before an unconfirmed post can remain unattached.",
+    "generated_boundary": "Facade and multipart transport are maintained manually; the E7-01 generated registry is unchanged."
+  },
+  "provenance": {
+    "donor": "aiogram.types.input_file at pinned aiogram v3.31.0 commit 97cfe79fa0ac9459d498bdb15cb7cb0530dbaac7",
+    "adaptation": "Removed Telegram Bot/session and URLInputFile coupling; replaced aiofiles with stdlib asyncio.to_thread and added Mattermost MIME/filename validation.",
+    "manifest_decisions": 30,
+    "reviewed_modules": 22,
+    "behavioral_suites": 15,
+    "replay_and_static_audit": "passed",
+    "patch_sha256": "233228e38ea365a7297fe7accd2092b1626a8cd83e4d4f5f5f721190002a78b7"
+  },
+  "native_stand": {
+    "result": "passed",
+    "server": "Mattermost 11.1.0 owned loopback Docker stand",
+    "credential": "ordinary bot token; no setup credential or administrative fallback",
+    "methods_executed": 8,
+    "upload": "35 bytes streamed in 7-byte chunks and downloaded with the ordinary bot credential; exact bytes matched",
+    "cleanup": "created posts soft-deleted; direct-channel creation is idempotent",
+    "report": "build/reports/high-level-api-stand.json",
+    "report_sha256": "9bd4c2529a4b444b5ad82f11a38fa85b6ff74be828b87a7cc8acdae8027c8c61"
+  },
+  "tests": {
+    "windows_python": [
+      "3.11.15",
+      "3.13.12",
+      "3.14.3"
+    ],
+    "per_version": "462 tests + 301 subtests, real Redis, zero skips",
+    "junit_sha256": {
+      "3.11": "656de2e8d70d686253ed32766e67ddbd3fd4adc667375db97614280078d67ce4",
+      "3.13": "ee77263927cb3c85833e7e31bde740c8861e5ccf97b84263d20ae7c535c3f49f",
+      "3.14": "de6cd822a716267bdcb3e5da585e9096a212f44211a1e3b405e6aa153b770a3b"
+    },
+    "quality": "Ruff check/format passed for 170 files; strict mypy passed for 129 source files; generated API drift gate passed."
+  },
+  "distributions": {
+    "directory": "build/final-dist/e7-high-level-final",
+    "wheel_sha256": "2c973c38beb31376f679e68eabf586e8df8892ddd5c301528fff7bb3cce0bb18",
+    "sdist_sha256": "04e6e46bf98e0f8a923ebbea5e664db405e0798ec79ee66e3dd9ef22cbddb9c1",
+    "twine": "strict passed",
+    "source_files": 83,
+    "wheel_and_sdist_install": "Each installed outside checkout: 78 unit + 78 integration + 1 Redis config + 16 real Redis + 28 provisioning tests.",
+    "report": "build/reports/distributions.json",
+    "report_sha256": "acdc39be0a95fa53a6ce13781a5cc22c2147e5c94ec005c7b5c7d4d7f749aed8",
+    "published": false
+  },
+  "source_hashes": {
+    "src/mattergram/bot.py": "79328eaae9628a766e4e6ba21b08ec7fc3fe0c10f68c33403dcccf34d0bd3ac9",
+    "src/mattergram/_http_client.py": "9d628e7f82f6babb4bd0f6a66e61dd6f63162dfcd3b548ffa396acaa984e01ba",
+    "src/mattergram/types/input_file.py": "2bb697a1af3953168e884afee8afd4ecb504c8b97abbe6613c9843750d6bd5ec",
+    "src/mattergram/types/base.py": "2b7b1571ae8680eb9c37546daad1c679eadb31714172f30d8144f4a64707ee34",
+    "contracts/minimal_api.pyi": "6ff9d831eb4064cf6c0c9207087a738023d6f1dc5197e23a1a63709bbca238dd"
+  }
+}

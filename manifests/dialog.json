@@ -1,0 +1,2357 @@
+{
+  "schema_version": 1,
+  "status": "reviewed-scope-semantic-adaptations-recorded",
+  "source": {
+    "id": "aiogram_dialog",
+    "repository": "https://github.com/Tishka17/aiogram_dialog",
+    "ref": "2.6.0",
+    "commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+    "tree_sha256": "cc951da5fdcf7e4e6acc103ae25744e43b93d67963f7964e9616498280285fa0"
+  },
+  "inventory_summary": {
+    "python_files": 250,
+    "package_modules": 111,
+    "test_modules": 45,
+    "special_cases": {
+      "dynamic_import": 1,
+      "parse_error": 1,
+      "runtime_registration_candidate": 76
+    }
+  },
+  "inventory_sha256": "9599566b29900a32811f30bc11feee7fa62c973b635b0e243b0c6cff55843367",
+  "analysis_limits": [
+    "Static AST analysis only; donor code is never imported.",
+    "Attributes imported from a local module are linked to that module, not proven to exist.",
+    "direct_tests are import links, not a claim of behavioral coverage.",
+    "Fixture lists include conftest/fixture directories; dynamic fixtures and runtime registration require review.",
+    "Inferred exports and dynamic imports are not proof of a complete graph.",
+    "Implicit parent package initialization, getattr/plugin discovery and runtime mutations are not modeled."
+  ],
+  "target_namespace": "mattergram_dialog",
+  "audit_policy": {
+    "forbidden_import_roots": [
+      "aiogram",
+      "aiogram_dialog",
+      "telegram"
+    ],
+    "forbidden_symbol_prefixes": [
+      "Telegram",
+      "Aiogram"
+    ],
+    "allowed_external_import_roots": [
+      "magic_filter",
+      "pydantic",
+      "mattergram"
+    ]
+  },
+  "entries": [
+    {
+      "module": "aiogram_dialog.api.entities.access",
+      "action": "adapt",
+      "reason": "Retain explicit scenario access settings; replace Telegram integer user IDs with Mattermost string actor IDs and immutable validated data.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-entities-access.json",
+            "sha256": "6c0d57a86a381571ae937f270ed9624c2e6acc96960c6c6a5a280d3ecd2e61b6"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/access.py",
+      "source_sha256": "1a512b1ae38facd63e735f2d0b006668fe1fe114f8e943615722683f704f1973",
+      "target": "src/mattergram_dialog/api/entities/access.py",
+      "dependencies": [],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.entities.context",
+      "action": "adapt",
+      "reason": "Retain intent/stack identity, start_data, dialog_data and widget_data; bind to mattergram State and JSON-safe persisted data.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-entities-context.json",
+            "sha256": "078ffba7da968a5852845809c9891dd922539a1f2703efb51ee266838c26a84e"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/context.py",
+      "source_sha256": "44166b4b8a900ffb44f7bc359dbc485367d45ea5916e66e8546079388bc28eb5",
+      "target": "src/mattergram_dialog/api/entities/context.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities.access",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.entities.launch_mode",
+      "action": "adapt",
+      "reason": "Generic stack launch modes and constraints are platform independent; namespace rewrite only.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-entities-launch_mode.json",
+            "sha256": "695328aac4aed694dbd7b7425c8f33f7920f2d427ea18ccb56a1faa8d7ab6214"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/launch_mode.py",
+      "source_sha256": "12444ce66cc30d5d5aa0a6e9b825a147d78b4bf066e17e11d4711a9897d80c46",
+      "target": "src/mattergram_dialog/api/entities/launch_mode.py",
+      "dependencies": [],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.entities.modes",
+      "action": "adapt",
+      "reason": "Retain start modes; replace Telegram message send/delete show modes with explicit Mattermost post/form render decisions.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-entities-modes.json",
+            "sha256": "566305ed86a6385c8a47d945c0fdbe2cc6a19d6e1a6b4ae390e219868c451ce4"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/modes.py",
+      "source_sha256": "6507c9e4a36bcc001847a173b0df1bed66d2eb50a6d1dbdeebdd39d85b19635e",
+      "target": "src/mattergram_dialog/api/entities/modes.py",
+      "dependencies": [],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.entities.stack",
+      "action": "adapt",
+      "reason": "Retain bounded intent-stack push/pop algorithms; replace Telegram content/media/message fields and random time-derived IDs with native string-resource metadata and controlled identifiers.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-entities-stack.json",
+            "sha256": "2f9f69604d513cb94f9257eba4f6d2aafab3e980f3094fb64d8ee453f15f0471"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/stack.py",
+      "source_sha256": "6bb357a643b556ddb52cddc1e83fbb5330fa56c75e3d2efd6608b42f6500797d",
+      "target": "src/mattergram_dialog/api/entities/stack.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities.access",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.context",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.exceptions",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.exceptions",
+      "action": "adapt",
+      "reason": "Generic dialog context/navigation/widget exception taxonomy; namespace rewrite only.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-exceptions.json",
+            "sha256": "7c9348c4410d9d79f331946c07c0f944f3fecf3f6ddd196876857e90f05caa85"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/exceptions.py",
+      "source_sha256": "4b784cd69db2ce4c8c17ceafef573d69e4fc2a81ec7c0de336f38506cba1368f",
+      "target": "src/mattergram_dialog/api/exceptions.py",
+      "dependencies": [],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.internal.widgets",
+      "action": "adapt",
+      "reason": "Retain Widget/TextWidget/InputWidget protocols and data getter shape; replace Telegram keyboard/callback/media types with Mattermost post/form declarations.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-internal-widgets.json",
+            "sha256": "301a478753ce81d60f5777b9e5f31c312e064352cd0b3bbc3c18226c9ae6add5"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/internal/widgets.py",
+      "source_sha256": "fbdc6618c9d2f0c557670237b07565e81e7889c24962e24e97175ac7b2d3aca9",
+      "target": "src/mattergram_dialog/api/internal/widgets.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.internal.window",
+      "action": "adapt",
+      "reason": "Retain window protocol and state/result lifecycle; split rendering and events across native post and form backends.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-internal-window.json",
+            "sha256": "bea6435b43cb58dc3195dc7a365474d23697c03f7750c85e86312361e5f31b1b"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/internal/window.py",
+      "source_sha256": "f4b09d2ed57bb99c9b33fec62563f17fc5fb9fcac55b64e5689aa8572dbd2bf1",
+      "target": "src/mattergram_dialog/api/internal/window.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.manager",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.protocols.dialog",
+      "action": "adapt",
+      "reason": "Retain dialog state/load/start/result/close protocol; replace Telegram NewMessage output with backend-neutral render plans.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-protocols-dialog.json",
+            "sha256": "45f16f777ef3d7c2cc4a285687762f9aa90d1eaa032f6fb9c2d3d72d4e51ca03"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/protocols/dialog.py",
+      "source_sha256": "9b775138ce66222fb36cdd6fffddcb6a9522b48c6256d17f354389d54324eb7b",
+      "target": "src/mattergram_dialog/api/protocols/dialog.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.manager",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.protocols.manager",
+      "action": "adapt",
+      "reason": "Retain start/switch_to/next/back/done/data/context manager contract; use string actor/channel/thread scopes and explicit post/form update limits.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-protocols-manager.json",
+            "sha256": "3b474a98d91c57a55a63c61190cd8e6b6463e1860435132b91be80e67b07b3c4"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/protocols/manager.py",
+      "source_sha256": "c53eafe726203411ca2f4b109c998d2f54cee8ff5c0adc30accf31315d08c8eb",
+      "target": "src/mattergram_dialog/api/protocols/manager.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.protocols.registry",
+      "action": "adapt",
+      "reason": "Retain state-to-dialog registry lookup and state-group inventory using mattergram State/StatesGroup.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-protocols-registry.json",
+            "sha256": "0be57602513aa8086d36dcde5746d2731cf9ac614c2a266f33894bc12f977197"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/protocols/registry.py",
+      "source_sha256": "049213893472684269b0e07ef59019ecab1e82f89b389bc9a37d53daa0da46fd",
+      "target": "src/mattergram_dialog/api/protocols/registry.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.protocols.dialog",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.protocols.stack_access",
+      "action": "adapt",
+      "reason": "Retain stack access validator protocol; bind event and actor data to native mattergram events.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-api-protocols-stack_access.json",
+            "sha256": "4e8ee1063cb163a53d0cf23b496cb7f8b4000d50e85f4f059ae1724a50c02081"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/protocols/stack_access.py",
+      "source_sha256": "f6f6487e7db11619d378c535185bae2939f107404070a8178cfbf0e3f121851e",
+      "target": "src/mattergram_dialog/api/protocols/stack_access.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.context.access_validator",
+      "action": "adapt",
+      "reason": "Retain actor allowlist checks; replace Telegram private-chat inference with explicit native channel/direct-channel context.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-context-access_validator.json",
+            "sha256": "9f0658bec450b9165e7bb2933a9d75bf7a7094bece774394178fe8ca4b0dce74"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/context/access_validator.py",
+      "source_sha256": "be1ea3e4d93a0eb9d265f2e71839467e941f22b87c806f2c9c7f485efa701f3a",
+      "target": "src/mattergram_dialog/context/access_validator.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.context.intent_filter",
+      "action": "adapt",
+      "reason": "Retain state-group intent filtering; bind the filter to mattergram Event and selected context injection key.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-context-intent_filter.json",
+            "sha256": "3a433159fefea486313b1a7792f2adec504a31d19572d861698db3c1cdd613b3"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/context/intent_filter.py",
+      "source_sha256": "147e867f9075b2b63dc733a145a30331c62e7623ff72265e308ba2ff05c22e1c",
+      "target": "src/mattergram_dialog/context/intent_filter.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.context.storage",
+      "action": "adapt",
+      "reason": "Retain locked stack/context persistence and state restoration; map to mattergram StorageKey string scopes, BaseStorage/event isolation ownership and native actor/channel/thread identity.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-context-storage.json",
+            "sha256": "5931e62afb1c476467ab683e9e75626620ce8977c4b80a53db5cb569b91e7b52"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/context/storage.py",
+      "source_sha256": "f5205e4a466eb8b96aa18ccc46f2e6efca3057e4a8a9f871d61c4a0a19aca687",
+      "target": "src/mattergram_dialog/context/storage.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.exceptions",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.dialog",
+      "action": "adapt",
+      "reason": "Retain ordered states, getters, lifecycle callbacks, find and transition algorithms; remove Telegram Router/CallbackQuery/content-type handling and delegate rendering to native backends.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-dialog.json",
+            "sha256": "bf47058d0529d6119b202a14f21da5c695a267d94c0378bb0b91f6f72e3c2c44"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/dialog.py",
+      "source_sha256": "f848d68817c1be7b5818c3a53d6ba63a5eafd94f042bdcd4702db36bf53912c6",
+      "target": "src/mattergram_dialog/dialog.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.exceptions",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.context.intent_filter",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.data",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [
+        {
+          "kind": "runtime_registration_candidate",
+          "line": 188,
+          "expression": "self.callback_query.register(self._callback_handler)"
+        },
+        {
+          "kind": "runtime_registration_candidate",
+          "line": 189,
+          "expression": "self.message.register(self._message_handler)"
+        },
+        {
+          "kind": "runtime_registration_candidate",
+          "line": 190,
+          "expression": "self.business_message.register(self._message_handler)"
+        }
+      ],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.manager.manager",
+      "action": "adapt",
+      "reason": "Retain stack transition and context mutation orchestration; replace Telegram message manager/background semantics with Mattermost post/form renderers and existing uncertainty rules.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-manager-manager.json",
+            "sha256": "47ee3f5ef3b60243dd432f66597b64d6d3bb6f6d5528f80f6afa77c665cc2cfd"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/manager/manager.py",
+      "source_sha256": "f0087a4190e7accac6a61e546b2e3a11c68f5d69044a260e34847bbc0d3785ed",
+      "target": "src/mattergram_dialog/manager/manager.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.exceptions",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.context.storage",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.manager.bg_manager",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.manager.sub_manager",
+      "action": "adapt",
+      "reason": "Retain item/widget-scoped manager delegation; use native string identities and backend-neutral events.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-manager-sub_manager.json",
+            "sha256": "7f1b5d073086ef6048caea4d47216da938e6280edaa60e9a28a55e6fa014d412"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/manager/sub_manager.py",
+      "source_sha256": "48e0d775697ee79649ffb3bc6bb6e2131a046e2c97acd15a5b2ba1d8272f86d7",
+      "target": "src/mattergram_dialog/manager/sub_manager.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.window",
+      "action": "adapt",
+      "reason": "Retain state-bound getters, widget lookup and result lifecycle; split into Window and native FormWindow instead of Telegram keyboard/media composition.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-window.json",
+            "sha256": "0dca88981220a852c5d742f3b23466ad0de11f16f50638a67d78c1615fd27fbf"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/window.py",
+      "source_sha256": "c945e468e4df0764876543976c9fb89907298580d59b593612288449c66176e9",
+      "target": "src/mattergram_dialog/window.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.widgets",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.dialog",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.widgets.data",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.link_preview",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.markup.inline_keyboard",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.common.base",
+      "action": "adapt",
+      "reason": "Retain managed/find base behavior against the adapted widget and manager protocols.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-common-base.json",
+            "sha256": "9897c6515425fcdf14cf848f56ae84d5438b9ab30553da795f4577214e89b475"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/common/base.py",
+      "source_sha256": "f5f82f277ac20eb1ec414028b3f296472062da38e5e32356772b44d312dd92a4",
+      "target": "src/mattergram_dialog/widgets/common/base.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.common.case",
+      "action": "adapt",
+      "reason": "Retain field/MagicFilter/callable selection algorithms with the adapted manager protocol.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-common-case.json",
+            "sha256": "2e5bb5b07416c16c445b0d3b91d272dfb5817b65f46cae73c6169ecfc75487ad"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/common/case.py",
+      "source_sha256": "aa2b7f65df5134022beb347b1425e7750eb9f79fa866619ae7c8b0e438d6e669",
+      "target": "src/mattergram_dialog/widgets/common/case.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.protocols.manager",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.common.items",
+      "action": "adapt",
+      "reason": "Generic string/callable/MagicFilter/sequence item getter selection; namespace rewrite only.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-common-items.json",
+            "sha256": "f9cd2ea33757bdd4f2c92add12edb27038a1bdc1bbc5a339876878315dd50b34"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/common/items.py",
+      "source_sha256": "ab985a7d094e4d9744029b9f9815e4737a7f8d88319b34ca4076d360860bf568",
+      "target": "src/mattergram_dialog/widgets/common/items.py",
+      "dependencies": [],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.common.when",
+      "action": "adapt",
+      "reason": "Retain string/MagicFilter/predicate visibility conditions with the adapted manager protocol and explicit boolean result.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-common-when.json",
+            "sha256": "784e31fad4ee176c251d0a40cbaa00eee5877d3aa2ecbfd855c167aa8c2a3be0"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/common/when.py",
+      "source_sha256": "0cacb20dc92d24e3a8c4de9fee0f2abb612b461d0a110af7b8c319503fc3fe96",
+      "target": "src/mattergram_dialog/widgets/common/when.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.data.data_context",
+      "action": "adapt",
+      "reason": "Retain composite/static/preview-aware async getter composition with typed mappings and adapted manager protocol.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-data-data_context.json",
+            "sha256": "1b643bf0e7a248c53c5628df016a21c05a2521144aa34a65ddba364bcd11b6f3"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/data/data_context.py",
+      "source_sha256": "207d38d528664c31f62ec3b100814650597c19e6be96f01c69f4f27f69d30eeb",
+      "target": "src/mattergram_dialog/widgets/data/data_context.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.internal.widgets",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.text.base",
+      "action": "adapt",
+      "reason": "Retain Const/Multi/Or rendering composition, when semantics and exception context; use native text protocol without Telegram widgets.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-text-base.json",
+            "sha256": "f9905f53850abc5e63c41e362c40902a97d6604c1082830a18786d5c803f5346"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/text/base.py",
+      "source_sha256": "3d67c31a4611b7faa4f95838da8f67a2840aa9fa898ba3e72c35c04a4b7be73f",
+      "target": "src/mattergram_dialog/widgets/text/base.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.text.format",
+      "action": "adapt",
+      "reason": "Retain Format and preview placeholder behavior with safe explicit formatting errors and adapted manager protocol.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-text-format.json",
+            "sha256": "8854f705b3c04f3b847c7f0aa03f2639f70f277fae36ed42802250b116ec8c36"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/text/format.py",
+      "source_sha256": "314342fc013a980dc8c5fa66176a172116876c0c0bae6a2c333f7298de7fad55",
+      "target": "src/mattergram_dialog/widgets/text/format.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.text.base",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.text.multi",
+      "action": "adapt",
+      "reason": "Retain Case selector/default rendering behavior with adapted text and manager protocols.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dialog-widgets-text-multi.json",
+            "sha256": "1a4516de35f8121230adbf86f64507e0f75dc6bd0096ed0aab09dd140faf0e58"
+          }
+        ]
+      },
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/text/multi.py",
+      "source_sha256": "0bb3a07295bb3515ff77bb0b539fe282a9d1ba8392d9c6aa14e2a90ec084e7d6",
+      "target": "src/mattergram_dialog/widgets/text/multi.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.text.base",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [
+        "namespace_imports_v1"
+      ],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog",
+      "action": "exclude",
+      "reason": "Upstream aggregate exports pull Telegram transports and widget families; mattergram_dialog will expose a reviewed native aggregate.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/__init__.py",
+      "source_sha256": "c3c84a7f5a55de2834bd86c5e3f2cc711180a364649306ebdfdaa2856378f4e5",
+      "target": "src/mattergram_dialog/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.dialog",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.manager.sub_manager",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.setup",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.window",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "src/aiogram_dialog/test_tools/mock_message_manager.py",
+          "sha256": "a5e8de89ffea20cde586714bdc505b2f51239585475eb5486a8a4fe513d32e38",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_click.py",
+          "sha256": "034fe6c4a0ac2d2f5de22e8392fb7b542fca3c2e1c7a95057822dfbfb8b9b888",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_create.py",
+          "sha256": "b199dbaf2c3d4212494ca25aab117b890211ae1e0ee6766734b751a527b893f7",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_dialog_state_validation.py",
+          "sha256": "1e2c7f204b4fde24811d64b75bfd9710116b4ece12618d99dda2108c2dd967a5",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_events.py",
+          "sha256": "b3b61c509c2b04deb2fe1fa2299d5cc5c0a70633886fae85c3af4831e1d852a6",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_exception_notes.py",
+          "sha256": "24613ab660ab1f3419a565b563890679843b8caa8d29316c276eafb651849e13",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_fg.py",
+          "sha256": "56c013005d0e024b3de318f88fb6c48fadce8d16efcd6383ca64a13c22d069d9",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_group.py",
+          "sha256": "2154a94398261ffa4e84997c7e1aa70a1367a29a9e5ac65352bda9c1c373e444",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_isolation.py",
+          "sha256": "3f32b3a01507f7f192cc4288274d2af5d4b08ead119a09021278dde291947e95",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_nested_transitions.py",
+          "sha256": "68841a0e2647eb4a26b5097c822295b6a6b4fd42fd4287260e5b3d17ad3a937f",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_transitions.py",
+          "sha256": "8ccb073409bcd10af73c4f19fc256d3df7ef4e979a27f90a1e940d75edac13a1",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/conftest.py",
+          "sha256": "c32466ad9dcc7160d794c8c0793425b4c4c91ab74e18816478aaf9d64192d8c9",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_base.py",
+          "sha256": "6544bf404e0768eeb66c3e5c90d1d43099f595823b88ad5479995d449c2bbb02",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_group.py",
+          "sha256": "1d9cfd322411f0b9db6f5be7da09ba4dbe140e2f7a0adfd970c61aa1daad5617",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/media/test_base.py",
+          "sha256": "fa704a998753fc9ae228f9cebf72ba57644d5188327a0fa5b1fa5d5c7b4e469a",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/media/test_media_message.py",
+          "sha256": "fe42a959877ca383eaa50584ee9d4999806ed1449a759d57d362ede416ab53ae",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/text/test_jinja.py",
+          "sha256": "6ef800a5abf454b2ab5f676ab8fe5795ab3ea66ff1d33aa3e8163636ae4cebd7",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.entities",
+      "action": "exclude",
+      "reason": "Aggregate includes Telegram ChatEvent/media/message/update entities; selected entity modules are imported directly.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/entities/__init__.py",
+      "source_sha256": "49a8c90890fb7e1593398564989d92d68798898e7bb71ace4ad6bba40531e656",
+      "target": "src/mattergram_dialog/api/entities/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities.access",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.context",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.events",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities.launch_mode",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.media",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities.modes",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.new_message",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities.stack",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.entities.update_event",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "src/aiogram_dialog/test_tools/mock_message_manager.py",
+          "sha256": "a5e8de89ffea20cde586714bdc505b2f51239585475eb5486a8a4fe513d32e38",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_group.py",
+          "sha256": "2154a94398261ffa4e84997c7e1aa70a1367a29a9e5ac65352bda9c1c373e444",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/conftest.py",
+          "sha256": "c32466ad9dcc7160d794c8c0793425b4c4c91ab74e18816478aaf9d64192d8c9",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/media/test_base.py",
+          "sha256": "fa704a998753fc9ae228f9cebf72ba57644d5188327a0fa5b1fa5d5c7b4e469a",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.internal",
+      "action": "exclude",
+      "reason": "Aggregate includes Telegram fake events, middleware keys and keyboard variants; selected protocols are adapted directly.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/internal/__init__.py",
+      "source_sha256": "b7196652d770078325ef4f7559080f7ebddc1a332e4f515330c456901114ab92",
+      "target": "src/mattergram_dialog/api/internal/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.internal.fake_data",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.manager",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.middleware",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.widgets",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.internal.window",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/test_utils.py",
+          "sha256": "ef95dc2d0d10d0eb4e3d9ca9c26fe21eb6d531ea7d37ae7508fc138cc1970315",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_base.py",
+          "sha256": "6544bf404e0768eeb66c3e5c90d1d43099f595823b88ad5479995d449c2bbb02",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.internal.manager",
+      "action": "exclude",
+      "reason": "Telegram Router-bound factory is replaced by explicit mattergram setup/registry composition.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/internal/manager.py",
+      "source_sha256": "5352201434867b05df5e28a1c20e6b838fb773ae9bb90f4d8d6287a252868235",
+      "target": "src/mattergram_dialog/api/internal/manager.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.api.protocols",
+      "action": "exclude",
+      "reason": "Aggregate pulls message/media protocols outside the selected native core; reviewed protocols receive explicit exports.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/api/protocols/__init__.py",
+      "source_sha256": "8714a1814a6cdf7b5a1e21f0f696a4f3e204d0bf939b9c011f897ffed9760f3c",
+      "target": "src/mattergram_dialog/api/protocols/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.protocols.dialog",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.manager",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.media",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.message_manager",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.registry",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.protocols.stack_access",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "src/aiogram_dialog/test_tools/mock_message_manager.py",
+          "sha256": "a5e8de89ffea20cde586714bdc505b2f51239585475eb5486a8a4fe513d32e38",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.manager.bg_manager",
+      "action": "exclude",
+      "reason": "Telegram background chat loading and message update semantics are not promised for open Mattermost modals.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/manager/bg_manager.py",
+      "source_sha256": "e084a7ec2fe7efd7cd06c0badd14bd5cf839eaaddfb6e42a6111733876b86bcd",
+      "target": "src/mattergram_dialog/manager/bg_manager.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.entities.update_event",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.protocols",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.manager.updater",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.utils",
+      "action": "exclude",
+      "reason": "Module is primarily Telegram message/keyboard/media conversion; only the generic exception-note helper is reimplemented natively.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/utils.py",
+      "source_sha256": "b791b2c50045262a0334a5a0bf31d23034235231785f936886f2bf46765b229c",
+      "target": "src/mattergram_dialog/utils.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.entities",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/test_utils.py",
+          "sha256": "ef95dc2d0d10d0eb4e3d9ca9c26fe21eb6d531ea7d37ae7508fc138cc1970315",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.common",
+      "action": "exclude",
+      "reason": "Aggregate includes Telegram-oriented scrolling/action classes; selected common algorithms are imported directly.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/common/__init__.py",
+      "source_sha256": "fd12415c5ca0cade9bd66ad5b9ca62291acbec73cf028deb79567148f5c6bad8",
+      "target": "src/mattergram_dialog/widgets/common/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.widgets.common.action",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common.base",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.widgets.common.case",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.widgets.common.managed",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common.scroll",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.common.when",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/widgets/kbd/test_base.py",
+          "sha256": "6544bf404e0768eeb66c3e5c90d1d43099f595823b88ad5479995d449c2bbb02",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/media/test_base.py",
+          "sha256": "fa704a998753fc9ae228f9cebf72ba57644d5188327a0fa5b1fa5d5c7b4e469a",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.data",
+      "action": "exclude",
+      "reason": "Aggregate export is replaced by explicit reviewed getter exports.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/data/__init__.py",
+      "source_sha256": "3d7727746d96430d67cf17d4b4115b6ed70aa793522a4be0f824e6e1d3d2f960",
+      "target": "src/mattergram_dialog/widgets/data/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.widgets.data.data_context",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.kbd",
+      "action": "exclude",
+      "reason": "Telegram inline/reply keyboard implementations are not native Mattermost controls; E8-02 uses post actions and form fields.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/kbd/__init__.py",
+      "source_sha256": "8dfa8f5217de27b206bb281b1f4a9a8f2fb441b389fb43083bdaf48422e264e6",
+      "target": "src/mattergram_dialog/widgets/kbd/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.widgets.kbd.base",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.button",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.calendar_kbd",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.checkbox",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.copy",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.counter",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.group",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.list_group",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.pager",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.request",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.scrolling_group",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.select",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.state",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.stub_scroll",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd.time",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [
+        {
+          "path": "tests/test_click.py",
+          "sha256": "034fe6c4a0ac2d2f5de22e8392fb7b542fca3c2e1c7a95057822dfbfb8b9b888",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_exception_notes.py",
+          "sha256": "24613ab660ab1f3419a565b563890679843b8caa8d29316c276eafb651849e13",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_fg.py",
+          "sha256": "56c013005d0e024b3de318f88fb6c48fadce8d16efcd6383ca64a13c22d069d9",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_group.py",
+          "sha256": "2154a94398261ffa4e84997c7e1aa70a1367a29a9e5ac65352bda9c1c373e444",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_nested_transitions.py",
+          "sha256": "68841a0e2647eb4a26b5097c822295b6a6b4fd42fd4287260e5b3d17ad3a937f",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/test_transitions.py",
+          "sha256": "8ccb073409bcd10af73c4f19fc256d3df7ef4e979a27f90a1e940d75edac13a1",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_base.py",
+          "sha256": "6544bf404e0768eeb66c3e5c90d1d43099f595823b88ad5479995d449c2bbb02",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_calendar.py",
+          "sha256": "973767eb61452cf5cc34bdc1d8df5de0de4c9e42db0f3ee3e2c778f8a5287f87",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_checkbox.py",
+          "sha256": "159e6b35a4523daa1230e1e679ba5111a7cad88af7f92c8c55d0c9d6383fe65d",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_column.py",
+          "sha256": "3203ecf286f35a3b7313ab4128622c28e957d9032867b0ccd0b3fde88f84997a",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_counter.py",
+          "sha256": "dd2670bfcfe8987feef83615a651b4237b5df405f732a35e8cf60de0597d21f7",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_group.py",
+          "sha256": "1d9cfd322411f0b9db6f5be7da09ba4dbe140e2f7a0adfd970c61aa1daad5617",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_multiselect.py",
+          "sha256": "27ea8312ade667f1128e03e192ad3c0f69c48a3918da988ec66adebfda46d371",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_radio.py",
+          "sha256": "5be05453702219feed18c01607d710cb1fbb552e3d327718d62891ad7fbdd35e",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_row.py",
+          "sha256": "e017f72940ecf8947e6a47c7264be7ee8672072db4c337ebc02b4d9e1c671259",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_select.py",
+          "sha256": "6ea629b4508c55564789e662024a5ee0ad9cdb8b25863daa1d32d6d5f75ae4d8",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_time.py",
+          "sha256": "9cdd05ac007abf1430d28db19a706d32059bc7eefa2698af103df500c8048e99",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_toggle.py",
+          "sha256": "ba204adec3211d380933ad92347e4861a7707dd740db55bf4c85db65951b7df1",
+          "status": "requires-review"
+        },
+        {
+          "path": "tests/widgets/kbd/test_url.py",
+          "sha256": "ba973420001394a0272d7dad671e9a10052184643b79f5c7d7f842c1e3554444",
+          "status": "requires-review"
+        }
+      ],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.link_preview",
+      "action": "exclude",
+      "reason": "Telegram link-preview options have no selected native dialog contract.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/link_preview/__init__.py",
+      "source_sha256": "da03ae73241256a3ec476027706b6a69e0647300dff253983ee334260e98cadf",
+      "target": "src/mattergram_dialog/widgets/link_preview/__init__.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.widgets.link_preview.base",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.markup.inline_keyboard",
+      "action": "exclude",
+      "reason": "Telegram keyboard markup factory is replaced by native Blocks/legacy actions compilation.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/markup/inline_keyboard.py",
+      "source_sha256": "32d8ddc7399308107935d51ca3c61762385c80a4ac5f2094fcac26047895a7de",
+      "target": "src/mattergram_dialog/widgets/markup/inline_keyboard.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.api.internal.widgets",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.utils",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    },
+    {
+      "module": "aiogram_dialog.widgets.utils",
+      "action": "exclude",
+      "reason": "Telegram widget coercion mixes keyboard/media/input surfaces; Window/FormWindow use explicit native declarations.",
+      "source_id": "aiogram_dialog",
+      "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+      "source_path": "src/aiogram_dialog/widgets/utils.py",
+      "source_sha256": "56b9dda3fc5986d4e737d9f967bfed7d6dd2e3afdbd7025e7c436a93971321b8",
+      "target": "src/mattergram_dialog/widgets/utils.py",
+      "dependencies": [
+        {
+          "module": "aiogram_dialog.api.exceptions",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.api.internal",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.data.data_context",
+          "decision": "adapt",
+          "requires_native_boundary": false
+        },
+        {
+          "module": "aiogram_dialog.widgets.input",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.kbd",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.link_preview",
+          "decision": "exclude",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.media",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.text",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        },
+        {
+          "module": "aiogram_dialog.widgets.widget_event",
+          "decision": "unresolved",
+          "requires_native_boundary": true
+        }
+      ],
+      "related_tests": [],
+      "special_cases": [],
+      "codemods": [],
+      "attribution": [
+        {
+          "path": "LICENSE",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+        }
+      ]
+    }
+  ],
+  "native": [
+    {
+      "target": "src/mattergram_dialog/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "2e7d2b655b881f297f66868240db877b5ca2d953ec8313b0eeb221792e54df88"
+    },
+    {
+      "target": "src/mattergram_dialog/api/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "a953a52e2cecafa581c1730e4867add854ab918496f0d7e706f408c2f8f6a6d5"
+    },
+    {
+      "target": "src/mattergram_dialog/api/entities/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "da797888a5297ae441890969788cf6d6636507e09bd34c11dcfd4e1aecff5cce"
+    },
+    {
+      "target": "src/mattergram_dialog/api/internal/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "4f2ee25fb80cb5df25d3c96c61a8dde5d96fd203ab18a02269675eb662d5045a"
+    },
+    {
+      "target": "src/mattergram_dialog/api/protocols/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "b3928c36929cfdc4d338dfdac3127b52b512d444f86ba3338fa7d379a6e47c95"
+    },
+    {
+      "target": "src/mattergram_dialog/context/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "38b41831977748708b33289a15d09b3c579e6d4d615724c0e3dd15e9d2f2ae6b"
+    },
+    {
+      "target": "src/mattergram_dialog/manager/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "4d64d0c6ffe783556c94ff17f4aca35219173aab534bb1f0b980b597250f0e70"
+    },
+    {
+      "target": "src/mattergram_dialog/navigation.py",
+      "action": "implement",
+      "reason": "Provide persisted path-aware navigation and a native multi-control Window without modifying adapted donor files.",
+      "source_sha256": "15b6f3825f0010a21dee3c4ddc0379e4990b785439baf2ccfedfc36032ab6389"
+    },
+    {
+      "target": "src/mattergram_dialog/py.typed",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "target": "src/mattergram_dialog/registry.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "086c3791b806edfe052fc20a758a40a42582b9a56e9b28f50841d52f858e08d5"
+    },
+    {
+      "target": "src/mattergram_dialog/rendering.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "2226444d1dafb3e000020c710999480da1cf01768ad2d16184f97786313fee88"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "40808bec82980fe6e570d48d5087c10a7ff7c8655ad00ef0307d05aeffcbf580"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/common/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "22ae09df3d3648cc4397a0a7f36ccd2855addc0a7cec6b5c536d37976d0c4aad"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/common/action.py",
+      "action": "implement",
+      "reason": "Expose an extensible signed widget-action protocol without runtime type branches.",
+      "source_sha256": "160e0f6021cdb2a50ab25278d4ce14ac72f8989f9ff22315be7d45dfc3767224"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/data/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "319b98e8774aff38050595c85432cc618872297e30968a5350226d737f03d0c7"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/form.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "b84854d28c2d8cb8d1f97ca0933cc283cfc23d1f616d29608baae47e30d461a6"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/paged.py",
+      "action": "implement",
+      "reason": "Provide Mattermost-native filtered list rendering with an independent persisted cursor per widget.",
+      "source_sha256": "32e0fe693c82f219ad88b5a2837eb50c54a4cc80f3cb733ff0f6e09de3caba55"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/cursor.py",
+      "action": "implement",
+      "reason": "Provide opaque-cursor list loading with bounded local backward history.",
+      "source_sha256": "80f5a786f023ed7026bdcecd093bc21ecb1124dfafeb4cf7d11fcb2320101232"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/layout.py",
+      "action": "implement",
+      "reason": "Provide declarative Markdown sections and data blocks that keep local actions attached to their object.",
+      "source_sha256": "e4c420c4998ccbc011f3f748f274983df7a1e2b8fb0967fe856aaf807d29a394"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/progress.py",
+      "action": "implement",
+      "reason": "Provide accessible determinate and indeterminate Markdown progress with numeric status.",
+      "source_sha256": "4614259513cfbc3d6eb749554a3e0e4b3e50df0e15dec028b07be50ae8ad4be0"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/table.py",
+      "action": "implement",
+      "reason": "Provide bounded portable Markdown tables with independent page and filter state.",
+      "source_sha256": "a6505953df8f822eaf7670e9b2095f0e989b40277ff6fb67de4805ce38a3239d"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/text/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "1a5f395e74f818524c304d19a09e52717c74dc892679f29f29d1ec3f0dc1bcd7"
+    },
+    {
+      "target": "src/mattergram_dialog/widgets/message.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "b78562b9a5cc404b55049a62534a7f0eeef0f8e0c65cc6f0a525e4b5fafc2678"
+    },
+    {
+      "target": "src/mattergram_dialog/bindings.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "1ac61d3309fd6612acc0220b01e860cef8993f56f937b283ea5665d009a582c6"
+    },
+    {
+      "target": "src/mattergram_dialog/runtime.py",
+      "action": "implement",
+      "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
+      "source_sha256": "a8b8f54e1db607e44f58c89b6c1b68c32a2b520ad6f1c4a06fd3520340e42258"
+    },
+    {
+      "target": "src/mattergram_dialog/updates.py",
+      "action": "implement",
+      "reason": "Provide monotonic revision guards and bounded process-local coalescing for same-post worker refreshes.",
+      "source_sha256": "3e168c3c18033fe43d493eec629373636972067e8f37cfdf9da4f150ae7c28dd"
+    }
+  ],
+  "excluded_scopes": [
+    {
+      "prefix": "src/aiogram_dialog/widgets/kbd/",
+      "reason": "Telegram keyboards emulate controls instead of using native Mattermost actions/forms."
+    },
+    {
+      "prefix": "src/aiogram_dialog/widgets/input/",
+      "reason": "Telegram message inputs are replaced by native form submission fields."
+    },
+    {
+      "prefix": "src/aiogram_dialog/widgets/media/",
+      "reason": "Telegram media groups/file IDs require a separate native attachment design."
+    },
+    {
+      "prefix": "src/aiogram_dialog/widgets/markup/",
+      "reason": "Telegram reply/inline markup is not a Mattermost render backend."
+    },
+    {
+      "prefix": "src/aiogram_dialog/tools/",
+      "reason": "Telegram preview/web tooling is not runtime dialog core."
+    },
+    {
+      "prefix": "src/aiogram_dialog/test_tools/",
+      "reason": "Telegram test clients and fake message managers are replaced by native fixtures."
+    }
+  ],
+  "test_policy": {
+    "mode": "reviewed-native-behavior",
+    "selected_behavioral_suites": [
+      "tests/test_dialog_state_validation.py",
+      "tests/test_exception_notes.py",
+      "tests/test_isolation.py",
+      "tests/test_nested_transitions.py",
+      "tests/test_transitions.py",
+      "tests/widgets/text/test_base.py",
+      "tests/widgets/text/test_case.py",
+      "tests/widgets/text/test_format.py",
+      "tests/widgets/text/test_multi.py"
+    ],
+    "fixture_adaptation": "Do not copy Telegram Bot/Chat/Message/CallbackQuery fixtures. Replace them with native Event, string actor/channel IDs, post/form renderer spies and mattergram Memory/Redis storage profiles.",
+    "excluded_cases": [
+      {
+        "scope": "Telegram inline/reply keyboard layout, message deletion age, content types, media IDs and callback answer behavior",
+        "reason": "Protocol-specific rendering is replaced by Mattermost Blocks/legacy actions/forms and existing HTTP callbacks."
+      },
+      {
+        "scope": "Telegram background chat loading and editing an already open modal",
+        "reason": "Mattermost modal lifecycle does not provide equivalent background update semantics."
+      }
+    ],
+    "receipt": "manifests/dialog-ported-tests.json"
+  },
+  "dependency_evidence": {
+    "aiogram_dialog.dialog": {
+      "reachable_modules": 94,
+      "example_telegram_path": null
+    },
+    "aiogram_dialog.manager.manager": {
+      "reachable_modules": 94,
+      "example_telegram_path": null
+    },
+    "aiogram_dialog.window": {
+      "reachable_modules": 94,
+      "example_telegram_path": null
+    },
+    "aiogram_dialog.widgets.text.base": {
+      "reachable_modules": 94,
+      "example_telegram_path": null
+    }
+  }
+}

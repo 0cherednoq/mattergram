@@ -1,0 +1,14 @@
+version: 1
+name: mattermost-bootstrap
+slug: mattermost-bootstrap
+protocol: http
+port: 4501
+interceptRequests: true
+scenarios:
+  - name: default
+    path: ./handler.js
+    default: true
+generatedFrom:
+  type: authored-contract
+  mode: stateful
+  path: ../../../manifests/provisioning-profile.json

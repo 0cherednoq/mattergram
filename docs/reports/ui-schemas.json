@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T07:37:16.372275+00:00",
+  "scope": "E5 native UI declarations/compiler and profile draft; E5-01/E5-02/E5-03 remain open. Not a claim of completed forms/submission flow or actual client rendering.",
+  "implemented": [
+    "All declared native Form type classes and version-aware datetime/default serialization.",
+    "All nine mm_blocks tree types, technical action IDs, shared action registry, signed callback data, validation and explicit server/client/flag capability gates.",
+    "Rich attachments and legacy actions via same compiler; Bot.send_message exposes UI parameters.",
+    "Typed examples for declarations and signed menu; examples themselves not claimed separately executed."
+  ],
+  "matrix": {
+    "platform": "Windows",
+    "real_redis": "7.4.12, locked redis-py 8.1.0",
+    "python": {
+      "3.11": {
+        "passed": 353,
+        "subtests": 125,
+        "skipped": 0,
+        "junit_sha256": "6f96e13a1aa514e764f407380c318fe65919d37f4e448e34cffd055642499bb6",
+        "duration_seconds": 26.239
+      },
+      "3.13": {
+        "passed": 353,
+        "subtests": 125,
+        "skipped": 0,
+        "junit_sha256": "fb32da8eef7f059810e9f70234324ab365e14c400d8cc1290330436abac94e58",
+        "duration_seconds": 17.369
+      },
+      "3.14": {
+        "passed": 353,
+        "subtests": 125,
+        "skipped": 0,
+        "junit_sha256": "5be80d3c22fd72b93e1f4a70c60b461194aba1ff094693df3eb679244375959d",
+        "duration_seconds": 15.475
+      }
+    }
+  },
+  "real_11_1_api_transport": {
+    "result": "passed",
+    "checked_at": "2026-11-12T07:36:21.722572+00:00",
+    "scope": "Real owned Mattermost 11.1.0 -> SDK HTTP/WS, actual issued slash token and post actions. API/transport proof, not client UI rendering.",
+    "checks": [
+      "real GET slash preserves percent-escaped separators and uses its own issued command token",
+      "real issued slash token/body/header through SDK HTTP to public response with REST read-back",
+      "empty handler returns accepted explicit ephemeral JSON ACK",
+      "explicit deferred ACK and response_url followup accepted by real server",
+      "five actual response_url posts read back; sixth SDK attempt blocked locally",
+      "slow slash handler rejected by SDK deadline, cancelled and surfaced as provider error",
+      "SDK Bot.send_message rich attachment accepted; shared UI compiler signed real button/menu callbacks",
+      "native callback ephemeral response observed on the actual actor WebSocket with actor-targeted broadcast",
+      "real post-action signed context, native post reference, ACK and update read back",
+      "real menu selected_option separated from typed data; repeated intentional presses both dispatched",
+      "11.1 unsupported navigation raises SDK capability error and app explicitly answers ephemerally",
+      "tampered context actually forwarded by trusted Mattermost rejected before handler",
+      "combined HTTP/WS shutdown closed listener/client, drained tasks and released state locks"
+    ],
+    "peer": "127.0.0.1",
+    "callback_requests": 5,
+    "slash_requests": 6,
+    "public_post_id": "z4st8wnmr3n5xk94ppu73t1nuo",
+    "action_post_id": "wkoaybt8ntdtmk1cai3i4xfojy",
+    "http_statuses": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      504,
+      200,
+      200,
+      200,
+      200,
+      200,
+      403
+    ],
+    "credentials": "not included; private capture only in ignored build/"
+  },
+  "postman_simulation": {
+    "scope": "Native SDK against authored local Postman HTTP stand-in, not a Mattermost server",
+    "cli": "1.82.0",
+    "result": "passed",
+    "checks": {
+      "identity_create_reply": "passed, two recorded posts and three SDK HTTP calls",
+      "native_ui_serialization": "passed, actual SDK HTTP POST and preserved compiled action in mock state",
+      "forbidden": "passed, one write attempt; no automatic retry",
+      "rate-limit": "passed, one write attempt; no automatic retry",
+      "write-then-delay": "passed, one write attempt; no automatic retry",
+      "unauthorized": "passed, 401 with startup cleanup"
+    },
+    "owner_mock_search": "skipped: CLI guest session; pinned protocol contract used"
+  },
+  "postman_delayed_faults": {
+    "result": "passed",
+    "scope": "Real SDK against authored local Postman stand-in; does not establish provider fault behavior or server quota",
+    "checks": {
+      "five_bounded_attempts": "passed: five real HTTP calls, sixth blocked locally, no Bearer or cookies",
+      "unauthorized": "passed: one actual HTTP attempt, no retry or redirect; delayed state inspected",
+      "forbidden": "passed: one actual HTTP attempt, no retry or redirect; delayed state inspected",
+      "rate-limit": "passed: one actual HTTP attempt, no retry or redirect; delayed state inspected",
+      "redirect": "passed: one actual HTTP attempt, no retry or redirect; delayed state inspected",
+      "write-then-delay": "passed: one actual HTTP attempt, no retry or redirect; delayed state inspected"
+    },
+    "cli": "1.82.0",
+    "owner_discovery": "guest session; owner search unavailable; Orbit search returned 403; pinned primary sources used"
+  },
+  "cli_log": {
+    "path": "build/reports/ui-simulation-cli.ndjson",
+    "sha256": "d4045d2beae5371814b4d2797831c7c417af79d67302ae8c288f76d9a11dcc7c"
+  },
+  "primary_references": {
+    "count": 18,
+    "versions": [
+      "11.1.0",
+      "11.7.0",
+      "11.11.0",
+      "12.0.2"
+    ],
+    "manifest": "manifests/ui-profile.json",
+    "policy": "Pinned primary Go/TypeScript facts, retained only in ignored build/; no donor snapshot mutation, source execution or source vendoring into runtime."
+  },
+  "quality": {
+    "ruff_lint": "passed",
+    "ruff_format": "107 files formatted",
+    "strict_mypy": "79 source files passed",
+    "actionlint": "1.7.12 passed",
+    "static_audit": "ready, 0 findings, 21 reviewed donor modules",
+    "behavioral_replay": "15 suites verified",
+    "extraction": "repeatable, maintained src unchanged",
+    "upstream": "3711 files verified unchanged"
+  },
+  "redis_observation_fix": "Awaiting local TCP wait_closed does not impose server processing order on CLIENT LIST on a second socket. Test now polls actual remote disappearance with a 1-second bound; production resource close was not weakened.",
+  "remaining": [
+    "Supported-subset Slack blocks / Adaptive Cards input translation and clear rejection contract.",
+    "Native open_dialog/trigger shortcut, submission/refresh/lookup/cancel/action event models, immediate response lifecycle, value parsing, validation, session/replay controls.",
+    "Actual web/desktop/mobile scenario matrix and capabilities; 11.7/11.11/12.0.2 references are schema evidence, not executed UI stands.",
+    "UNSET/None UI edit behavior and full native/dialog/provisioning/docs/release scope remain in the original plan.",
+    "No external GitHub CI or PyPI/TestPyPI publication."
+  ],
+  "installed_artifacts": "Independent receipt build/reports/distributions.json is produced after packaging this draft; no self-referential archive hashes in this source report.",
+  "file_sha256": {
+    "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+    "src/mattergram/bot.py": "44d8ddcac95321283dfe8002aa713d71546f2e4d2c9295c554d97ffeadbe84fe",
+    "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+    "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+    "src/mattergram/dispatcher/dispatcher.py": "8649f5fc126504a7f01d45f7e5d48eb15f0a9866c6c1cff247b25b1d5254a13c",
+    "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+    "src/mattergram/dispatcher/event/bases.py": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+    "src/mattergram/dispatcher/event/event.py": "c6dc3c6812ca044cdf54333866fa9bea97e6c4ad846d5d63b0d33e083b86eae7",
+    "src/mattergram/dispatcher/event/handler.py": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+    "src/mattergram/dispatcher/event/message.py": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+    "src/mattergram/dispatcher/flags.py": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+    "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0",
+    "src/mattergram/dispatcher/middlewares/base.py": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+    "src/mattergram/dispatcher/middlewares/manager.py": "4fd046b6c0a77090dd0ccb9542875027c5cf2cb939a6caf68f9d93de13642916",
+    "src/mattergram/dispatcher/router.py": "f3484719487a67a8231688f229651fe26ee3ec96d0d5083e80233270faab08b1",
+    "src/mattergram/exceptions.py": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58",
+    "src/mattergram/filters/__init__.py": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6",
+    "src/mattergram/filters/base.py": "cea2ab1cf3aaceaeed13c6b75adefb04d1df4149fb169d4928a8de3e1293d822",
+    "src/mattergram/filters/callback_data.py": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+    "src/mattergram/filters/command.py": "a0f1b8ddafcfc5f15cfe62c9bbd23d6dae9d24a2164ccd14f01ba2a51eddf90b",
+    "src/mattergram/filters/logic.py": "e572ec3e59136e8821fa4559d9f6fbc846ee099d2a8f61f1a3a04bbbedcb1606",
+    "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+    "src/mattergram/fsm/context.py": "d24eb42669b57de5beb77687be6bd068be79dfc872bc119dabcf2f733fdfcd54",
+    "src/mattergram/fsm/state.py": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+    "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+    "src/mattergram/fsm/storage/base.py": "4aa5a00d706583a5b02cc55ae2f60d274d448258b491e78120cc96bbe36825cd",
+    "src/mattergram/fsm/storage/memory.py": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+    "src/mattergram/fsm/storage/redis.py": "e83f3f70bae95440942c08094a77b63d28d199aabdff3b5633d8e5885b5e378a",
+    "src/mattergram/fsm/strategy.py": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+    "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+    "src/mattergram/handlers/base.py": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+    "src/mattergram/http/__init__.py": "b16275c29edf3ae20ba83f5fe228ee76b666ae9787b82da67ba4ac46a2b1a5bb",
+    "src/mattergram/http/adapter.py": "208a7410c0b61389fe853d7aabdd51b41725f7d9c53ad6e2b51b73d6d6d9a990",
+    "src/mattergram/http/asgi.py": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde",
+    "src/mattergram/http/auth.py": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016",
+    "src/mattergram/http/delayed.py": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e",
+    "src/mattergram/http/normalizers.py": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118",
+    "src/mattergram/http/responses.py": "f76bfc88ff3b230f5b3731a5cb3e7daead4ab1115d833f7986a63019951b02e0",
+    "src/mattergram/http/server.py": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b",
+    "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+    "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/mattergram/types/__init__.py": "0719f415b6a4efc2eacb5c670b05bf668750c900d46346d3712dc578466affb2",
+    "src/mattergram/types/base.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+    "src/mattergram/types/http.py": "c77c67661cfd381dd0f15d114b8cfb910da361ad97d6219365c2284252fc1bf6",
+    "src/mattergram/ui/__init__.py": "9f1ff1e940a90e002aac76bdd32f136af589d8ddfa0f63e050282435335ef52d",
+    "src/mattergram/ui/actions.py": "37b2865845805170b6eb8de94ca90cd9d62804198e1ac8ce22dfa1af081a3b35",
+    "src/mattergram/ui/base.py": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6",
+    "src/mattergram/ui/blocks.py": "ac22087f7ce110c164ee7836bb8f3fb8285b998fae1366b415507039e98e453d",
+    "src/mattergram/ui/capabilities.py": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626",
+    "src/mattergram/ui/forms.py": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf",
+    "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+    "src/mattergram/utils/magic_filter.py": "25811666ec78ad5c32b2bcff1a71947e2da27a683f469fb7d9ac968df42aece9",
+    "src/mattergram/utils/warnings.py": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82",
+    "examples/create_post.py": "02e852dbea4e40667a9b6634f2819f3057666b67f836bc291319e2f70ee88fb0",
+    "examples/form_declaration.py": "e755910dcaa03ec08dca4596978a0a46da03dc7c9e342b6f365c0b52bd786a0a",
+    "examples/http_bot.py": "b658c201b3015cd89c2ac9088b7f2fc87f24ca5e300602d3bc3e385ad92b9e63",
+    "examples/redis_bot.py": "854bdf7ce921336875ecfb8c7339b992990e9785576549de0fece5836df3b96f",
+    "examples/routing_bot.py": "6a926741532f4c39cb8c9b3bfd92df2b1554464d7e92b9c0bde878d92b5585e5",
+    "examples/ui_menu_bot.py": "904d16d3e8cc540ab0ae6c5dff1f3405d5757f397d4a455b595d6a579aa08c63",
+    "contracts/http-ingress.openapi.json": "c736ed63df2b67a979d9a7415fc51ed4715e8b65c72f26ff4ef072bfa2bdb595",
+    "contracts/minimal_api.pyi": "72f77c4ec151813a62c163521ed3103fdb2a12a50826de63929af373eafe19e8",
+    "contracts/native-rest.openapi.json": "4c1bc6d5bf454d84aa84e73249272d650f92dda812b916585cd83eb8f6bb4721",
+    "contracts/ui-block-declarations.schema.json": "966501c024bee5877817b0e02768d4f039c8ee1a23da3012f0d588feddf1e17e",
+    "contracts/ui-form-declarations.schema.json": "87e0125ee6737280f8b2b8be2ef8857772f3d26b6d46ef2821e66dfd63b93ef2"
+  },
+  "profile_sha256": "3e86eb52e1a95911e2fdb6d9ccf46943fad21cddb3ead546303487ce90ed97ba"
+}

@@ -1,0 +1,173 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+      - run: uv sync --locked --python 3.14
+      - run: uv run --locked ruff check --config pyproject.toml tools src tests contracts examples
+      - run: uv run --locked ruff format --check --config pyproject.toml tools src tests contracts examples
+      - run: uv run --locked mypy
+      - run: uv run --locked python -m tools.generate_documentation --check
+      - run: uv run --locked pytest --junitxml=build/reports/tests.xml
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: quality-reports
+          path: build/reports
+          if-no-files-found: ignore
+
+  upstream-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+      - run: uv sync --locked --python 3.14
+      - run: uv run --locked python -m tools.fetch_upstream
+      - run: uv run --locked python -m tools.fetch_ui_references
+      - run: uv run --locked python -m tools.fetch_ui_references --verify
+      - run: uv run --locked python -m tools.fetch_provisioning_references
+      - run: uv run --locked python -m tools.fetch_provisioning_references --verify
+      - run: uv run --locked python -m tools.generate_native_api --check
+      - run: uv run --locked python -m tools.generate_native_api_coverage --check
+      - run: uv run --locked python -m tools.inventory_upstream --source aiogram
+      - run: uv run --locked python -m tools.build_manifest --check
+      - run: uv run --locked python -m tools.inventory_upstream --source aiogram_dialog
+      - run: uv run --locked python -m tools.build_manifest --check --plan manifests/dialog-plan.json --inventory build/inventory/aiogram_dialog.json --output manifests/dialog.json
+      - run: uv run --locked python -m tools.verify_dialog_extraction
+      - name: Verify extraction invariants (SDK readiness reported separately)
+        run: uv run --locked python -m tools.verify_extraction
+      - run: uv run --locked python -m tools.promote_core --check
+      - run: uv run --locked python -m tools.verify_behavioral_port
+      - run: uv run --locked python -m tools.fetch_upstream --verify
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: upstream-inventory
+          path: |
+            build/inventory
+            build/reports/extraction.json
+            build/reports/port-audit.json
+            build/reports/dialog-extraction.json
+          if-no-files-found: ignore
+
+  distributions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+      - run: uv sync --locked --python 3.14
+      - run: uv run --locked python -m build
+      - run: uv run --locked twine check --strict dist/*
+      - run: uv run --locked python -m tools.verify_distributions
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: distributions
+          path: |
+            dist/
+            build/reports/distributions.json
+          if-no-files-found: ignore
+
+  native-stand:
+    name: Native REST, Router/WS and HTTP integrations on Mattermost 11.1.0
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+      - run: uv sync --locked --python 3.14
+      - run: uv run --locked python -m tools.prepare_native_stand --subnet 10.254.248.0/24
+      - run: docker compose --env-file build/native-stand.env -p mattergram-native-stand -f infra/native-stand.compose.yml up -d
+      - run: uv run --locked python -m tools.verify_native_stand
+      - run: uv run --locked python -m tools.verify_native_api_stand
+      - run: uv run --locked python -m tools.verify_high_level_stand
+      - run: uv run --locked python -m tools.verify_http_stand
+      - run: uv run --locked python -m tools.verify_showcase_stand
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: native-stand-report
+          path: |
+            build/reports/native-stand.json
+            build/reports/native-api-stand.json
+            build/reports/high-level-api-stand.json
+            build/reports/http-stand.json
+            build/reports/forms-stand.json
+            docs/reports/showcase.json
+          if-no-files-found: ignore
+      - name: Stop only this fixture project
+        if: always()
+        run: docker compose --env-file build/native-stand.env -p mattergram-native-stand -f infra/native-stand.compose.yml down
+
+  redis-stand:
+    name: Optional Redis extra on a real Redis server
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+      - run: uv sync --locked --python 3.14 --extra redis
+      - run: uv run --locked python -m tools.prepare_native_stand --subnet 10.254.248.0/24
+      - run: docker compose --env-file build/native-stand.env -p mattergram-native-stand -f infra/native-stand.compose.yml up -d --wait redis db mattermost
+      - run: uv run --locked python -m build
+      - run: uv run --locked python -m tools.verify_redis_stand --distributions --mattermost
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: redis-stand-reports
+          path: |
+            build/reports/redis-stand.json
+            build/reports/redis-tests.xml
+            build/reports/native-stand-redis.json
+            build/reports/distributions.json
+          if-no-files-found: ignore
+      - name: Stop only this fixture project
+        if: always()
+        run: docker compose --env-file build/native-stand.env -p mattergram-native-stand -f infra/native-stand.compose.yml down
+
+  required:
+    if: always()
+    needs: [quality, upstream-audit, distributions, native-stand, redis-stand]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Require every mandatory job
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          assert all(job['result'] == 'success' for job in results.values()), results
+          PY

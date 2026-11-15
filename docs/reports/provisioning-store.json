@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T13:19:44.957732+00:00",
+  "scope": "E6 partial: encrypted persistent local bindings/secrets/journal and OS lock. Full Bootstrap/planner/native ownership reconciliation is not implemented.",
+  "public_api": [
+    "SQLiteProvisioningStore",
+    "FernetCodec",
+    "ProvisioningScope",
+    "ResourceKey",
+    "StoreSession binding/secret/intents/begin/uncertain/complete/confirm_absent"
+  ],
+  "implemented": [
+    "External key, authenticated encryption using the cryptography Fernet recipe and per-record context binding; no persisted production key",
+    "Atomic binding/secret/intent completion in SQLite FULL transactions; pending intent committed before native write",
+    "Explicit uncertain/confirmed-absence recovery, owned/reused bookkeeping, immutable native ID on update and secret preservation",
+    "Native Windows private directory creation and DACL checks, POSIX owner/mode contract, no permission repair or foreign schema reinitialization",
+    "Directory-wide local-process OS lock, bounded cancellable acquisition, task-scoped session and process-death release"
+  ],
+  "targeted_tests": {
+    "cases": 17,
+    "subtests": 3,
+    "scope": "Real local SQLite/Fernet/filesystem ACL and isolated subprocess competition/kill; atomic rollback failure injected after binding insert, before intent completion; secondary rollback failure preserves native recovery ID (regression failed before fix)"
+  },
+  "native_stand": {
+    "scope": "E6 partial store/journal proof using explicit setup operations, not Bootstrap reconciliation",
+    "server_version": "12.0.2.41783541591.7d848ec60657785c9f685c34e3683e9dfdd9b9ce98b9af6ea3d9fd7bddabf1d9.false",
+    "result": "passed",
+    "native_secrets_persisted": 2,
+    "external_key_not_in_store": true,
+    "no_plaintext_secrets_in_files": true,
+    "second_process_native_identity": true,
+    "reopened_actual_ids": true,
+    "repeated_create_blocked": true,
+    "completed_intents": 2,
+    "persisted_slash_binding_callback": true,
+    "runtime_post_read_back_by_ordinary_actor": true,
+    "cleanup": "Only newly created command/PAT removed/revoked; all SDK/listener resources closed. Existing fixture bot/team/channel credentials unchanged. Test store remains encrypted; ephemeral test key was not persisted."
+  },
+  "matrix": {
+    "platform": "Windows",
+    "python": {
+      "3.11": {
+        "passed": 434,
+        "subtests": 270,
+        "skipped": 0,
+        "duration_seconds": 47.427,
+        "junit_sha256": "2568a8a0eb6ac8bd7ff0725838768e95fa2fd4078af136ade8af22490f3b5f5d"
+      },
+      "3.13": {
+        "passed": 434,
+        "subtests": 270,
+        "skipped": 0,
+        "duration_seconds": 33.433,
+        "junit_sha256": "92c994e58412f56533ba0904c7d0d57f6099f9ce40f3c792d0efdac955500d41"
+      },
+      "3.14": {
+        "passed": 434,
+        "subtests": 270,
+        "skipped": 0,
+        "duration_seconds": 33.824,
+        "junit_sha256": "b65ccaf4a9da032b7cd23f6f3f11ec61937df9d04e67dd86323a60b79c5b9ff6"
+      }
+    },
+    "redis": "Real 7.4.12, locked redis-py 8.1.0",
+    "cryptography": "50.0.2",
+    "sqlite_runtime_python314": "3.50.4"
+  },
+  "quality": {
+    "ruff": "lint/format passed, 147 files",
+    "mypy": "strict, 112 files",
+    "port": "21 modules / 28 decisions / 15 suites, exact replay/static audit/extraction ready; dynamic imports removed rather than weakening audit"
+  },
+  "source": {
+    "file_count": 74,
+    "sha256_by_path": {
+      "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+      "src/mattergram/_http_client.py": "3cc88f8c1ee7481eb4318af3400827f3ec1cb785a3994ee7df9eb61326cbeac1",
+      "src/mattergram/bot.py": "aa60fbf7484c44e6018143c6dc213c777cb0845003550489c68c864f7105cfab",
+      "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+      "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+      "src/mattergram/dispatcher/dispatcher.py": "2595aeba29a24555070e493fbd11209b4065903f85b45d291551234905697985",
+      "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+      "src/mattergram/dispatcher/event/bases.py": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+      "src/mattergram/dispatcher/event/event.py": "c6dc3c6812ca044cdf54333866fa9bea97e6c4ad846d5d63b0d33e083b86eae7",
+      "src/mattergram/dispatcher/event/handler.py": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+      "src/mattergram/dispatcher/event/message.py": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+      "src/mattergram/dispatcher/event/slash.py": "5b70db9aea3d146e6ceed8641122e443a3eb090e6d4f504af7d0f8f133d93e4c",
+      "src/mattergram/dispatcher/flags.py": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+      "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0",
+      "src/mattergram/dispatcher/middlewares/base.py": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+      "src/mattergram/dispatcher/middlewares/manager.py": "4fd046b6c0a77090dd0ccb9542875027c5cf2cb939a6caf68f9d93de13642916",
+      "src/mattergram/dispatcher/router.py": "e97c0b309f0eb8f68cc9e7b8132d812fc93cdaa9d2f0cc37fb514b189e5835ee",
+      "src/mattergram/exceptions.py": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58",
+      "src/mattergram/filters/__init__.py": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6",
+      "src/mattergram/filters/base.py": "cea2ab1cf3aaceaeed13c6b75adefb04d1df4149fb169d4928a8de3e1293d822",
+      "src/mattergram/filters/callback_data.py": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+      "src/mattergram/filters/command.py": "a0f1b8ddafcfc5f15cfe62c9bbd23d6dae9d24a2164ccd14f01ba2a51eddf90b",
+      "src/mattergram/filters/logic.py": "e572ec3e59136e8821fa4559d9f6fbc846ee099d2a8f61f1a3a04bbbedcb1606",
+      "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+      "src/mattergram/fsm/context.py": "d24eb42669b57de5beb77687be6bd068be79dfc872bc119dabcf2f733fdfcd54",
+      "src/mattergram/fsm/state.py": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+      "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+      "src/mattergram/fsm/storage/base.py": "4aa5a00d706583a5b02cc55ae2f60d274d448258b491e78120cc96bbe36825cd",
+      "src/mattergram/fsm/storage/memory.py": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+      "src/mattergram/fsm/storage/redis.py": "e83f3f70bae95440942c08094a77b63d28d199aabdff3b5633d8e5885b5e378a",
+      "src/mattergram/fsm/strategy.py": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+      "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+      "src/mattergram/handlers/base.py": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+      "src/mattergram/http/__init__.py": "dcaaa50fc893d2b821948d35dec91785fb31c25eec0cb5161580d433d3988111",
+      "src/mattergram/http/adapter.py": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129",
+      "src/mattergram/http/asgi.py": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde",
+      "src/mattergram/http/auth.py": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016",
+      "src/mattergram/http/delayed.py": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e",
+      "src/mattergram/http/dialog_store.py": "d4352f4c4431ed3942e815eaac8ca07bf66dca6dfa119382216386079bad5bed",
+      "src/mattergram/http/dialogs.py": "a022d88d8ee1cc3dd973fd18cd690974d7f64190ec3d6682a1874cb1a2efde5f",
+      "src/mattergram/http/normalizers.py": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118",
+      "src/mattergram/http/redis_dialogs.py": "83a8762adde2494682126ee24341bc7fd095237092e34846869b547fe3a6d4f1",
+      "src/mattergram/http/responses.py": "244cd44eb5d1a53ee6604e17a21b96cc29d6c6193138010b8bb3678add6b0ad5",
+      "src/mattergram/http/server.py": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b",
+      "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+      "src/mattergram/provisioning/__init__.py": "0d7c4a30079d25b1a6986cdec0af0c5d0576dc4482900eb2d01bc1c60accd173",
+      "src/mattergram/provisioning/_private_files.py": "737bfb56d41bb44f9961ca383a35537b304fcc3049f2a852c55f5c8819467a15",
+      "src/mattergram/provisioning/_windows_acl.py": "20733e9f7949109b4d5029db3b00e9267a54b30c023020865af5b17824218cb4",
+      "src/mattergram/provisioning/client.py": "17e63e4c79bbf8aab0679cf277d6baffbc8f29653a25c3abb6de023b0a7ea5a7",
+      "src/mattergram/provisioning/commands.py": "ea24d45a18fee5901f19d710d5d8967a6adc88220f9dabd4d20935ac272d5b9e",
+      "src/mattergram/provisioning/models.py": "120b59ecd908fec6d24a092f7bc8df7e8f116a4070fc6f27ab185ad7217ca365",
+      "src/mattergram/provisioning/store.py": "da73948c6325442923c0bf32b73e1d39f571ee32a4704a059868b060d3f9b1ac",
+      "src/mattergram/provisioning/store_models.py": "ae30f915858dd20a3e89246cd567cd7b34c5828c27ffb4355c759908bcfea22c",
+      "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/mattergram/types/__init__.py": "54f69cf9b7f9a92fff146f2d4c190e2bc2316e589ae21bf8138d51920344d17f",
+      "src/mattergram/types/base.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+      "src/mattergram/types/command_metadata.py": "4412ae5c5032790117c3fbbee621abe3c1c59d88e1496776e89d60b0f591a771",
+      "src/mattergram/types/dialogs.py": "88298d14eb9b85b67ad4a17dc9b957aea72a7f2b0efb53223c4bbf37f9362c61",
+      "src/mattergram/types/http.py": "7116b249dc08aeab27277b76133a8d4d465b9f9c323e73c3abac5e56e0ce36bc",
+      "src/mattergram/ui/__init__.py": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252",
+      "src/mattergram/ui/actions.py": "68e13c5562fe192e9e3f362bffae69167f3e22beca2e89792905f8d2b0fc97ed",
+      "src/mattergram/ui/adaptive.py": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c",
+      "src/mattergram/ui/base.py": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6",
+      "src/mattergram/ui/blocks.py": "6a23763ac11b8f69de114e99de00aeb63d215614204af41eb1d8e22903668c2e",
+      "src/mattergram/ui/capabilities.py": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626",
+      "src/mattergram/ui/form_defaults.py": "044cac81ee8717b0e08395730fd9cfed719a89dc23de515948fe1a2afd0d3445",
+      "src/mattergram/ui/form_snapshot.py": "183af011a16cce6eed6c705a28d4510dbdb5def809127ee1f6fca336589b0c9a",
+      "src/mattergram/ui/form_values.py": "651d41a75ac3832850e6ec9191aaf73692f901a074388542774176a100b58be2",
+      "src/mattergram/ui/forms.py": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf",
+      "src/mattergram/ui/input_base.py": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9",
+      "src/mattergram/ui/slack.py": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a",
+      "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+      "src/mattergram/utils/magic_filter.py": "25811666ec78ad5c32b2bcff1a71947e2da27a683f469fb7d9ac968df42aece9",
+      "src/mattergram/utils/warnings.py": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82"
+    }
+  },
+  "additional_inputs_sha256": {
+    "tests/provisioning/test_store.py": "cdd5d2bad4b7fdf3b90f56b71184187011002962bb4e610a06eb65e87f237c59",
+    "tools/verify_store_stand.py": "660aaa69d4d38374b43428726378ee8c2d860581a6949676af46f59c30820c82",
+    "tools/verify_distributions.py": "bcc7ae356f6e9e3eb30bc1f9c7fe1c1d0947e85798c932faa979fd652631016c",
+    "pyproject.toml": "e9f290c50a4c3edb941157d642ea91cd02a1f84950d09323bfc8d1db8e0e00d1",
+    "uv.lock": "87697f67239d0d4aecd23a5f33940fa8d88c71e259ebc66b7fadb991d1aa82e9",
+    "manifests/provisioning-store-profile.json": "e435ccc4bffa82c6dcc927d58b6e8c00b313c1b2d3939e5df746531a66087c1c"
+  },
+  "contracts": [
+    "docs/provisioning-store.md",
+    "manifests/provisioning-store-profile.json"
+  ],
+  "limitations": [
+    "Windows execution only; POSIX implemented but not proved by this evidence",
+    "Local cooperative advisory lock; no distributed/NFS lease/fencing or fork-with-open-session guarantee",
+    "Caller still proves native authority/ownership and explicitly reconciles external outcomes; store does not query native API or infer ownership from names",
+    "External key backup/rotation, schema migration, journal pruning, stale backup detection and distributed deployment policies remain open",
+    "SQLite I/O is synchronous inside task-owned sessions; durability also depends on filesystem/volume/hardware",
+    "Full Bootstrap/reconciliation/recovery/readiness and remaining original 56-task product scope remain open"
+  ],
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "E6-01": "open",
+    "E6-02": "open",
+    "E6-03": "open",
+    "E5-03": "open"
+  },
+  "package_verification": {
+    "result": "passed",
+    "checked_at": "2026-11-12T13:22:18.767377+00:00",
+    "source_file_count": 74,
+    "original_and_sdist_rebuilt_wheel_source_bytes_match": true,
+    "installed_checks_per_archive": 177,
+    "base_install_requires_no_cryptography_or_redis": true,
+    "optional_provisioning_tests": 17,
+    "twine_strict": "passed",
+    "artifacts": {
+      "mattergram-0.1.0a1-py3-none-any.whl": "e407b29611f09eae9003e5bf6d641aac35dba7a51ba28fdbc86deba41c3c14d5",
+      "mattergram-0.1.0a1.tar.gz": "4e3863e1c5d8f4defef18d15d9cdb91d9a759c439a7daf2c70f881b820eddb20"
+    },
+    "directory": "build/final-dist/e6-provisioning-store-final",
+    "receipt": "build/reports/provisioning-store-distributions.json",
+    "post_build_receipt": "Added after archives were closed; archived report precedes its own package receipt",
+    "negative_source_gate": "Actual stale pre-rollback-fix wheel was rejected by the maintained source-byte gate"
+  }
+}

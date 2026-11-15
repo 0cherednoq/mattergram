@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "reason": "Retain filter/middleware orchestration and stop/skip behavior; rename observer, bind native Event, remove Telegram-only wording and validation. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "9e9175eb2c28ce7cf566b421143766f4f4ba340e59ebc4dade6578a06793aa74",
+  "output_sha256": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+  "replacements": [
+    {
+      "before": "\nif TYPE_CHECKING:\n    from mattergram.dispatcher.router import Router\n    from mattergram.types import TelegramObject\n\n\nclass TelegramEventObserver:\n    \"\"\"\n    Event observer for Telegram events\n\n    Here you can register handler with filter.\n    This observer will stop event propagation when first handler is pass.\n",
+      "after": "\nif TYPE_CHECKING:\n    from mattergram.dispatcher.router import Router\n    from mattergram.types import Event\n\n\nclass NativeEventObserver:\n    \"\"\"\n    Event observer for native Mattermost events\n\n    Here you can register handler with filter.\n    This observer will stop event propagation when first handler is pass.\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            self._handler.filters = []\n        self._handler.filters.extend([FilterObject(filter_) for filter_ in filters])\n\n    def _resolve_middlewares(self) -> list[MiddlewareType[TelegramObject]]:\n        middlewares: list[MiddlewareType[TelegramObject]] = []\n        for router in reversed(tuple(self.router.chain_head)):\n            observer = router.observers.get(self.event_name)\n            if observer:\n",
+      "after": "            self._handler.filters = []\n        self._handler.filters.extend([FilterObject(filter_) for filter_ in filters])\n\n    def _resolve_middlewares(self) -> list[MiddlewareType[Event]]:\n        middlewares: list[MiddlewareType[Event]] = []\n        for router in reversed(tuple(self.router.chain_head)):\n            observer = router.observers.get(self.event_name)\n            if observer:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    def wrap_outer_middleware(\n        self,\n        callback: Any,\n        event: TelegramObject,\n        data: dict[str, Any],\n    ) -> Any:\n        wrapped_outer = self.middleware.wrap_middlewares(\n",
+      "after": "    def wrap_outer_middleware(\n        self,\n        callback: Any,\n        event: Event,\n        data: dict[str, Any],\n    ) -> Any:\n        wrapped_outer = self.middleware.wrap_middlewares(\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        )\n        return wrapped_outer(event, data)\n\n    def check_root_filters(self, event: TelegramObject, **kwargs: Any) -> Any:\n        return self._handler.check(event, **kwargs)\n\n    async def trigger(self, event: TelegramObject, **kwargs: Any) -> Any:\n        \"\"\"\n        Propagate event to handlers and stops propagation on first match.\n        Handler will be called when all its filters are pass.\n",
+      "after": "        )\n        return wrapped_outer(event, data)\n\n    def check_root_filters(self, event: Event, **kwargs: Any) -> Any:\n        return self._handler.check(event, **kwargs)\n\n    async def trigger(self, event: Event, **kwargs: Any) -> Any:\n        \"\"\"\n        Propagate event to handlers and stops propagation on first match.\n        Handler will be called when all its filters are pass.\n",
+      "occurrences": 1
+    }
+  ]
+}

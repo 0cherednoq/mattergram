@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "reason": "Native CallbackQuery user/channel/post and native User replace Telegram callback ID/chat_instance/from_user fixtures; codec/filter assertions retained. Overflow fixture increased from 128 to 8192 ASCII bytes to exercise the explicit SDK 4096-byte limit, not the Telegram 64-byte limit.",
+  "input_sha256": "63ff339a06e5553f823c91a655bbf61f266e734411aadb62503b2dc95e818c9c",
+  "output_sha256": "a4cdeb2c5c5340051add7491f682a3d512e56d41fca9cd086bf7203d26d90def",
+  "replacements": [
+    {
+      "before": "from magic_filter import MagicFilter\nfrom pydantic import ValidationError\n\nfrom aiogram import F\nfrom aiogram.filters.callback_data import CallbackData\nfrom aiogram.types import CallbackQuery, User\n\n\nclass MyIntEnum(Enum):\n    FOO = auto()\n\n\nclass MyStringEnum(str, Enum):\n    FOO = \"FOO\"\n\n\n",
+      "after": "from magic_filter import MagicFilter\nfrom pydantic import ValidationError\n\nfrom mattergram import F\nfrom mattergram.filters.callback_data import CallbackData\nfrom mattergram.types import CallbackQuery, User\n\n\nclass MyIntEnum(Enum):\n    FOO = auto()\n\n\nclass MyStringEnum(str, Enum):  # noqa: UP042 - preserve the donor's mixed enum behavior.\n    FOO = \"FOO\"\n\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            ...,\n            object,\n            object(),\n            User(id=42, is_bot=False, first_name=\"test\"),\n        ],\n    )\n    def test_encode_value_negative(self, value):\n",
+      "after": "            ...,\n            object,\n            object(),\n            User(id=\"fixture-user\", username=\"test\"),\n        ],\n    )\n    def test_encode_value_negative(self, value):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            assert MyCallback(foo=\"te:st\", bar=42).pack()\n\n        with pytest.raises(ValueError, match=\".+is too long.+\"):\n            assert MyCallback(foo=\"test\" * 32, bar=42).pack()\n\n        assert MyCallback(foo=\"test\", bar=42).pack() == \"test:test:42\"\n\n",
+      "after": "            assert MyCallback(foo=\"te:st\", bar=42).pack()\n\n        with pytest.raises(ValueError, match=\".+is too long.+\"):\n            assert MyCallback(foo=\"test\" * 2048, bar=42).pack()\n\n        assert MyCallback(foo=\"test\", bar=42).pack() == \"test:test:42\"\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    @pytest.mark.parametrize(\n        \"hint\",\n        [\n            Union[int, None],\n            Optional[int],\n        ],\n    )\n    def test_unpack_optional_wo_default(self, hint):\n",
+      "after": "    @pytest.mark.parametrize(\n        \"hint\",\n        [\n            Union[int, None],  # noqa: UP007 - exercise both supported typing forms.\n            Optional[int],  # noqa: UP045 - exercise both supported typing forms.\n        ],\n    )\n    def test_unpack_optional_wo_default(self, hint):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    )\n    async def test_call(self, query, rule, result):\n        callback_query = CallbackQuery(\n            id=\"1\",\n            from_user=User(id=42, is_bot=False, first_name=\"test\"),\n            data=query,\n            chat_instance=\"test\",\n        )\n\n        filter_object = MyCallback.filter(rule)\n",
+      "after": "    )\n    async def test_call(self, query, rule, result):\n        callback_query = CallbackQuery(\n            user_id=\"fixture-user\",\n            channel_id=\"fixture-channel\",\n            post_id=\"fixture-post\",\n            data=query,\n        )\n\n        filter_object = MyCallback.filter(rule)\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    async def test_invalid_call(self):\n        filter_object = MyCallback.filter(F.test)\n        assert not await filter_object(User(id=42, is_bot=False, first_name=\"test\"))\n\n    def test_str(self):\n        filter_object = MyCallback.filter(F.test)\n",
+      "after": "\n    async def test_invalid_call(self):\n        filter_object = MyCallback.filter(F.test)\n        assert not await filter_object(User(id=\"fixture-user\", username=\"test\"))\n\n    def test_str(self):\n        filter_object = MyCallback.filter(F.test)\n",
+      "occurrences": 1
+    }
+  ]
+}

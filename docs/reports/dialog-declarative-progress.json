@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "result": "contract-verified",
+  "date": "2026-11-15",
+  "scope": "Declarative buttons, read-only data blocks, progress rendering, typed form defaults, row actions and same-post background refresh",
+  "behavior": [
+    "Button declares local sync or async behavior without hand-written Mattermost action payloads",
+    "each rendered Button action uses a one-shot token and rejects stale or repeated callbacks",
+    "DataBlock preserves static content when all local actions are absent or hidden",
+    "Progress renders determinate and indeterminate states with a textual numeric status",
+    "DialogRuntime.start returns a serializable DialogRef for a created post",
+    "DialogRuntime.update validates the active intent and edits the same post with rebuilt signed actions",
+    "monotonic revisions reject stale worker snapshots inside the persisted dialog transaction",
+    "CoalescingDialogUpdater retains the newest pending revision and flushes trailing or terminal state",
+    "typed form defaults resolve from Format, MagicFilter, sync or async getter data and are revalidated",
+    "ActionTable exposes bounded Blocks row actions without demo-local imperative rendering code",
+    "custom lowercase actions delegate to WidgetActionResult without runtime widget type branches",
+    "DialogRuntime.drain waits for deferred Blocks edits and surfaces delivery failures"
+  ],
+  "ux_budget": {
+    "progress_visibility_clicks": 0,
+    "cancel_clicks": 1,
+    "maximum_navigation_depth": 1,
+    "running_actions": 1,
+    "terminal_actions": 0,
+    "running_row_shape": [1],
+    "record_edit_clicks": 1,
+    "record_delete_clicks": 1
+  },
+  "capabilities": {
+    "portable_profile": "Mattermost 11.1 legacy post actions",
+    "blocks_profile": "exact container layout requires a proven Mattermost 11.11 or 12.x Blocks profile",
+    "same_post": true,
+    "action_table": "requires a proven Blocks profile and has no silent legacy fallback"
+  },
+  "checks": {
+    "targeted_pytest": "39 passed, 3 skipped because a real Redis profile was not requested",
+    "available_full_pytest": "486 passed, 23 Redis-profile skips, 303 subtests; three upstream-snapshot-dependent test files excluded because the sandbox cannot read their inputs",
+    "ruff": "passed",
+    "strict_mypy": "passed for 191 source files",
+    "documentation": "249 exports, 411 public members, 25 guides, 17 examples"
+  },
+  "limits": [
+    "The new progress scenario has not run against a live Mattermost server or native client.",
+    "CoalescingDialogUpdater is process-local; durable job state and distributed delivery remain application responsibilities."
+  ]
+}

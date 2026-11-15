@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain managed/find base behavior against the adapted widget and manager protocols. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "0bbdfb3c34dd70ba8435492727e1a9c5249adb2ea08a8b8241145d2c68b3059b",
+  "output_sha256": "ba4b5d9ff665e800f9a1a3d46348851b5a04e008f14cbb8930fe88d6393d4d4b",
+  "replacements": [
+    {
+      "before": "from typing import Any, Optional\n\nfrom mattergram_dialog import DialogManager\nfrom mattergram_dialog.api.internal import Widget\n\n\nclass BaseWidget(Widget):\n    def managed(self, manager: DialogManager) -> Any:\n        return self\n\n    def find(self, widget_id: str) -> Optional[\"Widget\"]:\n        return None\n",
+      "after": "from __future__ import annotations\n\nimport re\nfrom collections.abc import Mapping\nfrom typing import Any\n\nfrom mattergram_dialog.api.exceptions import InvalidWidgetIdError\n\nfrom .when import WhenCondition, is_visible\n\n_ID = re.compile(r\"^[A-Za-z][A-Za-z0-9_.:-]{0,99}$\")\n\n\nclass Widget:\n    def __init__(self, *, id: str | None = None, when: WhenCondition = None) -> None:\n        if id is not None and not _ID.fullmatch(id):\n            raise InvalidWidgetIdError(f\"Invalid widget id: {id!r}\")\n        self._widget_id = id\n        self.when = when\n\n    @property\n    def widget_id(self) -> str | None:\n        return self._widget_id\n\n    async def is_visible(self, data: Mapping[str, Any], manager: Any) -> bool:\n        return await is_visible(self.when, data, manager)\n\n\n__all__ = [\"Widget\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

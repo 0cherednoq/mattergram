@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "26e3a7b125178ed3ed2f14dd53c21c7cfd1bf924619b59c8a35915da07d3f4ef",
+  "output_sha256": "71f7134095b467e45ce546ab8f71b68edda60c34030ee9004af9a08601ff872e",
+  "replacements": [
+    {
+      "before": "import pytest\n\nfrom aiogram.dispatcher.flags import Flag, FlagDecorator, FlagGenerator\n\n\n@pytest.fixture(name=\"flag\")\n",
+      "after": "import pytest\n\nfrom mattergram.dispatcher.flags import Flag, FlagDecorator, FlagGenerator\n\n\n@pytest.fixture(name=\"flag\")\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n        decorated = flag_decorator(func)\n        assert decorated is func\n        assert hasattr(decorated, \"aiogram_flag\")\n\n    def test_call_with_arg(self, flag_decorator: FlagDecorator):\n        new_decorator = flag_decorator(\"hello\")\n",
+      "after": "\n        decorated = flag_decorator(func)\n        assert decorated is func\n        assert hasattr(decorated, \"mattergram_flag\")\n\n    def test_call_with_arg(self, flag_decorator: FlagDecorator):\n        new_decorator = flag_decorator(\"hello\")\n",
+      "occurrences": 1
+    }
+  ]
+}

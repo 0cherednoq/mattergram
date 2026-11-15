@@ -1,0 +1,2573 @@
+{
+  "schema_version": 1,
+  "status": "exhaustive-operationId-classification",
+  "source": {
+    "id": "mattermost",
+    "repository": "https://github.com/mattermost/mattermost",
+    "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+    "tree_sha256": "48efad26d1b877b2ee20247eacbc3a7db19814a191bd4faff974ed67ceae7f74",
+    "license_review": "API documentation: CC BY-NC-SA 3.0 in api/README.md; reference input only, E7 generation/distribution unresolved."
+  },
+  "license_policy": "Pinned CC BY-NC-SA API documentation is verification-only input. The distributed coverage report records operation identifiers and authored support classifications only; it copies no descriptions or schemas.",
+  "coverage_manifest_sha256": "6d7c79fcdba24f4d31cb9da34845fc86bbf2cc77be91581391011f53546f1f48",
+  "overlay_sha256": "74a5de915e2a71466a4b852ab26926edbe1405de74c84358daaebde4f12877c8",
+  "operation_ids": 491,
+  "endpoints": 493,
+  "counts": {
+    "generated_low_level": 17,
+    "high_level_only": 3,
+    "unsupported_upstream_collision": 2,
+    "unsupported_not_reviewed": 469
+  },
+  "endpoint_counts": {
+    "generated_low_level": 17,
+    "high_level_only": 3,
+    "unsupported_upstream_collision": 4,
+    "unsupported_not_reviewed": 469
+  },
+  "supported_operation_ids": 20,
+  "unsupported_policy": {
+    "classification": "unsupported_not_reviewed",
+    "reason": "The operation is not in the generated overlay and has no separately reviewed high-level implementation.",
+    "runtime_behavior": "NativeAPI rejects its operationId before opening a network session; arbitrary URL escape hatches are not provided.",
+    "promotion": "Add exact structural facts to the authored overlay or high-level coverage manifest, tests, documentation and real-provider evidence before claiming support."
+  },
+  "ambiguous_policy": {
+    "classification": "unsupported_upstream_collision",
+    "reason": "More than one pinned endpoint declares the same operationId, so selection by identifier alone is ambiguous.",
+    "promotion": "Resolve with an authored exact source/method/path selection and a distinct runtime name; never choose the first candidate implicitly."
+  },
+  "coverage": [
+    {
+      "operation_id": "AcceptRemoteClusterInvite",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AcknowledgeNotification",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddAuditLogCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddChannelMember",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddChannelsToRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddGroupMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddTeamMember",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddTeamMemberFromInvite",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddTeamMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddTeamsToRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AddUserToGroupSyncables",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ApplyIPFilters",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AssignAccessControlPolicyToChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AssignBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AttachDeviceExtraProps",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AutocompleteChannelsForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AutocompleteChannelsForTeamForSearch",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AutocompleteEmoji",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "AutocompleteUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CanUserDirectMessage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CancelJob",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ChannelMembersMinusGroupMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CheckAccessControlPolicyExpression",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CheckIntegrity",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CheckUserMfa",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ClearServerBusy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ConfirmCustomerPayment",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ConvertBotToUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ConvertUserToBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateAccessControlPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateCPAField",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateChannelBookmark",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateCommand",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateComplianceReport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateCustomerPayment",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateDataRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateDirectChannel",
+      "classification": "high_level_only",
+      "endpoint_count": 1,
+      "surfaces": [
+        "Bot.create_direct_channel"
+      ],
+      "evidence": "build/reports/high-level-api-stand.json"
+    },
+    {
+      "operation_id": "CreateEmoji",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateGroupChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateIncomingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateJob",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateOAuthApp",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateOutgoingOAuthConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateOutgoingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreatePost",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.send_document",
+        "Bot.send_message"
+      ]
+    },
+    {
+      "operation_id": "CreatePostEphemeral",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateRemoteCluster",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateScheduledPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateSidebarCategoryForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateTermsOfService",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateUpload",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "CreateUserAccessToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DatabaseRecycle",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteAccessControlPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteAcknowledgementForPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteBotIconImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteBrandImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteCPAField",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteChannelBookmark",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteCommand",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteDataRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteEmoji",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteExport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteGroupMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteImport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteIncomingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteLdapPrivateCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteLdapPublicCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteOAuthApp",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteOutgoingOAuthConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteOutgoingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeletePost",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.delete_message",
+        "Message.delete"
+      ]
+    },
+    {
+      "operation_id": "DeletePreferences",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteReaction",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "DeleteRemoteCluster",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteSamlIdpCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteSamlPrivateCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteSamlPublicCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteScheduledPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DeleteUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DemoteUserToGuest",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DisableBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DisablePlugin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DisableUserAccessToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DoPostAction",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DownloadComplianceReport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DownloadExport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DownloadJob",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "DownloadSystemLogs",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "EnableBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "EnablePlugin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "EnableUserAccessToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ExecuteCommand",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GenerateMfaSecret",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GenerateRemoteClusterInvite",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GenerateSupportPacket",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAccessControlPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAccessControlPolicyAutocompleteFields",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAllChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAllRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAllSharedChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAllTeams",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAnalyticsOld",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAncillaryPermissionsPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAudits",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetAuthorizedOAuthAppsForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetBotIconImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetBots",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetBrandImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetBulkReactions",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCELVisualAST",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCPAGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannel",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.get_channel"
+      ]
+    },
+    {
+      "operation_id": "GetChannelAccessControlAttributes",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelByName",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetChannelByNameForTeamName",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMember",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMemberCountsByGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMembersByIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMembersForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMembersTimezones",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelMembersWithTeamDataForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelModerations",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelPoliciesForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelStats",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelUnread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelsForAccessControlPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelsForRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelsForScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelsForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetChannelsForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetClientConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetClientLicense",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCloudCustomer",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCloudLimits",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCloudProducts",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetClusterStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetCommandById",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetComplianceReport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetComplianceReports",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDataRetentionPolicies",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDataRetentionPoliciesCount",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDataRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDataRetentionPolicyByID",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDefaultProfileImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetDeletedChannelsForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEmoji",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEmojiByName",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEmojiImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEmojiList",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEmojisByNames",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEndpointForInstallationInformation",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetEnvironmentConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFile",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFileInfo",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFileInfosForPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFileLink",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFilePreview",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFilePublic",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFileThumbnail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetFlaggedPostsForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupMessageMembersCommonTeams",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupStats",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupSyncableForChannelId",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupSyncableForTeamId",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupSyncablesChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupSyncablesTeams",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroups",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupsByChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupsByNames",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupsByTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetGroupsByUserId",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetIPFilters",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetImageByUrl",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetIncomingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetIncomingWebhooks",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetInvoiceForSubscriptionAsPdf",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetInvoicesForSubscription",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetJob",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetJobs",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetJobsByType",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetKnownUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetLdapGroups",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetLicenseLoadMetric",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetLogs",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetMarketplacePlugins",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetMarketplaceVisitedByAdmin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetNotices",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOAuthApp",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOAuthAppInfo",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOAuthApps",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOutgoingOAuthConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOutgoingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetOutgoingWebhooks",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPing",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPinnedPosts",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPluginStatuses",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPlugins",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPost",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.delete_message",
+        "Bot.edit_message_text",
+        "Message.delete",
+        "Message.edit_text"
+      ]
+    },
+    {
+      "operation_id": "GetPostThread",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetPostsAroundLastUnread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPostsForChannel",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetPostsUsage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPreferences",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetPreferencesByCategory",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPreferencesByCategoryByName",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPrevTrialLicense",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPreviewModalData",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPrivateChannelsForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetProfileImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPublicChannelsByIdsForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetPublicChannelsForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetReactions",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetRedirectLocation",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRemoteCluster",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRemoteClusterInfo",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRemoteClusters",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRole",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRoleByName",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetRolesByNames",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSamlCertificateStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSamlMetadata",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSamlMetadataFromIdp",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSchemes",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetServerBusyExpires",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetServerLimits",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSessions",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSharedChannelRemotes",
+      "classification": "unsupported_upstream_collision",
+      "endpoint_count": 2
+    },
+    {
+      "operation_id": "GetSharedChannelRemotesByRemoteCluster",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSidebarCategoriesForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSidebarCategoryForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSidebarCategoryOrderForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetStorageUsage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSubscription",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetSupportedTimezone",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeam",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetTeamByName",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetTeamIcon",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamInviteInfo",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamMember",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamMembersByIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamMembersForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamPoliciesForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamStats",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamUnread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamsForRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamsForScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamsForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTeamsUnreadForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTermsOfService",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetThreadMentionCountsByChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTotalUsersStats",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetTotalUsersStatsFiltered",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUpload",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUploadsForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUser",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.get_me",
+        "Bot.get_user"
+      ]
+    },
+    {
+      "operation_id": "GetUserAccessToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserAccessTokens",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserAccessTokensForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserAudits",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserByEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserByUsername",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetUserCountForReporting",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserScheduledPosts",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserStatus",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "GetUserTermsOfService",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserThread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUserThreads",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsers",
+      "classification": "high_level_only",
+      "endpoint_count": 1,
+      "surfaces": [
+        "Bot.get_users_in_team"
+      ],
+      "evidence": "docs/reports/game-accounts-admin.json"
+    },
+    {
+      "operation_id": "GetUsersByGroupChannelIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsersByIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsersByUsernames",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsersForReporting",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsersStatusesByIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetUsersWithInvalidEmails",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "GetWebappPlugins",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ImportTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InstallMarketplacePlugin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InstallPluginFromUrl",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InvalidateCaches",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InvalidateEmailInvites",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InviteGuestsToTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InviteRemoteClusterToChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "InviteUsersToTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "IsAllowedToUpgradeToEnterprise",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LinkGroupSyncableForChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LinkGroupSyncableForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LinkLdapGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListAllCPAFields",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListAutocompleteCommands",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListCPAValues",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListChannelBookmarksForChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListCommandAutocompleteSuggestions",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListCommands",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListExports",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListImports",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ListOutgoingOAuthConnections",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "Login",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LoginByCwsToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LoginSSOCodeExchange",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "Logout",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "LookupInteractiveDialog",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MarkNoticesViewed",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MigrateAuthToLdap",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MigrateIdLdap",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MoveChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MoveCommand",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MoveThread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "MyIP",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "OpenInteractiveDialog",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchBot",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchCPAField",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchCPAValues",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchCPAValuesForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchChannelModerations",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchDataRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchGroupSyncableForChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchGroupSyncableForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchPost",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call",
+        "Bot.edit_message_text",
+        "Message.edit_text"
+      ]
+    },
+    {
+      "operation_id": "PatchRemoteCluster",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchRole",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PatchUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PermanentDeleteAllUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PinPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PostEndpointForCwsWebhooks",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PostLog",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PostUserRecentCustomStatusDelete",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PromoteGuestToUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PublishUserTyping",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PurgeBleveIndexes",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "PurgeElasticsearchIndexes",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RegenCommandToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RegenOutgoingHookToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RegenerateOAuthAppSecret",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RegenerateTeamInviteId",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RegisterTermsOfServiceAction",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ReloadConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveAuditLogCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveChannelsFromRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveLicenseFile",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemovePlugin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveRecentCustomStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveSidebarCategoryForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveTeamIcon",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveTeamMember",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveTeamsFromRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RemoveUserFromChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RequestLicenseRenewalLink",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RequestTrialLicense",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ResetPassword",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ResetSamlAuthDataToEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RestartServer",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RestoreChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RestoreGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RestorePostVersion",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RestoreTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RevokeAllSessions",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RevokeSession",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RevokeSessionsFromAllUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "RevokeUserAccessToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SaveAcknowledgementForPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SaveReaction",
+      "classification": "generated_low_level",
+      "endpoint_count": 1,
+      "surfaces": [
+        "NativeAPI.call"
+      ]
+    },
+    {
+      "operation_id": "SearchAccessControlPolicies",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchAllChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchChannelsForAccessControlPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchChannelsForRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchEmoji",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchFiles",
+      "classification": "unsupported_upstream_collision",
+      "endpoint_count": 2
+    },
+    {
+      "operation_id": "SearchGroupChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchPosts",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchTeams",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchTeamsForRetentionPolicy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchUserAccessTokens",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SearchUsers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SendPasswordResetEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SendVerificationEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetBotIconImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetDefaultProfileImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetPostReminder",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetPostUnread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetProfileImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetServerBusy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetTeamIcon",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SetThreadUnreadByPostId",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SoftDeleteTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "StartBatchUsersExport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "StartFollowingThread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "StopFollowingThread",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SubmitInteractiveDialog",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SubmitPerformanceReport",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SwitchAccountType",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "SyncLdap",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TeamExists",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TeamMembersMinusGroupMembers",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestAccessControlPolicyExpression",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestElasticsearch",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestLdap",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestLdapConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestLdapDiagnostics",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestNotification",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestS3Connection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "TestSiteURL",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnassignAccessControlPolicyFromChannels",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UninviteRemoteClusterToChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnlinkGroupSyncableForChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnlinkGroupSyncableForTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnlinkLdapGroup",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnpinPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UnsetUserCustomStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateAccessControlPolicyActiveStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelBookmark",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelBookmarkSortOrder",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelMemberSchemeRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelNotifyProps",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelPrivacy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateChannelScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateCloudCustomer",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateCloudCustomerAddress",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateCommand",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateConfig",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateIncomingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateJobStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateMarketplaceVisitedByAdmin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateOAuthApp",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateOutgoingOAuthConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateOutgoingWebhook",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdatePost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdatePreferences",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateScheduledPost",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateSidebarCategoriesForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateSidebarCategoryForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateSidebarCategoryOrderForTeamForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateTeam",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateTeamMemberRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateTeamMemberSchemeRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateTeamPrivacy",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateTeamScheme",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateThreadReadForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateThreadsReadForUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUser",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserActive",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserAuth",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserCustomStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserMfa",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserPassword",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserRoles",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpdateUserStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpgradeToEnterprise",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UpgradeToEnterpriseStatus",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadBrandImage",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadData",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadFile",
+      "classification": "high_level_only",
+      "endpoint_count": 1,
+      "surfaces": [
+        "Bot.send_document"
+      ],
+      "evidence": "build/reports/high-level-api-stand.json"
+    },
+    {
+      "operation_id": "UploadLdapPrivateCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadLdapPublicCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadLicenseFile",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadPlugin",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadSamlIdpCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadSamlPrivateCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "UploadSamlPublicCertificate",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ValidateExpressionAgainstRequester",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ValidateOutgoingOAuthConnection",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "VerifyUserEmail",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "VerifyUserEmailWithoutToken",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "ViewChannel",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "getPostsByIds",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    },
+    {
+      "operation_id": "resetPasswordFailedAttempts",
+      "classification": "unsupported_not_reviewed",
+      "endpoint_count": 1
+    }
+  ]
+}

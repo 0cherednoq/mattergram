@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T11:17:50.593327+00:00",
+  "status": "passed for recorded web scenarios; full E5-03 remains open",
+  "server": "11.11.0",
+  "server_image": "mattermost/mattermost-team-edition:11.11.0@sha256:d5af347bedb54e85754076a131a6a204f4b2efb34369014a50966aa1347245b1",
+  "actual_version_header": "11.11.0.34102496491.44df209a25e1bbf4c3c13ec7e3ad89eb411faac6ccecffd713f85a69ac29fca7.false",
+  "browser": "Windows HeadlessChrome/157.0.0.0",
+  "viewport": [
+    1440,
+    1080
+  ],
+  "actor_roles": "system_user",
+  "setup_admin_runtime_bot_separate": true,
+  "MmBlocksEnabled": true,
+  "transport": {
+    "peer": "127.0.0.1",
+    "tls": "Shared local fixture CA trusted only in owned container; normal outgoing certificate verification enabled",
+    "ca_sha256": "2dbdbbef7ce6a17548cecf6f781309aee55ddc8090f07b6e76f0459907c4fe07"
+  },
+  "executed": [
+    "Text/textarea/static select/multiselect/bool/radio: inline field error, preserved edits and corrected submission.",
+    "Wizard with changed logical declaration: next step rendered, prior values retained and final submission accepted.",
+    "Dynamic lookup/search, category refresh, retained comment, selected Remote Beta and final submission.",
+    "Nine native Block types rendered, collapse/expand, signed button/select callbacks with selected_option b.",
+    "File upload, child submission, restored parent values/file and final parent submission; 36 bytes read back by ordinary actor.",
+    "Slack/Adaptive imports rendered as native Blocks; real signed callbacks.",
+    "Legacy rich attachment, native button/select callbacks and disabled button rendered.",
+    "Date and GMT+3 datetime with manual 12:00 PM input -> 09:00 UTC domain value; native cancel notification."
+  ],
+  "form_types": [
+    "TextInput",
+    "TextArea",
+    "Select",
+    "MultiSelect",
+    "Checkbox",
+    "Radio",
+    "DatePicker",
+    "DateTimePicker",
+    "FileInput",
+    "DialogButton"
+  ],
+  "events": [
+    {
+      "kind": "slash",
+      "mode": "basic",
+      "actor_matches": true
+    },
+    {
+      "kind": "field_error",
+      "mode": "basic"
+    },
+    {
+      "kind": "submit",
+      "mode": "basic",
+      "values": {
+        "title": "accepted-1111",
+        "detail": "11.11 browser detail",
+        "choice": "a",
+        "choices": [
+          "a",
+          "b"
+        ],
+        "enabled": true,
+        "plan": "b"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "wizard",
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "wizard",
+      "values": {
+        "project": "project-1111"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "wizard-final",
+      "values": {
+        "project": "project-1111",
+        "summary": "summary-1111"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "lookup",
+      "actor_matches": true
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "refresh",
+      "category": "b"
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "lookup",
+      "query": "remote",
+      "field": "pick"
+    },
+    {
+      "kind": "submit",
+      "mode": "lookup",
+      "values": {
+        "category": "b",
+        "pick": "remote-b",
+        "comment": "11.11 retained comment"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "blocks",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:blocks",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:select",
+      "selected_option": "b",
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "modern",
+      "actor_matches": true
+    },
+    {
+      "kind": "child_action",
+      "level": "1",
+      "field": "child"
+    },
+    {
+      "kind": "submit",
+      "mode": "child-1",
+      "values": {
+        "child_text_1": "child-1111"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "modern",
+      "values": {
+        "title": "modern-parent-1111",
+        "file": "stihssphttgz3nj9swsokjcd9y"
+      },
+      "file_ids_count": 1,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "slack",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:slack",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "adaptive",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:adaptive",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "legacy",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:legacy",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:legacy-select",
+      "selected_option": "b",
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "dates",
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "dates",
+      "values": {
+        "date": "2026-11-12",
+        "time": "2026-11-12T09:00:00+00:00"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "cancel",
+      "actor_matches": true
+    },
+    {
+      "kind": "cancel",
+      "mode": "cancel"
+    }
+  ],
+  "callback_http": {
+    "requests": 31,
+    "all_statuses_200": true,
+    "field_error_responses": 1,
+    "handler_errors": 0
+  },
+  "file_read_back": {
+    "ordinary_actor_download": 200,
+    "bytes": 36,
+    "sha256": "1c2c76ea15ca68f26ff4b141fd39a809f875e583a7da4c091daec0e31324541b",
+    "file_ids_count": 1,
+    "scope": "Real 11.11 browser upload; fresh explicit ordinary-actor API session read-back; runtime used issued bot token"
+  },
+  "screenshots": [
+    {
+      "path": "docs/reports/ui-web-11.11.0/basic-validation.png",
+      "sha256": "a1b00b90a715df7f6fac191d88b42b0dd2fa0830c5c2c59e6e8094e0a6067303"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/wizard-final.png",
+      "sha256": "21ab3912251d6d41425340dc691424232fb57638cd24c9bf17ba4b190ed177d0"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/lookup-refreshed.png",
+      "sha256": "1a851a43408bdfcf547bb603a94d2caa27aecb119523b34a723d1b0bd5f05a42"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/blocks-expanded.png",
+      "sha256": "acb473fd2ab4eb40330b55a373fa73ce1c45c61559082ad7e5295e67e563a3a0"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/modern-parent-restored.png",
+      "sha256": "d3b2441c13484a279bf22734579384708ac07a97d9f842c424eb378911407a3a"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/imported-cards.png",
+      "sha256": "16d21877846ab7f8aee902534a018e5b05ef1ebc233a70012b04733ff89efec7"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/legacy-menu.png",
+      "sha256": "857a0f3151209d234b87f11a725f392ca9bed662b9f518d45d09eb8190a118c7"
+    },
+    {
+      "path": "docs/reports/ui-web-11.11.0/dates-manual.png",
+      "sha256": "8339b6caf8312a549c545ad67885ac703e4d348b5c8f1e543e5d7fa8b7a67b00"
+    }
+  ],
+  "public_receipt": {
+    "path": "build/reports/ui-web1111-completed.json",
+    "sha256": "8c71b1e3a949bf527cff3f1b4c1a1a689225c5f43d29e1a733b573cfdfed0127"
+  },
+  "private_capture_sha256": "fce67c1873b8a9718435594383229730df3e479f060052f44cabfe43373e28a3",
+  "harness": {
+    "path": "tools/ui_stand.py",
+    "sha256": "cc9fa1efc48b7784a21e3961ab55bbaa0b03687bc2ebff921ba847d94a47d96e",
+    "snapshot": "build/ui-stand-1111.py"
+  },
+  "runtime_integrity": {
+    "files": 63,
+    "matches_baseline_wheel_source_hashes": true,
+    "baseline": "docs/reports/ui-web-12.0.2.json"
+  },
+  "observations": [
+    "11.11 uses React Select controls unlike the tested 12.0.2 client.",
+    "Child accessible dialog name retains parent title while visible heading shows child title.",
+    "Three browser console errors were already present before scenario execution; this report does not claim zero console errors."
+  ],
+  "remaining": [
+    "Additional date-bound/alternate-timezone/modal-depth parameter cases on 11.11",
+    "Real 11.7 web scenario execution",
+    "Native desktop/mobile apps and broader OS/browser/dependency matrix"
+  ],
+  "cleanup": {
+    "callback_host": "exit 0; issued command deleted",
+    "browser": "closed",
+    "owned_containers": "retained healthy"
+  },
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "E5-03": "open"
+  }
+}

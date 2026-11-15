@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "reason": "Retain state/group naming and matching; accept native Event without TelegramObject. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "04a56a1f9d5ee35676f2ce56c671bcf439ab121247b14f9c5005b5b4e1b92ea3",
+  "output_sha256": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+  "replacements": [
+    {
+      "before": "from collections.abc import Iterator\nfrom typing import Any, no_type_check\n\nfrom mattergram.types import TelegramObject\n\n\nclass State:\n",
+      "after": "from collections.abc import Iterator\nfrom typing import Any, no_type_check\n\nfrom mattergram.types import Event\n\n\nclass State:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    __repr__ = __str__\n\n    def __call__(self, event: TelegramObject, raw_state: str | None = None) -> bool:\n        if self.state == \"*\":\n            return True\n        return raw_state == self.state\n",
+      "after": "\n    __repr__ = __str__\n\n    def __call__(self, event: Event, raw_state: str | None = None) -> bool:\n        if self.state == \"*\":\n            return True\n        return raw_state == self.state\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            return cls\n        return cls.__parent__.get_root()\n\n    def __call__(self, event: TelegramObject, raw_state: str | None = None) -> bool:\n        return raw_state in type(self).__all_states_names__\n\n    def __str__(self) -> str:\n",
+      "after": "            return cls\n        return cls.__parent__.get_root()\n\n    def __call__(self, event: Event, raw_state: str | None = None) -> bool:\n        return raw_state in type(self).__all_states_names__\n\n    def __str__(self) -> str:\n",
+      "occurrences": 1
+    }
+  ]
+}

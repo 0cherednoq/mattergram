@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T05:12:57.353490+00:00",
+  "scope": "E2-02/E2-03/E3-01/E3-03 selected routing/DI/Memory FSM/SDK-owned WS slice. Full native API/UI/dialog/storage profiles and release remain incomplete.",
+  "tests": {
+    "passed": 213,
+    "subtests_passed": 56,
+    "platform": "Windows",
+    "python": [
+      "3.11",
+      "3.13",
+      "3.14"
+    ],
+    "native_installed_consumer_tests_per_wheel": 44,
+    "upstream_behavioral_tests": 131,
+    "upstream_suites": 13,
+    "upstream_commit": "97cfe79fa0ac9459d498bdb15cb7cb0530dbaac7",
+    "adaptations_and_exclusions": "manifests/ported-tests.json"
+  },
+  "core": {
+    "ported_modules": 18,
+    "static_audit": "ready",
+    "findings": 0,
+    "promotion": "maintained bytes match reviewed patch replay; no overwrite",
+    "extraction": "three runs/two stages repeatable, maintained source unchanged",
+    "native_boundaries": "hash-pinned read-only inputs in composite staging"
+  },
+  "live_stand": {
+    "result": "passed",
+    "checked_at": "2026-11-12T05:10:39.771815+00:00",
+    "scope": "Real Mattermost REST, SDK-owned WebSocket, Router/F/DI/handler/answer, typed errors and lifecycle cleanup.",
+    "server_version_header": "11.1.0.19159932738.a8d2732fea85e14f665dc14f367ae76fa14ced4259f093a4b4d2c9941960ec84.false",
+    "server_image": "mattermost/mattermost-team-edition:11.1.0@sha256:4862f28825a7d5d4624d48493061587344605a14f060d9b0cf0b189d896efe9e",
+    "post_id": "rdpc7j3i6pntdbrwrwa34bwc7r",
+    "routing": {
+      "human_post_id": "bnbmo1b7ijffmj19ko7re11rfa",
+      "answer_post_id": "swrkxndi3t8y9nxhf3ez1wwfte",
+      "handler_calls": 1,
+      "ignored_self_events": 1,
+      "permission_error_observed": true,
+      "bot_closed": true,
+      "dispatcher_closed": true
+    },
+    "checks": [
+      "bot identity via issued bot token",
+      "human posted event captured from real WebSocket",
+      "answer created and read back",
+      "own outgoing posted event ignored by normalizer",
+      "reply and nested reply use original root",
+      "private channel denied with 403",
+      "invalid token rejected with 401 and startup cleanup",
+      "owned client closed",
+      "SDK-owned authenticated WebSocket delivered posted through Router/F/DI to answer",
+      "routed answer read back and its own WebSocket event suppressed before handlers",
+      "handler permission failure delivered to native error observer",
+      "Dispatcher invalid-token startup and normal-stop cleanup"
+    ],
+    "credentials": "not included; fixture state only in ignored build/native-stand-state.json"
+  },
+  "checks": {
+    "ruff_lint": "passed",
+    "ruff_format": "passed",
+    "strict_mypy": "passed",
+    "actionlint": "passed",
+    "wheel_and_sdist": "built, twine strict passed, both consumer installs passed outside checkout"
+  },
+  "source_sha256": {
+    "manifests/core-plan.json": "29461a51dc3486bfc3af4ebd0011c3db17c16fccb26dd59b7f95a80b4013c57a",
+    "manifests/core.json": "337ae3e379c245ba0a6a3cc28cfee56c166c32850265c0d78439399caf2ea19a",
+    "manifests/ported-tests.json": "f2ce1d310d708adc2dc011a2ea47d5c6d6322bb6452f2a1fa3e84bf2141ae36c",
+    "pyproject.toml": "b235a2d6cf9eaddf0ec118ff7dbefe5523d4956a1da3262c7ba4b09ec4382f62",
+    "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+    "src/mattergram/bot.py": "6cbc8277e7b69ab96755d3865e982bef49c0ca5aeb078fb9bb3d3c72f6b5ff60",
+    "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+    "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+    "src/mattergram/dispatcher/dispatcher.py": "99d4158888214cbded50eff725ba436a9975ef363ac7620af3aa7fbaa7468b43",
+    "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+    "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0",
+    "src/mattergram/exceptions.py": "376ef40c058411373a679b56ce0503dcf1824d47e7163e713560ca18a4e22ec8",
+    "src/mattergram/filters/__init__.py": "d30e741908a07aa5fac69a9cd5a46b501dde91738151af985cd877b31617f152",
+    "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+    "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+    "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+    "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+    "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/mattergram/types/__init__.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+    "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+    "tests/integration/test_dispatcher_ws.py": "dab07cd00fbc4e8c4c9999cda24ad8f885210d8503cbbab25e0aaaf16e1de6a4",
+    "tests/unit/test_routing.py": "bb2aad51eb4faa1bcc5ba50919b8b85a978dc9e80cb5a58e178ec4980373abf7",
+    "tools/extract_core.py": "c2cc95debbad75d45185f269b04c232ca135b5d31eec130ac6ec2d861f03901d",
+    "tools/promote_core.py": "501626ebce9dbd012723a8df84663685d82ed41c15d64680c35c08ad722877a0",
+    "tools/verify_behavioral_port.py": "e65b6592d43a44a7466716d939b0bbdfeda58950483abb419006c786f1c66a92",
+    "tools/verify_native_stand.py": "204939fd0c7fe3b6489c39116c55b95dfde325d0e677493ad9eab2161630b04d",
+    "uv.lock": "d892d724f49b9c1c3b2afdf700233c27b4a8867765e5f68abc78bfcc200dcb5d"
+  },
+  "upstream_snapshots": "all 3711 files verified against upstream.lock.json",
+  "external_ci": "not run",
+  "publication": "not performed",
+  "next": "E3-02 real optional Redis storage/isolation profile, then E4 HTTP ingress"
+}

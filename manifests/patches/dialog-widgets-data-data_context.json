@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain composite/static/preview-aware async getter composition with typed mappings and adapted manager protocol. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "16c1f209024f3781a4ba9ebf025f393c28cfe4ebe2df8a230348d09f341fb9c9",
+  "output_sha256": "8bf6ae6e096e0faeb7e89ab1f3ae3a1ce01b85334c4c73b13e1a0d71bf8c1b36",
+  "replacements": [
+    {
+      "before": "from mattergram_dialog.api.internal.widgets import DataGetter\nfrom mattergram_dialog.api.protocols import DialogManager\n\n\nclass CompositeGetter:\n    def __init__(self, *getters: DataGetter):\n        self.getters: list[DataGetter] = list(getters)\n\n    async def __call__(self, **kwargs):\n        data = {}\n        for g in self.getters:\n            data.update(await g(**kwargs))\n        return data\n\n\nclass StaticGetter:\n    def __init__(self, data: dict):\n        self.data = data\n\n    async def __call__(self, **kwargs):\n        return self.data\n\n\nclass PreviewAwareGetter:\n    def __init__(self, normal_getter: DataGetter, preview_getter: DataGetter):\n        self.normal_getter = normal_getter\n        self.preview_getter = preview_getter\n\n    async def __call__(self, dialog_manager: DialogManager, **kwargs):\n        if dialog_manager.is_preview():\n            return await self.preview_getter(\n                dialog_manager=dialog_manager, **kwargs,\n            )\n        else:\n            return await self.normal_getter(\n                dialog_manager=dialog_manager, **kwargs,\n            )\n",
+      "after": "from __future__ import annotations\n\nimport inspect\nfrom collections.abc import Awaitable, Callable, Mapping\nfrom typing import Any\n\nGetter = Callable[..., Mapping[str, Any] | Awaitable[Mapping[str, Any]]]\n\n\nasync def invoke_getter(getter: Getter, manager: Any) -> dict[str, Any]:\n    parameters = inspect.signature(getter).parameters\n    value = getter(manager=manager) if \"manager\" in parameters else getter()\n    if inspect.isawaitable(value):\n        value = await value\n    if not isinstance(value, Mapping):\n        raise TypeError(\"Dialog getter must return a mapping\")\n    return dict(value)\n\n\nasync def load_data(getters: tuple[Getter, ...], manager: Any, base: Mapping[str, Any]) -> dict[str, Any]:\n    result = dict(base)\n    for getter in getters:\n        result.update(await invoke_getter(getter, manager))\n    return result\n\n\n__all__ = [\"Getter\", \"invoke_getter\", \"load_data\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

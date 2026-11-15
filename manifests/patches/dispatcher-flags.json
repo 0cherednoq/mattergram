@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Retain decorator flags; rename aiogram_flag storage and remove Telegram chat_action typing protocol. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "e07825a1ea5540b2ef49cf70423f5d5155d9526fb3e41fca9ed250f66aaf802f",
+  "output_sha256": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+  "replacements": [
+    {
+      "before": "            raise ValueError(msg)\n\n        if value is not None and callable(value):\n            value.aiogram_flag = {\n                **extract_flags_from_object(value),\n                self.flag.name: self.flag.value,\n            }\n            return cast(Callable[..., Any], value)\n        return self._with_value(AttrDict(kwargs) if value is None else value)\n\n\nif TYPE_CHECKING:\n\n    class _ChatActionFlagProtocol(FlagDecorator):\n        def __call__(  # type: ignore[override]\n            self,\n            action: str = ...,\n            interval: float = ...,\n            initial_sleep: float = ...,\n            **kwargs: Any,\n        ) -> FlagDecorator:\n            pass\n\n\nclass FlagGenerator:\n",
+      "after": "            raise ValueError(msg)\n\n        if value is not None and callable(value):\n            value.mattergram_flag = {\n                **extract_flags_from_object(value),\n                self.flag.name: self.flag.value,\n            }\n            return cast(Callable[..., Any], value)\n        return self._with_value(AttrDict(kwargs) if value is None else value)\n\n\nclass FlagGenerator:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            raise AttributeError(msg)\n        return FlagDecorator(Flag(name, True))\n\n    if TYPE_CHECKING:\n        chat_action: _ChatActionFlagProtocol\n\n\ndef extract_flags_from_object(obj: Any) -> dict[str, Any]:\n    if not hasattr(obj, \"aiogram_flag\"):\n        return {}\n    return cast(dict[str, Any], obj.aiogram_flag)\n\n\ndef extract_flags(handler: HandlerObject | dict[str, Any]) -> dict[str, Any]:\n",
+      "after": "            raise AttributeError(msg)\n        return FlagDecorator(Flag(name, True))\n\n\ndef extract_flags_from_object(obj: Any) -> dict[str, Any]:\n    if not hasattr(obj, \"mattergram_flag\"):\n        return {}\n    return cast(dict[str, Any], obj.mattergram_flag)\n\n\ndef extract_flags(handler: HandlerObject | dict[str, Any]) -> dict[str, Any]:\n",
+      "occurrences": 1
+    }
+  ]
+}

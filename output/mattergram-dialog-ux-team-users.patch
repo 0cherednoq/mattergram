@@ -1,0 +1,60 @@
+*** Begin Patch
+*** Update File: C:\Users\user\.codex\skills\mattergram-dialog-ux\SKILL.md
+@@
+-description: "Design, implement, or review structured Mattermost interfaces built with mattergram_dialog: one-post navigation, button rows, filters, page or cursor pagination, dense tables, native forms, and WebSocket live refresh. Use when a task changes a mattergram_dialog Window/FormWindow, asks which UI component fits data, or asks to reduce clicks, nesting, clutter, or navigation mistakes."
++description: "Design, implement, or review structured Mattermost interfaces built with mattergram_dialog: navigation, tables, forms, team-scoped user and role management, and live refresh. Use when a task changes a Window/FormWindow, chooses UI components, manages application users from Mattermost teams, or reduces clicks, nesting, clutter, or navigation mistakes."
+@@
+ 4. Read [references/component-selection.md](references/component-selection.md) before choosing pagination, data display, filters, or form fields.
++   For user/role administration, also read [references/team-user-management.md](references/team-user-management.md).
+@@
+ - Match form fields to data types and the explicit `UIProfile`; never assume a newer widget exists on an older server.
++- Keep application roles separate from Mattermost system/team roles. A user picker stores the stable Mattermost user ID, derives display data from Mattermost, and revalidates membership on submit.
+*** Add File: C:\Users\user\.codex\skills\mattergram-dialog-ux\references\team-user-management.md
++# Team-scoped user management
++
++Use this reference when a Mattermost bot assigns application roles or access to existing Mattermost users.
++
++## Identity and authorization boundaries
++
++- Treat `User.id` as the stable identity. Show `@username` and an optional real name, but never accept a separately typed ID/username pair.
++- Store application roles such as `admin`, `operator`, or `viewer` in the application's repository. Do not mutate Mattermost passwords, account status, system roles, team roles, or membership unless the user explicitly requested native Mattermost administration.
++- Revalidate the selected ID against the configured team when the form is submitted. A signed or native select prevents casual mistakes but is not an authorization boundary.
++- Exclude bot accounts, deactivated users, and users already assigned to the application unless the task explicitly needs them.
++- Preserve a last-active-application-admin invariant when the application has its own administrators.
++
++## Reading one team's users
++
++Use the native paged endpoint with the runtime bot token:
++
++```http
++GET /api/v4/users?in_team=<team_id>&active=true&page=0&per_page=100
++```
++
++Page until the result is shorter than `per_page`. Reject malformed profiles or duplicate IDs instead of silently producing an ambiguous picker.
++
++Mattermost form `data_source="users"` searches users visible to the client and is not a strict one-team filter. For an exact team boundary, build static options from the endpoint above or implement a dynamic lookup that applies the same `in_team` filter and submit-time validation.
++
++For a small team, rebuild static options whenever the form opens; no cache or lookup endpoint is necessary. For a large team, prefer server-side search/dynamic lookup and bounded results.
++
++## Giving the bot access
++
++Provision membership separately from runtime:
++
++1. A setup credential with `add_user_to_team` adds the bot account through `POST /api/v4/teams/{team_id}/members`.
++2. Verify the resulting bot/team membership by calling the team-scoped users endpoint with the ordinary bot token.
++3. Run the application with the ordinary bot token. Do not grant system-admin or add an administrative runtime fallback merely to populate a user picker.
++
++The endpoint requires an active session and membership in the selected team; it does not require system-admin. Customized roles or access policies can still affect the bot, so treat the real startup request as authoritative and fail explicitly when it is denied.
++
++A DM/direct channel has no trustworthy team scope. Supply the configured team ID through deployment/provisioning or let an authorized administrator choose from an allowlist; never trust an arbitrary team ID from form submission.
++
++## Recommended flow
++
++For a small application-admin panel:
++
++1. Open Users.
++2. Open Add user.
++3. Choose an unassigned active human team member, choose an application role, and submit.
++
++This keeps the primary task at three clicks from persistent navigation, keeps the native form to three fields or fewer, and avoids exposing raw IDs or password controls.
+*** End Patch

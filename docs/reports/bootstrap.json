@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "tasks": ["E6-01", "E6-02", "E6-03"],
+  "scope": "Automatic bot/team/channel/membership/command Bootstrap with encrypted ownership/secrets, repeat reconciliation, explicit recovery and runtime-only handoff",
+  "test_matrix": [
+    {
+      "python": "3.11.15",
+      "tests": 445,
+      "subtests": 275,
+      "skipped": 0,
+      "real_redis": true,
+      "junit_sha256": "7b162290a1df258c82407842e027450df8942a23f9ceb6876b46e050ba02cecc",
+      "redis_report_sha256": "ee2047c7fbafe9a146f27931406d38738a376fea82349cc976b3528620a07a46"
+    },
+    {
+      "python": "3.13.12",
+      "tests": 445,
+      "subtests": 275,
+      "skipped": 0,
+      "real_redis": true,
+      "junit_sha256": "eca36df68d3000943a55618b5647925f34265108fa2ffe557291f9ef494468fb",
+      "redis_report_sha256": "98ac4b996bf21172e8c9848c73531a703b7740409d9b84dbff885345690e858c"
+    },
+    {
+      "python": "3.14.3",
+      "tests": 445,
+      "subtests": 275,
+      "skipped": 0,
+      "real_redis": true,
+      "junit_sha256": "23716c2eb91c4df45240a520d189ea75d94106c1508b36d4b4b2f467a7673a88",
+      "redis_report_sha256": "cba9cea5ac4c7d9aa0fea9bac324d62aee6aef642d65b19b8c05627f67fd5a1c"
+    }
+  ],
+  "native_mattermost": {
+    "version": "12.0.2",
+    "teams": 2,
+    "private_channels": 2,
+    "commands": 4,
+    "first": {"created": 18, "reused": 2},
+    "identical_repeat": {"reused": 20},
+    "metadata_change": {"reused": 18, "updated": 4},
+    "resource_ids_preserved": true,
+    "bot_token_preserved": true,
+    "command_tokens_preserved": true,
+    "distinct_command_tokens": true,
+    "sdk_callbacks": 4,
+    "ordinary_actor_post_readbacks": 4,
+    "callback_readiness_inferred": false,
+    "owned_cleanup": true,
+    "report_sha256": "536db1b7194ac0b8f6e54c33f7ae0ba862f181a58c7f87dcf723a034d02d81ae"
+  },
+  "postman_simulation": {
+    "kind": "authored local stand-in; not real-provider fault injection",
+    "repeat_without_duplicates": true,
+    "runtime_without_setup_credential": true,
+    "conclusive_403_aborted_and_retryable": true,
+    "committed_before_timeout_blocks_retry": true,
+    "explicit_native_id_recovery_without_duplicate": true,
+    "foreign_trigger_not_overwritten": true,
+    "feature_allowlist_read_back": true,
+    "least_privileged_command_sync": true,
+    "missing_permission_fails_before_command_list": true,
+    "concurrent_instances_serialized": true,
+    "request_events": 437,
+    "known_credentials_in_cli_log": false,
+    "report_sha256": "3cc990a70468a4db5e4702888a0ff6c2fe9dbcaf50e0d3efd745d2ee79859f00",
+    "log_check_sha256": "153c124e3c4cc1c83a1a4310b9f3fbd71587fbc052a0a3cbc03941397b531eaa"
+  },
+  "quality": {
+    "ruff_files": 155,
+    "strict_mypy_files": 119,
+    "primary_references": 13,
+    "reviewed_donor_modules": 21,
+    "manifest_decisions": 28,
+    "behavioral_suites": 15,
+    "native_11_1_rest_ws_regression": "passed",
+    "native_11_1_http_forms_regression": "passed",
+    "extraction_and_static_audit": "passed"
+  },
+  "distribution": {
+    "directory": "build/final-dist/e6-bootstrap-final",
+    "source_files_exact_in_original_and_sdist_rebuilt_wheels": 78,
+    "installed_checks_per_archive": 188,
+    "base_install_pulls_cryptography_or_redis": false,
+    "twine_strict": "passed",
+    "wheel_sha256": "a92d809119756b0933d354e363b9cf92307c8dadc9e547f2b7d579f1340bcd25",
+    "sdist_sha256": "55fabb216ef360347b5ad9a1afdda68816dde4abca88b3617b69f4de4392e317",
+    "receipt_sha256": "35b4e7a3aa600c441ab86b58e73911c7aabb6e2ed6448b51baa0268e40e42e54",
+    "integrity_sha256": "4f8fbbea61d0deec6790a10360158450e5223807e5c761963ae1c9520a63d963",
+    "published": false
+  },
+  "limits": [
+    "callback_verified stays false until deployment infrastructure proves Mattermost can reach the listener",
+    "ambiguous native writes and lost secrets require explicit reconciliation",
+    "the state lock coordinates one local filesystem and is not distributed fencing",
+    "POSIX private-file enforcement was not executed by this Windows report",
+    "native fault injection was modeled locally; real-provider fault behavior is not claimed",
+    "resource removal from the manifest does not prune native history by default"
+  ],
+  "source_sha256": {
+    "src/mattergram/provisioning/bootstrap.py": "7f9da6a210a24e43fb6de9574e53865a4e81c6ee57690443dbb00810f5cb80ec",
+    "src/mattergram/provisioning/specs.py": "7f6bd4c91e1263eba785400593181eb6ee1930d725f5c7b1d6eb10e530b3815b",
+    "src/mattergram/provisioning/resources.py": "9ff6c1fc4deaa2c90f88c3a10ff6b205952dbbb2a580d180590891bced80af74",
+    "src/mattergram/provisioning/permissions.py": "01d85a4667a7821f0b6f783b9f7c9ea8f6b8575280fe886a36b6be0c27e63a2e",
+    "src/mattergram/provisioning/client.py": "31872594c4613423e8d988691f395ea88ab1c231f21828700ad73e8e7b18e369",
+    "src/mattergram/provisioning/models.py": "2e36ac149316f2a0a755c7d60e1d8558fdf86929f28ccab0fccff136f16eb9c1",
+    "src/mattergram/provisioning/store.py": "0d97149e871abcd8516857cff97dc44c008e379652271565a03e400dda42959a",
+    "src/mattergram/provisioning/store_models.py": "3e3eb7d64ee7b3b8e506c36295cbd85fa2988666dc7e24a597234e5f20f3a9d8",
+    "src/mattergram/provisioning/__init__.py": "3a187b0beb04d56c711cd82e77b52a61f70e6dcb09a044d3a662f47674ba9393",
+    "src/mattergram/bot.py": "c93879edc4e3df158b439700fcf69f4abf21a8a27143d86dba32e6c701d98a61"
+  }
+}

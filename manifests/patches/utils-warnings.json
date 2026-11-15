@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Rename AiogramWarning base to MattergramWarning; preserve warning hierarchy. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "c46b10731acc5ed7597cb386442a8a44825bc3cd03037f4239c72d8a405f6001",
+  "output_sha256": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82",
+  "replacements": [
+    {
+      "before": "class AiogramWarning(Warning):\n    pass\n\n\nclass Recommendation(AiogramWarning):\n    pass\n",
+      "after": "class MattergramWarning(Warning):\n    pass\n\n\nclass Recommendation(MattergramWarning):\n    pass\n",
+      "occurrences": 1
+    }
+  ]
+}

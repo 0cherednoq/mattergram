@@ -1,0 +1,264 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T10:59:42.863561+00:00",
+  "status": "passed for additional Windows Chrome 157 / Mattermost 12.0.2 web scenarios",
+  "baseline_evidence": "docs/reports/ui-web-12.0.2.json",
+  "scope": "E5-03 additional UI acceptance; no runtime source changed and full client matrix remains open",
+  "date_bounds": {
+    "min": "2026-11-10",
+    "max": "2026-11-14",
+    "disabled_days": [
+      9,
+      15
+    ],
+    "both_inclusive_bounds_submitted": [
+      "2026-11-10",
+      "2026-11-14"
+    ],
+    "limitation": "Tests native calendar restrictions and valid boundary submission, not forged out-of-bound API input"
+  },
+  "datetime": {
+    "location_timezone": "Asia/Kolkata",
+    "display": "GMT+5:30",
+    "default": "6:30 PM",
+    "manual_time_entry": false,
+    "time_interval": 30,
+    "menu_items": 48,
+    "chosen_local_time": "7:00 PM",
+    "sdk_value": "2026-11-12T13:30:00+00:00"
+  },
+  "label_position": {
+    "values": [
+      "before",
+      "after"
+    ],
+    "types": [
+      "Checkbox",
+      "Radio",
+      "CheckboxGroup"
+    ],
+    "checkbox_caption": "label_position applies to inline caption from placeholder; field heading stays above",
+    "submitted_values": {
+      "bool_before": true,
+      "radio_before": "b",
+      "group_before": [
+        "a",
+        "b"
+      ],
+      "bool_after": true,
+      "radio_after": "b",
+      "group_after": [
+        "a",
+        "b"
+      ]
+    }
+  },
+  "legacy": {
+    "rendered": [
+      "fallback",
+      "pretext",
+      "color border",
+      "author",
+      "title",
+      "markdown text",
+      "short field",
+      "footer",
+      "button",
+      "static select",
+      "disabled button"
+    ],
+    "button_callback": "ui:legacy",
+    "select_callback": "ui:legacy-select",
+    "selected_option": "b",
+    "disabled": "isDisabled true; ordinary click timed out at 800ms; only the two enabled-control callbacks reached SDK"
+  },
+  "runs": [
+    {
+      "name": "a",
+      "public_receipt": {
+        "path": "build/reports/ui-web12-extra-run-a.json",
+        "sha256": "09bf8809ddfe116863eb8f4407cebd5606abe7fec0193a4e29ac25047bb75cbd"
+      },
+      "private_capture_sha256": "980c213696d0f403d6dd5b7936c489e43ba02590e53db174d85114b6f6c30824",
+      "harness_sha256": "da3129911a7cdf16f715413104a1c97d70b772156b862f5172e8ae1dc44040e2",
+      "events": [
+        {
+          "kind": "slash",
+          "mode": "bounds",
+          "actor_matches": true
+        },
+        {
+          "kind": "submit",
+          "mode": "bounds",
+          "values": {
+            "bounded_date": "2026-11-10"
+          },
+          "file_ids_count": 0,
+          "actor_matches": true
+        },
+        {
+          "kind": "slash",
+          "mode": "bounds",
+          "actor_matches": true
+        },
+        {
+          "kind": "submit",
+          "mode": "bounds",
+          "values": {
+            "bounded_date": "2026-11-14"
+          },
+          "file_ids_count": 0,
+          "actor_matches": true
+        },
+        {
+          "kind": "slash",
+          "mode": "timezone",
+          "actor_matches": true
+        },
+        {
+          "kind": "submit",
+          "mode": "timezone",
+          "values": {
+            "offset_time": "2026-11-12T13:30:00+00:00"
+          },
+          "file_ids_count": 0,
+          "actor_matches": true
+        },
+        {
+          "kind": "slash",
+          "mode": "labels",
+          "actor_matches": true
+        },
+        {
+          "kind": "submit",
+          "mode": "labels",
+          "values": {
+            "bool_before": true,
+            "radio_before": "b",
+            "group_before": [
+              "a",
+              "b"
+            ],
+            "bool_after": true,
+            "radio_after": "b",
+            "group_after": [
+              "a",
+              "b"
+            ]
+          },
+          "file_ids_count": 0,
+          "actor_matches": true
+        },
+        {
+          "kind": "slash",
+          "mode": "legacy",
+          "actor_matches": true
+        },
+        {
+          "kind": "callback",
+          "data": "ui:legacy",
+          "selected_option": null,
+          "actor_matches": true
+        },
+        {
+          "kind": "callback",
+          "data": "ui:legacy-select",
+          "selected_option": "b",
+          "actor_matches": true
+        }
+      ],
+      "http_requests": 11,
+      "all_http_200": true,
+      "harness_snapshot": "build/ui-stand-extra-a.py"
+    },
+    {
+      "name": "b",
+      "public_receipt": {
+        "path": "build/reports/ui-web12-extra-run-b.json",
+        "sha256": "4e6f8f8fbef2328e6b78e4630dcb5169222ed0ffd5c39d79cdaabf805b4f355b"
+      },
+      "private_capture_sha256": "fb3556338fb68798cfba2f6606aef015d29f09eeacae9ee004ccf2d6eda728fb",
+      "harness_sha256": "f30edc1ce87e4afbd3942784ff7cc4f8c7d81f2c327694d65724db3008dc841f",
+      "events": [
+        {
+          "kind": "slash",
+          "mode": "labels",
+          "actor_matches": true
+        },
+        {
+          "kind": "submit",
+          "mode": "labels",
+          "values": {
+            "bool_before": true,
+            "radio_before": "b",
+            "group_before": [
+              "a",
+              "b"
+            ],
+            "bool_after": true,
+            "radio_after": "b",
+            "group_after": [
+              "a",
+              "b"
+            ]
+          },
+          "file_ids_count": 0,
+          "actor_matches": true
+        }
+      ],
+      "http_requests": 2,
+      "all_http_200": true,
+      "harness_snapshot": "build/ui-stand-extra-b.py"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/reports/ui-web-12.0.2/bounds-calendar.png",
+      "sha256": "4520fe37f530e47445dd03294bc3eff1b97e6ae69313148dbc955694cf4a82a7"
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/timezone-offset.png",
+      "sha256": "1c3506b278f600f6332cf83518dc5a8481c3e60aacc58dfcce49f00a0d2efc5d"
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/label-positions-inline.png",
+      "sha256": "8bec072a81a18bbc86c11c035ddfff5bec52a68948ce115f27abc15c2e38cfda"
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/legacy-controls.png",
+      "sha256": "2e342c8c814473418e24b8d4c81d3e085b102460676a997766cf29de04f92cc5"
+    }
+  ],
+  "accessibility_snapshots": [
+    {
+      "path": "docs/reports/ui-web-12.0.2/extra-bounds-calendar.yml",
+      "sha256": "fe4b7348f16f6d469be375987b641c1100cb97c094931beecdff9ae7dab2a418",
+      "original_sha256": "a50d333aab801d133684179d1892d57a5a3ca4fbde8d705ed5ee804c2aceb596",
+      "extraction": "Unchanged relevant accessibility-tree suffix; unrelated channel DOM omitted"
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/extra-timezone-menu.yml",
+      "sha256": "d3fe4090e1dc62ee0a6ad0d2e1199713c3eddba16e1698ce4b22e5b8e6e7e5e3",
+      "original_sha256": "092705b14d9f77a5e2ce2944eab84bffedd5528ec5f3f714d35376474a0c1f12",
+      "extraction": "Unchanged relevant accessibility-tree suffix; unrelated channel DOM omitted"
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/extra-labels-inline.yml",
+      "sha256": "0e18d24ad749e1d5f00da2cee5e93fa6efb55cc193b600cc2cfa7e2886151385",
+      "original_sha256": "1393e568cf2121cc236f2032a7623be40fd958345390459386e07673a2750c93",
+      "extraction": "Unchanged relevant accessibility-tree suffix; unrelated channel DOM omitted"
+    }
+  ],
+  "cleanup": "Both callback hosts closed with exit 0, their issued slash commands deleted; owned browser session closed",
+  "runtime_integrity": "Current 63 maintained source files still match hashes in baseline web evidence and its verified wheel",
+  "remaining": [
+    "Real web 11.7 and 11.11 scenarios",
+    "Native desktop/mobile apps",
+    "Additional browser/OS/dependency matrix"
+  ],
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "E5-03": "open"
+  }
+}

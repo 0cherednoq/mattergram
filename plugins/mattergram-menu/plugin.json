@@ -1,0 +1,21 @@
+{
+  "id": "com.mattergram.menu",
+  "name": "Mattergram Menu",
+  "description": "Persistent Telegram-style command keyboard above the Mattermost message composer.",
+  "version": "0.2.0",
+  "min_server_version": "11.9.0",
+  "server": {
+    "executables": {
+      "linux-amd64": "server/dist/plugin-linux-amd64",
+      "linux-arm64": "server/dist/plugin-linux-arm64"
+    }
+  },
+  "webapp": {
+    "bundle_path": "webapp/dist/main.js"
+  },
+  "settings_schema": {
+    "header": "Mattergram bots configure persistent composer keyboards per channel through the authenticated plugin API.",
+    "footer": "Keyboard state is stored in the plugin KV store. Native iOS and Android clients require a separate mobile plugin or post fallback.",
+    "settings": []
+  }
+}

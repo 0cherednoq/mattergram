@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "task": "E8-01",
+  "status": "complete-selection-pending-adaptation",
+  "checked_at": "2026-11-12",
+  "source": {
+    "repository": "https://github.com/Tishka17/aiogram_dialog",
+    "ref": "2.6.0",
+    "commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+    "tree_sha256": "cc951da5fdcf7e4e6acc103ae25744e43b93d67963f7964e9616498280285fa0",
+    "license": "Apache-2.0",
+    "license_sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  },
+  "inventory": {
+    "python_files": 250,
+    "package_modules": 111,
+    "test_modules": 45,
+    "runtime_registration_candidates": 76,
+    "dynamic_imports": 1,
+    "parse_errors": 1,
+    "inventory_sha256": "9599566b29900a32811f30bc11feee7fa62c973b635b0e243b0c6cff55843367",
+    "analysis": "Static AST only; donor code was not imported or executed."
+  },
+  "selection": {
+    "explicit_decisions": 40,
+    "copy": 3,
+    "adapt": 24,
+    "exclude": 13,
+    "selected_modules": 27,
+    "selected_behavioral_suites": 9,
+    "focus": "Dialog/Window/manager/context/stack/storage protocols, generic getters/conditions/items and Const/Format/Multi/Case text composition.",
+    "excluded": "Telegram keyboard/input/media/markup/link-preview renderers, Telegram background message manager and aggregate exports that pull those surfaces.",
+    "plan_sha256": "5c03c046a814cd725428aca5c7e61a3e342427c481c40bb7465f8c3974883d55",
+    "manifest_sha256": "7c59319e0d6335974a03dde49e66bd2a7352ab08821e70d256c3f7a7fdaba419"
+  },
+  "extraction": {
+    "stage": "build/port-staging/dialog-e8-01",
+    "repeat_stage": "build/port-staging/dialog-e8-01-repeat",
+    "receipt_sha256": "005b0e4e165f87098749164b8af478da957dcc59289d6770538af8ef8c0d00ae",
+    "repeat_receipt_sha256": "005b0e4e165f87098749164b8af478da957dcc59289d6770538af8ef8c0d00ae",
+    "source_written": false,
+    "license_staged": true
+  },
+  "audit": {
+    "ready": false,
+    "expected_phase": "E8-02",
+    "findings": 203,
+    "by_kind": {
+      "forbidden_export": 1,
+      "forbidden_import": 51,
+      "forbidden_symbol": 1,
+      "missing_dependency": 16,
+      "missing_export": 110,
+      "pending_adaptation": 24
+    },
+    "meaning": "E8-01 proves the pinned selection and reproducible extraction only. No staged module is promoted or claimed runnable until E8-02 resolves every finding.",
+    "report_sha256": "b7e2dcba7165d65ecf28725120ffeaf69cf00ef8612d9a1f55b7b3e5831780fe"
+  },
+  "verification": {
+    "ci_gate": "python -m tools.verify_dialog_extraction",
+    "report_sha256": "4df5cec3e4969ea9f14e082f8f38e797cddcd6c58e2914df12662e951336900d",
+    "windows_python": [
+      "3.11.15",
+      "3.13.12",
+      "3.14.3"
+    ],
+    "per_version": "469 tests + 312 subtests, real Redis, zero skips",
+    "junit_sha256": {
+      "3.11": "42dff4f19e162e0aae77591ccce18a494fc4b0ae3d7fa949509dff79bd6d422c",
+      "3.13": "e2fff1e2af2ee1ffb95ea7be6e199389617d5ada5ab1cf9d8ce7c94be3728620",
+      "3.14": "0d827a03d594d4b99390d48c5560c0a35f9168e46a531220f23e821e662434d4"
+    },
+    "quality": "Ruff check/format passed for 174 files; strict mypy passed for 131 source files."
+  },
+  "distributions": {
+    "directory": "build/final-dist/e8-dialog-inventory-final",
+    "wheel_sha256": "df4527e69ada54526e30ea2686adfc53e64eaa6ac8f49b8dfe224d857c702a3f",
+    "sdist_sha256": "2f6c277a0de7f94fb0cc21c13c7bfdb659cd5bf24f9312fc05c080b828812a35",
+    "twine": "strict passed",
+    "runtime_dialog_package_in_wheel": false,
+    "sdist_inputs": "dialog plan, enriched manifest and inventory evidence required and verified",
+    "wheel_and_sdist_install": "Each installed outside checkout: 79 unit + 79 integration + 1 Redis config + 16 real Redis + 28 provisioning tests.",
+    "report_sha256": "868b0bc42e4c228f1aa14e8b37575a31c02b8c80824abbc2ebfe7a3dc0e1a488",
+    "published": false
+  },
+  "next": "E8-02 applies reviewed Mattermost-native adaptations, creates mattergram_dialog package exports/render backends, ports selected behavioral tests and requires a ready audit before promotion."
+}

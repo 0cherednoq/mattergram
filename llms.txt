@@ -1,0 +1,52 @@
+# mattergram 0.1.0a1
+
+> Native Mattermost bot framework with aiogram-style routing, explicit HTTP/WS lifecycles, typed UI/forms, provisioning, and mattergram_dialog.
+
+Use only imports present in docs/reference/public-api.json. Treat capability and verification status as versioned facts.
+
+## Start
+
+- [Project README](README.md)
+- [Examples index](docs/examples.md)
+- [Public API](docs/reference/api.md)
+- [Exceptions](docs/reference/exceptions.md)
+- [UI capabilities](docs/reference/capabilities.md)
+
+## Guides
+
+- [Установка и первый бот](docs/getting-started.md): Установить checkout, отправить первый post и запустить WebSocket handler.
+- [Модель Mattermost](docs/mattermost-model.md): Понять server, team, channel, post, thread, user и transport boundaries.
+- [Нативный клиент](docs/native-client.md): Создать пост через typed Bot и понять REST boundary.
+- [Router, WebSocket и FSM](docs/native-routing.md): Запустить Dispatcher, обработать WS message и изолировать FSM state.
+- [Redis FSM](docs/native-redis.md): Подключить Redis storage и event isolation с явным lifecycle.
+- [Slash-команды и действия поста](docs/native-http.md): Принять trusted slash/action HTTP events и завершить response один раз.
+- [Native UI](docs/native-ui.md): Выбрать Blocks, attachments, actions и явный UIProfile.
+- [Native forms](docs/native-forms.md): Открыть, проверить и продолжить managed native form.
+- [Slack и Adaptive input formats](docs/ui-input-formats.md): Преобразовать поддерживаемое подмножество внешних UI declarations.
+- [Декларации slash commands](docs/provisioning-commands.md): Собрать command manifest без provisioning side effects.
+- [Setup client](docs/setup-client.md): Отделить setup credential от runtime bot token.
+- [Provisioning store](docs/provisioning-store.md): Хранить ownership, secrets и uncertain intents.
+- [Automatic Bootstrap](docs/bootstrap.md): Повторяемо сверить bot, teams, channels, membership и commands.
+- [Low-level Native API](docs/native-api.md): Вызвать только reviewed generated Mattermost operations.
+- [High-level API](docs/high-level-api.md): Использовать typed reads, writes, edit/delete и file upload.
+- [Native API coverage](docs/native-api-coverage.md): Проверить классификацию всех pinned operationId.
+- [mattergram_dialog](docs/dialog-porting.md): Использовать декларативные post/form windows и понимать границы переноса.
+- [Многоэкранная карточка](docs/showcase.md): Собрать несколько таблиц, forms и WS-to-REST live updates в одном post.
+- [UI stand](docs/ui-stand.md): Проверить declarations в фиксированной версии настоящего web client.
+- [Porting tools](docs/porting-tools.md): Воспроизвести extraction, patches, inventory и audit.
+- [Production deployment](docs/deployment.md): Разделить setup/runtime, подключить ingress, Redis, probes и graceful shutdown.
+- [Troubleshooting и recovery](docs/troubleshooting.md): Диагностировать transport, ingress, FSM/UI и безопасно сверить uncertain writes.
+- [Миграция с aiogram](docs/migration-aiogram.md): Перенести application flow, сохранив Mattermost-native transport и UI semantics.
+- [Навигация и списки в mattergram_dialog](docs/dialog-navigation.md): Собрать один редактируемый пост с path-aware Back, несколькими таблицами, фильтрами, пагинацией и формами.
+- [Проектирование интерфейсов mattergram_dialog](docs/dialog-ui-design.md): Выбрать структуру карточки, строки кнопок, пагинацию, таблицу и поля формы по UX-бюджету сценария.
+- [Админка игровых аккаунтов](docs/game-accounts-admin.md): Подключить декларативное управление пользователями, push-маршрутами, импортом и проверками игровых аккаунтов без вывода секретов.
+- [Plugin architecture и рефакторинг Game Admin](docs/game-admin-routing-refactor.md): Добавить минимальный Python plugin lifecycle и первый reusable AdminUsersPlugin, сохранив keyboard как независимый необязательный UI adapter обычных текстовых сообщений.
+- [Постоянные клавиатуры Mattermost](docs/composer-keyboards.md): Описать plugin-backed composer keyboard, собрать, подписать, установить и проверить plugin или отдельный Mattermost image.
+
+## Important boundaries
+
+- WebSocket is inbound event transport. Shared post writes use REST or one callback response.
+- Native forms and posts are different UI surfaces.
+- A capability needs server, client, flag, and permission evidence; unknown is not supported.
+- RequestOutcomeUnknown requires reconciliation before retrying a write.
+- Telegram-only APIs and widgets are not compatibility promises.

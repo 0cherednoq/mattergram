@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "task": "E8-03",
+  "scenario": "one post -> branch navigation -> pagination/filter -> native form -> same-post confirmation",
+  "local_integration": {
+    "path": "tests/integration/test_dialog_runtime.py",
+    "sha256": "78b6e8453c388073107b685b242fb814ed68a62bd1a6e60d015406da95dcc633",
+    "cases": [
+      "trusted slash/callback/dialog HTTP ingress edits one post through the complete scenario",
+      "Back restores the actual source branch through a shared window",
+      "independent page and filter controls replace both text and post props",
+      "outdated signed post action is acknowledged without repeating the transition",
+      "terminal form replay does not repeat the business effect",
+      "FormWindow to FormWindow uses the native next response and rotated state",
+      "rendered native form requests cancel notification and cancel returns to the window that opened it",
+      "unrelated signed callback reaches the next Router handler",
+      "Blocks transition patches the source post, rotates mm_blocks_actions and ACKs the callback",
+      "dialog action TTL is explicit, propagated to signed controls and bounded by signer max_ttl",
+      "persistent-keyboard posted message navigation edits the actor's existing dialog post",
+      "persistent-keyboard navigation recreates a deleted dialog post on an exact provider 404",
+      "reply-keyboard response resets the actor session and creates a fresh bot post for every accepted message"
+    ]
+  },
+  "live_harness": {
+    "path": "tools/verify_dialog_scenario_stand.py",
+    "sha256": "c0eb9cb380fc4ef32676a6b2bc8bfa22f1300bd0fbd5c9491978458067a64184",
+    "private_report": "build/reports/dialog-scenario-stand.json",
+    "private_report_sha256": "5025ccf14e6769cbb0e72092dde60bc8d30759a0ca7e3abff42ddd6224bfcd0e"
+  },
+  "runtime": {
+    "path": "src/mattergram_dialog/runtime.py",
+    "sha256": "a8b8f54e1db607e44f58c89b6c1b68c32a2b520ad6f1c4a06fd3520340e42258",
+    "binding_path": "src/mattergram_dialog/bindings.py",
+    "binding_sha256": "1ac61d3309fd6612acc0220b01e860cef8993f56f937b283ea5665d009a582c6"
+  },
+  "live_profile": {
+    "server": "owned Mattermost 11.1.0",
+    "transport": "issued slash command, trusted HTTP callbacks, actor WebSocket and dialog submit API",
+    "storage": "real Redis 7 through an independent read client",
+    "browser_rendering": false,
+    "credentials": "omitted"
+  }
+}

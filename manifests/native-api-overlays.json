@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "source_id": "mattermost",
+  "source_commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+  "license_policy": "The pinned CC BY-NC-SA API documentation is verification-only input. Distributed wrappers contain only independently authored overlay facts and no descriptions or schemas.",
+  "operations": [
+    {
+      "operation_id": "GetUser",
+      "method": "GET",
+      "path": "/api/v4/users/{user_id}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/users.yaml"
+    },
+    {
+      "operation_id": "GetUserByUsername",
+      "method": "GET",
+      "path": "/api/v4/users/username/{username}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/users.yaml"
+    },
+    {
+      "operation_id": "GetUserStatus",
+      "method": "GET",
+      "path": "/api/v4/users/{user_id}/status",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/status.yaml"
+    },
+    {
+      "operation_id": "GetPreferences",
+      "method": "GET",
+      "path": "/api/v4/users/{user_id}/preferences",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/preferences.yaml"
+    },
+    {
+      "operation_id": "GetTeam",
+      "method": "GET",
+      "path": "/api/v4/teams/{team_id}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/teams.yaml"
+    },
+    {
+      "operation_id": "GetTeamByName",
+      "method": "GET",
+      "path": "/api/v4/teams/name/{name}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/teams.yaml"
+    },
+    {
+      "operation_id": "GetChannel",
+      "method": "GET",
+      "path": "/api/v4/channels/{channel_id}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/channels.yaml"
+    },
+    {
+      "operation_id": "GetChannelByName",
+      "method": "GET",
+      "path": "/api/v4/teams/{team_id}/channels/name/{channel_name}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/channels.yaml"
+    },
+    {
+      "operation_id": "CreatePost",
+      "method": "POST",
+      "path": "/api/v4/posts",
+      "success_status": 201,
+      "body": "required",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "GetPost",
+      "method": "GET",
+      "path": "/api/v4/posts/{post_id}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "DeletePost",
+      "method": "DELETE",
+      "path": "/api/v4/posts/{post_id}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "PatchPost",
+      "method": "PUT",
+      "path": "/api/v4/posts/{post_id}/patch",
+      "success_status": 200,
+      "body": "required",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "GetPostThread",
+      "method": "GET",
+      "path": "/api/v4/posts/{post_id}/thread",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "GetPostsForChannel",
+      "method": "GET",
+      "path": "/api/v4/channels/{channel_id}/posts",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/posts.yaml"
+    },
+    {
+      "operation_id": "SaveReaction",
+      "method": "POST",
+      "path": "/api/v4/reactions",
+      "success_status": 201,
+      "success_status_overrides": [
+        {
+          "status": 200,
+          "source": "build/reports/native-api-stand.json",
+          "reason": "Owned Mattermost 11.1.0 returned HTTP 200 after persisting and reading back the reaction."
+        }
+      ],
+      "body": "required",
+      "source": "api/v4/source/reactions.yaml"
+    },
+    {
+      "operation_id": "GetReactions",
+      "method": "GET",
+      "path": "/api/v4/posts/{post_id}/reactions",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/reactions.yaml"
+    },
+    {
+      "operation_id": "DeleteReaction",
+      "method": "DELETE",
+      "path": "/api/v4/users/{user_id}/posts/{post_id}/reactions/{emoji_name}",
+      "success_status": 200,
+      "body": "forbidden",
+      "source": "api/v4/source/reactions.yaml"
+    }
+  ]
+}

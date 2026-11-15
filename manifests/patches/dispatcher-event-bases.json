@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain sentinels and SkipHandler/CancelHandler; bind middleware event type to native Event instead of TelegramObject. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "21fab188b13ad97e80672394b164131f9a32b69b9c443b22e527167ab726b5f3",
+  "output_sha256": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+  "replacements": [
+    {
+      "before": "from unittest.mock import sentinel\n\nfrom mattergram.dispatcher.middlewares.base import BaseMiddleware\nfrom mattergram.types import TelegramObject\n\nMiddlewareEventType = TypeVar(\"MiddlewareEventType\", bound=TelegramObject)\nNextMiddlewareType = Callable[[MiddlewareEventType, dict[str, Any]], Awaitable[Any]]\nMiddlewareType = (\n    BaseMiddleware\n",
+      "after": "from unittest.mock import sentinel\n\nfrom mattergram.dispatcher.middlewares.base import BaseMiddleware\nfrom mattergram.types import Event\n\nMiddlewareEventType = TypeVar(\"MiddlewareEventType\", bound=Event)\nNextMiddlewareType = Callable[[MiddlewareEventType, dict[str, Any]], Awaitable[Any]]\nMiddlewareType = (\n    BaseMiddleware\n",
+      "occurrences": 1
+    }
+  ]
+}

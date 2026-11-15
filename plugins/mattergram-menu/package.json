@@ -1,0 +1,10 @@
+{
+  "name": "mattergram-menu-plugin",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test webapp/tests/*.test.cjs && go test ./server",
+    "build": "python build_plugin.py",
+    "check": "npm test && npm run build"
+  }
+}

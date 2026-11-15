@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain state-group intent filtering; bind the filter to mattergram Event and selected context injection key. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "734ac2d88ceb8810bcd4455d782091c3b1efcb6069e9e1760956dfad7bedc656",
+  "output_sha256": "06ab90de65c3a7e26f0bb1ee5affd30d0dfd3ca1eaf6dc9c76fdad8e2de8e0f0",
+  "replacements": [
+    {
+      "before": "from aiogram.filters import Filter\nfrom aiogram.fsm.state import StatesGroup\nfrom aiogram.types import TelegramObject\n\nfrom mattergram_dialog.api.entities import Context\nfrom mattergram_dialog.api.internal import CONTEXT_KEY\n\n\nclass IntentFilter(Filter):\n    def __init__(self, aiogd_intent_state_group: type[StatesGroup] | None):\n        self.aiogd_intent_state_group = aiogd_intent_state_group\n\n    async def __call__(self, obj: TelegramObject, **kwargs) -> bool:\n        del obj  # unused\n        if self.aiogd_intent_state_group is None:\n            return True\n\n        context: Context = kwargs.get(CONTEXT_KEY)\n        if not context:\n            return False\n        return context.state.group == self.aiogd_intent_state_group\n",
+      "after": "from __future__ import annotations\n\nfrom mattergram.fsm.state import State, StatesGroup\nfrom mattergram_dialog.api.entities import Context\n\n\nclass IntentFilter:\n    def __init__(self, *states: State | type[StatesGroup]) -> None:\n        self._state_names = {\n            name\n            for item in states\n            for name in (\n                item.__all_states_names__\n                if isinstance(item, type) and issubclass(item, StatesGroup)\n                else (item.state,)\n            )\n            if name is not None\n        }\n\n    def __call__(self, context: Context | None) -> bool:\n        return context is not None and context.state.state in self._state_names\n\n\n__all__ = [\"IntentFilter\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

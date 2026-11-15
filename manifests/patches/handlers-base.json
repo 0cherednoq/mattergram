@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "reason": "Bind class-based handler to native Event/Bot; remove TelegramObject bound. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "04d2db8042508df8ef19920d23a311dbec8e9e05f0fd3b1afe8d3033b8d43cde",
+  "output_sha256": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+  "replacements": [
+    {
+      "before": "from abc import ABC, abstractmethod\nfrom typing import TYPE_CHECKING, Any, Generic, TypeVar, cast\n\nfrom mattergram.types import Update\n\nif TYPE_CHECKING:\n    from mattergram import Bot\n\nT = TypeVar(\"T\")\n\n",
+      "after": "from abc import ABC, abstractmethod\nfrom typing import TYPE_CHECKING, Any, Generic, TypeVar, cast\n\nfrom mattergram.types import Event\n\nif TYPE_CHECKING:\n    from mattergram.bot import Bot\n\nT = TypeVar(\"T\")\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    @property\n    def bot(self) -> Bot:\n        from mattergram import Bot\n\n        if \"bot\" in self.data:\n            return cast(Bot, self.data[\"bot\"])\n",
+      "after": "\n    @property\n    def bot(self) -> Bot:\n        from mattergram.bot import Bot\n\n        if \"bot\" in self.data:\n            return cast(Bot, self.data[\"bot\"])\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        raise RuntimeError(msg)\n\n    @property\n    def update(self) -> Update:\n        return cast(Update, self.data.get(\"update\", self.data.get(\"event_update\")))\n\n    @abstractmethod\n    async def handle(self) -> Any:  # pragma: no cover\n",
+      "after": "        raise RuntimeError(msg)\n\n    @property\n    def update(self) -> Event:\n        return cast(Event, self.event)\n\n    @abstractmethod\n    async def handle(self) -> Any:  # pragma: no cover\n",
+      "occurrences": 1
+    }
+  ]
+}

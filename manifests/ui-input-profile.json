@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12",
+  "scope": "E5-01 authored supported-subset source adapters to native declarations. Not a Slack/Microsoft interaction backend or UI rendering proof.",
+  "public_api": [
+    "mattergram.ui.from_slack_blocks",
+    "mattergram.ui.from_adaptive_cards",
+    "mattergram.ui.UIConversionError"
+  ],
+  "contract": "docs/ui-input-formats.md",
+  "primary_references": [
+    {
+      "version": "11.11.0",
+      "commit": "50cec2b3aa1737a7eb54d165875357560cba5f82",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/block_renderer/translation/block_kit.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/block_renderer/translation/block_kit.ts",
+          "sha256": "7a20212b4efc7e9d08fdffcc372f6c26e4723f1f911efda8881bb3c9fa478686"
+        },
+        {
+          "path": "webapp/channels/src/components/block_renderer/translation/adaptive_cards.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/50cec2b3aa1737a7eb54d165875357560cba5f82/webapp/channels/src/components/block_renderer/translation/adaptive_cards.ts",
+          "sha256": "c8270cd6a41e256838643e5190c0fb65ee755a255a72e98d2fa6a9eb8878edbc"
+        }
+      ]
+    },
+    {
+      "version": "12.0.2",
+      "commit": "13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd",
+      "files": [
+        {
+          "path": "webapp/channels/src/components/block_renderer/translation/block_kit.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/block_renderer/translation/block_kit.ts",
+          "sha256": "7a20212b4efc7e9d08fdffcc372f6c26e4723f1f911efda8881bb3c9fa478686"
+        },
+        {
+          "path": "webapp/channels/src/components/block_renderer/translation/adaptive_cards.ts",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/webapp/channels/src/components/block_renderer/translation/adaptive_cards.ts",
+          "sha256": "c8270cd6a41e256838643e5190c0fb65ee755a255a72e98d2fa6a9eb8878edbc"
+        }
+      ]
+    }
+  ],
+  "source_documentation": [
+    {
+      "url": "https://docs.mattermost.com/developers/integrate/reference/mm-blocks",
+      "checked_at": "2026-11-12",
+      "use": "Native wire, registry and source-format compatibility."
+    },
+    {
+      "url": "https://docs.slack.dev/reference/block-kit/composition-objects/text-object/",
+      "checked_at": "2026-11-12",
+      "use": "plain_text/mrkdwn, entities and workspace-dependent semantics."
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/adaptive-cards/schema-explorer/text-block",
+      "checked_at": "2026-11-12",
+      "use": "Text wrapping versus clipping; supported size subset."
+    },
+    {
+      "url": "https://adaptivecards.io/explorer/Action.OpenUrl.html",
+      "checked_at": "2026-11-12",
+      "use": "Action version introductions and navigation semantics."
+    }
+  ],
+  "slack": {
+    "blocks": [
+      "section",
+      "header",
+      "markdown",
+      "divider",
+      "image",
+      "actions"
+    ],
+    "elements": [
+      "button",
+      "static_select",
+      "image (section accessory)"
+    ],
+    "options": [
+      "text",
+      "value"
+    ],
+    "text": [
+      "plain_text with escaped native Markdown",
+      "common mrkdwn; explicit application renderer for workspace-dependent tokens"
+    ],
+    "property_policy": "Exact allowed fields only; unknown fields, block_id, confirm, option_groups, input/rich_text/context and unresolved workspace identity fail."
+  },
+  "adaptive": {
+    "versions": [
+      "1.0",
+      "1.1",
+      "1.2",
+      "1.3",
+      "1.4",
+      "1.5"
+    ],
+    "elements": [
+      "TextBlock",
+      "Container",
+      "ColumnSet",
+      "Column (only in ColumnSet)",
+      "Image",
+      "ActionSet"
+    ],
+    "actions": [
+      "Action.Submit (External binding; no in-post input collection)",
+      "Action.OpenUrl (navigation)"
+    ],
+    "property_policy": "Exact allowed fields and declared version introductions; wrap=true required; no dropped inputs, fallback/requires, selection behavior, overflow, weighted widths or unsupported styles."
+  },
+  "bindings": {
+    "missing": "error",
+    "unused": "error",
+    "duplicate_ids": "error across whole input",
+    "ids": "native ASCII 1..64; no embedded data",
+    "value_or_string_data": "exact External.data match",
+    "object_data": "exact JSON-type-preserving External.context match; native escape hatch, not SDK signed context",
+    "url": "absolute HTTP(S); optional explicit matching OpenURL without additional query",
+    "copy": "deep-copy native Action declarations"
+  },
+  "serialization": "Native compiler only. No raw props.blocks/cards passthrough, silent legacy fallback or omitted unsupported siblings. Notification message supplied explicitly by application.",
+  "capability_gates": "Existing exact referenced UIProfile + client declaration + MmBlocksEnabled gates unchanged; no inferred client support.",
+  "input_limits": {
+    "json_values": 10000,
+    "json_depth": 64,
+    "string_utf8_bytes": 1048576,
+    "mrkdwn_characters": 16000,
+    "mrkdwn_format_depth": 32
+  },
+  "output_limits": "Existing compiler: total native blocks 100, nested depth 32, combined Text/Button text 16000, registry reconciliation/query limits.",
+  "source_policy": "Vendor references downloaded into ignored build for protocol inspection only; never executed, copied into runtime, or bundled.",
+  "remaining": [
+    "E5-03 actual web/desktop/mobile client execution and newer-server validation.",
+    "E6 onward remain in the original implementation plan."
+  ]
+}

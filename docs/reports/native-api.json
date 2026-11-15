@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "task": "E7-01",
+  "status": "complete",
+  "checked_at": "2026-11-12",
+  "scope": "Generated low-level JSON operation registry and separate NativeAPI client; high-level E7-02 facade and full E7-03 coverage remain open.",
+  "source": {
+    "repository": "https://github.com/mattermost/mattermost",
+    "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+    "tree_sha256": "48efad26d1b877b2ee20247eacbc3a7db19814a191bd4faff974ed67ceae7f74",
+    "license": "CC BY-NC-SA 3.0 API documentation, retained as verification-only snapshot",
+    "distribution_policy": "Runtime output is generated from an independently authored structural overlay and contains no OpenAPI descriptions or schemas."
+  },
+  "generation": {
+    "discovered_operations": 493,
+    "unique_operation_ids": 491,
+    "duplicate_operation_ids": [
+      "GetSharedChannelRemotes",
+      "SearchFiles"
+    ],
+    "generated_operations": 17,
+    "generated_operation_ids": [
+      "CreatePost",
+      "DeletePost",
+      "DeleteReaction",
+      "GetChannel",
+      "GetChannelByName",
+      "GetPost",
+      "GetPostThread",
+      "GetPostsForChannel",
+      "GetPreferences",
+      "GetReactions",
+      "GetTeam",
+      "GetTeamByName",
+      "GetUser",
+      "GetUserByUsername",
+      "GetUserStatus",
+      "PatchPost",
+      "SaveReaction"
+    ],
+    "drift_gate": "python -m tools.generate_native_api --check",
+    "report": "build/reports/native-api-generation.json",
+    "report_sha256": "c9ac3aa0677ae7aa6b67d3b24f8a31a355e59efa19d036f971c932987fa7a9f3"
+  },
+  "runtime_contract": {
+    "client": "NativeAPI owns its credential and HTTP pool; Bot and SetupClient are not generated or overwritten.",
+    "validation": "Exact generated operation, exact path placeholders, percent-encoded segments, structural JSON body, safe query scalars/sequences and exact declared success statuses.",
+    "errors": "Existing typed 401/403/429/API errors; redirects refused; uncertain writes are not retried.",
+    "response": "Raw decoded JSON; no unsupported schema-model claim.",
+    "unsupported": "Arbitrary paths, operations outside the registry, multipart/binary responses, response-header contracts and schema-generated models."
+  },
+  "native_stand": {
+    "result": "passed",
+    "server": "Mattermost 11.1.0 owned loopback Docker stand",
+    "credential": "ordinary bot token; no setup credential or administrative fallback",
+    "operations_executed": 17,
+    "cleanup": "Reaction removed and generated post soft-deleted.",
+    "explicit_status_override": "SaveReaction accepts documented 201 and native-observed 200 only.",
+    "provider_openapi_deviations": [
+      "Empty GetPreferences returned JSON null while pinned OpenAPI declares an array. Raw low-level response is preserved."
+    ],
+    "report": "build/reports/native-api-stand.json",
+    "report_sha256": "660916f08f677d0104344afd05631e4c4ad10b08f5794c9ae1519dc8958a082d"
+  },
+  "tests": {
+    "windows_python": [
+      "3.11.15",
+      "3.13.12",
+      "3.14.3"
+    ],
+    "per_version": "454 tests + 285 subtests, real Redis, zero skips",
+    "junit_sha256": {
+      "3.11": "fc2cfd6a689b10a81cc62c746f080565d93e339570df19a2dbd0cb2f138a731b",
+      "3.13": "1b170c070cd2262a41fef295f799619a4cbaa178553ede3e88eb44a5cb9e7f67",
+      "3.14": "de5a6cc3585e5bb61add4a461ed5c246450d1566d332352cafbfa79b9420495c"
+    },
+    "quality": "Ruff check/format passed; strict mypy passed for 126 source files; extraction replay/audit ready for 21 modules; 15 behavioral suites passed."
+  },
+  "distributions": {
+    "directory": "build/final-dist/e7-native-api-final",
+    "wheel_sha256": "47c09f209f2c18e6282af787f43bd0fa56ca098784d1f742ea0c06b4a3820cd9",
+    "sdist_sha256": "de98986bdb4880d70b2af6f146ad564bba431c1a80b537e63b5e17abf8817e10",
+    "twine": "strict passed",
+    "source_files": 82,
+    "wheel_and_sdist_install": "Each installed outside checkout: 74 unit + 75 integration + 1 Redis config + 16 real Redis + 28 provisioning tests.",
+    "report": "build/reports/distributions.json",
+    "report_sha256": "80fafe6ab2c63752952a10d8ab562561ec7386e518b9a2016296933654af5d00",
+    "published": false
+  },
+  "source_hashes": {
+    "src/mattergram/_http_client.py": "4395a97371478a407e3149fdc5b3c7adddcc66cc1543e60333e36da108b0c0b1",
+    "src/mattergram/native/client.py": "d5ad3ad32a5ea530ad99dacd3143ed64c5fde2476c46ae6472e0d0ce25f803c5",
+    "src/mattergram/native/operation.py": "a9b960cef72b59047d02546a7373ff3cf3b6f69752c06d90e58ff72ee4ba77ea",
+    "src/mattergram/native/_operations.py": "531b1b8c7e8056ef04c65cbc2ef6f116c6dc7b5c35874821b08f0193942f47e0",
+    "manifests/native-api-overlays.json": "74a5de915e2a71466a4b852ab26926edbe1405de74c84358daaebde4f12877c8"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "checked_at": "2026-11-13T13:21:20.479195+00:00",
+  "scope": "Owned Mattermost 11.1 API/HTTP/WS; not browser rendering",
+  "server_version": "11.1.0",
+  "checks": [
+    "slash created one post with two tables, three action groups, and eleven controls",
+    "native order form submission updated the source card",
+    "orders pagination preserved incidents pagination",
+    "incidents filtering preserved orders pagination",
+    "WebSocket message event triggered a REST text patch that preserved card props"
+  ],
+  "temporary_resources": "removed before report write",
+  "credentials": "omitted"
+}

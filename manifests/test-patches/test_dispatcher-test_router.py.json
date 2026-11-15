@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained. Observer registry assertion enumerates the native registry, preserving traversal/order/global filter assertions.",
+  "input_sha256": "e44ddd87352a0bb733263e0372cdb47864f61d8bbf8ab45373b4abf4a449002f",
+  "output_sha256": "482f4c3b1895b986980ca6d00f5c0587775ed8c8940fa630d325bef4f571523b",
+  "replacements": [
+    {
+      "before": "import pytest\n\nfrom aiogram.dispatcher.event.bases import UNHANDLED, SkipHandler, skip\nfrom aiogram.dispatcher.event.telegram import TelegramEventObserver\nfrom aiogram.dispatcher.router import Router\n\n\nclass TestRouter:\n",
+      "after": "import pytest\n\nfrom mattergram.dispatcher.event.bases import UNHANDLED, SkipHandler, skip\nfrom mattergram.dispatcher.event.message import NativeEventObserver\nfrom mattergram.dispatcher.router import Router\n\n\nclass TestRouter:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    def test_include_router_by_string_bad_type(self):\n        router = Router()\n        with pytest.raises(\n            ValueError, match=r\"router should be instance of Router not 'TestRouter'\"\n        ):\n            router.include_router(self)\n\n    def test_set_parent_router_bad_type(self):\n",
+      "after": "\n    def test_include_router_by_string_bad_type(self):\n        router = Router()\n        with pytest.raises(ValueError, match=r\"router should be instance of Router not 'TestRouter'\"):\n            router.include_router(self)\n\n    def test_set_parent_router_bad_type(self):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n        assert router.observers[\"message\"] == router.message\n        assert router.observers[\"edited_message\"] == router.edited_message\n        assert router.observers[\"channel_post\"] == router.channel_post\n        assert router.observers[\"edited_channel_post\"] == router.edited_channel_post\n        assert router.observers[\"inline_query\"] == router.inline_query\n        assert router.observers[\"chosen_inline_result\"] == router.chosen_inline_result\n        assert router.observers[\"callback_query\"] == router.callback_query\n        assert router.observers[\"shipping_query\"] == router.shipping_query\n        assert router.observers[\"pre_checkout_query\"] == router.pre_checkout_query\n        assert router.observers[\"poll\"] == router.poll\n        assert router.observers[\"managed_bot\"] == router.managed_bot\n        assert router.observers[\"guest_message\"] == router.guest_message\n        assert router.observers[\"subscription\"] == router.subscription\n\n    async def test_emit_startup(self):\n        router1 = Router()\n",
+      "after": "\n        assert router.observers[\"message\"] == router.message\n        assert router.observers[\"edited_message\"] == router.edited_message\n        assert router.observers[\"deleted_message\"] == router.deleted_message\n        assert router.observers[\"callback_query\"] == router.callback_query\n        assert router.observers[\"slash_command\"] == router.slash_command\n        assert router.observers[\"dialog_submit\"] == router.dialog_submit\n        assert router.observers[\"dialog_refresh\"] == router.dialog_refresh\n        assert router.observers[\"dialog_lookup\"] == router.dialog_lookup\n        assert router.observers[\"dialog_cancel\"] == router.dialog_cancel\n        assert router.observers[\"dialog_action\"] == router.dialog_action\n        assert router.observers[\"reaction_added\"] == router.reaction_added\n        assert router.observers[\"reaction_removed\"] == router.reaction_removed\n        assert router.observers[\"typing\"] == router.typing\n        assert router.observers[\"raw_event\"] == router.raw_event\n        assert router.observers[\"error\"] == router.error\n\n    async def test_emit_startup(self):\n        router1 = Router()\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        r1 = Router()\n        r2 = Router()\n        r3 = Router()\n        r3.observers[\"custom-event\"] = TelegramEventObserver(r3, event_name=\"custom-event\")\n\n        async def handler(evt):\n            return evt\n",
+      "after": "        r1 = Router()\n        r2 = Router()\n        r3 = Router()\n        r3.observers[\"custom-event\"] = NativeEventObserver(r3, event_name=\"custom-event\")\n\n        async def handler(evt):\n            return evt\n",
+      "occurrences": 1
+    }
+  ]
+}

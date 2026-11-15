@@ -1,0 +1,180 @@
+{
+  "schema_version": 1,
+  "source_id": "aiogram",
+  "source_commit": "97cfe79fa0ac9459d498bdb15cb7cb0530dbaac7",
+  "license": "MIT; LICENSES/aiogram-MIT.txt",
+  "scope": "15 selected suites with native fixtures; optional real Redis profile enabled explicitly, no Telegram conftest/runtime. Platform-only cases excluded with reasons.",
+  "files": [
+    {
+      "source": "tests/test_dispatcher/test_router.py",
+      "source_sha256": "e44ddd87352a0bb733263e0372cdb47864f61d8bbf8ab45373b4abf4a449002f",
+      "target": "tests/ported/test_dispatcher/test_router.py",
+      "target_sha256": "482f4c3b1895b986980ca6d00f5c0587775ed8c8940fa630d325bef4f571523b",
+      "patch": "manifests/test-patches/test_dispatcher-test_router.py.json",
+      "patch_sha256": "36d739c10f53ecc8656fe92648b46a0715647a24363f0f8de9719bdbeb33997a",
+      "adaptations": [
+        "Import namespace only; assertions retained.",
+        "Observer registry assertion enumerates the native registry, preserving traversal/order/global filter assertions."
+      ]
+    },
+    {
+      "source": "tests/test_dispatcher/test_event/test_event.py",
+      "source_sha256": "094f6addf0a8d4c0c4c38b53bcdadf234b4fbe71a713108fc328e76ce4ac40b8",
+      "target": "tests/ported/test_dispatcher/test_event/test_event.py",
+      "target_sha256": "2242968491bfc97a4ab7f33826f37ab04bbbd880ff83ff12fa9c9f455f1c2cf4",
+      "patch": "manifests/test-patches/test_dispatcher-test_event-test_event.py.json",
+      "patch_sha256": "2cdbed4bfd8b7347539b16500904d740cb621b5d4407cdbfedabea3b297ef605",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_dispatcher/test_event/test_handler.py",
+      "source_sha256": "fd8dac883e0bb3fe5e9817b7b6b9a05577b57646bdab15c7a17a10d3634fa7fc",
+      "target": "tests/ported/test_dispatcher/test_event/test_handler.py",
+      "target_sha256": "06d481064a6dd0a22b12d3f1899b3ada9f817c7552363ff448fb501ffe1fb361",
+      "patch": "manifests/test-patches/test_dispatcher-test_event-test_handler.py.json",
+      "patch_sha256": "0dbcfc1a2b10450a3ffc2a5af44f715727ad4e5c4a7a50ed1b12ff17f05172ee",
+      "adaptations": [
+        "Import namespace only; assertions retained.",
+        "Class handler fixture uses a real native Message and its string post_id; no synthetic update_id."
+      ]
+    },
+    {
+      "source": "tests/test_dispatcher/test_event/test_middleware.py",
+      "source_sha256": "199077313c9a2ef03a8bf3d810cbc32e95554e7be3c1822e83ac0de80126ca23",
+      "target": "tests/ported/test_dispatcher/test_event/test_middleware.py",
+      "target_sha256": "b3267566da114c5e7ab8b74138d7ec74c6a7ae1be3701f877fd2d37d9f7d458a",
+      "patch": "manifests/test-patches/test_dispatcher-test_event-test_middleware.py.json",
+      "patch_sha256": "3ece1968584ad670cc9dad95dbeade09ea7b459ce2b24d95ff2163c962106127",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_dispatcher/test_event/test_telegram.py",
+      "source_sha256": "6fd7ddf51af77ef0a56afaf39acb1f5bf1b271e047929b1401b212495327f65f",
+      "target": "tests/ported/test_dispatcher/test_event/test_native_observer.py",
+      "target_sha256": "450842ecc86547da60270a5216ac7889f03a14c9c5d45999830d0847ebe6e119",
+      "patch": "manifests/test-patches/test_dispatcher-test_event-test_telegram.py.json",
+      "patch_sha256": "eef855b41d5970266f09924811c38491d7d51c86f0a53db74c8ee00fddda859c",
+      "adaptations": [
+        "Import namespace only; assertions retained.",
+        "Observer renamed; Telegram DTO fixture replaced with native Message. Filtering/registration/Skip/DI assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_flags/test_decorator.py",
+      "source_sha256": "26e3a7b125178ed3ed2f14dd53c21c7cfd1bf924619b59c8a35915da07d3f4ef",
+      "target": "tests/ported/test_flags/test_decorator.py",
+      "target_sha256": "71f7134095b467e45ce546ab8f71b68edda60c34030ee9004af9a08601ff872e",
+      "patch": "manifests/test-patches/test_flags-test_decorator.py.json",
+      "patch_sha256": "1f371d6e263c7f3f4b214d0b477cbd165ab97f31793ab2f81a5a9d3df9e91248",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_flags/test_getter.py",
+      "source_sha256": "5d80ee4a27b2838cb49029239db2705efdffed2f5d4a9ec99cd0647c103ff053",
+      "target": "tests/ported/test_flags/test_getter.py",
+      "target_sha256": "1143f02844650a1f175feeca105e9c236a8d8f7bf0fd6b9dd23c672df20c1065",
+      "patch": "manifests/test-patches/test_flags-test_getter.py.json",
+      "patch_sha256": "f7e0248671f2fb665f7e5370272ea1e6177a96c03679bc80781b142bd203cb34",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_filters/test_logic.py",
+      "source_sha256": "5e91bdabc87f65d9860ecebafe6f025295b765fb5a7c3341e8c132e8586eeb0b",
+      "target": "tests/ported/test_filters/test_logic.py",
+      "target_sha256": "3a05440c422b0c5eebded9646138eb7f2638065ee85d2dc3f12e59755fffe6bc",
+      "patch": "manifests/test-patches/test_filters-test_logic.py.json",
+      "patch_sha256": "c3e739b22aad494d9750688c9e850c9e7807e18c57c25383ee2e664fdce51178",
+      "adaptations": [
+        "Import namespace only; assertions retained. Command constructor cases restored now that its portable parser is available."
+      ]
+    },
+    {
+      "source": "tests/test_fsm/test_state.py",
+      "source_sha256": "e98e429d484ce4066f6b2fce34d4639292540f77eec1b1dffac6010166998680",
+      "target": "tests/ported/test_fsm/test_state.py",
+      "target_sha256": "9347e96b37210a06264b4becf6badf0301b06fe244911e1e3c811b9f13def66c",
+      "patch": "manifests/test-patches/test_fsm-test_state.py.json",
+      "patch_sha256": "76ad63fad0d5d77c9d72d85af698691bd23208b4d951149d4dcead86cfd65613",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_fsm/test_context.py",
+      "source_sha256": "e205cadf6ac5fc78cdddddd7ef52f5532f178739dac8c19261c561ead2cc291f",
+      "target": "tests/ported/test_fsm/test_context.py",
+      "target_sha256": "d551ced9dea5a7b3429d2823ea22b429417a002a3fd79d62d3e2040b927793a2",
+      "patch": "manifests/test-patches/test_fsm-test_context.py.json",
+      "patch_sha256": "45f445bef384bac72471977ac3a58a5f82b930782ef8cb8cefe080496165d4ec",
+      "adaptations": [
+        "Import namespace only; assertions retained.",
+        "Removed unused MockedBot fixture; native string server/bot/channel/user keys retain all context/data/address assertions."
+      ]
+    },
+    {
+      "source": "tests/test_fsm/storage/test_storages.py",
+      "source_sha256": "5409075f8d01e306251b779f23ac41c676cf60a98634d93d9f29cca6a4e73411",
+      "target": "tests/ported/test_fsm/storage/test_storages.py",
+      "target_sha256": "2e1a4293d21d66bd3776ea4ddbdaebc3d731d791f5903f74e0e4caeec223901a",
+      "patch": "manifests/test-patches/test_fsm-storage-test_storages.py.json",
+      "patch_sha256": "44a320f33accba41da27649ff60c1edc7c92f4c01903a3062558a9c617e7cf5f",
+      "adaptations": [
+        "Namespace rewrite; native fixtures. Memory and optional real Redis profiles enabled; Mongo/PyMongo excluded because no implementations are claimed. All state/data/update assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_fsm/storage/test_isolation.py",
+      "source_sha256": "22b71f650b873ab82b6ddf265567a2c1d22cb00eb04e47242fda6fb7bf51d14d",
+      "target": "tests/ported/test_fsm/storage/test_isolation.py",
+      "target_sha256": "cdecbf704e377c010d33f23cb2149df81fb5161dc754fbddc6839bc389ff3d3b",
+      "patch": "manifests/test-patches/test_fsm-storage-test_isolation.py.json",
+      "patch_sha256": "9a417beaf44c1686c0712f4ab90ba44eb6bdb48e992bc00a9a5e515c3f7996f9",
+      "adaptations": [
+        "Namespace rewrite; native fixtures. Generic memory/disabled/real Redis lock profiles and complete Redis construction/lifecycle class retained. URL pool construction assertion includes the native finite socket timeouts and no-retry object."
+      ]
+    },
+    {
+      "source": "tests/test_utils/test_magic_filter.py",
+      "source_sha256": "176a9c02edbcb16b895d14897e2576606e37efdc76042d906224702dbb9be3eb",
+      "target": "tests/ported/test_utils/test_magic_filter.py",
+      "target_sha256": "f8c0da3ab75c731c89464c2fee509b38bfa82cd1f9bf9b99d7417ae4c2107abe",
+      "patch": "manifests/test-patches/test_utils-test_magic_filter.py.json",
+      "patch_sha256": "8feaaf2a23a3e2534afa9b7bd62b760641e75a465aaa46dd58dc6ad7292cc8d7",
+      "adaptations": [
+        "Import namespace only; assertions retained."
+      ]
+    },
+    {
+      "source": "tests/test_filters/test_command.py",
+      "target": "tests/ported/test_filters/test_command.py",
+      "adaptations": [
+        "Native Message string IDs/text/create_at and real Bot with cached native username replace Telegram DTO/MockedBot fixtures; parser/object/flags/magic assertions retained.",
+        "Excluded TestCommandStart (1 test), 8 CommandStart/deep-link parameter rows, test_resolve_bot_command (1 test), and 3 BotCommand parameter rows: no corresponding Mattermost object or Telegram deep-link protocol."
+      ],
+      "source_sha256": "3c18f20946bfc4cdc15994aea5d215773608590df32512a23a8f0b250dc0ef1b",
+      "target_sha256": "966ae5cf119b44a0ddbfe274c79adef464dd0293f5bc7d1ba05d71e5a47844a8",
+      "patch": "manifests/test-patches/test_filters-test_command.py.json",
+      "patch_sha256": "c195d81a17a73c1f74c71379c2bec9fbc7adfb898dd898f7b6fb9aed5319f77e"
+    },
+    {
+      "source": "tests/test_filters/test_callback_data.py",
+      "target": "tests/ported/test_filters/test_callback_data.py",
+      "adaptations": [
+        "Native CallbackQuery user/channel/post and native User replace Telegram callback ID/chat_instance/from_user fixtures; codec/filter assertions retained.",
+        "Overflow fixture increased from 128 to 8192 ASCII bytes to exercise the explicit SDK 4096-byte limit, not the Telegram 64-byte limit."
+      ],
+      "source_sha256": "63ff339a06e5553f823c91a655bbf61f266e734411aadb62503b2dc95e818c9c",
+      "target_sha256": "a4cdeb2c5c5340051add7491f682a3d512e56d41fca9cd086bf7203d26d90def",
+      "patch": "manifests/test-patches/test_filters-test_callback_data.py.json",
+      "patch_sha256": "b70be8a335b74be8d84e70d6044d02f27ebea0c1c44741a844a8a4f7b4b1757c"
+    }
+  ]
+}

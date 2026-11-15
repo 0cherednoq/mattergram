@@ -1,0 +1,235 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "mattergram native REST slice",
+    "version": "0.1.0a1"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8065"
+    }
+  ],
+  "security": [
+    {
+      "botToken": []
+    }
+  ],
+  "paths": {
+    "/api/v4/users/me": {
+      "get": {
+        "operationId": "GetCurrentUser",
+        "responses": {
+          "200": {
+            "description": "Identity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": "fixture-bot",
+                  "username": "fixture"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v4/posts": {
+      "post": {
+        "operationId": "CreatePost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "channel_id",
+                  "message"
+                ],
+                "properties": {
+                  "channel_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "root_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "props": {
+                    "type": "object",
+                    "description": "Compiled native UI props; declaration and capability rules are separate SDK contracts.",
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                },
+                "example": {
+                  "id": "fixture-post",
+                  "channel_id": "fixture-channel",
+                  "user_id": "fixture-bot",
+                  "message": "hello",
+                  "root_id": "",
+                  "create_at": 1700000000123
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        }
+      }
+    },
+    "/api/v4/actions/dialogs/open": {
+      "post": {
+        "operationId": "OpenInteractiveDialog",
+        "x-ui-profile": "manifests/forms-profile.json",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "trigger_id",
+                  "url",
+                  "dialog"
+                ],
+                "properties": {
+                  "trigger_id": {
+                    "type": "string",
+                    "writeOnly": true
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "dialog": {
+                    "type": "object",
+                    "required": [
+                      "title",
+                      "elements"
+                    ],
+                    "additionalProperties": true
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Native open confirmed with status OK; actual actor WS delivery is verified separately."
+          },
+          "400": {
+            "description": "Invalid or expired native trigger/request"
+          },
+          "401": {
+            "description": "Credential rejected"
+          },
+          "403": {
+            "description": "Permission denied"
+          },
+          "429": {
+            "description": "Rate limit, no automatic retry"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "botToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      },
+      "Post": {
+        "type": "object",
+        "required": [
+          "id",
+          "channel_id",
+          "user_id",
+          "message",
+          "create_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "user_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string"
+          },
+          "root_id": {
+            "type": "string"
+          },
+          "create_at": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Credential rejected"
+      }
+    }
+  }
+}

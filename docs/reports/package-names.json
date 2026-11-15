@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-11-12T03:29:39.559537+00:00",
+  "meaning": "HTTP 404 means no project visible at this time; not a reservation or ownership guarantee.",
+  "projects": [
+    {
+      "url": "https://pypi.org/pypi/mattergram/json",
+      "status": 404,
+      "name": "mattergram"
+    },
+    {
+      "url": "https://pypi.org/pypi/mattergram-dialog/json",
+      "status": 404,
+      "name": "mattergram-dialog"
+    },
+    {
+      "url": "https://test.pypi.org/pypi/mattergram/json",
+      "status": 404,
+      "name": "mattergram"
+    },
+    {
+      "url": "https://test.pypi.org/pypi/mattergram-dialog/json",
+      "status": 404,
+      "name": "mattergram-dialog"
+    }
+  ],
+  "scope": "Name checks only. No project was published or reserved."
+}

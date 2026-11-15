@@ -1,0 +1,59 @@
+{
+  "scope": "E2-01 native client. E2-02/E2-03 full Router/Dispatcher/SDK WS lifecycle remain open.",
+  "tests": {
+    "passed": 63,
+    "python": [
+      "3.11",
+      "3.13",
+      "3.14"
+    ],
+    "platform": "Windows"
+  },
+  "source_sha256": {
+    "src/mattergram/bot.py": "62b271b9e8b503963280c8f69e874899c7a7fd32b6a1e90ddaaa67c746528e1e",
+    "src/mattergram/types/__init__.py": "4b9841f8f33b11bf906530dbaa942799aabc7e203939f48550f1564ff4f56883",
+    "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+    "src/mattergram/exceptions.py": "b8c927ac9c8b0263c28ae420a2b0b89f2a820aa0d70e2537d19f870cfe555b21",
+    "contracts/native-rest.openapi.json": "9ca117ccc0e78051c0d4b1e77606ef5d86d6868501f5023d321be76779711b4f"
+  },
+  "live_stand": {
+    "result": "passed",
+    "checked_at": "2026-11-12T04:26:35.060409+00:00",
+    "scope": "Real Mattermost REST and captured WebSocket posted events through the native client/normalizer. Router/Dispatcher transport not implemented or claimed.",
+    "server_version_header": "11.1.0.19159932738.a8d2732fea85e14f665dc14f367ae76fa14ced4259f093a4b4d2c9941960ec84.false",
+    "server_image": "mattermost/mattermost-team-edition:11.1.0@sha256:4862f28825a7d5d4624d48493061587344605a14f060d9b0cf0b189d896efe9e",
+    "post_id": "siew8ewwbpdyur8iqbtf1fwrec",
+    "checks": [
+      "bot identity via issued bot token",
+      "human posted event captured from real WebSocket",
+      "answer created and read back",
+      "own outgoing posted event ignored by normalizer",
+      "reply and nested reply use original root",
+      "private channel denied with 403",
+      "invalid token rejected with 401 and startup cleanup",
+      "owned client closed"
+    ],
+    "credentials": "not included; fixture state only in ignored build/native-stand-state.json"
+  },
+  "postman_simulation": {
+    "scope": "Native SDK against authored local Postman HTTP stand-in, not a Mattermost server",
+    "cli": "1.82.0",
+    "result": "passed",
+    "checks": {
+      "identity_create_reply": "passed, two recorded posts and three SDK HTTP calls",
+      "forbidden": "passed, one write attempt; no automatic retry",
+      "rate-limit": "passed, one write attempt; no automatic retry",
+      "write-then-delay": "passed, one write attempt; no automatic retry",
+      "unauthorized": "passed, 401 with startup cleanup"
+    },
+    "owner_mock_search": "skipped: CLI guest session; pinned protocol contract used"
+  },
+  "example": {
+    "scope": "examples/create_post.py run against owned real Mattermost stand",
+    "result": "passed",
+    "post_id": "wey6589uyfyhbmn47e1e9jd85y",
+    "credentials": "not included"
+  },
+  "external_ci": "not run",
+  "publication": "not performed"
+}

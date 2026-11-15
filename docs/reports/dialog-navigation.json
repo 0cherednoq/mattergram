@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "checked_at": "2026-11-13T14:49:19.255516+00:00",
+  "scope": "Owned Mattermost 11.1 API/HTTP/WS and real Redis; not browser rendering",
+  "scenario": [
+    "one editable post",
+    "orders -> shared help -> path-aware back",
+    "independent filter and pager state",
+    "incidents -> shared help -> path-aware back",
+    "native form -> same-post confirmation"
+  ],
+  "checks": [
+    "issued slash command reached DialogRuntime through trusted HTTP ingress",
+    "all post-window transitions atomically replaced the original post and its controls",
+    "Back returned from the shared help window to each branch that actually opened it",
+    "a pager and filter updated only their declared list and preserved state across navigation",
+    "large control sets were split into native attachment groups",
+    "native open_dialog reached the authenticated actor WebSocket",
+    "server-forwarded form submission edited the same post and terminal replay ran the effect once",
+    "an independent Redis client restored the confirmation state and submitted value"
+  ],
+  "server_version": "11.1.0",
+  "redis": "redis://127.0.0.1:47851/0",
+  "same_post": true,
+  "business_effects": 1,
+  "credentials": "omitted"
+}

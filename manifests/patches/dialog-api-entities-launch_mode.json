@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Generic stack launch modes and constraints are platform independent; namespace rewrite only. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "12444ce66cc30d5d5aa0a6e9b825a147d78b4bf066e17e11d4711a9897d80c46",
+  "output_sha256": "64466706f943994421457109eaeaf155c0c682c7037f2a2e5b4eae53a07b6f90",
+  "replacements": [
+    {
+      "before": "\n\nclass LaunchMode(Enum):\n    \"\"\"\n\n    Modes of launching new dialog.\n\n    **ROOT**:\n        dialogs will be always a root dialog in stack.\n\n        Starting such dialogs will automatically reset stack.\n\n        Example: main menu\n\n    **EXCLUSIVE**:\n        dialogs can be only a single dialog in stack.\n\n        Starting such dialogs will automatically reset stack.\n        Starting other dialogs on top of them is forbidden\n\n        Example: banners\n\n    **SINGLE_TOP**:\n        dialogs will not be repeated on top of stack.\n\n        Starting the same dialog right on top of it will just replace it.\n\n        Example: product page\n\n    **STANDARD**:\n        dialogs have no limitations themselves\n    \"\"\"\n\n    STANDARD = \"standard\"\n    ROOT = \"root\"\n    EXCLUSIVE = \"exclusive\"\n",
+      "after": "\n\nclass LaunchMode(Enum):\n    STANDARD = \"standard\"\n    ROOT = \"root\"\n    EXCLUSIVE = \"exclusive\"\n",
+      "occurrences": 1
+    }
+  ]
+}

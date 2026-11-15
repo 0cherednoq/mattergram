@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T10:32:38.891898+00:00",
+  "scope": "E5-03 partial: real Windows Chrome web execution on owned 12.0.2. Does not close the entire client/server matrix.",
+  "primary_references": [
+    {
+      "version": "12.0.2",
+      "commit": "13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd",
+      "files": [
+        {
+          "path": "server/channels/api4/user.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/channels/api4/user.go",
+          "sha256": "ddb11fecdfaec2a4f8597411ff1487a090afc9b990dbe58eaa7437d8134fe6b9"
+        },
+        {
+          "path": "server/channels/app/integration_action_setup.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/13ae6c4cf1a8e73c35a4f0c8816a505506c7acdd/server/channels/app/integration_action_setup.go",
+          "sha256": "082a584b2987e378d096874a3bc9441373820beaed1303262c37ff5bdd82a8ed"
+        }
+      ]
+    }
+  ],
+  "shared_primary_references": [
+    "manifests/forms-profile.json",
+    "manifests/ui-profile.json",
+    "manifests/ui-input-profile.json"
+  ],
+  "profiles": [
+    {
+      "id": "web-12.0.2-chrome157-windows",
+      "status": "verified for the recorded scenarios and constraints",
+      "server": "12.0.2",
+      "server_image": "mattermost/mattermost-team-edition:12.0.2@sha256:08c0b4b93a14196b0850f62faa4a437d2643533f009cac4868a0b793aad61fc3",
+      "browser": "HeadlessChrome/157.0.0.0, Windows x64",
+      "viewports": [
+        [
+          1280,
+          720
+        ],
+        [
+          1440,
+          1080
+        ]
+      ],
+      "actor": "system_user, separate from setup admin and runtime bot",
+      "feature_flag": "MmBlocksEnabled=true read from actual configuration",
+      "executed": [
+        "All 13 declared field types rendered across basic/dates/advanced forms, user input and typed submission.",
+        "Server field error/correction; wizard with retained prior values.",
+        "Dynamic lookup with native option objects; refresh prefill, final submit and cancel after refresh.",
+        "Real file upload and ordinary-actor byte-for-byte read-back.",
+        "Child submit, three-level modal flow, fourth-level refusal, child cancel and restored parent values/files.",
+        "All 9 native Block types; button/select signed callbacks; collapse/expand; columns/image.",
+        "Slack and Adaptive input adapters -> real native rendering and signed callbacks.",
+        "Ephemeral callback confirmations observed inside the originating post thread.",
+        "Native date-bound disabled cells and successful inclusive min/max submission.",
+        "Asia/Kolkata GMT+5:30, manual-time disabled, 48 half-hour choices and selected time parsed in UTC.",
+        "Before/after inline labels for Checkbox, Radio and CheckboxGroup with real submission.",
+        "Legacy rich attachment, signed button/static-select callbacks and disabled-button click guard."
+      ],
+      "evidence": "docs/reports/ui-web-12.0.2.json",
+      "remaining": [
+        "Additional browser/OS and native desktop/mobile execution."
+      ],
+      "additional_evidence": "docs/reports/ui-web-12.0.2-additional.json"
+    },
+    {
+      "id": "web-11.7",
+      "status": "verified for recorded scenarios after legacy route fix",
+      "server": "11.7.0",
+      "server_image": "mattermost/mattermost-team-edition:11.7.0@sha256:495c748914b2acc4c3d77f73437c6e949aed9a4f2ec53e27019a520d7eb745d0",
+      "browser": "Windows HeadlessChrome/157.0.0.0",
+      "actor": "Ordinary system_user, distinct setup admin/runtime bot",
+      "executed": [
+        "Eight applicable form field types rendered and submitted; field error/correction preserves entered values.",
+        "Wizard retains the first-step value across the changed logical callback declaration.",
+        "Dynamic lookup/search, refresh prefill and final selected option submission.",
+        "Native date bounds disable 9/15 November; inclusive 10/14 boundaries both submitted.",
+        "11.7 allow_manual_time_entry true exposes text entry; 11:30 AM GMT+3 -> 08:30 UTC.",
+        "Asia/Kolkata GMT+5:30, manual time off, 48 half-hour choices; selected 19:30 -> 14:00 UTC.",
+        "Native cancel notification; legacy rich attachment and disabled-button click guard.",
+        "Post-fix alphanumeric legacy fixture IDs deliver signed button/select callbacks; selected_option b stays separate."
+      ],
+      "evidence": "docs/reports/ui-web-11.7.0.json",
+      "remaining": [
+        "Native desktop/mobile app execution",
+        "Additional browser/OS/dependency and optional parameter combinations"
+      ]
+    },
+    {
+      "id": "web-11.11",
+      "status": "verified for recorded scenarios and constraints",
+      "server": "11.11.0",
+      "server_image": "mattermost/mattermost-team-edition:11.11.0@sha256:d5af347bedb54e85754076a131a6a204f4b2efb34369014a50966aa1347245b1",
+      "browser": "Windows HeadlessChrome/157.0.0.0",
+      "actor": "ordinary system_user, separate setup admin and runtime bot",
+      "feature_flag": "MmBlocksEnabled=true from actual config",
+      "executed": [
+        "Text/textarea/static select/multiselect/bool/radio: inline field error, preserved edits and corrected submission.",
+        "Wizard with changed logical declaration: next step rendered, prior values retained and final submission accepted.",
+        "Dynamic lookup/search, category refresh, retained comment, selected Remote Beta and final submission.",
+        "Nine native Block types rendered, collapse/expand, signed button/select callbacks with selected_option b.",
+        "File upload, child submission, restored parent values/file and final parent submission; 36 bytes read back by ordinary actor.",
+        "Slack/Adaptive imports rendered as native Blocks; real signed callbacks.",
+        "Legacy rich attachment, native button/select callbacks and disabled button rendered.",
+        "Date and GMT+3 datetime with manual 12:00 PM input -> 09:00 UTC domain value; native cancel notification."
+      ],
+      "evidence": "docs/reports/ui-web-11.11.0.json",
+      "remaining": [
+        "Additional date-bound/alternate-timezone/modal-depth parameter cases on 11.11",
+        "Real 11.7 web scenario execution",
+        "Native desktop/mobile apps and broader OS/browser/dependency matrix"
+      ]
+    },
+    {
+      "id": "native-desktop",
+      "status": "unknown",
+      "reason": "No native desktop-app execution. A web desktop viewport is not that evidence."
+    },
+    {
+      "id": "native-mobile",
+      "status": "unknown",
+      "reason": "No native mobile-app execution. No device-emulation claim substitutes for it."
+    }
+  ],
+  "runtime_selection": "UIProfile remains explicit; this evidence does not infer all connected clients or override permissions/unknown capabilities."
+}

@@ -1,0 +1,233 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-12T12:28:10.657058+00:00",
+  "scope": "E6-01 partial: immutable slash registration metadata and deterministic command manifest. Bootstrap and production provisioning are not implemented.",
+  "public_api": [
+    "slash_command(..., description=..., hint=..., triggers=..., provision=...)",
+    "CommandSpec",
+    "CommandManifest",
+    "collect_commands"
+  ],
+  "implemented": [
+    "Only attached slash observers, literal aliases, explicit opt-out and ambiguous-filter refusal",
+    "Immutable declarations and copied registration input lists; reserved metadata flag protection",
+    "Deterministic fingerprint, identical declaration merge and metadata conflict detection",
+    "Native command payload field mapping and primary-model UTF-8 bounds; no fabricated IDs/tokens"
+  ],
+  "native_stand": {
+    "scope": "E6-01 partial: manifest -> native command definitions -> issued-token SDK ingress. Not Bootstrap or durable reconciliation.",
+    "events": [
+      {
+        "trigger": "mgm00e7cdhelp",
+        "args": "fixture-topic",
+        "ordinary_actor": true
+      },
+      {
+        "trigger": "mgm00e7cdrequest",
+        "args": "fixture-topic",
+        "ordinary_actor": true
+      },
+      {
+        "trigger": "mgm00e7cdticket",
+        "args": "fixture-topic",
+        "ordinary_actor": true
+      }
+    ],
+    "server_version": "12.0.2.41783541591.7d848ec60657785c9f685c34e3683e9dfdd9b9ce98b9af6ea3d9fd7bddabf1d9.false",
+    "manifest_fingerprint": "2a703761fae5356ae20803cac28f164171bd7c5322462d0f57bcdb69943782f4",
+    "commands": [
+      {
+        "trigger": "mgm00e7cdhelp",
+        "description": "Owned help",
+        "hint": "[topic]"
+      },
+      {
+        "trigger": "mgm00e7cdrequest",
+        "description": "Owned request",
+        "hint": "[title]"
+      },
+      {
+        "trigger": "mgm00e7cdticket",
+        "description": "Owned request",
+        "hint": "[title]"
+      }
+    ],
+    "result": "passed",
+    "native_commands": 3,
+    "native_tokens_distinct": true,
+    "sdk_callbacks": 3,
+    "runtime_posts_read_back": 3,
+    "setup_runtime_separate": true,
+    "metadata_round_trip": true,
+    "peer": "127.0.0.1",
+    "cleanup": "Created commands deleted; listener, adapter, dispatcher and runtime bot closed"
+  },
+  "baseline_regression": {
+    "version": "11.1.0",
+    "result": "passed",
+    "checks": [
+      "real GET slash preserves percent-escaped separators and uses its own issued command token",
+      "real issued slash token/body/header through SDK HTTP to public response with REST read-back",
+      "empty handler returns accepted explicit ephemeral JSON ACK",
+      "explicit deferred ACK and response_url followup accepted by real server",
+      "five actual response_url posts read back; sixth SDK attempt blocked locally",
+      "slow slash handler rejected by SDK deadline, cancelled and surfaced as provider error",
+      "SDK Bot.send_message rich attachment accepted; shared UI compiler signed real button/menu callbacks",
+      "native callback ephemeral response observed on the actual actor WebSocket with actor-targeted broadcast",
+      "real post-action signed context, native post reference, ACK and update read back",
+      "real menu selected_option separated from typed data; repeated intentional presses both dispatched",
+      "11.1 unsupported navigation raises SDK capability error and app explicitly answers ephemerally",
+      "tampered context actually forwarded by trusted Mattermost rejected before handler",
+      "combined HTTP/WS shutdown closed listener/client, drained tasks and released state locks"
+    ],
+    "report_sha256": "d1d17a686ec23e8f817c37ca67c84c67684f6a4cbd73c8f2d86908d293242720"
+  },
+  "matrix": {
+    "platform": "Windows",
+    "python": {
+      "3.11": {
+        "passed": 405,
+        "subtests": 253,
+        "skipped": 0,
+        "duration_seconds": 35.16,
+        "junit_sha256": "c43739509a42ae07bc13ba8ad0b3d8eed161950484ab1d9347bdc2989f6be160"
+      },
+      "3.13": {
+        "passed": 405,
+        "subtests": 253,
+        "skipped": 0,
+        "duration_seconds": 23.969,
+        "junit_sha256": "99119218721457b78be38ad378e53d5b47dc108c7b6ca532a79c03211d8448c5"
+      },
+      "3.14": {
+        "passed": 405,
+        "subtests": 253,
+        "skipped": 0,
+        "duration_seconds": 23.499,
+        "junit_sha256": "147c2ff4bec40261a759109d2e562fda0f0b3d2658227297e9a10d0d0315a983"
+      }
+    },
+    "redis": "Real 7.4.12, locked redis-py 8.1.0"
+  },
+  "quality": {
+    "ruff": "lint and format passed, 135 files",
+    "mypy": "strict, 102 source files",
+    "port": "21 reviewed modules, 28 decisions, 15 behavioral suites; exact replay/static audit ready",
+    "references": "47 UI and 2 provisioning pinned files verified; reference fetch/verify added to CI",
+    "actionlint": "1.7.12 passed; external GitHub CI not run"
+  },
+  "targeted_tests": {
+    "new_unit_cases": 14,
+    "new_subtests": 28,
+    "offline_example": "examples/command_manifest.py executed",
+    "url_control_regression": "NUL URL subtest failed before the guard and passed after it"
+  },
+  "discovery": {
+    "postman": "Guest/local mode; authenticated owner/workspace search skipped; no cloud binding or publishing",
+    "orbit": "Public discovery query returned HTTP 403; pinned primary model/API references used",
+    "simulation": "Not rerun for this pure declaration/export layer; no new production HTTP dependency caller implemented. Provider acceptance established by native stand."
+  },
+  "contracts": [
+    "manifests/provisioning-profile.json",
+    "docs/provisioning-commands.md"
+  ],
+  "source": {
+    "file_count": 67,
+    "sha256_by_path": {
+      "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+      "src/mattergram/bot.py": "601f32f16ac39ccadae4b09fa98312aa661f83adeb48d1b86019800954581beb",
+      "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+      "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+      "src/mattergram/dispatcher/dispatcher.py": "2595aeba29a24555070e493fbd11209b4065903f85b45d291551234905697985",
+      "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+      "src/mattergram/dispatcher/event/bases.py": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+      "src/mattergram/dispatcher/event/event.py": "c6dc3c6812ca044cdf54333866fa9bea97e6c4ad846d5d63b0d33e083b86eae7",
+      "src/mattergram/dispatcher/event/handler.py": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+      "src/mattergram/dispatcher/event/message.py": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+      "src/mattergram/dispatcher/event/slash.py": "5b70db9aea3d146e6ceed8641122e443a3eb090e6d4f504af7d0f8f133d93e4c",
+      "src/mattergram/dispatcher/flags.py": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+      "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0",
+      "src/mattergram/dispatcher/middlewares/base.py": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+      "src/mattergram/dispatcher/middlewares/manager.py": "4fd046b6c0a77090dd0ccb9542875027c5cf2cb939a6caf68f9d93de13642916",
+      "src/mattergram/dispatcher/router.py": "e97c0b309f0eb8f68cc9e7b8132d812fc93cdaa9d2f0cc37fb514b189e5835ee",
+      "src/mattergram/exceptions.py": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58",
+      "src/mattergram/filters/__init__.py": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6",
+      "src/mattergram/filters/base.py": "cea2ab1cf3aaceaeed13c6b75adefb04d1df4149fb169d4928a8de3e1293d822",
+      "src/mattergram/filters/callback_data.py": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+      "src/mattergram/filters/command.py": "a0f1b8ddafcfc5f15cfe62c9bbd23d6dae9d24a2164ccd14f01ba2a51eddf90b",
+      "src/mattergram/filters/logic.py": "e572ec3e59136e8821fa4559d9f6fbc846ee099d2a8f61f1a3a04bbbedcb1606",
+      "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+      "src/mattergram/fsm/context.py": "d24eb42669b57de5beb77687be6bd068be79dfc872bc119dabcf2f733fdfcd54",
+      "src/mattergram/fsm/state.py": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+      "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+      "src/mattergram/fsm/storage/base.py": "4aa5a00d706583a5b02cc55ae2f60d274d448258b491e78120cc96bbe36825cd",
+      "src/mattergram/fsm/storage/memory.py": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+      "src/mattergram/fsm/storage/redis.py": "e83f3f70bae95440942c08094a77b63d28d199aabdff3b5633d8e5885b5e378a",
+      "src/mattergram/fsm/strategy.py": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+      "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+      "src/mattergram/handlers/base.py": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+      "src/mattergram/http/__init__.py": "dcaaa50fc893d2b821948d35dec91785fb31c25eec0cb5161580d433d3988111",
+      "src/mattergram/http/adapter.py": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129",
+      "src/mattergram/http/asgi.py": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde",
+      "src/mattergram/http/auth.py": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016",
+      "src/mattergram/http/delayed.py": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e",
+      "src/mattergram/http/dialog_store.py": "d4352f4c4431ed3942e815eaac8ca07bf66dca6dfa119382216386079bad5bed",
+      "src/mattergram/http/dialogs.py": "a022d88d8ee1cc3dd973fd18cd690974d7f64190ec3d6682a1874cb1a2efde5f",
+      "src/mattergram/http/normalizers.py": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118",
+      "src/mattergram/http/redis_dialogs.py": "83a8762adde2494682126ee24341bc7fd095237092e34846869b547fe3a6d4f1",
+      "src/mattergram/http/responses.py": "244cd44eb5d1a53ee6604e17a21b96cc29d6c6193138010b8bb3678add6b0ad5",
+      "src/mattergram/http/server.py": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b",
+      "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+      "src/mattergram/provisioning/__init__.py": "2fc741b094ac3add36a3df7340fc6879d8548caf110c8fea7b6df5b4ab1f81d1",
+      "src/mattergram/provisioning/commands.py": "ea24d45a18fee5901f19d710d5d8967a6adc88220f9dabd4d20935ac272d5b9e",
+      "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/mattergram/types/__init__.py": "54f69cf9b7f9a92fff146f2d4c190e2bc2316e589ae21bf8138d51920344d17f",
+      "src/mattergram/types/base.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+      "src/mattergram/types/command_metadata.py": "4412ae5c5032790117c3fbbee621abe3c1c59d88e1496776e89d60b0f591a771",
+      "src/mattergram/types/dialogs.py": "88298d14eb9b85b67ad4a17dc9b957aea72a7f2b0efb53223c4bbf37f9362c61",
+      "src/mattergram/types/http.py": "7116b249dc08aeab27277b76133a8d4d465b9f9c323e73c3abac5e56e0ce36bc",
+      "src/mattergram/ui/__init__.py": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252",
+      "src/mattergram/ui/actions.py": "68e13c5562fe192e9e3f362bffae69167f3e22beca2e89792905f8d2b0fc97ed",
+      "src/mattergram/ui/adaptive.py": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c",
+      "src/mattergram/ui/base.py": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6",
+      "src/mattergram/ui/blocks.py": "6a23763ac11b8f69de114e99de00aeb63d215614204af41eb1d8e22903668c2e",
+      "src/mattergram/ui/capabilities.py": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626",
+      "src/mattergram/ui/form_defaults.py": "044cac81ee8717b0e08395730fd9cfed719a89dc23de515948fe1a2afd0d3445",
+      "src/mattergram/ui/form_snapshot.py": "183af011a16cce6eed6c705a28d4510dbdb5def809127ee1f6fca336589b0c9a",
+      "src/mattergram/ui/form_values.py": "651d41a75ac3832850e6ec9191aaf73692f901a074388542774176a100b58be2",
+      "src/mattergram/ui/forms.py": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf",
+      "src/mattergram/ui/input_base.py": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9",
+      "src/mattergram/ui/slack.py": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a",
+      "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+      "src/mattergram/utils/magic_filter.py": "25811666ec78ad5c32b2bcff1a71947e2da27a683f469fb7d9ac968df42aece9",
+      "src/mattergram/utils/warnings.py": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82"
+    }
+  },
+  "limitations": [
+    "Development harness registers/deletes commands only on the owned stand; it is not production Bootstrap or a persistent secret store",
+    "Setup client, bot/team/channel/membership ownership and reconciliation remain unimplemented",
+    "Partial failure/resume, multiprocess locking, lost-secret recovery, foreign conflicts and deployment readiness remain open",
+    "Native desktop/mobile, remaining OS/dependency matrix, full API, dialog port, docs/evaluations and publishing remain in original scope"
+  ],
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "E6-01": "open",
+    "E5-03": "open"
+  },
+  "package_verification": {
+    "checked_at": "2026-11-12T12:29:56.643099+00:00",
+    "result": "passed",
+    "source_file_count": 67,
+    "exact_wheel_bytes_match": true,
+    "installed_checks_per_archive": 148,
+    "twine_strict": "passed",
+    "artifacts": {
+      "mattergram-0.1.0a1-py3-none-any.whl": "a5d188deff9da65589d78df9f4edf3c00d77fafd465c9aab89e8209792557e55",
+      "mattergram-0.1.0a1.tar.gz": "06f769bd9305915212cf774e99543b8b654ddc689e70b5dd8739adf681363ae2"
+    },
+    "receipt": "build/reports/command-manifest-distributions.json",
+    "directory": "build/final-dist/e6-command-manifest-final",
+    "post_build_receipt": "Added after archives were closed; archived report precedes its own package receipt"
+  }
+}

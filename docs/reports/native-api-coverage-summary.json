@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "task": "E7-03",
+  "status": "complete",
+  "checked_at": "2026-11-12",
+  "scope": "Exhaustive pinned operationId support classification, low-level error contract and explicit unsupported-operation policy.",
+  "coverage": {
+    "operation_ids": 491,
+    "endpoints": 493,
+    "generated_low_level": 17,
+    "high_level_only": 2,
+    "supported_total": 19,
+    "unsupported_not_reviewed": 470,
+    "unsupported_upstream_collision": 2,
+    "collision_endpoints": 4,
+    "collisions": [
+      "GetSharedChannelRemotes",
+      "SearchFiles"
+    ],
+    "drift_gate": "python -m tools.generate_native_api_coverage --check",
+    "machine_report": "docs/reports/native-api-coverage.json",
+    "machine_report_sha256": "d6f4f30cd2845a5506b4f0b5d318f8c0c79b703d8cf35f5e2bcd654040037439"
+  },
+  "error_contract": {
+    "status_mapping": "401 AuthenticationError; 403 PermissionDeniedError; 429 RateLimitError; every other unexpected status, including 2xx/3xx, APIError.",
+    "safe_failure": "Malformed successful JSON raises ProtocolError; read disconnect raises TransportError.",
+    "write_failure": "Malformed successful JSON or disconnect after write headers raises RequestOutcomeUnknown.",
+    "attempts": "Exactly one HTTP attempt; redirects and aiohttp implicit idempotent connection retry are disabled.",
+    "metadata": "Bounded error_id/request_id/retry_after only; known credentials redacted; server prose omitted.",
+    "unsupported": "Unknown/unreviewed/ambiguous operationId is rejected before a session or network request exists."
+  },
+  "regression_found": {
+    "dependency": "aiohttp 3.14.5",
+    "behavior": "ClientSession retried an idempotent GET once after a server disconnect despite the SDK one-attempt contract.",
+    "fix": "Owned sessions explicitly disable aiohttp's connection retry; local HTTP regression counts one read and one write request.",
+    "provider_retry_claim": "No provider-side fault injection claimed."
+  },
+  "native_stands": {
+    "server": "Mattermost 11.1.0 owned loopback Docker stand",
+    "credential": "ordinary bot token; no setup credential or administrative fallback",
+    "low_level_operations": 17,
+    "high_level_methods": 8,
+    "native_api_report_sha256": "a2535f083ce112105edef562ba565b686a3f665d74a273220ae0f1f1efe625ca",
+    "high_level_report_sha256": "00e894f0d208b409a6ba05202a373aae1c94ce000b9373bad9a866f431753c27"
+  },
+  "tests": {
+    "windows_python": [
+      "3.11.15",
+      "3.13.12",
+      "3.14.3"
+    ],
+    "per_version": "467 tests + 312 subtests, real Redis, zero skips",
+    "junit_sha256": {
+      "3.11": "ee4c7906a1cdd94ed0dc4a78ed667511f34206eb97aec735fb27a464b2b0bee6",
+      "3.13": "5b0a0cd21749ece5fec5b15e7c3d249f96e3edad0833789459ec94cf94842d2a",
+      "3.14": "5a6655f84916e84bc984f9a3a846b1a9816534da57639cb734ec8740bde1e139"
+    },
+    "quality": "Ruff check/format passed for 172 files; strict mypy passed for 130 source files; replay/audit ready for 22 modules/30 decisions and 15 behavioral suites."
+  },
+  "distributions": {
+    "directory": "build/final-dist/e7-coverage-final",
+    "wheel_sha256": "0fcc215f0867313e5124c799a04eeaa3dfe77cf9645363333d07f0c11e6c6a0b",
+    "sdist_sha256": "d8bb9ed45b707df0d2b39a993323ccf2dbbb669f1b1162e7f2c87b0fe4255cb5",
+    "twine": "strict passed",
+    "source_files": 83,
+    "sdist_inputs": "Coverage manifest and exhaustive report required and verified.",
+    "wheel_and_sdist_install": "Each installed outside checkout: 79 unit + 79 integration + 1 Redis config + 16 real Redis + 28 provisioning tests.",
+    "report_sha256": "c30f7341671721ed19b58a2e85e221f9a4ab96031a6f11509f2221efcffd1456",
+    "published": false
+  },
+  "source_hashes": {
+    "src/mattergram/_http_client.py": "06ab614867dad921f0ee2607c8b0384bc32adfe894f19bce39fe4a1622b9e75a",
+    "tools/generate_native_api_coverage.py": "d39f781a82f39482879fab8672651b633e24cba2ba35a55980227c5128635ced",
+    "manifests/native-api-coverage.json": "4df0231955d577fd5ffbafe5e8db8654b0e77ee51bb03f01a74dabdb710783d9",
+    "tests/tools/test_native_api_coverage.py": "3493413ad0dba8a3d6e0d53a3561fa2df02a6ef6ed28c909701ef1e2b7ad8c65",
+    "tests/unit/test_native_api.py": "fb1c0a814cb27b5c4d06679d52eab4a064ca38208811d4b7d0624c8445f67902",
+    "tests/integration/test_native_api.py": "f60068b62fbf1051b8ef35b033d5df1f58e9130bcc39bd9f89cc2f7c8c84b7b6"
+  }
+}

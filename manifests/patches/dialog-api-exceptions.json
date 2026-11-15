@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reason": "Generic dialog context/navigation/widget exception taxonomy; namespace rewrite only. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "4b784cd69db2ce4c8c17ceafef573d69e4fc2a81ec7c0de336f38506cba1368f",
+  "output_sha256": "8db99e34aac809ebb41d8222042b319b78083c8a35075c9ec90bce6dd08247a5",
+  "replacements": [
+    {
+      "before": "    pass\n\n\n# intents and stack\nclass InvalidStackIdError(DialogsError):\n    pass\n\n",
+      "after": "    pass\n\n\nclass InvalidStackIdError(DialogsError):\n    pass\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n\nclass OutdatedIntent(DialogsError):\n    def __init__(self, stack_id, text):\n        super().__init__(text)\n        self.stack_id = stack_id\n\n\nclass UnknownState(DialogsError):\n",
+      "after": "\n\nclass OutdatedIntent(DialogsError):\n    pass\n\n\nclass UnknownState(DialogsError):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    pass\n\n\n# manager\nclass IncorrectBackgroundError(DialogsError):\n    pass\n\n\nclass NoContextError(DialogsError):\n    pass\n\n\n# navigation\nclass UnregisteredDialogError(DialogsError):\n    pass\n\n",
+      "after": "    pass\n\n\nclass NoContextError(DialogsError):\n    pass\n\n\nclass UnregisteredDialogError(DialogsError):\n    pass\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    pass\n\n\n# widgets\nclass InvalidWidgetIdError(DialogsError):\n    pass\n\n",
+      "after": "    pass\n\n\nclass InvalidWidgetIdError(DialogsError):\n    pass\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    pass\n\n\nclass InvalidKeyboardType(DialogsError):\n    pass\n",
+      "after": "    pass\n\n\nclass RendererUnavailable(DialogsError):\n    pass\n",
+      "occurrences": 1
+    }
+  ]
+}

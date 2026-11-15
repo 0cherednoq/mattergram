@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-15",
+  "result": "implemented-and-live-verified-web",
+  "plugin": {
+    "id": "com.mattergram.menu",
+    "version": "0.2.0",
+    "minimum_server": "11.9.0",
+    "bundle": "build/plugins/mattergram-menu-0.2.0.tar.gz",
+    "sha256": "0aa7ca9e77d7073a0d5afce5ea9adcf540cc2337026adc6a95821695f970c808",
+    "architectures": ["linux-amd64", "linux-arm64"]
+  },
+  "library_contract": [
+    "ComposerButton",
+    "ComposerKeyboard",
+    "ComposerKeyboardState",
+    "Bot.set_composer_keyboard",
+    "Bot.get_composer_keyboard",
+    "Bot.delete_composer_keyboard"
+  ],
+  "security": [
+    "webapp uses the current actor session and contains no bot or administrator credential",
+    "GET requires channel membership",
+    "PUT and DELETE require a bot account or system administrator",
+    "plugin KV updates use compare-and-set revisions",
+    "unknown fields, invalid layouts and arbitrary button styles are rejected"
+  ],
+  "checks": {
+    "python": "501 passed, 23 real-Redis-profile skips, 308 subtests passed",
+    "node": "5 passed",
+    "go": "go test ./server passed",
+    "quality": "Ruff lint/format and strict mypy passed",
+    "documentation": "255 exports, 19 examples, 27 guides; drift check passed",
+    "bundle": "two consecutive builds produced the same SHA-256; archive contains 54 license/notice files"
+  },
+  "live": {
+    "server": "Mattermost Team Edition 12.0.2",
+    "url": "http://127.0.0.1:29465/menu-demo/channels/control",
+    "api": "final licensed 0.2.0 archive installed and enabled; typed set/get read-back reached revision 4",
+    "browser": "Chrome rendered the declared 2+1 layout, one Accounts click created one ordinary /accounts post, and revision 2 changed the open keyboard to Accounts v2 without reload",
+    "plugin_console_errors": 0,
+    "screenshot": "output/playwright/mattergram-menu-0.2.0/keyboard-after-click.png"
+  },
+  "limits": [
+    "native iOS and Android clients do not run webapp plugins",
+    "signed custom image recipe is authored but was not built because production signing keys are intentionally external",
+    "HA and target-production-version acceptance remain operator checks"
+  ]
+}

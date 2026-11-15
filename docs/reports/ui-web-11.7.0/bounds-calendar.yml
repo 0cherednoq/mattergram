@@ -1,0 +1,110 @@
+  - dialog "SDK bounds" [ref=f2e5879]:
+    - document [ref=f2e5881]:
+      - generic [ref=f2e5882]:
+        - generic [aria-hidden] [ref=f2e5883]:
+          - button [ref=f2e5905] [cursor=pointer]:
+            - text: ×
+            - generic [ref=f2e5885]: Close
+          - heading [level=1] [ref=f2e5906]: SDK bounds
+        - generic [ref=f2e5887]:
+          - generic [ref=f2e5889]: 
+          - generic [ref=f2e5891]:
+            - generic [aria-hidden] [ref=f2e5892]: Bounded date *
+            - generic [ref=f2e5894]:
+              - button [active] [aria-hidden] [ref=f2e5908] [cursor=pointer]:
+                - generic [ref=f2e5896]: 󰭧
+                - generic [ref=f2e5898]: Nov 12, 2026
+              - generic [ref=f2e5913]:
+                - generic [ref=f2e5914]:
+                  - heading "November 2026" [level=2] [ref=f2e5915]
+                  - generic [ref=f2e5916]:
+                    - button "Go to previous month" [ref=f2e5917] [cursor=pointer]:
+                      - generic [ref=f2e5918]: 󰅁
+                    - button "Go to next month" [ref=f2e5919] [cursor=pointer]:
+                      - generic [ref=f2e5920]: 󰅂
+                - grid "November 2026" [ref=f2e5921]:
+                  - rowgroup [ref=f2e5922]:
+                    - row [ref=f2e5923]:
+                      - columnheader "Sunday" [ref=f2e5924]: Su
+                      - columnheader "Monday" [ref=f2e5926]: Mo
+                      - columnheader "Tuesday" [ref=f2e5928]: Tu
+                      - columnheader "Wednesday" [ref=f2e5930]: We
+                      - columnheader "Thursday" [ref=f2e5932]: Th
+                      - columnheader "Friday" [ref=f2e5934]: Fr
+                      - columnheader "Saturday" [ref=f2e5936]: Sa
+                  - rowgroup [ref=f2e5938]:
+                    - row [ref=f2e5939]:
+                      - gridcell [ref=f2e5940]:
+                        - button "1st November (Sunday)" [disabled] [ref=f2e5941]: "1"
+                      - gridcell [ref=f2e5942]:
+                        - button "2nd November (Monday)" [disabled] [ref=f2e5943]: "2"
+                      - gridcell [ref=f2e5944]:
+                        - button "3rd November (Tuesday)" [disabled] [ref=f2e5945]: "3"
+                      - gridcell [ref=f2e5946]:
+                        - button "4th November (Wednesday)" [disabled] [ref=f2e5947]: "4"
+                      - gridcell [ref=f2e5948]:
+                        - button "5th November (Thursday)" [disabled] [ref=f2e5949]: "5"
+                      - gridcell [ref=f2e5950]:
+                        - button "6th November (Friday)" [disabled] [ref=f2e5951]: "6"
+                      - gridcell [ref=f2e5952]:
+                        - button "7th November (Saturday)" [disabled] [ref=f2e5953]: "7"
+                    - row [ref=f2e5954]:
+                      - gridcell [ref=f2e5955]:
+                        - button "8th November (Sunday)" [disabled] [ref=f2e5956]: "8"
+                      - gridcell [ref=f2e5957]:
+                        - button "9th November (Monday)" [disabled] [ref=f2e5958]: "9"
+                      - gridcell [ref=f2e5959]:
+                        - button "10th November (Tuesday)" [ref=f2e5960] [cursor=pointer]: "10"
+                      - gridcell [ref=f2e5961]:
+                        - button "11th November (Wednesday)" [ref=f2e5962] [cursor=pointer]: "11"
+                      - gridcell [ref=f2e5963]:
+                        - button "12th November (Thursday)" [pressed] [ref=f2e5964] [cursor=pointer]: "12"
+                      - gridcell [ref=f2e5965]:
+                        - button "13th November (Friday)" [ref=f2e5966] [cursor=pointer]: "13"
+                      - gridcell [ref=f2e5967]:
+                        - button "14th November (Saturday)" [ref=f2e5968] [cursor=pointer]: "14"
+                    - row [ref=f2e5969]:
+                      - gridcell [ref=f2e5970]:
+                        - button "15th November (Sunday)" [disabled] [ref=f2e5971]: "15"
+                      - gridcell [ref=f2e5972]:
+                        - button "16th November (Monday)" [disabled] [ref=f2e5973]: "16"
+                      - gridcell [ref=f2e5974]:
+                        - button "17th November (Tuesday)" [disabled] [ref=f2e5975]: "17"
+                      - gridcell [ref=f2e5976]:
+                        - button "18th November (Wednesday)" [disabled] [ref=f2e5977]: "18"
+                      - gridcell [ref=f2e5978]:
+                        - button "19th November (Thursday)" [disabled] [ref=f2e5979]: "19"
+                      - gridcell [ref=f2e5980]:
+                        - button "20th November (Friday)" [disabled] [ref=f2e5981]: "20"
+                      - gridcell [ref=f2e5982]:
+                        - button "21st November (Saturday)" [disabled] [ref=f2e5983]: "21"
+                    - row [ref=f2e5984]:
+                      - gridcell [ref=f2e5985]:
+                        - button "22nd November (Sunday)" [disabled] [ref=f2e5986]: "22"
+                      - gridcell [ref=f2e5987]:
+                        - button "23rd November (Monday)" [disabled] [ref=f2e5988]: "23"
+                      - gridcell [ref=f2e5989]:
+                        - button "24th November (Tuesday)" [disabled] [ref=f2e5990]: "24"
+                      - gridcell [ref=f2e5991]:
+                        - button "25th November (Wednesday)" [disabled] [ref=f2e5992]: "25"
+                      - gridcell [ref=f2e5993]:
+                        - button "26th November (Thursday)" [disabled] [ref=f2e5994]: "26"
+                      - gridcell [ref=f2e5995]:
+                        - button "27th November (Friday)" [disabled] [ref=f2e5996]: "27"
+                      - gridcell [ref=f2e5997]:
+                        - button "28th November (Saturday)" [disabled] [ref=f2e5998]: "28"
+                    - row [ref=f2e5999]:
+                      - gridcell [ref=f2e6000]:
+                        - button "29th November (Sunday)" [disabled] [ref=f2e6001]: "29"
+                      - gridcell [ref=f2e6002]:
+                        - button "30th November (Monday)" [disabled] [ref=f2e6003]: "30"
+                      - gridcell [ref=f2e6004]
+                      - gridcell [ref=f2e6005]
+                      - gridcell [ref=f2e6006]
+                      - gridcell [ref=f2e6007]
+                      - gridcell [ref=f2e6008]
+        - generic [ref=f2e5900]:
+          - button [ref=f2e6010] [cursor=pointer]:
+            - generic [ref=f2e5902]: Cancel
+          - button [ref=f2e6011] [cursor=pointer]:
+            - generic [ref=f2e5904]: Submit

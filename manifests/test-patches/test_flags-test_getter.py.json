@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "5d80ee4a27b2838cb49029239db2705efdffed2f5d4a9ec99cd0647c103ff053",
+  "output_sha256": "1143f02844650a1f175feeca105e9c236a8d8f7bf0fd6b9dd23c672df20c1065",
+  "replacements": [
+    {
+      "before": "\nimport pytest\n\nfrom aiogram import F\nfrom aiogram.dispatcher.event.handler import HandlerObject\nfrom aiogram.dispatcher.flags import (\n    check_flags,\n    extract_flags,\n    extract_flags_from_object,\n",
+      "after": "\nimport pytest\n\nfrom mattergram import F\nfrom mattergram.dispatcher.event.handler import HandlerObject\nfrom mattergram.dispatcher.flags import (\n    check_flags,\n    extract_flags,\n    extract_flags_from_object,\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n        assert extract_flags_from_object(func) == {}\n\n        func.aiogram_flag = {\"test\": True}\n        assert extract_flags_from_object(func) == func.aiogram_flag\n\n    @pytest.mark.parametrize(\n        \"obj,result\",\n",
+      "after": "\n        assert extract_flags_from_object(func) == {}\n\n        func.mattergram_flag = {\"test\": True}\n        assert extract_flags_from_object(func) == func.mattergram_flag\n\n    @pytest.mark.parametrize(\n        \"obj,result\",\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        ],\n    )\n    def test_check_flag(self, flags, magic, result):\n        with patch(\"aiogram.dispatcher.flags.extract_flags\", return_value=flags):\n            assert check_flags(object(), magic) == result\n",
+      "after": "        ],\n    )\n    def test_check_flag(self, flags, magic, result):\n        with patch(\"mattergram.dispatcher.flags.extract_flags\", return_value=flags):\n            assert check_flags(object(), magic) == result\n",
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained. Command constructor cases restored now that its portable parser is available.",
+  "input_sha256": "5e91bdabc87f65d9860ecebafe6f025295b765fb5a7c3341e8c132e8586eeb0b",
+  "output_sha256": "3a05440c422b0c5eebded9646138eb7f2638065ee85d2dc3f12e59755fffe6bc",
+  "replacements": [
+    {
+      "before": "import pytest\n\nfrom aiogram.filters import Command, and_f, invert_f, or_f\nfrom aiogram.filters.logic import _AndFilter, _InvertFilter, _OrFilter\n\n\nclass TestLogic:\n",
+      "after": "import pytest\n\nfrom mattergram.filters import Command, and_f, invert_f, or_f\nfrom mattergram.filters.logic import _AndFilter, _InvertFilter, _OrFilter\n\n\nclass TestLogic:\n",
+      "occurrences": 1
+    }
+  ]
+}

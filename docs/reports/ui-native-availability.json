@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-11-12T11:46:12.426574+00:00",
+  "status": "Native desktop/mobile execution not performed",
+  "probes": {
+    "matching_Mattermost_or_Android_Studio_uninstall_entries": 0,
+    "adb_or_emulator_on_PATH": false,
+    "standard_Mattermost_and_Android_emulator_paths_found": false
+  },
+  "scope": "Targeted Windows uninstall-registry, PATH and conventional install-path checks; portable/custom installs elsewhere were not ruled out",
+  "profile_policy": "Native support remains unknown; web viewport does not substitute for native apps",
+  "next_independent_work": "E6 provisioning"
+}

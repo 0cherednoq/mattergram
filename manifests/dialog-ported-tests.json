@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "source_id": "aiogram_dialog",
+  "source_commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+  "license": "Apache-2.0; LICENSES/aiogram_dialog-Apache-2.0.txt",
+  "scope": "Nine selected donor suites consolidated into native Mattermost state, transition, isolation, text and form scenarios. Telegram fixtures and rendering assertions are replaced, not imported.",
+  "sources": [
+    {"path": "tests/test_dialog_state_validation.py", "sha256": "1e2c7f204b4fde24811d64b75bfd9710116b4ece12618d99dda2108c2dd967a5"},
+    {"path": "tests/test_exception_notes.py", "sha256": "24613ab660ab1f3419a565b563890679843b8caa8d29316c276eafb651849e13"},
+    {"path": "tests/test_isolation.py", "sha256": "3f32b3a01507f7f192cc4288274d2af5d4b08ead119a09021278dde291947e95"},
+    {"path": "tests/test_nested_transitions.py", "sha256": "68841a0e2647eb4a26b5097c822295b6a6b4fd42fd4287260e5b3d17ad3a937f"},
+    {"path": "tests/test_transitions.py", "sha256": "8ccb073409bcd10af73c4f19fc256d3df7ef4e979a27f90a1e940d75edac13a1"},
+    {"path": "tests/widgets/text/test_base.py", "sha256": "b9ce5bac391f9039236d2202652b2307fefc3d6bc584fc29025f57e24cc02ea9"},
+    {"path": "tests/widgets/text/test_case.py", "sha256": "71cef4cce683af31350a09488dee00df8d12d22cf2c9b5884ad2f5a091cbd268"},
+    {"path": "tests/widgets/text/test_format.py", "sha256": "d6e8abaf2cc1d415798c2edad2e812e7fcc12c0cc20dfa03faa9036bfafa63c1"},
+    {"path": "tests/widgets/text/test_multi.py", "sha256": "ea1ee16688bb08651e225bcf76e09cc7857f07988d34bc2bed98d0452190c2b8"}
+  ],
+  "target": {
+    "path": "tests/ported/test_dialog_runtime.py",
+    "sha256": "8032911b8abdd57c0758693f99a210c1ab253e499adbe2fc922fb82cde20e14e"
+  },
+  "native_cases": [
+    "nested transitions and result propagation survive storage reload",
+    "failed manager transactions do not commit",
+    "per-scope locks prevent lost concurrent updates",
+    "text conditions, fallback and case selection render deterministically",
+    "FormWindow emits typed Mattermost Form and TextInput declarations with cancel notification enabled",
+    "the documented OpenForm/FormWindow declaration and submit callback execute end to end",
+    "memory and real Redis storage/isolation profiles share the same session model",
+    "Back restores the actual branch path after persistence reload",
+    "multiple PagedList widgets keep independent page and filter state",
+    "large control sets remain in one object-local native attachment group",
+    "ButtonGrid and ActionRow preserve a two/four/two control structure in one group and compile it to Blocks columns",
+    "full and compact pagers retain stable disabled boundary controls",
+    "bounded Markdown tables escape cells and remain independently addressable",
+    "opaque cursor lists move forward and backward without a fabricated total",
+    "typed form presets cover text, choices, dates and files",
+    "DataBlock compiles a table, its filter and its full pager into one native attachment without a five-action cap",
+    "table filters render above content with active color while page selection and pagination share the lower row",
+    "page-local dropdown selection reveals a nested detail card below its table controls",
+    "determinate and indeterminate progress always include numeric status",
+    "DataBlock retains static content when every local action is hidden",
+    "generic Button callbacks consume a per-render token before application dispatch",
+    "typed form defaults resolve from Format, MagicFilter, sync and async getter data before native validation",
+    "ActionTable is a public Blocks-only row-action widget rather than demo-only imperative code"
+  ],
+  "excluded": [
+    "Telegram Bot, Chat, Message and CallbackQuery fixtures",
+    "inline/reply keyboard, content type, media ID and callback-answer assertions",
+    "editing an already open Mattermost modal in the background"
+  ]
+}

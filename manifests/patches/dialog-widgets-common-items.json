@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Generic string/callable/MagicFilter/sequence item getter selection; namespace rewrite only. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "ab985a7d094e4d9744029b9f9815e4737a7f8d88319b34ca4076d360860bf568",
+  "output_sha256": "8c7ba46150c95075500c9bc1682c61af54435482f64fe36b0610cf1f9f93e3a8",
+  "replacements": [
+    {
+      "before": "from collections.abc import Callable, Sequence\nfrom operator import itemgetter\n\nfrom magic_filter import MagicFilter\n\nItemsGetter = Callable[[dict], Sequence]\nItemsGetterVariant = str | ItemsGetter | MagicFilter | Sequence\n\n\ndef _get_identity(items: Sequence) -> ItemsGetter:\n    def identity(data) -> Sequence:\n        return items\n\n    return identity\n\n\ndef _get_magic_getter(f: MagicFilter) -> ItemsGetter:\n    def items_magic(data: dict) -> Sequence:\n        items = f.resolve(data)\n        if isinstance(items, Sequence):\n            return items\n        else:\n            return []\n\n    return items_magic\n\n\ndef get_items_getter(attr_val: ItemsGetterVariant) -> ItemsGetter:\n    if isinstance(attr_val, str):\n        return itemgetter(attr_val)\n    elif isinstance(attr_val, MagicFilter):\n        return _get_magic_getter(attr_val)\n    elif isinstance(attr_val, Callable):\n        return attr_val\n    else:\n        return _get_identity(attr_val)\n",
+      "after": "from __future__ import annotations\n\nfrom collections.abc import Callable, Mapping, Sequence\nfrom typing import Any\n\nfrom magic_filter import MagicFilter\n\nItemsGetter = str | MagicFilter | Sequence[Any] | Callable[[Mapping[str, Any]], Sequence[Any]]\n\n\ndef get_items(source: ItemsGetter, data: Mapping[str, Any]) -> Sequence[Any]:\n    if isinstance(source, str):\n        value = data.get(source, ())\n    elif isinstance(source, MagicFilter):\n        value = source.resolve(data)\n    elif callable(source):\n        value = source(data)\n    else:\n        value = source\n    if isinstance(value, (str, bytes)) or not isinstance(value, Sequence):\n        raise TypeError(\"Items getter must return a non-string sequence\")\n    return value\n\n\n__all__ = [\"ItemsGetter\", \"get_items\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

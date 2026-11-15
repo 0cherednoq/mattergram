@@ -1,0 +1,92 @@
+# Isolated E5-03 11.7/11.11 fixtures; layer over native and UI compose files.
+# Separate named databases and volumes; shared fixture CA only inside containers.
+services:
+  db_ui117:
+    profiles: [ui117]
+    image: postgres:16-alpine@sha256:20edbde7749f822887a1a022ad526fde0a47d6b2be9a8364433605cf65099416
+    environment:
+      POSTGRES_USER: mattergram
+      POSTGRES_PASSWORD: ${MATTERGRAM_STAND_DB_PASSWORD:?Generate build/native-stand.env first}
+      POSTGRES_DB: mattergram_ui117
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U mattergram -d mattergram_ui117']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - ui117-postgres-data:/var/lib/postgresql/data
+  mattermost_ui117:
+    profiles: [ui117]
+    image: mattermost/mattermost-team-edition:11.7.0@sha256:495c748914b2acc4c3d77f73437c6e949aed9a4f2ec53e27019a520d7eb745d0
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      db_ui117:
+        condition: service_healthy
+    environment:
+      SSL_CERT_FILE: /mattergram-ui-trust/ca.pem
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: postgres://mattergram:${MATTERGRAM_STAND_DB_PASSWORD}@db_ui117:5432/mattergram_ui117?sslmode=disable
+      MM_SERVICESETTINGS_LISTENADDRESS: :8065
+      MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: 'true'
+      MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: 'true'
+      MM_SERVICESETTINGS_ENABLECOMMANDS: 'true'
+      MM_SERVICESETTINGS_ALLOWEDUNTRUSTEDINTERNALCONNECTIONS: host.docker.internal
+      MM_SERVICESETTINGS_ENABLEEMAILINVITATIONS: 'false'
+      MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS: 'false'
+      MM_EMAILSETTINGS_REQUIREEMAILVERIFICATION: 'false'
+      MM_LOGSETTINGS_CONSOLELEVEL: ERROR
+      MM_LOGSETTINGS_ENABLEFILE: 'false'
+      MM_PLUGINSETTINGS_ENABLEUPLOADS: 'false'
+    ports:
+      - '127.0.0.1::8065'
+    volumes:
+      - ui117-mattermost-data:/mattermost/data
+      - ../build/ui-tls/ca.pem:/mattergram-ui-trust/ca.pem:ro
+  db_ui1111:
+    profiles: [ui1111]
+    image: postgres:16-alpine@sha256:20edbde7749f822887a1a022ad526fde0a47d6b2be9a8364433605cf65099416
+    environment:
+      POSTGRES_USER: mattergram
+      POSTGRES_PASSWORD: ${MATTERGRAM_STAND_DB_PASSWORD:?Generate build/native-stand.env first}
+      POSTGRES_DB: mattergram_ui1111
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U mattergram -d mattergram_ui1111']
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - ui1111-postgres-data:/var/lib/postgresql/data
+  mattermost_ui1111:
+    profiles: [ui1111]
+    image: mattermost/mattermost-team-edition:11.11.0@sha256:d5af347bedb54e85754076a131a6a204f4b2efb34369014a50966aa1347245b1
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    depends_on:
+      db_ui1111:
+        condition: service_healthy
+    environment:
+      SSL_CERT_FILE: /mattergram-ui-trust/ca.pem
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: postgres://mattergram:${MATTERGRAM_STAND_DB_PASSWORD}@db_ui1111:5432/mattergram_ui1111?sslmode=disable
+      MM_SERVICESETTINGS_LISTENADDRESS: :8065
+      MM_SERVICESETTINGS_ENABLEUSERACCESSTOKENS: 'true'
+      MM_SERVICESETTINGS_ENABLEBOTACCOUNTCREATION: 'true'
+      MM_SERVICESETTINGS_ENABLECOMMANDS: 'true'
+      MM_SERVICESETTINGS_ALLOWEDUNTRUSTEDINTERNALCONNECTIONS: host.docker.internal
+      MM_SERVICESETTINGS_ENABLEEMAILINVITATIONS: 'false'
+      MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS: 'false'
+      MM_EMAILSETTINGS_REQUIREEMAILVERIFICATION: 'false'
+      MM_LOGSETTINGS_CONSOLELEVEL: ERROR
+      MM_LOGSETTINGS_ENABLEFILE: 'false'
+      MM_PLUGINSETTINGS_ENABLEUPLOADS: 'false'
+    ports:
+      - '127.0.0.1::8065'
+    volumes:
+      - ui1111-mattermost-data:/mattermost/data
+      - ../build/ui-tls/ca.pem:/mattergram-ui-trust/ca.pem:ro
+volumes:
+  ui117-postgres-data:
+  ui117-mattermost-data:
+  ui1111-postgres-data:
+  ui1111-mattermost-data:

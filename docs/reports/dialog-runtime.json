@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "task": "E8-02",
+  "result": "passed",
+  "date": "2026-11-12",
+  "scope": "Mattermost-native dialog runtime, reproducible donor adaptation, Memory/Redis behavior and installed artifacts",
+  "source": {
+    "id": "aiogram_dialog",
+    "version": "2.6.0",
+    "commit": "2c2fca8eab9532fba9c13f31be7404ec872c8a88",
+    "license": "Apache-2.0"
+  },
+  "port": {
+    "explicit_decisions": 40,
+    "adapted_modules": 27,
+    "excluded_modules": 13,
+    "native_boundaries": 17,
+    "pending_adaptations": 0,
+    "audit_findings": 0,
+    "manifest_sha256": "21b70395efe22301100d1d13a009d1ed3d56bc25316980ea81cdfaf4ab0aa671",
+    "plan_sha256": "a51c977bd3fc8f82de1b806ac2b6e4df51b67774f750b7edcc2ae2b65a70906c",
+    "behavioral_receipt_sha256": "8d3d6d908a5c9b5e96a36f948f8d363ee2b057ea1efd41f13d8a38fde1a68d91"
+  },
+  "behavior": [
+    "transactional stack/context persistence with rollback",
+    "per-actor/channel/thread event isolation",
+    "start, switch_to, next, back, done, update and submit",
+    "nested result propagation",
+    "Const, Format, Multi, Or, Case, when and getters",
+    "typed FormWindow fields and submit callback",
+    "signed OpenForm post-action binding",
+    "explicit post/form renderer capability failures"
+  ],
+  "matrix": {
+    "platform": "Windows",
+    "python": ["3.11.15", "3.13.12", "3.14.3"],
+    "tests_each": 477,
+    "subtests_each": 312,
+    "redis": "real redis://127.0.0.1:47851 profile; no skips",
+    "ruff_files": 219,
+    "strict_mypy_files": 175
+  },
+  "distribution": {
+    "source_typing_files": 127,
+    "wheel": {
+      "path": "build/final-dist/e8-dialog-final/mattergram-0.1.0a1-py3-none-any.whl",
+      "hash_receipt": "build/reports/distributions.json"
+    },
+    "sdist": {
+      "path": "build/final-dist/e8-dialog-final/mattergram-0.1.0a1.tar.gz",
+      "hash_receipt": "build/reports/distributions.json"
+    },
+    "twine": "passed",
+    "wheel_and_sdist_install": "passed outside checkout",
+    "consumer_unit": 79,
+    "consumer_integration": 79,
+    "real_redis": 16,
+    "provisioning": 28
+  },
+  "limits": [
+    "E8-03 catalog/card/form/confirmation scenario has not yet run against a live Mattermost ingress flow.",
+    "An already open Mattermost modal cannot be arbitrarily updated from a background task.",
+    "Desktop/mobile native client acceptance remains part of E5-03."
+  ]
+}

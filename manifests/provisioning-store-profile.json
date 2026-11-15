@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "scope": "E6 partial local encrypted store and journal; full Bootstrap/reconciliation remains open",
+  "storage": "SQLite format 1, FULL commits, encrypted binding/secret/completion in one transaction",
+  "encryption": "cryptography Fernet recipe with caller-supplied external SecretBytes key; authenticated record context; no hand-written cipher",
+  "permission_contract": "New private leaf under a trusted parent; Windows process-user/SYSTEM DACL, POSIX owner/modes; no repair of existing broad permissions; regular single-link files only",
+  "lock_contract": "One directory-wide local advisory OS file lock; bounded asynchronous acquisition; crash releases descriptor but retains durable pending intent; no distributed/fencing claim",
+  "primary_sources": [
+    "https://cryptography.io/en/latest/fernet/",
+    "https://docs.python.org/3.11/library/sqlite3.html",
+    "https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-createdirectoryw",
+    "https://learn.microsoft.com/en-us/windows/win32/api/sddl/nf-sddl-convertstringsecuritydescriptortosecuritydescriptorw",
+    "https://learn.microsoft.com/en-us/windows/win32/api/aclapi/nf-aclapi-getnamedsecurityinfow",
+    "https://learn.microsoft.com/en-us/windows/win32/api/securitybaseapi/nf-securitybaseapi-getace"
+  ],
+  "verified_scope": "Windows Python 3.11/3.13/3.14; POSIX implementation is not established by Windows evidence",
+  "remaining": ["Bootstrap/planner/reconciler", "Native ownership/permission/feature checks", "Explicit recovery and lost-secret policies", "Multiple replicas/deployment readiness", "POSIX execution and broader OS/dependency matrix"]
+}

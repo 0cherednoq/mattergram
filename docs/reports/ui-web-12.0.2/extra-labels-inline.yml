@@ -1,0 +1,61 @@
+  - dialog "SDK labels" [ref=f2e7086]:
+    - document [ref=f2e7088]:
+      - generic [ref=f2e7089]:
+        - generic [ref=f2e7090]:
+          - button "Close" [ref=f2e7091] [cursor=pointer]: ×
+          - heading "SDK labels" [level=1] [ref=f2e7093]
+        - generic [ref=f2e7094]:
+          - generic "Loading Icon" [ref=f2e7097]: 
+          - generic [ref=f2e7098]:
+            - generic [ref=f2e7099]:
+              - text: Checkbox before
+              - generic: (optional)
+            - generic [ref=f2e7102] [cursor=pointer]:
+              - generic: Inline caption before
+              - checkbox "Checkbox before (optional) Inline caption before" [checked] [ref=f2e7103]
+          - generic [ref=f2e7104]:
+            - generic [ref=f2e7105]: Radio before *
+            - generic [ref=f2e7106]:
+              - generic [ref=f2e7108] [cursor=pointer]:
+                - generic: Alpha
+                - radio "Alpha" [ref=f2e7109]
+              - generic [ref=f2e7111] [cursor=pointer]:
+                - generic: Beta
+                - radio "Beta" [checked] [ref=f2e7112]
+          - generic [ref=f2e7113]:
+            - generic [ref=f2e7114]: Group before *
+            - group "Group before *" [ref=f2e7116]:
+              - generic [ref=f2e7119] [cursor=pointer]:
+                - generic: Alpha
+                - checkbox "Alpha" [checked] [ref=f2e7120]
+              - generic [ref=f2e7122] [cursor=pointer]:
+                - generic: Beta
+                - checkbox "Beta" [checked] [ref=f2e7123]
+          - generic [ref=f2e7124]:
+            - generic [ref=f2e7125]:
+              - text: Checkbox after
+              - generic: (optional)
+            - generic [ref=f2e7128] [cursor=pointer]:
+              - checkbox "Checkbox after (optional) Inline caption after" [checked] [ref=f2e7129]
+              - generic: Inline caption after
+          - generic [ref=f2e7130]:
+            - generic [ref=f2e7131]: Radio after *
+            - generic [ref=f2e7132]:
+              - generic [ref=f2e7134] [cursor=pointer]:
+                - radio "Alpha" [ref=f2e7135]
+                - generic: Alpha
+              - generic [ref=f2e7137] [cursor=pointer]:
+                - radio "Beta" [checked] [ref=f2e7138]
+                - generic: Beta
+          - generic [ref=f2e7139]:
+            - generic [ref=f2e7140]: Group after *
+            - group "Group after *" [ref=f2e7142]:
+              - generic [ref=f2e7145] [cursor=pointer]:
+                - checkbox "Alpha" [checked] [ref=f2e7146]
+                - generic: Alpha
+              - generic [ref=f2e7148] [cursor=pointer]:
+                - checkbox "Beta" [checked] [active] [ref=f2e7149]
+                - generic: Beta
+        - generic [ref=f2e7151]:
+          - button "Cancel" [ref=f2e7152] [cursor=pointer]
+          - button "Submit" [ref=f2e7154] [cursor=pointer]

@@ -1,0 +1,753 @@
+{
+  "schema_version": 1,
+  "source": "aiogram",
+  "target_namespace": "mattergram",
+  "scope": "Routing/filter/middleware/FSM core. Explicit review plan, not an executable transitive allowlist.",
+  "codemods": [
+    "namespace_imports_v1"
+  ],
+  "audit_policy": {
+    "forbidden_import_roots": [
+      "aiogram",
+      "aiogram_dialog",
+      "telegram"
+    ],
+    "forbidden_symbol_prefixes": [
+      "Telegram",
+      "Aiogram"
+    ],
+    "allowed_external_import_roots": [
+      "magic_filter",
+      "aiohttp",
+      "pydantic",
+      "redis",
+      "cryptography"
+    ]
+  },
+  "entries": [
+    {
+      "module": "aiogram.dispatcher.router",
+      "action": "adapt",
+      "reason": "Retain traversal/order; replace Telegram observer registry with explicit Mattermost events and remove Telegram update type enumeration. Slash observer adds immutable registration metadata through the existing base registration algorithm.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-router.json",
+            "sha256": "ac635a5aa507a1706e5e52969b70151987ec95c5f646ad5086fc0b51f038b8be"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.event.bases",
+      "action": "adapt",
+      "reason": "Retain sentinels and SkipHandler/CancelHandler; bind middleware event type to native Event instead of TelegramObject.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-event-bases.json",
+            "sha256": "9b5b982f826d78c65fcb1b34f5c23fac9b7441fabc41885e977b75aac6ea77c4"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.event.event",
+      "action": "copy",
+      "reason": "Generic lifecycle observer; namespace rewrite only."
+    },
+    {
+      "module": "aiogram.dispatcher.event.handler",
+      "action": "adapt",
+      "reason": "Retain signature DI and filters; import only the selected BaseHandler, update warning namespace; no aggregate Telegram handlers.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-event-handler.json",
+            "sha256": "928cb39a74cfc6b40f20992f9dbb86eb6af07283be67f7871c846e8abf2ee661"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.event.telegram",
+      "target": "src/mattergram/dispatcher/event/message.py",
+      "action": "adapt",
+      "reason": "Retain filter/middleware orchestration and stop/skip behavior; rename observer, bind native Event, remove Telegram-only wording and validation.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-event-telegram.json",
+            "sha256": "028937c0cd46036f02f1c932ab695d4f4d37f9baa950da8b93f0f49dbe3a4b58"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.flags",
+      "action": "adapt",
+      "reason": "Retain decorator flags; rename aiogram_flag storage and remove Telegram chat_action typing protocol.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-flags.json",
+            "sha256": "de85244c104628d6a440a4bebe3e17b8dea07306c642a027782497816767e16d"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.middlewares.base",
+      "action": "adapt",
+      "reason": "Use native Event in middleware protocol; retain algorithm/interface.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-middlewares-base.json",
+            "sha256": "e1ee6eb67b6bdc88356558a6ded7bc80d726fd2d8e3f8607d3534e75817cc94f"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.middlewares.manager",
+      "action": "adapt",
+      "reason": "Use native Event in annotations; retain middleware order and wrapping.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/dispatcher-middlewares-manager.json",
+            "sha256": "5225590474a538994133f936e1cd17a42d1a9d8137ba7cc43bf3e0dd407a8032"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.filters.base",
+      "action": "copy",
+      "reason": "Generic filter and inversion protocol; namespace rewrite only."
+    },
+    {
+      "module": "aiogram.filters.logic",
+      "action": "copy",
+      "reason": "Generic AND/OR/NOT filter composition; namespace rewrite only."
+    },
+    {
+      "module": "aiogram.handlers.base",
+      "action": "adapt",
+      "reason": "Bind class-based handler to native Event/Bot; remove TelegramObject bound.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/handlers-base.json",
+            "sha256": "0d010ae36954231664fdcd993e035fbda7ddf7b73e2de899616916c7e4f79b83"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.fsm.state",
+      "action": "adapt",
+      "reason": "Retain state/group naming and matching; accept native Event without TelegramObject.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/fsm-state.json",
+            "sha256": "dda6f6a34ec8b69ca476c2a7865e99d7afc5c2e724f6a2fec28710d960e4ee4d"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.fsm.context",
+      "action": "copy",
+      "reason": "Generic storage facade; namespace rewrite only after storage contract adaptation."
+    },
+    {
+      "module": "aiogram.fsm.storage.base",
+      "action": "adapt",
+      "reason": "Replace integer Telegram keys with explicit server/bot/channel/user/thread string identifiers; preserve storage operations and isolation abstraction.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/fsm-storage-base.json",
+            "sha256": "e1d36a465941829662a8d3fcbebc4cca741210b77117f61a0c7860bb7ea55717"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.fsm.storage.memory",
+      "action": "adapt",
+      "reason": "Retain memory storage and locks with native keys and native DataNotDictLikeError; verify cancellation and reuse.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/fsm-storage-memory.json",
+            "sha256": "09ccdd917ba86617b028d978ba63269d2e4bdd02056e90ed8c6daf5817a1ee72"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.fsm.strategy",
+      "action": "adapt",
+      "reason": "Define explicit Mattermost channel/user/thread strategies with string IDs; no integer surrogate IDs.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/fsm-strategy.json",
+            "sha256": "d167d4cc6c3db51633c191b46a1d44b57a3ec095ac4aefe5464111fcf00abfa7"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.utils.magic_filter",
+      "action": "copy",
+      "reason": "Portable magic-filter as_ extension; no platform imports."
+    },
+    {
+      "module": "aiogram.utils.warnings",
+      "action": "adapt",
+      "reason": "Rename AiogramWarning base to MattergramWarning; preserve warning hierarchy.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/utils-warnings.json",
+            "sha256": "923cf37f0db84b39ae70f8d04c889b1e9d41ad10e665862cdda6150df13825aa"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.dispatcher.dispatcher",
+      "action": "exclude",
+      "reason": "Telegram polling/update/session orchestration is replaced by native REST/WS/HTTP lifecycle, not namespace copied."
+    },
+    {
+      "module": "aiogram",
+      "action": "exclude",
+      "reason": "Root exports import Telegram Bot/methods/types. Write an explicit native public facade."
+    },
+    {
+      "module": "aiogram.filters",
+      "action": "exclude",
+      "reason": "Aggregate filter exports pull in Telegram methods/types. Export only selected filters."
+    },
+    {
+      "module": "aiogram.handlers",
+      "action": "exclude",
+      "reason": "Aggregate handler exports include Telegram-only events. Export selected BaseHandler only."
+    },
+    {
+      "module": "aiogram.types",
+      "action": "exclude",
+      "reason": "Full generated Telegram model graph is outside the port; create native Mattermost models."
+    },
+    {
+      "module": "aiogram.exceptions",
+      "action": "exclude",
+      "reason": "Telegram transport errors are replaced by native status/payload exceptions; no copied transport semantics."
+    },
+    {
+      "module": "aiogram.client.bot",
+      "action": "exclude",
+      "reason": "InputFile no longer receives a Telegram Bot or downloads URL content through a Telegram session; Mattermost multipart transport is implemented by the native Bot boundary."
+    },
+    {
+      "module": "aiogram.fsm.storage.redis",
+      "action": "adapt",
+      "reason": "Retain Redis state/data/key/serializer operations and redis-py token/SET-NX/Lua ownership. Add explicit borrowed/owned lifecycle, Mapping/strict stored-data shape, validated TTL, cancellation-aware bounded acquire polling, handler budget below lease, bounded shielded release and active-isolation close guards.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/fsm-storage-redis.json",
+            "sha256": "b4a71799590f8564eadb0359d4a9b1afb6f897b42e7408619b7e66e2f409aada"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.filters.command",
+      "action": "adapt",
+      "reason": "Retain upstream command extraction, matching, regexp/magic result, flags and CommandObject. Support native SlashCommand without fabricated Message; preserve slash args. Use cached native get_me identity for literal mentions. Exclude Telegram BotCommand, caption/deep-link/CommandStart semantics.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/filters-command.json",
+            "sha256": "e61b6c033edaaa424b4d6797c81fd05164ee71ab4a7e368dfdddd6802ba62454"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.filters.callback_data",
+      "action": "adapt",
+      "reason": "Retain typed CallbackData pack/unpack/filter and nullable/scalar encoding. Bind native CallbackQuery and standard typing.Self. Replace Telegram 64-byte cap with explicit 4096-byte SDK budget and validate prefix/separator; packed data is signed context, never a Blocks action_id or selected_option.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/filters-callback_data.json",
+            "sha256": "37615d1a2b50aba115ec1ccd4bd0559ba5607ff14c7fc17ce140c8d4d943bc42"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.types.input_file",
+      "target": "src/mattergram/types/input_file.py",
+      "action": "adapt",
+      "reason": "Retain reusable chunked buffered/filesystem upload sources. Remove Telegram Bot/session and URL download coupling; use a fresh owned local handle per read, stdlib asyncio.to_thread instead of aiofiles, explicit MIME metadata, and bounded filename/chunk validation for Mattermost multipart uploads.",
+      "adaptation": {
+        "status": "applied",
+        "patches": [
+          {
+            "path": "manifests/patches/types-input_file.json",
+            "sha256": "233228e38ea365a7297fe7accd2092b1626a8cd83e4d4f5f5f721190002a78b7"
+          }
+        ]
+      }
+    },
+    {
+      "module": "aiogram.utils.deep_linking",
+      "action": "exclude",
+      "reason": "Telegram deep-link encoding and token URL semantics are not Mattermost commands; removed with CommandStart, no runtime stub."
+    }
+  ],
+  "native": [
+    {
+      "target": "src/mattergram/__init__.py",
+      "action": "implement",
+      "reason": "Explicit Bot/Dispatcher/Router/F and generated low-level NativeAPI surface without Telegram reexports.",
+      "source_sha256": "95477b969ca07940f227d138403842291087a983e27d36fe47aff988ebdc8514"
+    },
+    {
+      "target": "src/mattergram/types/__init__.py",
+      "action": "implement",
+      "reason": "Native Event/User/Channel/Message, string IDs, aliases, preserved wire payload.",
+      "source_sha256": "b1a7db3203c284572882d11dfc6094c7e6a329767479cde28b2bcb428897b52d"
+    },
+    {
+      "target": "src/mattergram/filters/__init__.py",
+      "action": "implement",
+      "reason": "Explicit selected generic filters; no upstream aggregate exports.",
+      "source_sha256": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6"
+    },
+    {
+      "target": "src/mattergram/handlers/__init__.py",
+      "action": "implement",
+      "reason": "Selected BaseHandler export.",
+      "source_sha256": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c"
+    },
+    {
+      "target": "src/mattergram/exceptions.py",
+      "action": "implement",
+      "reason": "Mattermost authentication/permission/protocol errors and core argument errors.",
+      "source_sha256": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58"
+    },
+    {
+      "target": "src/mattergram/bot.py",
+      "action": "implement",
+      "reason": "Native aiohttp REST transport and createPost only for the first slice; explicit lifecycle.",
+      "source_sha256": "dab04bf3f7cdf46f33e6c3a4590f70a20985010ff6c9a7f3ed75b15b91265744"
+    },
+    {
+      "target": "src/mattergram/dispatcher/dispatcher.py",
+      "action": "implement",
+      "reason": "Native posted normalization, self-event suppression and lifecycle, reusing selected routing core.",
+      "source_sha256": "2595aeba29a24555070e493fbd11209b4065903f85b45d291551234905697985"
+    },
+    {
+      "target": "src/mattergram/dispatcher/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc"
+    },
+    {
+      "target": "src/mattergram/dispatcher/context.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35"
+    },
+    {
+      "target": "src/mattergram/dispatcher/event/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237"
+    },
+    {
+      "target": "src/mattergram/dispatcher/middlewares/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0"
+    },
+    {
+      "target": "src/mattergram/fsm/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283"
+    },
+    {
+      "target": "src/mattergram/fsm/storage/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b"
+    },
+    {
+      "target": "src/mattergram/normalizers.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082"
+    },
+    {
+      "target": "src/mattergram/py.typed",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "target": "src/mattergram/utils/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015"
+    },
+    {
+      "target": "src/mattergram/http/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "dcaaa50fc893d2b821948d35dec91785fb31c25eec0cb5161580d433d3988111"
+    },
+    {
+      "target": "src/mattergram/http/auth.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016"
+    },
+    {
+      "target": "src/mattergram/http/delayed.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e"
+    },
+    {
+      "target": "src/mattergram/http/normalizers.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118"
+    },
+    {
+      "target": "src/mattergram/http/responses.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "244cd44eb5d1a53ee6604e17a21b96cc29d6c6193138010b8bb3678add6b0ad5"
+    },
+    {
+      "target": "src/mattergram/types/base.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "2b7b1571ae8680eb9c37546daad1c679eadb31714172f30d8144f4a64707ee34"
+    },
+    {
+      "target": "src/mattergram/types/http.py",
+      "action": "implement",
+      "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
+      "source_sha256": "7116b249dc08aeab27277b76133a8d4d465b9f9c323e73c3abac5e56e0ce36bc"
+    },
+    {
+      "target": "src/mattergram/http/adapter.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129"
+    },
+    {
+      "target": "src/mattergram/http/asgi.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde"
+    },
+    {
+      "target": "src/mattergram/http/server.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b"
+    },
+    {
+      "target": "src/mattergram/ui/__init__.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252"
+    },
+    {
+      "target": "src/mattergram/ui/actions.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "68e13c5562fe192e9e3f362bffae69167f3e22beca2e89792905f8d2b0fc97ed"
+    },
+    {
+      "target": "src/mattergram/ui/base.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6"
+    },
+    {
+      "target": "src/mattergram/ui/blocks.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "5aca6ffc74af16f457c0eac2cefcf394103a481defec85884e53da8563e2d139"
+    },
+    {
+      "target": "src/mattergram/ui/capabilities.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626"
+    },
+    {
+      "target": "src/mattergram/ui/forms.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf"
+    },
+    {
+      "target": "src/mattergram/http/dialog_store.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "d4352f4c4431ed3942e815eaac8ca07bf66dca6dfa119382216386079bad5bed"
+    },
+    {
+      "target": "src/mattergram/http/dialogs.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "a022d88d8ee1cc3dd973fd18cd690974d7f64190ec3d6682a1874cb1a2efde5f"
+    },
+    {
+      "target": "src/mattergram/http/redis_dialogs.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "83a8762adde2494682126ee24341bc7fd095237092e34846869b547fe3a6d4f1"
+    },
+    {
+      "target": "src/mattergram/types/dialogs.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "88298d14eb9b85b67ad4a17dc9b957aea72a7f2b0efb53223c4bbf37f9362c61"
+    },
+    {
+      "target": "src/mattergram/ui/form_snapshot.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "183af011a16cce6eed6c705a28d4510dbdb5def809127ee1f6fca336589b0c9a"
+    },
+    {
+      "target": "src/mattergram/ui/form_values.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "651d41a75ac3832850e6ec9191aaf73692f901a074388542774176a100b58be2"
+    },
+    {
+      "target": "src/mattergram/ui/adaptive.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c"
+    },
+    {
+      "target": "src/mattergram/ui/input_base.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9"
+    },
+    {
+      "target": "src/mattergram/ui/slack.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a"
+    },
+    {
+      "target": "src/mattergram/ui/form_defaults.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "044cac81ee8717b0e08395730fd9cfed719a89dc23de515948fe1a2afd0d3445"
+    },
+    {
+      "target": "src/mattergram/dispatcher/event/slash.py",
+      "action": "implement",
+      "reason": "Native slash registration metadata wrapper; delegates filter/handler registration to the maintained reused observer algorithm.",
+      "source_sha256": "5b70db9aea3d146e6ceed8641122e443a3eb090e6d4f504af7d0f8f133d93e4c"
+    },
+    {
+      "target": "src/mattergram/provisioning/__init__.py",
+      "action": "implement",
+      "reason": "Explicit public exports for native command declarations and dedicated setup client; no implicit Bootstrap implementation.",
+      "source_sha256": "3a187b0beb04d56c711cd82e77b52a61f70e6dcb09a044d3a662f47674ba9393"
+    },
+    {
+      "target": "src/mattergram/provisioning/commands.py",
+      "action": "implement",
+      "reason": "Native command payload and deterministic collection from attached routers; refuses ambiguous filter inference and conflicting declarations.",
+      "source_sha256": "ea24d45a18fee5901f19d710d5d8967a6adc88220f9dabd4d20935ac272d5b9e"
+    },
+    {
+      "target": "src/mattergram/types/command_metadata.py",
+      "action": "implement",
+      "reason": "Immutable native command intent and primary-model UTF-8 bounds, separated from runtime routing and provider-issued IDs/tokens.",
+      "source_sha256": "4412ae5c5032790117c3fbbee621abe3c1c59d88e1496776e89d60b0f591a771"
+    },
+    {
+      "target": "src/mattergram/_http_client.py",
+      "action": "implement",
+      "reason": "Mechanically extracted maintained Bot HTTP/session algorithm shared by separately instantiated runtime/setup clients; preserve lifecycle/auth/redirect/no-retry semantics and generalize indeterminate transport failure to all writes.",
+      "source_sha256": "06ab614867dad921f0ee2607c8b0384bc32adfe894f19bce39fe4a1622b9e75a"
+    },
+    {
+      "target": "src/mattergram/provisioning/client.py",
+      "action": "implement",
+      "reason": "Dedicated native setup operations for bot/token/team/channel/membership/command APIs, strict response parsing and no runtime administrative fallback; ownership/reconciliation remains a separate layer.",
+      "source_sha256": "31872594c4613423e8d988691f395ea88ab1c231f21828700ad73e8e7b18e369"
+    },
+    {
+      "target": "src/mattergram/provisioning/models.py",
+      "action": "implement",
+      "reason": "Strict additive native setup response models; credential fields use SecretStr with excluded repr/dump and no retained raw/unknown payload; built-in command definitions can lack persisted IDs.",
+      "source_sha256": "2e36ac149316f2a0a755c7d60e1d8558fdf86929f28ccab0fccff136f16eb9c1"
+    },
+    {
+      "target": "src/mattergram/provisioning/_private_files.py",
+      "action": "implement",
+      "reason": "Private local provisioning paths with POSIX owner/mode and native Windows DACL checks; reject links, broad permissions and unexpected file kinds without repairing existing state.",
+      "source_sha256": "737bfb56d41bb44f9961ca383a35537b304fcc3049f2a852c55f5c8819467a15"
+    },
+    {
+      "target": "src/mattergram/provisioning/_windows_acl.py",
+      "action": "implement",
+      "reason": "Minimal ctypes bridge to documented Win32 security APIs for atomic private-directory creation and owner/DACL verification; no third-party crypto implementation.",
+      "source_sha256": "20733e9f7949109b4d5029db3b00e9267a54b30c023020865af5b17824218cb4"
+    },
+    {
+      "target": "src/mattergram/provisioning/store.py",
+      "action": "implement",
+      "reason": "Encrypted SQLite ownership/secret/journal transactions using the external cryptography Fernet recipe, explicit recovery and local OS locks; no native resource inference or distributed/fencing claim.",
+      "source_sha256": "0d97149e871abcd8516857cff97dc44c008e379652271565a03e400dda42959a"
+    },
+    {
+      "target": "src/mattergram/provisioning/store_models.py",
+      "action": "implement",
+      "reason": "Frozen provisioning scope/resource-key/binding/intent snapshots with explicit owned/reused status; local journal IDs are distinct from native resource IDs and snapshots contain no secret values.",
+      "source_sha256": "3e3eb7d64ee7b3b8e506c36295cbd85fa2988666dc7e24a597234e5f20f3a9d8"
+    },
+    {
+      "target": "src/mattergram/provisioning/bootstrap.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "7f9da6a210a24e43fb6de9574e53865a4e81c6ee57690443dbb00810f5cb80ec"
+    },
+    {
+      "target": "src/mattergram/provisioning/permissions.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "01d85a4667a7821f0b6f783b9f7c9ea8f6b8575280fe886a36b6be0c27e63a2e"
+    },
+    {
+      "target": "src/mattergram/provisioning/resources.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "9ff6c1fc4deaa2c90f88c3a10ff6b205952dbbb2a580d180590891bced80af74"
+    },
+    {
+      "target": "src/mattergram/provisioning/specs.py",
+      "action": "implement",
+      "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
+      "source_sha256": "7f6bd4c91e1263eba785400593181eb6ee1930d725f5c7b1d6eb10e530b3815b"
+    },
+    {
+      "target": "src/mattergram/native/__init__.py",
+      "action": "implement",
+      "reason": "Explicit low-level native exports; generated operation facts stay separate from the manually maintained client and metadata validation.",
+      "source_sha256": "b3f7aad8cc316ba2635745040f081be84bfd1f6a745eead5abbfdff43b7c2f02"
+    },
+    {
+      "target": "src/mattergram/native/_operations.py",
+      "action": "implement",
+      "reason": "Deterministic structural registry generated from the authored overlay after verification against pinned OpenAPI endpoint facts; contains no schema prose.",
+      "source_sha256": "531b1b8c7e8056ef04c65cbc2ef6f116c6dc7b5c35874821b08f0193942f47e0"
+    },
+    {
+      "target": "src/mattergram/native/client.py",
+      "action": "implement",
+      "reason": "Manual generic low-level JSON transport over generated operations with strict path/body validation, typed native errors and indeterminate-write handling.",
+      "source_sha256": "d5ad3ad32a5ea530ad99dacd3143ed64c5fde2476c46ae6472e0d0ce25f803c5"
+    },
+    {
+      "target": "src/mattergram/native/operation.py",
+      "action": "implement",
+      "reason": "Manual immutable operation metadata and exact percent-encoded path rendering; rejects unreviewed and unsafe endpoint shapes before I/O.",
+      "source_sha256": "a9b960cef72b59047d02546a7373ff3cf3b6f69752c06d90e58ff72ee4ba77ea"
+    }
+  ],
+  "excluded_scopes": [
+    {
+      "prefix": "aiogram/types/",
+      "exceptions": [
+        "aiogram/types/input_file.py"
+      ],
+      "reason": "Telegram-only generated model graph, except the explicitly reviewed generic streaming source."
+    },
+    {
+      "prefix": "aiogram/methods/",
+      "reason": "Telegram Bot API methods have no Mattermost transport semantics."
+    },
+    {
+      "prefix": "aiogram/client/",
+      "reason": "Telegram session/token/URL implementation is replaced."
+    },
+    {
+      "prefix": "aiogram_dialog/",
+      "reason": "Separate E8 inventory/manifest after SDK stabilization; snapshot only at E0."
+    }
+  ],
+  "test_policy": {
+    "mode": "reviewed-replay-and-behavior",
+    "selected_behavioral_suites": [
+      "tests/test_dispatcher/test_router.py",
+      "tests/test_dispatcher/test_event/test_event.py",
+      "tests/test_dispatcher/test_event/test_handler.py",
+      "tests/test_dispatcher/test_event/test_middleware.py",
+      "tests/test_dispatcher/test_event/test_telegram.py",
+      "tests/test_flags/test_decorator.py",
+      "tests/test_flags/test_getter.py",
+      "tests/test_filters/test_logic.py",
+      "tests/test_fsm/test_state.py",
+      "tests/test_fsm/test_context.py",
+      "tests/test_fsm/storage/test_storages.py",
+      "tests/test_fsm/storage/test_isolation.py",
+      "tests/test_utils/test_magic_filter.py"
+    ],
+    "fixture_adaptation": "Do not copy tests/conftest.py: it creates Telegram Bot/Update fixtures and optional database profiles. Replace event/session fixtures with explicit native equivalents; retain individual behavioral assertions.",
+    "excluded_cases": [
+      {
+        "scope": "Telegram update types, polling offsets, webhook Telegram secret headers, bot token parsing",
+        "reason": "Not part of Mattermost protocol; replace with native tests rather than claim compatibility."
+      },
+      {
+        "scope": "Telegram integer-ID FSM strategy assertions",
+        "reason": "Adapt to server/bot/channel/user/thread string isolation contract."
+      }
+    ],
+    "receipt": "manifests/ported-tests.json"
+  }
+}

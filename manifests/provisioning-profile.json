@@ -1,0 +1,277 @@
+{
+  "schema_version": 1,
+  "scope": "E6 command declarations, dedicated SetupClient, encrypted ownership/secret journal and automatic bot/team/channel/membership/command Bootstrap reconciliation.",
+  "primary_references": [
+    {
+      "version": "11.1.0",
+      "commit": "e62f350cd7a896c45a0e025f44cb8915f5597854",
+      "files": [
+        {
+          "path": "server/public/model/command.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/command.go",
+          "sha256": "c16bd4fbd845a4f6e29be8cb9fd4653a9bb4b75bfe8412e62ed8d0664da62b31"
+        },
+        {
+          "path": "server/channels/api4/command.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/command.go",
+          "sha256": "651ef84839f7cd84f09ac84d9450603a6749572d0d8c02feafb043ac09f40c13"
+        },
+        {
+          "path": "server/channels/api4/bot.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/bot.go",
+          "sha256": "b83008b45e8b535e431ae497e3abbc0276fcd9f6a68e9c0eb135e6db08800752"
+        },
+        {
+          "path": "server/channels/api4/user.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/user.go",
+          "sha256": "640d7026c2d8dd00867cd680195416614cd82210342de0dd2e2719ccaf3f26d1"
+        },
+        {
+          "path": "server/channels/api4/team.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/team.go",
+          "sha256": "b3510aac97bd22b405f9f6f0d465520bcd6ff4e1c7c3d3bcb2ba61eaaf585365"
+        },
+        {
+          "path": "server/channels/api4/channel.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/channel.go",
+          "sha256": "bacab1d2f2fc72134da4690a7aa6b9a1a5195ca285c21665b7f55254dccd1636"
+        },
+        {
+          "path": "server/public/model/bot.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/bot.go",
+          "sha256": "841161129d7f41d9be9b47a586259198db86c9082fafc7d324f263fd18591dec"
+        },
+        {
+          "path": "server/public/model/user_access_token.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/user_access_token.go",
+          "sha256": "22347602802383bc38a549becce1e70ebeaf9c5b4de318d9c4a236a62c1c0088"
+        },
+        {
+          "path": "server/channels/api4/role.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/role.go",
+          "sha256": "fbe8362a190f2970b8db199170d4504f320eb84edc9795d4f31f0f37b3b6ecb1"
+        },
+        {
+          "path": "server/channels/api4/config.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/api4/config.go",
+          "sha256": "0322db3bda901f16491133ac27bf5bb03a4a5cac3d13199e7e07d1e84e846104"
+        },
+        {
+          "path": "server/channels/app/authorization.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/authorization.go",
+          "sha256": "7daf2ec70dc991b27413701730ef44e4d9781fa64c361cdcbf56226e41a64631"
+        },
+        {
+          "path": "server/channels/app/config.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/channels/app/config.go",
+          "sha256": "3d4eb45d6671ce0676bd09a2af71148ee897257babf91feb3da83c309e61be5a"
+        },
+        {
+          "path": "server/public/model/permission.go",
+          "url": "https://raw.githubusercontent.com/mattermost/mattermost/e62f350cd7a896c45a0e025f44cb8915f5597854/server/public/model/permission.go",
+          "sha256": "d31b5ee0865e401a75f7d98ca4eb400012e077a59926542126c9af41d69462a3"
+        }
+      ]
+    }
+  ],
+  "reference_policy": "Pinned primary protocol facts; source remains ignored and is not executed or copied into the runtime.",
+  "command_metadata": {
+    "trigger_utf8_bytes": [
+      1,
+      128
+    ],
+    "description_utf8_bytes": 128,
+    "display_name_utf8_bytes": 64,
+    "url_utf8_bytes": 1024,
+    "method": {
+      "POST": "P",
+      "GET": "G"
+    },
+    "hint": "Native string; no guessed platform length bound"
+  },
+  "export_policy": "Only attached slash observers. A single plain literal Command filter can be inferred; arbitrary/root/regex/magic filters require explicit triggers. Posted-message commands are not registered.",
+  "remaining": [
+    "No default prune: removing a declaration does not delete native history",
+    "Ambiguous writes and lost secrets require explicit reconciliation",
+    "The store lock is local-filesystem coordination, not distributed fencing"
+  ],
+  "setup_operations": [
+    {
+      "method": "GET",
+      "path": "/api/v4/users/me",
+      "success": 200,
+      "response": "User"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/users/{user_id}",
+      "success": 200,
+      "response": "User"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/users/username/{username}",
+      "success": 200,
+      "response": "User"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/bots",
+      "success": 201,
+      "response": "BotAccount"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/bots/{bot_user_id}",
+      "success": 200,
+      "response": "BotAccount"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/users/{user_id}/tokens",
+      "success": 200,
+      "response": "AccessToken"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/users/tokens/revoke",
+      "success": 200,
+      "response": "status OK"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/teams",
+      "success": 201,
+      "response": "NativeTeam"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/teams/{team_id}",
+      "success": 200,
+      "response": "NativeTeam"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v4/teams/{team_id}/patch",
+      "success": 200,
+      "response": "NativeTeam"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/teams/name/{name}",
+      "success": 200,
+      "response": "NativeTeam"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/channels",
+      "success": 201,
+      "response": "NativeChannel"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/channels/{channel_id}",
+      "success": 200,
+      "response": "NativeChannel"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v4/channels/{channel_id}/patch",
+      "success": 200,
+      "response": "NativeChannel"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/teams/{team_id}/channels/name/{name}?include_deleted=true",
+      "success": 200,
+      "response": "NativeChannel"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/teams/{team_id}/members",
+      "success": 201,
+      "response": "TeamMember"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/teams/{team_id}/members/{user_id}",
+      "success": 200,
+      "response": "TeamMember"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/channels/{channel_id}/members",
+      "success": 201,
+      "response": "ChannelMember"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/channels/{channel_id}/members/{user_id}",
+      "success": 200,
+      "response": "ChannelMember"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v4/commands",
+      "success": 201,
+      "response": "NativeCommand with id/team_id/issued token"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/commands?team_id={team_id}&custom_only=false",
+      "success": 200,
+      "response": "NativeCommand[] including built-ins without persisted ID"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/commands/{command_id}",
+      "success": 200,
+      "response": "NativeCommand"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v4/commands/{command_id}",
+      "success": 200,
+      "response": "NativeCommand"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v4/commands/{command_id}",
+      "success": 200,
+      "response": "status OK"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/roles/name/{name}",
+      "success": 200,
+      "response": "NativeRole with actual permission IDs"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v4/config/client?format=old",
+      "success": 200,
+      "response": "Selected client feature flags and Version"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v4/config/patch",
+      "success": 200,
+      "response": "Allowlisted ServiceSettings patch, followed by read-back"
+    }
+  ],
+  "setup_policy": {
+    "authorization": "Per operation; no blanket system_admin requirement or credential fallback",
+    "errors": "401/403/429 retain types; no retry/redirect; post-send write transport failures and malformed successful setup writes are indeterminate",
+    "identity": "Separate instance, credential and session pool from runtime Bot",
+    "secrets": "SecretStr fields excluded from model repr/dump; setup responses do not retain raw/unknown payload fields",
+    "boundary": "Low-level operations remain explicit; Bootstrap adds store-backed ownership, native permission checks, reconciliation and runtime-only handoff without exposing the setup client"
+  },
+  "bootstrap_policy": {
+    "supported_versions": ["11.1.0", "11.7.0", "11.11.0", "12.0.2"],
+    "ownership": "Matching names never prove ownership; owned and reused bindings have different mutation rights",
+    "permissions": "Native role permission sets are read for the setup actor and runtime bot; no blanket system-admin requirement or runtime fallback",
+    "features": "Fail closed on disabled/unobservable flags unless change_server_settings explicitly enables only the three provisioning flags",
+    "recovery": "Durable intent precedes every write; conclusive 4xx responses abort, ambiguous outcomes block automatic retry until explicit reconciliation",
+    "readiness": "Runtime identity/channel permissions are verified; callback registration never sets callback_verified"
+  }
+}

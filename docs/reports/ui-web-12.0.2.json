@@ -1,0 +1,579 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-12T10:46:02.797702+00:00",
+  "status": "passed for recorded web scenarios; E5-03 remains partial/open",
+  "plan": {
+    "completed": 21,
+    "total": 56,
+    "task": "E5-03",
+    "task_closed": false
+  },
+  "environment": {
+    "server": "12.0.2",
+    "server_image": "mattermost/mattermost-team-edition:12.0.2@sha256:08c0b4b93a14196b0850f62faa4a437d2643533f009cac4868a0b793aad61fc3",
+    "browser": "HeadlessChrome/157.0.0.0, Windows x64",
+    "viewports": [
+      [
+        1280,
+        720
+      ],
+      [
+        1440,
+        1080
+      ]
+    ],
+    "actor": "system_user, separate from setup admin and runtime bot",
+    "feature_flag": "MmBlocksEnabled=true read from actual configuration"
+  },
+  "transport": {
+    "sdk_callback_tls": "Local fixture CA mounted only in owned UI container; normal outgoing certificate validation enabled",
+    "peer": "127.0.0.1",
+    "ca_sha256": "2dbdbbef7ce6a17548cecf6f781309aee55ddc8090f07b6e76f0459907c4fe07",
+    "browser_auth": "Real server-issued browser cookies for ordinary actor; private storage state excluded",
+    "runtime_identity": "Issued bot token; setup admin credentials not used as runtime fallback"
+  },
+  "executed": [
+    "All 13 declared field types rendered across basic/dates/advanced forms, user input and typed submission.",
+    "Server field error/correction; wizard with retained prior values.",
+    "Dynamic lookup with native option objects; refresh prefill, final submit and cancel after refresh.",
+    "Real file upload and ordinary-actor byte-for-byte read-back.",
+    "Child submit, three-level modal flow, fourth-level refusal, child cancel and restored parent values/files.",
+    "All 9 native Block types; button/select signed callbacks; collapse/expand; columns/image.",
+    "Slack and Adaptive input adapters -> real native rendering and signed callbacks.",
+    "Ephemeral callback confirmations observed inside the originating post thread."
+  ],
+  "form_field_types": [
+    "TextInput",
+    "TextArea",
+    "Select",
+    "MultiSelect",
+    "Checkbox",
+    "Radio",
+    "CheckboxGroup",
+    "CheckboxMatrix",
+    "DatePicker",
+    "DateTimePicker",
+    "FileInput",
+    "DialogButton",
+    "Collapsible"
+  ],
+  "block_types": [
+    "Text",
+    "Image",
+    "Divider",
+    "Button",
+    "StaticSelect",
+    "Container",
+    "Collapsible",
+    "Column",
+    "ColumnSet"
+  ],
+  "regressions_fixed": [
+    {
+      "problem": "Native web retains opening callback_id after wizard/refresh",
+      "fix": "Keep native transport callback stable; expose current logical ID via event.form"
+    },
+    {
+      "problem": "Native lookup/cancel retain opening state after transition",
+      "fix": "Accept revision-zero form capability only for current-schema lookup or cancellation; stale writes remain rejected"
+    },
+    {
+      "problem": "Lookup context sends selected options as label/value objects",
+      "fix": "Normalize exact option objects only for lookup; preserve raw and validate declared values"
+    },
+    {
+      "problem": "Refresh response resets compatible entered values",
+      "fix": "Carry typed values into implicit defaults, preserve explicit defaults and fields_set metadata across snapshots"
+    }
+  ],
+  "events": [
+    {
+      "kind": "slash",
+      "mode": "lookup",
+      "actor_matches": true
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "refresh",
+      "category": "b"
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "cancel",
+      "mode": "lookup"
+    },
+    {
+      "kind": "slash",
+      "mode": "blocks",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:blocks",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:select",
+      "selected_option": "b",
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "slack",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:slack",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "adaptive",
+      "actor_matches": true
+    },
+    {
+      "kind": "callback",
+      "data": "ui:adaptive",
+      "selected_option": null,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "advanced",
+      "actor_matches": true
+    },
+    {
+      "kind": "child_action",
+      "level": "1",
+      "field": "child"
+    },
+    {
+      "kind": "submit",
+      "mode": "child-1",
+      "values": {
+        "child_text_1": "Child browser value"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "child_action",
+      "level": "1",
+      "field": "child"
+    },
+    {
+      "kind": "child_action",
+      "level": "2",
+      "field": "next_child"
+    },
+    {
+      "kind": "cancel",
+      "mode": "child-2"
+    },
+    {
+      "kind": "cancel",
+      "mode": "child-1"
+    },
+    {
+      "kind": "submit",
+      "mode": "advanced",
+      "values": {
+        "group": [
+          "a",
+          "b"
+        ],
+        "matrix": {
+          "r1": [
+            "c1",
+            "c2"
+          ],
+          "r2": [
+            "c2"
+          ]
+        },
+        "nested": "Nested browser value",
+        "file": "9ar55eaff7y4py4wdut34psnee"
+      },
+      "file_ids_count": 1,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "basic",
+      "actor_matches": true
+    },
+    {
+      "kind": "field_error",
+      "mode": "basic"
+    },
+    {
+      "kind": "submit",
+      "mode": "basic",
+      "values": {
+        "title": "accepted",
+        "detail": "Browser textarea detail",
+        "choice": "a",
+        "choices": [
+          "a",
+          "b"
+        ],
+        "enabled": false,
+        "plan": "b"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "dates",
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "dates",
+      "values": {
+        "date": "2026-11-12",
+        "time": "2026-11-12T08:00:00+00:00"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "wizard",
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "wizard",
+      "values": {
+        "project": "browser-project"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "submit",
+      "mode": "wizard-final",
+      "values": {
+        "project": "browser-project",
+        "summary": "browser-summary"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    },
+    {
+      "kind": "slash",
+      "mode": "lookup",
+      "actor_matches": true
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "refresh",
+      "category": "a"
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "lookup",
+      "query": "remote",
+      "field": "pick"
+    },
+    {
+      "kind": "lookup",
+      "query": "",
+      "field": "pick"
+    },
+    {
+      "kind": "submit",
+      "mode": "lookup",
+      "values": {
+        "category": "a",
+        "pick": "remote-b",
+        "comment": "Latest SDK refresh retained"
+      },
+      "file_ids_count": 0,
+      "actor_matches": true
+    }
+  ],
+  "callback_http": {
+    "requests": 37,
+    "ok_200": 35,
+    "field_error_responses": 1,
+    "expected_negative_requests": [
+      {
+        "operation": "dialog_lookup",
+        "status": 409,
+        "reason": "dialog_session_finished"
+      },
+      {
+        "operation": "dialog_action",
+        "status": 409,
+        "reason": "native_modal_stack_limit"
+      }
+    ],
+    "notes": "Closed-widget lookup can produce a client console/network error after cancel; fourth modal displays native Action failed. No handler business dispatch for either rejected request."
+  },
+  "file_read_back": {
+    "ordinary_actor_download": 200,
+    "bytes": 36,
+    "sha256": "1c2c76ea15ca68f26ff4b141fd39a809f875e583a7da4c091daec0e31324541b",
+    "file_ids_count": 1,
+    "scope": "Actual browser upload and authenticated ordinary actor read-back. Fresh actor session used explicitly by the control harness; no runtime administrative fallback."
+  },
+  "screenshots": [
+    {
+      "path": "docs/reports/ui-web-12.0.2/basic-validation-full.png",
+      "sha256": "3a72027f0ac04c8893875aec6c387206fc0c9d2cbf62071c6a47616be0d30623",
+      "bytes": 104830
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/dates-current.png",
+      "sha256": "8c9830e1cf757d8bfb0c4cfdbf3efa859d3a7bf86685d015cd2f67b59b023981",
+      "bytes": 111088
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/wizard-current.png",
+      "sha256": "2f365d2745ab058b928d03b7bd6be5fb0ccbe1efbfddff2f5dc0c1c3be208676",
+      "bytes": 112755
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/refresh-preserved.png",
+      "sha256": "85dc4d40ac2ef1bbc441c107849ba4999f1c8aa7527fd76e06cb86c12618946d",
+      "bytes": 65748
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/lookup-selected-current.png",
+      "sha256": "0c8b7ba5599e17eb76221454f9650d4ecebd91826014bc5a9583d5ea9f889ebb",
+      "bytes": 115196
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/native-blocks-expanded.png",
+      "sha256": "8dd53463ee13a8bf032736dce17dd0b04d087ea466507f0a2822097f95b79f13",
+      "bytes": 70220
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/native-callback-thread.png",
+      "sha256": "922c8efe9ef98581467e31a823b06b5aa691bb699903a30954dfdab9049aaf35",
+      "bytes": 116884
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/slack-import.png",
+      "sha256": "2d1258eda4d0d804d6f187f57111642376b23f718177a1868618cd1c5c16a7f2",
+      "bytes": 82590
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/adaptive-import.png",
+      "sha256": "897d4be3dbcc2dd26cb2d147573b4dcd01583f123ba8c359fdd8a43b2b8f3ab9",
+      "bytes": 92626
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/advanced-uploaded.png",
+      "sha256": "4689bc76b387b1de9e783a659ff2b12bc6691572106980735663f54f40b37231",
+      "bytes": 104371
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/modal-depth-limit.png",
+      "sha256": "9bb11ebb4b1a940c804a1067d1e59deee1139bddbdd7f19d517c832701932481",
+      "bytes": 81295
+    },
+    {
+      "path": "docs/reports/ui-web-12.0.2/parent-restored.png",
+      "sha256": "563419e9361b689f12edb2d63ffac280e5febf3118c87e3df1db64cf48c61472",
+      "bytes": 106192
+    }
+  ],
+  "full_test_matrix": [
+    {
+      "python": "3.11",
+      "os": "Windows",
+      "redis": "real owned Redis 7.4.12",
+      "tests": 389,
+      "subtests": 199,
+      "skipped": 0,
+      "seconds": 34.306,
+      "receipt": {
+        "path": "build/reports/ui-web-all-311.xml",
+        "sha256": "de32da372261cf806540855f97ec753dc31eeb3a18c0b44594199995c931c02b",
+        "bytes": 54849
+      }
+    },
+    {
+      "python": "3.13",
+      "os": "Windows",
+      "redis": "real owned Redis 7.4.12",
+      "tests": 389,
+      "subtests": 199,
+      "skipped": 0,
+      "seconds": 23.286,
+      "receipt": {
+        "path": "build/reports/ui-web-all-313.xml",
+        "sha256": "4a0f7030240a162a200302b16c2da259aa0434efdb693106cad4db86dd46d36f",
+        "bytes": 54849
+      }
+    },
+    {
+      "python": "3.14",
+      "os": "Windows",
+      "redis": "real owned Redis 7.4.12",
+      "tests": 389,
+      "subtests": 199,
+      "skipped": 0,
+      "seconds": 21.781,
+      "receipt": {
+        "path": "build/reports/ui-web-all-314.xml",
+        "sha256": "4e1b66603fd40677c3dd0ee9d1ef7d1d2caf911da1fffc1717e19c9d0359cb01",
+        "bytes": 54843
+      }
+    }
+  ],
+  "baseline_regression": {
+    "server": "11.1.0",
+    "scope": "API/actor WebSocket, not UI rendering",
+    "result": "passed",
+    "http_receipt": {
+      "path": "build/reports/http-stand.json",
+      "sha256": "227ce8ad4b0482c43dc76da6cf2dde027eb943215fbb557398357bf6f02d3073",
+      "bytes": 3700
+    },
+    "forms_receipt": {
+      "path": "build/reports/forms-stand.json",
+      "sha256": "b60332ebdb723931492b978bc5561b2780a6b8bdb0b93d8d0388300c045ca6a7",
+      "bytes": 1563
+    },
+    "forms_checks": [
+      "real slash trigger -> native open_dialog -> actor-targeted WS form; parser errors and business field errors preserve correction; native bool/array/date/offset parsed; terminal replay ran business effect once",
+      "real submit API overwrote forged client user_id with authenticated actor before SDK binding",
+      "real multi-step form response rotates state, replays prior transition and preserves verified previous values without relying on client accumulation",
+      "real lookup and refresh use immediate native items/form responses and tolerate incomplete required inputs",
+      "real cancellation closes the managed session and duplicate delivery does not repeat cancel handler",
+      "real timed-out submit is cancelled, repeated delivery blocked as indeterminate, explicit application reconciliation returns stored result without re-execution",
+      "real Mattermost forwarded tampered form state; SDK rejected before business dispatch"
+    ]
+  },
+  "source": {
+    "files": 63,
+    "sha256_by_path": {
+      "src/mattergram/__init__.py": "4d4786d39eab2a82cb9fceb8d12b8856ffbcc1ddb0f9eacb0d061e777ffc3d1e",
+      "src/mattergram/bot.py": "601f32f16ac39ccadae4b09fa98312aa661f83adeb48d1b86019800954581beb",
+      "src/mattergram/dispatcher/__init__.py": "0026e9c36480e7f7aba680fcceb69368623e8d6c8504d1265a54c9b85182febc",
+      "src/mattergram/dispatcher/context.py": "9db4354bc02a70f257994441eec705e1b181fcc62a0bd6bf979520c2d0321d35",
+      "src/mattergram/dispatcher/dispatcher.py": "2595aeba29a24555070e493fbd11209b4065903f85b45d291551234905697985",
+      "src/mattergram/dispatcher/event/__init__.py": "f6ce1b1f7cbbddb82cce0944adde924f4564e4e9b79ab91164c2c8ba30cfe237",
+      "src/mattergram/dispatcher/event/bases.py": "ab5c3e3c63ae1313d4b5103a1448616ea15fbaca519081993f0bd28401542352",
+      "src/mattergram/dispatcher/event/event.py": "c6dc3c6812ca044cdf54333866fa9bea97e6c4ad846d5d63b0d33e083b86eae7",
+      "src/mattergram/dispatcher/event/handler.py": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+      "src/mattergram/dispatcher/event/message.py": "357e476e330aa07d64604e1ccc3dd4eb34631fe78027e8ab42d8799d5ab5a933",
+      "src/mattergram/dispatcher/flags.py": "654cfcdc99b95449f7c1a6679d2556358e1f48ddc29c299bc93913afb34dd536",
+      "src/mattergram/dispatcher/middlewares/__init__.py": "798c8e53b61ad41559e3fa16b0aaf1faf306afac9ea7ae17949aad6d3f1273b0",
+      "src/mattergram/dispatcher/middlewares/base.py": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+      "src/mattergram/dispatcher/middlewares/manager.py": "4fd046b6c0a77090dd0ccb9542875027c5cf2cb939a6caf68f9d93de13642916",
+      "src/mattergram/dispatcher/router.py": "f3484719487a67a8231688f229651fe26ee3ec96d0d5083e80233270faab08b1",
+      "src/mattergram/exceptions.py": "76dc76b644cdb3ae829eadb94b81111812a17d70ba7a443a6075c5a938f34a58",
+      "src/mattergram/filters/__init__.py": "1e896bda0a77ec054e4ea9e4ab771f53f4f02b8377538638caf26ab4151cf9d6",
+      "src/mattergram/filters/base.py": "cea2ab1cf3aaceaeed13c6b75adefb04d1df4149fb169d4928a8de3e1293d822",
+      "src/mattergram/filters/callback_data.py": "f163efe5aaf3b5cd94a9509bfc1e72485c4231c6d557048c2b1a79b22aa9758a",
+      "src/mattergram/filters/command.py": "a0f1b8ddafcfc5f15cfe62c9bbd23d6dae9d24a2164ccd14f01ba2a51eddf90b",
+      "src/mattergram/filters/logic.py": "e572ec3e59136e8821fa4559d9f6fbc846ee099d2a8f61f1a3a04bbbedcb1606",
+      "src/mattergram/fsm/__init__.py": "e6f08c54a4ee3341747ad6a65cc411d5378e9bdb572cf669902c4409a80dc283",
+      "src/mattergram/fsm/context.py": "d24eb42669b57de5beb77687be6bd068be79dfc872bc119dabcf2f733fdfcd54",
+      "src/mattergram/fsm/state.py": "6157010c112299b0db8b23542ad89a79833437afa875235cf1ba45848768eeb8",
+      "src/mattergram/fsm/storage/__init__.py": "6c4cc66b88dffa692f8f597e40e489b4bd20d5710e7c4540988a6c31315a5b5b",
+      "src/mattergram/fsm/storage/base.py": "4aa5a00d706583a5b02cc55ae2f60d274d448258b491e78120cc96bbe36825cd",
+      "src/mattergram/fsm/storage/memory.py": "da3fea0730d26aa8d69f9215d499e04997d5afe7e2b5ead2dd96208087fe9485",
+      "src/mattergram/fsm/storage/redis.py": "e83f3f70bae95440942c08094a77b63d28d199aabdff3b5633d8e5885b5e378a",
+      "src/mattergram/fsm/strategy.py": "9bd08c1b336f55420286e434378f697c2c8064387c43523168b31644376d6c4c",
+      "src/mattergram/handlers/__init__.py": "fad0265c43b9d62c1632afef9b0b36dfa220af673a5f7a74eafba8f097549a8c",
+      "src/mattergram/handlers/base.py": "84906b318479e4bb343a0e04fac621ec234bc8431f6175ff28bb9b5a3734cae0",
+      "src/mattergram/http/__init__.py": "dcaaa50fc893d2b821948d35dec91785fb31c25eec0cb5161580d433d3988111",
+      "src/mattergram/http/adapter.py": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129",
+      "src/mattergram/http/asgi.py": "924e42be4c7c128dbf0c6aa09ea4fd126b678ba4ef0d0a772b7b8f0b0e860bde",
+      "src/mattergram/http/auth.py": "300596c4a8faa11c6dfac1cd0dc3bf130857fdb050ccca73a37dced04afce016",
+      "src/mattergram/http/delayed.py": "635aa83791318625106810958ccd6a90bbd141648de5c2576c20ecd564a8c87e",
+      "src/mattergram/http/dialog_store.py": "d4352f4c4431ed3942e815eaac8ca07bf66dca6dfa119382216386079bad5bed",
+      "src/mattergram/http/dialogs.py": "a022d88d8ee1cc3dd973fd18cd690974d7f64190ec3d6682a1874cb1a2efde5f",
+      "src/mattergram/http/normalizers.py": "27794da1eb44afc1ebe331d3a99adaffadff997d1bdc7ae6e9de72527e953118",
+      "src/mattergram/http/redis_dialogs.py": "83a8762adde2494682126ee24341bc7fd095237092e34846869b547fe3a6d4f1",
+      "src/mattergram/http/responses.py": "244cd44eb5d1a53ee6604e17a21b96cc29d6c6193138010b8bb3678add6b0ad5",
+      "src/mattergram/http/server.py": "43c9611632376cb27961e7c4d1d70b74cf0bcda803b3021434412b55e923364b",
+      "src/mattergram/normalizers.py": "56e71bb588039d53438d859a1bf8c5ca0d39f6bda5e6e67a5d656c1b31bc4082",
+      "src/mattergram/py.typed": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "src/mattergram/types/__init__.py": "54f69cf9b7f9a92fff146f2d4c190e2bc2316e589ae21bf8138d51920344d17f",
+      "src/mattergram/types/base.py": "34a6eaaef793ec50257666dd2bf6e714ea5e472043d0b4e08d1429c6727f863d",
+      "src/mattergram/types/dialogs.py": "88298d14eb9b85b67ad4a17dc9b957aea72a7f2b0efb53223c4bbf37f9362c61",
+      "src/mattergram/types/http.py": "7116b249dc08aeab27277b76133a8d4d465b9f9c323e73c3abac5e56e0ce36bc",
+      "src/mattergram/ui/__init__.py": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252",
+      "src/mattergram/ui/actions.py": "37b2865845805170b6eb8de94ca90cd9d62804198e1ac8ce22dfa1af081a3b35",
+      "src/mattergram/ui/adaptive.py": "b8b6855d7a55d644d1cfd169da6c43db43c99162079a85a6f323ecfdcb977e2c",
+      "src/mattergram/ui/base.py": "b1597243207abfdb73552e63ce03b3f17727b653800f6a93bd161e17e4eaa6a6",
+      "src/mattergram/ui/blocks.py": "ac22087f7ce110c164ee7836bb8f3fb8285b998fae1366b415507039e98e453d",
+      "src/mattergram/ui/capabilities.py": "defa25d83ef486ed86365ac72126139cc87564513942467fe24294edbd266626",
+      "src/mattergram/ui/form_defaults.py": "044cac81ee8717b0e08395730fd9cfed719a89dc23de515948fe1a2afd0d3445",
+      "src/mattergram/ui/form_snapshot.py": "183af011a16cce6eed6c705a28d4510dbdb5def809127ee1f6fca336589b0c9a",
+      "src/mattergram/ui/form_values.py": "651d41a75ac3832850e6ec9191aaf73692f901a074388542774176a100b58be2",
+      "src/mattergram/ui/forms.py": "019fa85725e003a5c15141e9d04262d55921ea830c315889dac338ab1ce7ccdf",
+      "src/mattergram/ui/input_base.py": "37d9c7b28f24ca3341d8de109375d21476bb4da7b2c0833bd57240e382d13be9",
+      "src/mattergram/ui/slack.py": "1c6ab540732476bbc396eb3ac96c8d514b7a34d882ab9ae8148a0838cadc219a",
+      "src/mattergram/utils/__init__.py": "1274303831c4cb5b87bd72c9709e0e2fe458350a5a87b24511ff6ebca0a0c015",
+      "src/mattergram/utils/magic_filter.py": "25811666ec78ad5c32b2bcff1a71947e2da27a683f469fb7d9ac968df42aece9",
+      "src/mattergram/utils/warnings.py": "14c28dc2116bff79a1f8fe2a5294d54e883a5493cab584475e2658d412395b82"
+    }
+  },
+  "profile_receipt": {
+    "path": "manifests/ui-client-profile.json",
+    "sha256": "55998679f30037a1241e787ba70bf618edc10bc05dc0c0be718343c460f46b9a",
+    "bytes": 3670
+  },
+  "private_evidence": {
+    "capture_sha256": "a1397361a1c8d39c2d3e336c11efaff2e6f8ce7ec01581396f4b00265dc27eca",
+    "policy": "Raw authenticated bodies, capabilities, cookies, tokens and TLS private keys remain ignored under build/; not distributed"
+  },
+  "cleanup": {
+    "callback_host": "closed",
+    "browser": "closed",
+    "current_slash_command": "deleted",
+    "owned_docker_services": "retained healthy; no foreign services removed"
+  },
+  "remaining": [
+    "Negative date-bound tests and alternate timezone/label-position cases.",
+    "Legacy attachment/menu browser execution.",
+    "Additional browser/OS and native desktop/mobile execution.",
+    "Real web 11.7 and 11.11 scenarios",
+    "Broader OS/dependency matrix and external GitHub CI",
+    "E6 provisioning, E7 API, E8 dialog, E9 docs/release and E10 skills remain in original scope"
+  ],
+  "package_verification": {
+    "checked_at": "2026-11-12T10:48:29.235525+00:00",
+    "result": "passed",
+    "source_file_count": 63,
+    "exact_wheel_bytes_match": true,
+    "artifacts": {
+      "mattergram-0.1.0a1-py3-none-any.whl": "a83739837cbbb91561f32b4050399a0c22c617f87c8f730d9530a0d0a69299fb",
+      "mattergram-0.1.0a1.tar.gz": "7269b5d635be3f3ac6ec30b4d1f048543541638fc3df44be94611f69983aa6e2"
+    },
+    "installed_tests_per_archive": 132,
+    "twine_strict": "passed",
+    "receipt": "build/reports/ui-web-distributions.json",
+    "directory": "build/final-dist/e5-web12",
+    "post_build_receipt": "Added after archives were closed; archived copy of this report precedes its own package receipt"
+  }
+}

@@ -1,0 +1,80 @@
+  - dialog "SDK bounds" [ref=f2e5404]:
+    - document [ref=f2e5406]:
+      - generic [ref=f2e5407]:
+        - generic [aria-hidden] [ref=f2e5408]:
+          - button [ref=f2e5430] [cursor=pointer]:
+            - text: ×
+            - generic [ref=f2e5410]: Close
+          - heading [level=1] [ref=f2e5431]: SDK bounds
+        - generic [ref=f2e5412]:
+          - generic [ref=f2e5414]: 
+          - generic [ref=f2e5416]:
+            - generic [aria-hidden] [ref=f2e5417]: Bounded date *
+            - generic [ref=f2e5419]:
+              - button [active] [aria-hidden] [ref=f2e5433] [cursor=pointer]:
+                - generic [ref=f2e5421]: 󰭧
+                - generic [ref=f2e5423]: Nov 12, 2026
+              - generic [ref=f2e5438]:
+                - generic [ref=f2e5439]:
+                  - generic [ref=f2e5440]: November 2026
+                  - generic [ref=f2e5441]:
+                    - button "Go to previous month" [ref=f2e5442] [cursor=pointer]:
+                      - generic [ref=f2e5443]: 󰅁
+                    - button "Go to next month" [ref=f2e5444] [cursor=pointer]:
+                      - generic [ref=f2e5445]: 󰅂
+                - grid "November 2026" [ref=f2e5446]:
+                  - rowgroup [ref=f2e5447]:
+                    - row [ref=f2e5448]:
+                      - columnheader "Sunday" [ref=f2e5449]: Su
+                      - columnheader "Monday" [ref=f2e5450]: Mo
+                      - columnheader "Tuesday" [ref=f2e5451]: Tu
+                      - columnheader "Wednesday" [ref=f2e5452]: We
+                      - columnheader "Thursday" [ref=f2e5453]: Th
+                      - columnheader "Friday" [ref=f2e5454]: Fr
+                      - columnheader "Saturday" [ref=f2e5455]: Sa
+                  - rowgroup [ref=f2e5456]:
+                    - row [ref=f2e5457]:
+                      - gridcell "1" [disabled] [ref=f2e5458]
+                      - gridcell "2" [disabled] [ref=f2e5459]
+                      - gridcell "3" [disabled] [ref=f2e5460]
+                      - gridcell "4" [disabled] [ref=f2e5461]
+                      - gridcell "5" [disabled] [ref=f2e5462]
+                      - gridcell "6" [disabled] [ref=f2e5463]
+                      - gridcell "7" [disabled] [ref=f2e5464]
+                    - row [ref=f2e5465]:
+                      - gridcell "8" [disabled] [ref=f2e5466]
+                      - gridcell "9" [disabled] [ref=f2e5467]
+                      - gridcell "10" [ref=f2e5468] [cursor=pointer]
+                      - gridcell "11" [ref=f2e5469] [cursor=pointer]
+                      - gridcell "12" [selected] [ref=f2e5470] [cursor=pointer]
+                      - gridcell "13" [ref=f2e5471] [cursor=pointer]
+                      - gridcell "14" [ref=f2e5472] [cursor=pointer]
+                    - row [ref=f2e5473]:
+                      - gridcell "15" [disabled] [ref=f2e5474]
+                      - gridcell "16" [disabled] [ref=f2e5475]
+                      - gridcell "17" [disabled] [ref=f2e5476]
+                      - gridcell "18" [disabled] [ref=f2e5477]
+                      - gridcell "19" [disabled] [ref=f2e5478]
+                      - gridcell "20" [disabled] [ref=f2e5479]
+                      - gridcell "21" [disabled] [ref=f2e5480]
+                    - row [ref=f2e5481]:
+                      - gridcell "22" [disabled] [ref=f2e5482]
+                      - gridcell "23" [disabled] [ref=f2e5483]
+                      - gridcell "24" [disabled] [ref=f2e5484]
+                      - gridcell "25" [disabled] [ref=f2e5485]
+                      - gridcell "26" [disabled] [ref=f2e5486]
+                      - gridcell "27" [disabled] [ref=f2e5487]
+                      - gridcell "28" [disabled] [ref=f2e5488]
+                    - row [ref=f2e5489]:
+                      - gridcell "29" [disabled] [ref=f2e5490]
+                      - gridcell "30" [disabled] [ref=f2e5491]
+                      - gridcell
+                      - gridcell
+                      - gridcell
+                      - gridcell
+                      - gridcell
+        - generic [ref=f2e5425]:
+          - button [ref=f2e5493] [cursor=pointer]:
+            - generic [ref=f2e5427]: Cancel
+          - button [ref=f2e5494] [cursor=pointer]:
+            - generic [ref=f2e5429]: Submit

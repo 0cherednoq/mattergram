@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "task": "E8-03",
+  "result": "passed",
+  "checked_at": "2026-11-13T14:49:19.255516+00:00",
+  "scope": "One editable post with branch navigation, widgets and a native form through owned Mattermost 11.1 API/HTTP/WS and real Redis",
+  "scenario": [
+    "issued slash command created one home post",
+    "orders and incidents both opened shared help and Back restored the actual source branch",
+    "pager and filter actions atomically replaced text and controls on the same post",
+    "a signed action opened a native form on the authenticated actor WebSocket",
+    "server-forwarded form submission edited the same post into confirmation",
+    "terminal replay returned the stored response without repeating the business effect",
+    "an independent Redis client restored the confirmation state and submitted value"
+  ],
+  "local_regressions": [
+    "outdated post actions are acknowledged and do not repeat navigation",
+    "FormWindow to FormWindow uses DialogSubmission.next and rotates managed form state",
+    "native cancel restores the window that opened the form",
+    "unrelated signed callbacks are left to subsequent Router handlers"
+  ],
+  "server_version": "11.1.0",
+  "business_effects": 1,
+  "cleanup": "temporary slash command, one post and Redis keys removed",
+  "receipt": "manifests/dialog-scenario-tests.json",
+  "limits": [
+    "This is API/HTTP/WebSocket evidence, not browser rendering evidence.",
+    "Desktop and mobile client acceptance remains part of E5-03."
+  ]
+}

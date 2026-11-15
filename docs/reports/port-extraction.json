@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "scope": "E1 tool invariants verified; native SDK remains unimplemented",
+  "manifest_sha256": "d3497006dd55ac9e6377c97339cbf55c390953324edc12954665e4c40e818c24",
+  "source": {
+    "id": "aiogram",
+    "repository": "https://github.com/aiogram/aiogram",
+    "ref": "v3.31.0",
+    "commit": "97cfe79fa0ac9459d498bdb15cb7cb0530dbaac7",
+    "tree_sha256": "5943156f89f46a2c640836b52c97502cf44238e38e8dee1c6e167e0ed60c97ea"
+  },
+  "extraction": {
+    "scope": "E1 extraction invariants; does not approve semantic adaptations or SDK integration",
+    "result": "passed",
+    "modules": 18,
+    "repeat_runs": 3,
+    "independent_stages": [
+      "build/port-staging/repeat-f89253b0f2d1ff0f-a",
+      "build/port-staging/repeat-f89253b0f2d1ff0f-b"
+    ],
+    "staging_tree_sha256": "cf49ac9366cbbd2937891ef7561f6c256b209a0dad1304ccf1ed6325991af260",
+    "receipt_sha256": "b3e5df0f53445475f28d6511570c32404b70173dd477deb90e09d4e8d405f6c2",
+    "maintained_source_sha256": "21faa82435c16971c7678c2aee60604dd8fe11748552475d772d1fbf7950b8c3",
+    "maintained_source_unchanged": true
+  },
+  "strict_audit": {
+    "ready": false,
+    "observed_cli_exit_code": 1,
+    "findings": 101,
+    "by_kind": {
+      "forbidden_export": 9,
+      "forbidden_import": 7,
+      "forbidden_symbol": 58,
+      "missing_dependency": 10,
+      "missing_export": 4,
+      "pending_adaptation": 13
+    },
+    "pending_adaptations": [
+      "src/mattergram/dispatcher/event/bases.py",
+      "src/mattergram/dispatcher/event/handler.py",
+      "src/mattergram/dispatcher/event/message.py",
+      "src/mattergram/dispatcher/flags.py",
+      "src/mattergram/dispatcher/middlewares/base.py",
+      "src/mattergram/dispatcher/middlewares/manager.py",
+      "src/mattergram/dispatcher/router.py",
+      "src/mattergram/fsm/state.py",
+      "src/mattergram/fsm/storage/base.py",
+      "src/mattergram/fsm/storage/memory.py",
+      "src/mattergram/fsm/strategy.py",
+      "src/mattergram/handlers/base.py",
+      "src/mattergram/utils/warnings.py"
+    ]
+  },
+  "tests": {
+    "passed": 37,
+    "os": "Windows",
+    "python": [
+      "3.11",
+      "3.13",
+      "3.14"
+    ]
+  },
+  "next": "E2 native models, posted normalizer, REST createPost; then semantic routing/FSM adaptations with behavioral tests"
+}

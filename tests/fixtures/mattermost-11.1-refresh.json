@@ -1,0 +1,13 @@
+{
+  "type": "refresh",
+  "callback_id": "fields",
+  "state": "removed-state",
+  "user_id": "fixture-user",
+  "channel_id": "fixture-channel",
+  "team_id": "fixture-team",
+  "submission": {
+    "category": "a",
+    "selected_field": "category"
+  },
+  "cancelled": false
+}

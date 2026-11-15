@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained. Removed unused MockedBot fixture; native string server/bot/channel/user keys retain all context/data/address assertions.",
+  "input_sha256": "e205cadf6ac5fc78cdddddd7ef52f5532f178739dac8c19261c561ead2cc291f",
+  "output_sha256": "d551ced9dea5a7b3429d2823ea22b429417a002a3fd79d62d3e2040b927793a2",
+  "replacements": [
+    {
+      "before": "import pytest\n\nfrom aiogram.fsm.context import FSMContext\nfrom aiogram.fsm.storage.base import StorageKey\nfrom aiogram.fsm.storage.memory import MemoryStorage\nfrom tests.mocked_bot import MockedBot\n\n\n@pytest.fixture()\ndef state(bot: MockedBot):\n    storage = MemoryStorage()\n    key = StorageKey(user_id=42, chat_id=-42, bot_id=bot.id)\n    ctx = storage.storage[key]\n    ctx.state = \"test\"\n    ctx.data = {\"foo\": \"bar\"}\n",
+      "after": "import pytest\n\nfrom mattergram.fsm.context import FSMContext\nfrom mattergram.fsm.storage.base import StorageKey\nfrom mattergram.fsm.storage.memory import MemoryStorage\n\n\n@pytest.fixture()\ndef state():\n    storage = MemoryStorage()\n    key = StorageKey(\n        user_id=\"user\", channel_id=\"channel-negative\", instance_id=\"https://instance.test\", bot_id=\"bot\"\n    )\n    ctx = storage.storage[key]\n    ctx.state = \"test\"\n    ctx.data = {\"foo\": \"bar\"}\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n\nclass TestFSMContext:\n    async def test_address_mapping(self, bot: MockedBot):\n        storage = MemoryStorage()\n        ctx = storage.storage[StorageKey(chat_id=-42, user_id=42, bot_id=bot.id)]\n        ctx.state = \"test\"\n        ctx.data = {\"foo\": \"bar\"}\n        state = FSMContext(storage=storage, key=StorageKey(chat_id=-42, user_id=42, bot_id=bot.id))\n        state2 = FSMContext(storage=storage, key=StorageKey(chat_id=42, user_id=42, bot_id=bot.id))\n        state3 = FSMContext(storage=storage, key=StorageKey(chat_id=69, user_id=69, bot_id=bot.id))\n\n        assert await state.get_state() == \"test\"\n        assert await state2.get_state() is None\n",
+      "after": "\n\nclass TestFSMContext:\n    async def test_address_mapping(self):\n        storage = MemoryStorage()\n        ctx = storage.storage[\n            StorageKey(\n                channel_id=\"channel-negative\",\n                user_id=\"user\",\n                instance_id=\"https://instance.test\",\n                bot_id=\"bot\",\n            )\n        ]\n        ctx.state = \"test\"\n        ctx.data = {\"foo\": \"bar\"}\n        state = FSMContext(\n            storage=storage,\n            key=StorageKey(\n                channel_id=\"channel-negative\",\n                user_id=\"user\",\n                instance_id=\"https://instance.test\",\n                bot_id=\"bot\",\n            ),\n        )\n        state2 = FSMContext(\n            storage=storage,\n            key=StorageKey(\n                channel_id=\"channel-positive\",\n                user_id=\"user\",\n                instance_id=\"https://instance.test\",\n                bot_id=\"bot\",\n            ),\n        )\n        state3 = FSMContext(\n            storage=storage,\n            key=StorageKey(\n                channel_id=\"channel-other\", user_id=\"other\", instance_id=\"https://instance.test\", bot_id=\"bot\"\n            ),\n        )\n\n        assert await state.get_state() == \"test\"\n        assert await state2.get_state() is None\n",
+      "occurrences": 1
+    }
+  ]
+}

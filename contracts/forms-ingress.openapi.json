@@ -1,0 +1,14 @@
+{
+  "openapi": "3.1.0",
+  "info": {"title": "mattergram managed native forms", "version": "0.1.0a1", "description": "Authored SDK ingress contract; server/client version evidence is separate in manifests/forms-profile.json."},
+  "paths": {
+    "/mattergram/dialog": {
+      "post": {
+        "operationId": "ReceiveNativeDialogEvent",
+        "x-authentication": "Controlled authenticated server transport and explicit peer CIDRs, then opaque state/context capability bound to the stored native actor/scope/opening-callback/revision. The revision-zero form capability can perform current-schema lookup or cancellation after transitions; stale submission/refresh/action writes remain rejected. Forwarded headers are not actor evidence.",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"type": "object", "required": ["type", "user_id", "channel_id"], "properties": {"type": {"enum": ["dialog_submission", "refresh", "dialog_lookup", "dialog_action"]}, "user_id": {"type": "string", "minLength": 1}, "channel_id": {"type": "string", "minLength": 1}, "team_id": {"type": "string"}, "callback_id": {"type": "string"}, "state": {"type": "string", "writeOnly": true}, "submission": {"type": "object", "writeOnly": true, "additionalProperties": true}, "cancelled": {"type": "boolean"}, "file_ids": {"type": "array", "items": {"type": "string"}, "writeOnly": true}, "trigger_id": {"type": "string", "writeOnly": true}, "context": {"type": "object", "writeOnly": true, "additionalProperties": {"type": "string"}}}, "additionalProperties": true}}}},
+        "responses": {"200": {"description": "One explicit native response: ACK, validation error(s), managed next/refresh form, or lookup items. Terminal replay returns the stored result."}, "400": {"description": "Malformed, ambiguous or invalid event family/lookup values"}, "403": {"description": "Rejected peer, capability, scope, callback ID, operation or expiry"}, "404": {"description": "No handler registered"}, "409": {"description": "Stale step, inactive parent/live child, modal-depth limit, or uncertain outcome requiring application reconciliation"}, "413": {"description": "Body size exceeded"}, "415": {"description": "Unsupported media type"}, "500": {"description": "Handler failed or form response was not explicitly completed"}, "503": {"description": "Capacity, storage or lifecycle unavailable"}, "504": {"description": "Initial request deadline expired; no automatic successful ACK"}}
+      }
+    }
+  }
+}

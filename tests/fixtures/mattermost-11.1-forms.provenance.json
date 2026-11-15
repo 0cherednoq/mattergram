@@ -1,0 +1,27 @@
+{
+  "provider": "Owned Mattermost 11.1.0, pinned mattergram-native-stand",
+  "captured_at": "2026-11-12T08:38:36.564231+00:00",
+  "harness": "tools/verify_http_stand.py; tools/_forms_stand.py",
+  "scope": "Actual actor WS open_dialog and native submit/lookup API forwarding. Structural fixtures after sanitization, not authentication or client UI proof.",
+  "raw_capture_sha256": "a09ae0c4d47acbfe5397183331c98e5e92916c6fbe0690d9168cd4509dd1f6b9",
+  "raw_capture": "ignored build/forms-private-captures.json; not distributed",
+  "replacements": [
+    "Session state and triggers removed.",
+    "Native actor/channel/team IDs and callback URL replaced with inert values.",
+    "Nonempty title input and lookup query redacted; false, arrays and ISO typed wire values retained from the owned fixture."
+  ],
+  "fixtures": [
+    {
+      "path": "tests/fixtures/mattermost-11.1-dialog_submission.json",
+      "sha256": "ec2d69ca77af43bc12cdae0a50f344660a6d8130ad6bc5107e9f17f54bc502ae"
+    },
+    {
+      "path": "tests/fixtures/mattermost-11.1-dialog_lookup.json",
+      "sha256": "7803ae3cdeb80a5fec8dfdedfbe53d2323cbacb62c3c44ceb6ee3c8b4c9aea1b"
+    },
+    {
+      "path": "tests/fixtures/mattermost-11.1-refresh.json",
+      "sha256": "9c4767bb52ca73547cbc0301d66f407057f3a433088d4143972d9a11703347f3"
+    }
+  ]
+}

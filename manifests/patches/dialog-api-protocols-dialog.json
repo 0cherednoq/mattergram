@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain dialog state/load/start/result/close protocol; replace Telegram NewMessage output with backend-neutral render plans. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "6b5416f42cbe5cd71911922f1594f838168c11f361e6f2f3f19381ad905b282a",
+  "output_sha256": "87a8e244230fa03a6241f2ee1cd8019dfc6579c040ff83551ecc8fabba4e03d2",
+  "replacements": [
+    {
+      "before": "from abc import abstractmethod\nfrom typing import Any, Protocol, runtime_checkable\n\nfrom aiogram.fsm.state import State, StatesGroup\n\nfrom mattergram_dialog.api.entities import (\n    Data,\n    LaunchMode,\n    NewMessage,\n)\nfrom .manager import DialogManager\n\n\nclass CancelEventProcessing(Exception):\n    pass\n\n\n@runtime_checkable\nclass DialogProtocol(Protocol):\n    @property\n    def launch_mode(self) -> LaunchMode:\n        raise NotImplementedError\n\n    @abstractmethod\n    def states_group_name(self) -> str:\n        raise NotImplementedError\n\n    @abstractmethod\n    def states(self) -> list[State]:\n        raise NotImplementedError\n\n    @abstractmethod\n    def states_group(self) -> type[StatesGroup]:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def process_close(\n            self, result: Any, manager: DialogManager,\n    ) -> None:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def process_start(\n            self,\n            manager: \"DialogManager\",\n            start_data: Data,\n            state: State | None = None,\n    ) -> None:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def process_result(\n            self, start_data: Data, result: Any,\n            manager: \"DialogManager\",\n    ) -> None:\n        raise NotImplementedError\n\n    @abstractmethod\n    def find(self, widget_id) -> Any:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def load_data(\n            self, manager: DialogManager,\n    ) -> dict:\n        raise NotImplementedError\n\n    @abstractmethod\n    async def render(self, manager: DialogManager) -> NewMessage:\n        raise NotImplementedError\n",
+      "after": "from __future__ import annotations\n\nfrom collections.abc import Sequence\nfrom typing import Any, Protocol\n\nfrom mattergram.fsm.state import State\nfrom mattergram_dialog.api.internal.window import WindowProtocol\n\n\nclass DialogProtocol(Protocol):\n    @property\n    def states(self) -> Sequence[State]: ...\n\n    def window_for(self, state: State | str) -> WindowProtocol: ...\n\n    async def render(self, manager: Any) -> Any: ...\n\n\n__all__ = [\"DialogProtocol\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

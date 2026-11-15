@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "reason": "Retain signature DI and filters; import only the selected BaseHandler, update warning namespace; no aggregate Telegram handlers. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "071d9ac1f935020862b2e8c66218c8f87ee12390186ad03446e33d42c1f7ec70",
+  "output_sha256": "3a64748f28346070f1eefbdcefa96e382bccf3b645d3339e851a9e047f6cdae1",
+  "replacements": [
+    {
+      "before": "\nfrom magic_filter.magic import MagicFilter as OriginalMagicFilter\n\nfrom mattergram.dispatcher.flags import extract_flags_from_object\nfrom mattergram.filters.base import Filter\nfrom mattergram.handlers import BaseHandler\nfrom mattergram.utils.magic_filter import MagicFilter\nfrom mattergram.utils.warnings import Recommendation\n\n",
+      "after": "\nfrom magic_filter.magic import MagicFilter as OriginalMagicFilter\n\nfrom mattergram.dispatcher.context import validate_application_data\nfrom mattergram.dispatcher.flags import extract_flags_from_object\nfrom mattergram.filters.base import Filter\nfrom mattergram.handlers.base import BaseHandler\nfrom mattergram.utils.magic_filter import MagicFilter\nfrom mattergram.utils.warnings import Recommendation\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    awaitable: bool = field(init=False)\n    params: set[str] = field(init=False)\n    varkw: bool = field(init=False)\n\n    def __post_init__(self) -> None:\n        callback = inspect.unwrap(self.callback)\n",
+      "after": "    awaitable: bool = field(init=False)\n    params: set[str] = field(init=False)\n    varkw: bool = field(init=False)\n    positional_params: tuple[str, ...] = field(init=False, default=())\n\n    def __post_init__(self) -> None:\n        callback = inspect.unwrap(self.callback)\n",
+      "occurrences": 1
+    },
+    {
+      "before": "                params.add(p.name)\n            elif p.kind == inspect.Parameter.VAR_KEYWORD:\n                varkw = True\n        self.params = params\n        self.varkw = varkw\n\n",
+      "after": "                params.add(p.name)\n            elif p.kind == inspect.Parameter.VAR_KEYWORD:\n                varkw = True\n        self.positional_params = tuple(\n            p.name\n            for p in signature.parameters.values()\n            if p.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)\n        )\n        self.params = params\n        self.varkw = varkw\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        return {k: kwargs[k] for k in self.params if k in kwargs}\n\n    async def call(self, *args: Any, **kwargs: Any) -> Any:\n        wrapped = partial(self.callback, *args, **self._prepare_kwargs(kwargs))\n        if self.awaitable:\n            return await wrapped()\n        return await asyncio.to_thread(wrapped)\n\n\n@dataclass\n",
+      "after": "        return {k: kwargs[k] for k in self.params if k in kwargs}\n\n    async def call(self, *args: Any, **kwargs: Any) -> Any:\n        prepared = dict(self._prepare_kwargs(kwargs))\n        for name in self.positional_params[: len(args)]:\n            prepared.pop(name, None)\n        wrapped = partial(self.callback, *args, **prepared)\n        if self.awaitable:\n            return await wrapped()\n        result = await asyncio.to_thread(wrapped)\n        return await result if inspect.isawaitable(result) else result\n\n\n@dataclass\n",
+      "occurrences": 1
+    },
+    {
+      "before": "                    message=\"You are using F provided by magic_filter package directly, \"\n                    \"but it lacks `.as_()` extension.\"\n                    \"\\n Please change the import statement: from `from magic_filter import F` \"\n                    \"to `from aiogram import F` to silence this warning.\",\n                    stacklevel=6,\n                )\n\n",
+      "after": "                    message=\"You are using F provided by magic_filter package directly, \"\n                    \"but it lacks `.as_()` extension.\"\n                    \"\\n Please change the import statement: from `from magic_filter import F` \"\n                    \"to `from mattergram import F` to silence this warning.\",\n                    stacklevel=6,\n                )\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "            if not check:\n                return False, kwargs\n            if isinstance(check, dict):\n                kwargs.update(check)\n        return True, kwargs\n",
+      "after": "            if not check:\n                return False, kwargs\n            if isinstance(check, dict):\n                validate_application_data(check)\n                kwargs.update(check)\n        return True, kwargs\n",
+      "occurrences": 1
+    }
+  ]
+}

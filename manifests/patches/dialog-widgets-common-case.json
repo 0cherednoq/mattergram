@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain field/MagicFilter/callable selection algorithms with the adapted manager protocol. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "f2dee43b3882850ffb57cc243d03335b2aaaf16b8ccfafe0c7c53b5202a3e2b1",
+  "output_sha256": "acad41772372add6236c3f6ad8020b1ed4f7539159123756fd91a4751a3b0019",
+  "replacements": [
+    {
+      "before": "from collections.abc import Callable, Hashable\nfrom typing import Any, TypeVar\n\nfrom magic_filter import MagicFilter\n\nfrom mattergram_dialog.api.protocols.manager import DialogManager\n\nT = TypeVar(\"T\")\nSelector = Callable[[dict, T, DialogManager], Hashable]\n\n\ndef new_case_field(fieldname: str) -> Selector[T]:\n    def case_field(\n        data: dict, widget: T, manager: DialogManager,\n    ) -> Hashable:\n        return data.get(fieldname)\n\n    return case_field\n\n\ndef new_magic_selector(f: MagicFilter) -> Selector[T]:\n    def when_magic(\n        data: dict, widget: T, manager: DialogManager,\n    ) -> Any:\n        return f.resolve(data)\n\n    return when_magic\n",
+      "after": "from __future__ import annotations\n\nfrom collections.abc import Callable, Mapping\nfrom typing import Any\n\nfrom magic_filter import MagicFilter\n\nSelector = str | MagicFilter | Callable[[Mapping[str, Any], Any], Any]\n\n\ndef select_value(selector: Selector, data: Mapping[str, Any], manager: Any) -> Any:\n    if isinstance(selector, str):\n        return data.get(selector)\n    if isinstance(selector, MagicFilter):\n        return selector.resolve(data)\n    return selector(data, manager)\n\n\n__all__ = [\"Selector\", \"select_value\"]\n",
+      "occurrences": 1
+    }
+  ]
+}

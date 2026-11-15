@@ -1,0 +1,50 @@
+services:
+  menu_demo_db:
+    image: postgres:16-alpine@sha256:20edbde7749f822887a1a022ad526fde0a47d6b2be9a8364433605cf65099416
+    environment:
+      POSTGRES_USER: mattergram_menu
+      POSTGRES_PASSWORD: ${MATTERGRAM_MENU_DEMO_DB_PASSWORD:?Set it in the ignored demo env file}
+      POSTGRES_DB: mattergram_menu
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U mattergram_menu -d mattergram_menu"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - demo-postgres-data:/var/lib/postgresql/data
+
+  menu_demo_mattermost:
+    image: mattermost/mattermost-team-edition:12.0.2@sha256:08c0b4b93a14196b0850f62faa4a437d2643533f009cac4868a0b793aad61fc3
+    depends_on:
+      menu_demo_db:
+        condition: service_healthy
+    environment:
+      MM_SQLSETTINGS_DRIVERNAME: postgres
+      MM_SQLSETTINGS_DATASOURCE: postgres://mattergram_menu:${MATTERGRAM_MENU_DEMO_DB_PASSWORD}@menu_demo_db:5432/mattergram_menu?sslmode=disable
+      MM_SERVICESETTINGS_LISTENADDRESS: :8065
+      MM_SERVICESETTINGS_SITEURL: http://127.0.0.1:${MATTERGRAM_MENU_DEMO_PORT:-29465}
+      MM_SERVICESETTINGS_ENABLEEMAILINVITATIONS: "false"
+      MM_EMAILSETTINGS_SENDEMAILNOTIFICATIONS: "false"
+      MM_EMAILSETTINGS_REQUIREEMAILVERIFICATION: "false"
+      MM_LOGSETTINGS_CONSOLELEVEL: ERROR
+      MM_LOGSETTINGS_ENABLEFILE: "false"
+      MM_PLUGINSETTINGS_ENABLE: "true"
+      MM_PLUGINSETTINGS_ENABLEUPLOADS: "true"
+      MM_PLUGINSETTINGS_REQUIREPLUGINSIGNATURE: "false"
+    ports:
+      - "127.0.0.1:${MATTERGRAM_MENU_DEMO_PORT:-29465}:8065"
+    volumes:
+      - demo-mattermost-data:/mattermost/data
+      - demo-mattermost-plugins:/mattermost/plugins
+      - demo-mattermost-client-plugins:/mattermost/client/plugins
+
+volumes:
+  demo-postgres-data:
+  demo-mattermost-data:
+  demo-mattermost-plugins:
+  demo-mattermost-client-plugins:
+
+networks:
+  default:
+    external: true
+    name: ${MATTERGRAM_MENU_DEMO_NETWORK:-mattergram-native-stand_default}

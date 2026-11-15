@@ -1,0 +1,7 @@
+{
+  "source": "Captured from the owned local Mattermost stand, not authored as an invented wire event",
+  "server_version_header": "11.1.0.19159932738.a8d2732fea85e14f665dc14f367ae76fa14ced4259f093a4b4d2c9941960ec84.false",
+  "server_image": "mattermost/mattermost-team-edition:11.1.0@sha256:4862f28825a7d5d4624d48493061587344605a14f060d9b0cf0b189d896efe9e",
+  "fixture_sha256": "222ecdeaef6f65e364a1fb33b1c7e8a0a8b4bdfb32ec26cc17969c680d20eafa",
+  "data": "Only local fixture accounts/channel/message; no credentials or production data"
+}

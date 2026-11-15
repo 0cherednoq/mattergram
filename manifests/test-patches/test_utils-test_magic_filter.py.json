@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "176a9c02edbcb16b895d14897e2576606e37efdc76042d906224702dbb9be3eb",
+  "output_sha256": "f8c0da3ab75c731c89464c2fee509b38bfa82cd1f9bf9b99d7417ae4c2107abe",
+  "replacements": [
+    {
+      "before": "from dataclasses import dataclass\nfrom re import Match\n\nfrom aiogram import F\nfrom aiogram.utils.magic_filter import MagicFilter\n\n\n@dataclass\n",
+      "after": "from dataclasses import dataclass\nfrom re import Match\n\nfrom mattergram import F\nfrom mattergram.utils.magic_filter import MagicFilter\n\n\n@dataclass\n",
+      "occurrences": 1
+    }
+  ]
+}

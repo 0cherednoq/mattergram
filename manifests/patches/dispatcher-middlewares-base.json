@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Use native Event in middleware protocol; retain algorithm/interface. Includes reviewed native boundary, typing and format changes.",
+  "input_sha256": "97cbf0f2b6eee9b384834805cade774c8ac4376610d37dabfd0bc249847541f4",
+  "output_sha256": "d40b50532c72f900cd964072bf2a0dd10e7ac95a1c9df20ca8fb6a89df65d600",
+  "replacements": [
+    {
+      "before": "from collections.abc import Awaitable, Callable\nfrom typing import Any, TypeVar\n\nfrom mattergram.types import TelegramObject\n\nT = TypeVar(\"T\")\n\n",
+      "after": "from collections.abc import Awaitable, Callable\nfrom typing import Any, TypeVar\n\nfrom mattergram.types import Event\n\nT = TypeVar(\"T\")\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    @abstractmethod\n    async def __call__(\n        self,\n        handler: Callable[[TelegramObject, dict[str, Any]], Awaitable[Any]],\n        event: TelegramObject,\n        data: dict[str, Any],\n    ) -> Any:  # pragma: no cover\n        \"\"\"\n        Execute middleware\n\n        :param handler: Wrapped handler in middlewares chain\n        :param event: Incoming event (Subclass of :class:`aiogram.types.base.TelegramObject`)\n        :param data: Contextual data. Will be mapped to handler arguments\n        :return: :class:`Any`\n        \"\"\"\n",
+      "after": "    @abstractmethod\n    async def __call__(\n        self,\n        handler: Callable[[Event, dict[str, Any]], Awaitable[Any]],\n        event: Event,\n        data: dict[str, Any],\n    ) -> Any:  # pragma: no cover\n        \"\"\"\n        Execute middleware\n\n        :param handler: Wrapped handler in middlewares chain\n        :param event: Incoming event (Subclass of :class:`aiogram.types.base.Event`)\n        :param data: Contextual data. Will be mapped to handler arguments\n        :return: :class:`Any`\n        \"\"\"\n",
+      "occurrences": 1
+    }
+  ]
+}

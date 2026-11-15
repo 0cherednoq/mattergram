@@ -1,0 +1,36 @@
+{
+  "user_id": "fixture-user",
+  "user_name": "fixture-user_name",
+  "channel_id": "fixture-channel",
+  "channel_name": "fixture-channel_name",
+  "team_id": "fixture-team",
+  "team_domain": "fixture-team_domain",
+  "post_id": "fixture-post",
+  "trigger_id": "removed-trigger_id",
+  "type": "select",
+  "data_source": "",
+  "context": {
+    "mattergram": {
+      "payload": {
+        "allowed_options": [
+          "yes",
+          "no"
+        ],
+        "bot_id": "fixture-bot",
+        "channel_id": "fixture-channel",
+        "data": "http:select",
+        "exp": 1900.0,
+        "iat": 1000.0,
+        "instance_id": "https://mattermost.test",
+        "kid": "removed-key-id",
+        "post_id": "fixture-post",
+        "team_id": null,
+        "thread_id": null,
+        "user_id": "fixture-user",
+        "v": 1
+      },
+      "signature": "removed-signature"
+    },
+    "selected_option": "yes"
+  }
+}

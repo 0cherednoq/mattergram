@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained. Class handler fixture uses a real native Message and its string post_id; no synthetic update_id.",
+  "input_sha256": "fd8dac883e0bb3fe5e9817b7b6b9a05577b57646bdab15c7a17a10d3634fa7fc",
+  "output_sha256": "06d481064a6dd0a22b12d3f1899b3ada9f817c7552363ff448fb501ffe1fb361",
+  "replacements": [
+    {
+      "before": "import pytest\nfrom magic_filter import F as A\n\nfrom aiogram import F\nfrom aiogram.dispatcher.event.handler import CallableObject, FilterObject, HandlerObject\nfrom aiogram.filters import Filter\nfrom aiogram.handlers import BaseHandler\nfrom aiogram.types import Update\nfrom aiogram.utils.warnings import Recommendation\n\n\ndef callback1(foo: int, bar: int, baz: int):\n",
+      "after": "import pytest\nfrom magic_filter import F as A\n\nfrom mattergram import F\nfrom mattergram.dispatcher.event.handler import CallableObject, FilterObject, HandlerObject\nfrom mattergram.filters import Filter\nfrom mattergram.handlers import BaseHandler\nfrom mattergram.types import Message\nfrom mattergram.utils.warnings import Recommendation\n\n\ndef callback1(foo: int, bar: int, baz: int):\n",
+      "occurrences": 1
+    },
+    {
+      "before": "    @pytest.mark.parametrize(\n        \"callback,kwargs,result\",\n        [\n            pytest.param(\n                callback1, {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}\n            ),\n            pytest.param(\n                callback2,\n                {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\", \"bar\": \"test\"},\n",
+      "after": "    @pytest.mark.parametrize(\n        \"callback,kwargs,result\",\n        [\n            pytest.param(callback1, {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}),\n            pytest.param(\n                callback2,\n                {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\", \"bar\": \"test\"},\n",
+      "occurrences": 1
+    },
+    {
+      "before": "                {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\", \"bar\": \"test\"},\n                {\"foo\": 42, \"baz\": \"fuz\", \"bar\": \"test\"},\n            ),\n            pytest.param(\n                TestFilter(), {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}\n            ),\n            pytest.param(\n                SyncCallable(), {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}\n            ),\n        ],\n    )\n    def test_prepare_kwargs(\n        self, callback: Callable, kwargs: dict[str, Any], result: dict[str, Any]\n    ):\n        obj = CallableObject(callback)\n        assert obj._prepare_kwargs(kwargs) == result\n\n",
+      "after": "                {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\", \"bar\": \"test\"},\n                {\"foo\": 42, \"baz\": \"fuz\", \"bar\": \"test\"},\n            ),\n            pytest.param(TestFilter(), {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}),\n            pytest.param(SyncCallable(), {\"foo\": 42, \"spam\": True, \"baz\": \"fuz\"}, {\"foo\": 42, \"baz\": \"fuz\"}),\n        ],\n    )\n    def test_prepare_kwargs(self, callback: Callable, kwargs: dict[str, Any], result: dict[str, Any]):\n        obj = CallableObject(callback)\n        assert obj._prepare_kwargs(kwargs) == result\n\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        handler = HandlerObject(\n            simple_handler,\n            [\n                FilterObject(\n                    functools.partial(lambda value, index: {f\"test{index}\": \"ok\"}, index=item)\n                )\n                for item in range(3)\n            ],\n        )\n",
+      "after": "        handler = HandlerObject(\n            simple_handler,\n            [\n                FilterObject(functools.partial(lambda value, index: {f\"test{index}\": \"ok\"}, index=item))\n                for item in range(3)\n            ],\n        )\n",
+      "occurrences": 1
+    },
+    {
+      "before": "\n    async def test_class_based_handler(self):\n        class MyHandler(BaseHandler):\n            event: Update\n\n            async def handle(self) -> Any:\n                return self.event.update_id\n\n        handler = HandlerObject(MyHandler, filters=[FilterObject(lambda event: True)])\n\n        assert handler.awaitable\n        assert handler.callback == MyHandler\n        assert len(handler.filters) == 1\n        result = await handler.call(Update(update_id=42))\n        assert result == 42\n\n    def test_warn_another_magic(self):\n        with pytest.warns(Recommendation):\n",
+      "after": "\n    async def test_class_based_handler(self):\n        class MyHandler(BaseHandler):\n            event: Message\n\n            async def handle(self) -> Any:\n                return self.event.post_id\n\n        handler = HandlerObject(MyHandler, filters=[FilterObject(lambda event: True)])\n\n        assert handler.awaitable\n        assert handler.callback == MyHandler\n        assert len(handler.filters) == 1\n        result = await handler.call(\n            Message.from_wire(\n                {\n                    \"id\": \"post-native\",\n                    \"channel_id\": \"channel\",\n                    \"user_id\": \"user\",\n                    \"message\": \"test\",\n                    \"create_at\": 0,\n                }\n            )\n        )\n        assert result == \"post-native\"\n\n    def test_warn_another_magic(self):\n        with pytest.warns(Recommendation):\n",
+      "occurrences": 1
+    }
+  ]
+}

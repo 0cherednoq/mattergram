@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain start modes; replace Telegram message send/delete show modes with explicit Mattermost post/form render decisions. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "6507c9e4a36bcc001847a173b0df1bed66d2eb50a6d1dbdeebdd39d85b19635e",
+  "output_sha256": "19927c08b300b377cf0dc3c031a49cbf9284ec2ebc8077520a0b2aba2f60c512",
+  "replacements": [
+    {
+      "before": "\n\nclass ShowMode(Enum):\n    \"\"\"\n    Modes of show dialog message when new update handled.\n\n    **AUTO**:\n        default show mode.\n\n        Uses `SEND mode` when new message from user handled or `EDIT mode`\n        when any other updated handled.\n\n    **EDIT**:\n        edit dialog message\n\n    **SEND**:\n        send new dialog message\n\n    **DELETE_AND_SEND**:\n        delete and send new dialog message\n\n        `Attention`: Telegram's restrictions will prevent the deletion of the\n        message when more than 2 days has elapsed.\n\n    **NO_UPDATE**:\n        will not update and rerender the dialog message\n    \"\"\"\n\n    AUTO = \"auto\"\n    EDIT = \"edit\"\n    SEND = \"send\"\n    DELETE_AND_SEND = \"delete_and_send\"\n    NO_UPDATE = \"no_update\"\n\n\nclass StartMode(Enum):\n    \"\"\"\n    Modes of starting a new dialog.\n\n    **NORMAL**:\n        default start mode.\n\n        This mode continues from the current state without resetting or\n        creating a new stack.\n\n    **RESET_STACK**:\n        reset the current stack.\n\n        This mode clears the existing stack and starts fresh. It is used when\n        the existing stack needs to be discarded and a new operation stack\n        is required.\n\n    **NEW_STACK**:\n        start with a new stack.\n\n        This mode initiates a new stack while retaining the old one, useful\n        when a new sequence of operations is to be started alongside the\n        current one.\n    \"\"\"\n\n    NORMAL = \"NORMAL\"\n    RESET_STACK = \"RESET_STACK\"\n    NEW_STACK = \"NEW_STACK\"\n",
+      "after": "\n\nclass ShowMode(Enum):\n    AUTO = \"auto\"\n    EDIT = \"edit\"\n    SEND = \"send\"\n    FORM = \"form\"\n    NO_UPDATE = \"no_update\"\n\n\nclass StartMode(Enum):\n    NORMAL = \"NORMAL\"\n    RESET_STACK = \"RESET_STACK\"\n    NEW_STACK = \"NEW_STACK\"\n",
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "event": "posted",
+  "data": {
+    "channel_display_name": "native-client-test",
+    "channel_name": "native-client-test",
+    "channel_type": "O",
+    "post": "{\"id\":\"6hc83szrfffrfqxqed3uc6jnuc\",\"create_at\":1794457594940,\"update_at\":1794457594940,\"edit_at\":0,\"delete_at\":0,\"is_pinned\":false,\"user_id\":\"qu1rdxjcwtdy3gd5otkb8gs7ra\",\"channel_id\":\"41cyt4qbptriif55qucgn5fh1o\",\"root_id\":\"\",\"original_id\":\"\",\"message\":\"mattergram native stand ping 1227ab5a\",\"type\":\"\",\"props\":{},\"hashtags\":\"\",\"file_ids\":[],\"pending_post_id\":\"\",\"remote_id\":\"\",\"reply_count\":0,\"last_reply_at\":0,\"participants\":null,\"metadata\":{}}",
+    "sender_name": "@mattergram-stand-admin",
+    "set_online": true,
+    "team_id": "5g1xm393jpg88rfapoy3zsep8w"
+  },
+  "broadcast": {
+    "omit_users": null,
+    "user_id": "",
+    "channel_id": "41cyt4qbptriif55qucgn5fh1o",
+    "team_id": "",
+    "connection_id": "",
+    "omit_connection_id": ""
+  },
+  "seq": 1
+}

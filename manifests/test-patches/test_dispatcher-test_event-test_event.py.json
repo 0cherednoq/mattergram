@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reason": "Import namespace only; assertions retained.",
+  "input_sha256": "094f6addf0a8d4c0c4c38b53bcdadf234b4fbe71a713108fc328e76ce4ac40b8",
+  "output_sha256": "2242968491bfc97a4ab7f33826f37ab04bbbd880ff83ff12fa9c9f455f1c2cf4",
+  "replacements": [
+    {
+      "before": "\nimport pytest\n\nfrom aiogram.dispatcher.event.event import EventObserver\nfrom aiogram.dispatcher.event.handler import HandlerObject\n\n\nasync def my_handler(value: str, index: int = 0) -> Any:\n",
+      "after": "\nimport pytest\n\nfrom mattergram.dispatcher.event.event import EventObserver\nfrom mattergram.dispatcher.event.handler import HandlerObject\n\n\nasync def my_handler(value: str, index: int = 0) -> Any:\n",
+      "occurrences": 1
+    },
+    {
+      "before": "        assert observer.handlers[2].awaitable\n\n        with patch(\n            \"aiogram.dispatcher.event.handler.CallableObject.call\",\n            new_callable=AsyncMock,\n        ) as mocked_my_handler:\n            results = await observer.trigger(\"test\")\n",
+      "after": "        assert observer.handlers[2].awaitable\n\n        with patch(\n            \"mattergram.dispatcher.event.handler.CallableObject.call\",\n            new_callable=AsyncMock,\n        ) as mocked_my_handler:\n            results = await observer.trigger(\"test\")\n",
+      "occurrences": 1
+    }
+  ]
+}

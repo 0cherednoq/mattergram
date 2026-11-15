@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "result": "passed",
+  "checked_at": "2026-11-13T19:56:03.4732389Z",
+  "scope": "Owned local Mattermost 11.1 legacy API/HTTP/WS plus Mattermost 11.11 Blocks API, real Redis and authenticated 11.1 browser rendering",
+  "scenario": [
+    "structured button rows",
+    "capability-selected ButtonGrid and ActionRow compilation",
+    "full and opaque-cursor pagination",
+    "two independent tables",
+    "typed native form",
+    "same-post live update"
+  ],
+  "checks": [
+    "home rendered one four-button section row",
+    "summary rendered one attachment per table plus one global navigation attachment",
+    "each table attachment keeps its Markdown table, three filters and the full five-action pager in one object-local group",
+    "Mattermost 11.1 create-post returned 201 and read-back preserved 12 disabled legacy actions in one attachment",
+    "contract tests preserved declared 2/4/2 rows and compiled each row to an equal-width Blocks ColumnSet",
+    "Mattermost 11.11 accepted the live ButtonGrid post and read-back preserved one bordered vertical container with row shape 2/2",
+    "order pagination preserved the incident table state",
+    "shared help returned to the actual summary path and retained its page",
+    "opaque cursor pagination loaded the next remote page",
+    "WebSocket input triggered a REST edit and preserved card actions",
+    "native form opened five typed fields and submitted into the same source post"
+  ],
+  "server_version": "11.1.0",
+  "blocks_server_version": "11.11.0",
+  "same_post": true,
+  "browser_rendering": true,
+  "expanded_action_browser_rendering": false,
+  "blocks_row_browser_rendering": false,
+  "expanded_action_browser_note": "The authenticated client was minimized during the final wrap check; server acceptance and 8/12-action grouping are verified, while the refreshed demo remains available for manual visual inspection.",
+  "credentials": "omitted"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "reason": "Retain explicit scenario access settings; replace Telegram integer user IDs with Mattermost string actor IDs and immutable validated data. Includes reviewed native Mattermost semantics and typing.",
+  "input_sha256": "1a512b1ae38facd63e735f2d0b006668fe1fe114f8e943615722683f704f1973",
+  "output_sha256": "826861e4b11a28dc737776b2ab813775ce48f11805ce13f621f1f3753249c747",
+  "replacements": [
+    {
+      "before": "from dataclasses import dataclass\nfrom typing import Any\n\n\n@dataclass\nclass AccessSettings:\n    user_ids: list[int]\n    custom: Any = None\n",
+      "after": "from __future__ import annotations\n\nfrom dataclasses import dataclass\nfrom typing import Any\n\n\n@dataclass(frozen=True, slots=True)\nclass AccessSettings:\n    actor_ids: tuple[str, ...] = ()\n    custom: Any = None\n\n    def __post_init__(self) -> None:\n        if len(set(self.actor_ids)) != len(self.actor_ids) or any(\n            not isinstance(actor_id, str) or not actor_id for actor_id in self.actor_ids\n        ):\n            raise ValueError(\"actor_ids must contain unique nonempty Mattermost user IDs\")\n",
+      "occurrences": 1
+    }
+  ]
+}
