@@ -382,3 +382,28 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Следующий конкретный шаг для skill: применить его к первому реальному изменению Game Admin, сохранить минимальный `.mattergram-design/` map/flow и по фактическому agent run уточнить слишком общие или недостающие правила.
 - Локальный Git-репозиторий инициализирован на ветке `main`; исходники, документация, plugins и repository skill включены в initial commit. Кэши `.uv-cache`, `.npm-cache`, `node_modules` и локальные `.env` исключены, а `.gitattributes` фиксирует LF для текстовых файлов.
 
+## Application plugin architecture — этапы 0–2 реализованы
+
+- Добавлен `mattergram.plugins`: строгие `PluginManifest`, `MattergramPlugin`, `PluginBuilder`,
+  immutable `PluginContext`, typed named-DI `ProviderKey` и `PluginManager`. Plugins перечисляются
+  явно; новый routing DSL, entry-point discovery и hot reload не добавлялись.
+- Setup сначала собирает все contributions без мутации приложения, проверяет уникальные plugin IDs,
+  dependencies/cycles, required capabilities и конфликты routers, dialog states, slash commands и
+  providers, затем подключает их к существующим `Dispatcher`/`DialogRegistry`. Startup идёт по
+  dependency order, shutdown — в обратном; частичный startup откатывает уже завершённые plugins.
+- Добавлен independent `ComposerKeyboardPlugin`. Он получает одну готовую `ComposerKeyboard`,
+  проверяет target через native channel read как DM, проверяет доступность `com.mattergram.menu`
+  через typed GET, делает один set на target и подтверждает read-back. При startup failure и normal
+  shutdown восстанавливается предыдущее состояние. Feature handlers и button IDs ему неизвестны.
+- Local Game Admin composition root больше не вызывает `set_composer_keyboard` напрямую: keyboard
+  подключена через `PluginManager`; обычные exact-text handlers остаются в существующем Router.
+- Добавлен публичный guide `docs/application-plugins.md`, новые modules включены в documentation
+  manifest. Contract suite: 10 новых tests; полный доступный suite после синхронизации ранее
+  изменённого `FormWindow` hash в dialog manifests — `517 passed, 23 skipped, 309 subtests`.
+  Ruff/format для 255 файлов, strict mypy для 204 source files и documentation drift
+  (`268 exports / 447 members / 19 examples / 29 guides`) прошли. Live Mattermost после замены
+  composition root ещё не проверялся.
+- Следующий конкретный шаг этого плана: реализовать `AdminUsersPlugin` с app-scoped roles,
+  repository/directory protocols, service-level authorization и last-admin invariant, не добавляя
+  зависимости от composer keyboard.
+

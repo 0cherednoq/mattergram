@@ -3755,6 +3755,375 @@
       ]
     },
     {
+      "name": "mattergram.plugins",
+      "dependency": "core",
+      "exports": [
+        {
+          "name": "HealthCheck",
+          "qualified_name": "mattergram.plugins.HealthCheck",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/plugins/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "MattergramPlugin",
+          "qualified_name": "mattergram.plugins.MattergramPlugin",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": "One explicitly configured reusable application module.",
+          "source": {
+            "path": "src/mattergram/plugins/api.py",
+            "line": 43
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "setup",
+              "kind": "method",
+              "signature": "(self, builder: PluginBuilder) -> None",
+              "summary": "Declare contributions without network writes or runtime side effects.",
+              "source": {
+                "path": "src/mattergram/plugins/api.py",
+                "line": 48
+              }
+            },
+            {
+              "name": "shutdown",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": "Release resources acquired by :meth:`startup`.",
+              "source": {
+                "path": "src/mattergram/plugins/api.py",
+                "line": 54
+              }
+            },
+            {
+              "name": "startup",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": "Start runtime resources after the whole plugin graph has been validated.",
+              "source": {
+                "path": "src/mattergram/plugins/api.py",
+                "line": 51
+              }
+            }
+          ]
+        },
+        {
+          "name": "MissingPluginCapabilityError",
+          "qualified_name": "mattergram.plugins.MissingPluginCapabilityError",
+          "kind": "class",
+          "signature": null,
+          "summary": "A plugin requires a Mattermost capability not declared by the application.",
+          "source": {
+            "path": "src/mattergram/plugins/exceptions.py",
+            "line": 14
+          },
+          "bases": [
+            "mattergram.plugins.exceptions.PluginValidationError"
+          ]
+        },
+        {
+          "name": "PluginBuilder",
+          "qualified_name": "mattergram.plugins.PluginBuilder",
+          "kind": "class",
+          "signature": "(plugin_id: str) -> None",
+          "summary": "Restricted registration surface passed to ``MattergramPlugin.setup``.",
+          "source": {
+            "path": "src/mattergram/plugins/builder.py",
+            "line": 23
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "add_commands",
+              "kind": "method",
+              "signature": "(self, *specs: CommandSpec) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 50
+              }
+            },
+            {
+              "name": "add_health_check",
+              "kind": "method",
+              "signature": "(self, check: HealthCheck) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 66
+              }
+            },
+            {
+              "name": "all_contributions",
+              "kind": "method",
+              "signature": "(self) -> Sequence[object]",
+              "summary": "Return a diagnostic snapshot without exposing mutation helpers.",
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 71
+              }
+            },
+            {
+              "name": "include_dialog",
+              "kind": "method",
+              "signature": "(self, dialog: Dialog) -> Dialog",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 42
+              }
+            },
+            {
+              "name": "include_router",
+              "kind": "method",
+              "signature": "(self, router: Router) -> Router",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 34
+              }
+            },
+            {
+              "name": "provide",
+              "kind": "method",
+              "signature": "(self, interface: ProviderKey[T], value: T) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/builder.py",
+                "line": 57
+              }
+            }
+          ]
+        },
+        {
+          "name": "PluginContext",
+          "qualified_name": "mattergram.plugins.PluginContext",
+          "kind": "class",
+          "signature": "(bot: Bot, dispatcher: Dispatcher, dialog_registry: DialogRegistry, command_manifest: CommandManifest, providers: Mapping[ProviderKey[Any], object], capabilities: frozenset[str]) -> None",
+          "summary": "Runtime objects available only to plugin lifecycle hooks.",
+          "source": {
+            "path": "src/mattergram/plugins/context.py",
+            "line": 30
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "provider",
+              "kind": "method",
+              "signature": "(self, key: ProviderKey[T]) -> T",
+              "summary": "Resolve a typed provider contributed during setup.",
+              "source": {
+                "path": "src/mattergram/plugins/context.py",
+                "line": 44
+              }
+            }
+          ]
+        },
+        {
+          "name": "PluginError",
+          "qualified_name": "mattergram.plugins.PluginError",
+          "kind": "class",
+          "signature": null,
+          "summary": "Base error for the application-plugin layer.",
+          "source": {
+            "path": "src/mattergram/plugins/exceptions.py",
+            "line": 6
+          },
+          "bases": [
+            "builtins.RuntimeError"
+          ]
+        },
+        {
+          "name": "PluginLifecycleError",
+          "qualified_name": "mattergram.plugins.PluginLifecycleError",
+          "kind": "class",
+          "signature": null,
+          "summary": "One or more plugin shutdown operations failed.",
+          "source": {
+            "path": "src/mattergram/plugins/exceptions.py",
+            "line": 18
+          },
+          "bases": [
+            "mattergram.plugins.exceptions.PluginError"
+          ]
+        },
+        {
+          "name": "PluginManager",
+          "qualified_name": "mattergram.plugins.PluginManager",
+          "kind": "class",
+          "signature": "(*, bot: Bot, dispatcher: Dispatcher, plugins: Sequence[MattergramPlugin], dialog_registry: DialogRegistry | None = None, capabilities: Iterable[str] = ()) -> None",
+          "summary": "Compose plugins over the existing Router, DialogRegistry and named DI.",
+          "source": {
+            "path": "src/mattergram/plugins/manager.py",
+            "line": 23
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "context",
+              "kind": "property",
+              "signature": "(self) -> PluginContext",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/manager.py",
+                "line": 50
+              }
+            },
+            {
+              "name": "ordered_plugin_ids",
+              "kind": "property",
+              "signature": "(self) -> tuple[str, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/plugins/manager.py",
+                "line": 56
+              }
+            },
+            {
+              "name": "setup",
+              "kind": "method",
+              "signature": "(self) -> PluginContext",
+              "summary": "Validate all declarations, then atomically attach their contributions.",
+              "source": {
+                "path": "src/mattergram/plugins/manager.py",
+                "line": 60
+              }
+            },
+            {
+              "name": "shutdown",
+              "kind": "async-method",
+              "signature": "(self) -> None",
+              "summary": "Stop completed plugins in reverse dependency order.",
+              "source": {
+                "path": "src/mattergram/plugins/manager.py",
+                "line": 123
+              }
+            },
+            {
+              "name": "startup",
+              "kind": "async-method",
+              "signature": "(self) -> None",
+              "summary": "Start in dependency order and roll back completed plugins on failure.",
+              "source": {
+                "path": "src/mattergram/plugins/manager.py",
+                "line": 99
+              }
+            }
+          ]
+        },
+        {
+          "name": "PluginManifest",
+          "qualified_name": "mattergram.plugins.PluginManifest",
+          "kind": "class",
+          "signature": "(id: str, version: str, requires: tuple[str, ...] = (), capabilities: tuple[str, ...] = ()) -> None",
+          "summary": "Stable plugin identity, dependency edges and required platform capabilities.",
+          "source": {
+            "path": "src/mattergram/plugins/api.py",
+            "line": 16
+          },
+          "bases": []
+        },
+        {
+          "name": "PluginValidationError",
+          "qualified_name": "mattergram.plugins.PluginValidationError",
+          "kind": "class",
+          "signature": null,
+          "summary": "The declared plugin graph or its contributions are invalid.",
+          "source": {
+            "path": "src/mattergram/plugins/exceptions.py",
+            "line": 10
+          },
+          "bases": [
+            "mattergram.plugins.exceptions.PluginError",
+            "builtins.ValueError"
+          ]
+        },
+        {
+          "name": "ProviderKey",
+          "qualified_name": "mattergram.plugins.ProviderKey",
+          "kind": "class",
+          "signature": "(name: str) -> None",
+          "summary": "Typed token whose name is also used by Mattergram's named handler DI.",
+          "source": {
+            "path": "src/mattergram/plugins/context.py",
+            "line": 19
+          },
+          "bases": [
+            "typing.Generic"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "mattergram.contrib.composer_keyboard",
+      "dependency": "core",
+      "exports": [
+        {
+          "name": "ComposerKeyboardPlugin",
+          "qualified_name": "mattergram.contrib.composer_keyboard.ComposerKeyboardPlugin",
+          "kind": "class",
+          "signature": "(*, targets: tuple[str, ...], keyboard: ComposerKeyboard) -> None",
+          "summary": "Install one complete keyboard in explicitly configured direct channels.",
+          "source": {
+            "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+            "line": 11
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "setup",
+              "kind": "method",
+              "signature": "(self, builder: PluginBuilder) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 40
+              }
+            },
+            {
+              "name": "shutdown",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 70
+              }
+            },
+            {
+              "name": "startup",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 43
+              }
+            }
+          ]
+        },
+        {
+          "name": "MENU_CAPABILITY",
+          "qualified_name": "mattergram.contrib.composer_keyboard.MENU_CAPABILITY",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/composer_keyboard/__init__.py",
+            "line": 1
+          }
+        }
+      ]
+    },
+    {
       "name": "mattergram.ui",
       "dependency": "core",
       "exports": [

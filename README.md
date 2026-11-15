@@ -42,6 +42,9 @@ Runtime, публичный API и воспроизводимая граница
 Постоянные Telegram-подобные клавиатуры над composer для Web/Desktop через server-backed plugin:
 [composer-keyboards.md](docs/composer-keyboards.md).
 
+Явная сборка переиспользуемых Python application plugins, dependency order, lifecycle rollback и
+optional keyboard adapter: [application-plugins.md](docs/application-plugins.md).
+
 Готовый декларативный каркас админки игровых аккаунтов — пользователи, push-маршруты, безопасный JSONL-импорт, карточки и проверки: [game-accounts-admin.md](docs/game-accounts-admin.md), пример — [game_accounts_admin.py](examples/game_accounts_admin.py).
 
 Начать с установки и первого post: [getting-started.md](docs/getting-started.md).

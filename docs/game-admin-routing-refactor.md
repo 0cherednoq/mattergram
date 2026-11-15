@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** запланировано, код ещё не изменён.  
+**Статус:** этапы 0–2 реализованы и contract-verified; этапы 3–8 остаются в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -482,6 +482,19 @@ Secrets нельзя читать обратно через администра
 
 ## Этапы реализации
 
+Фактический прогресс на 16 ноября 2026:
+
+- этап 0: добавлены contract tests manifests, dependency graph, lifecycle rollback, conflicts и
+  обязательных capabilities;
+- этап 1: `mattergram.plugins` реализует явный `PluginManager` поверх существующих
+  `Dispatcher`, `DialogRegistry`, command declarations и named DI;
+- этап 2: `mattergram.contrib.composer_keyboard.ComposerKeyboardPlugin` устанавливает целую
+  declaration только в проверенные direct channels, подтверждает read-back и восстанавливает
+  прежнее состояние при rollback/shutdown;
+- local Game Admin composition root использует новый keyboard plugin, но живой stand после этой
+  замены ещё не запускался;
+- следующий незавершённый этап — отдельный `AdminUsersPlugin`.
+
 ### Этап 0. Зафиксировать contracts
 
 До runtime-кода добавить contract tests для:
@@ -606,10 +619,10 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 
 ## Критерии готовности
 
-- [ ] Plugin contracts и lifecycle реализованы поверх существующих Router/Dispatcher/Registry.
-- [ ] Dependency cycles и registration conflicts отклоняются до startup side effects.
-- [ ] Partial startup корректно вызывает shutdown уже запущенных plugins.
-- [ ] `ComposerKeyboardPlugin` принимает целую declaration от composition root и выполняет один keyboard write.
+- [x] Plugin contracts и lifecycle реализованы поверх существующих Router/Dispatcher/Registry.
+- [x] Dependency cycles и registration conflicts отклоняются до startup side effects.
+- [x] Partial startup корректно вызывает shutdown уже запущенных plugins.
+- [x] `ComposerKeyboardPlugin` принимает целую declaration от composition root и выполняет один keyboard write на target.
 - [ ] `AdminUsersPlugin` работает без установленного keyboard при ручной отправке exact text.
 - [ ] Button ID не участвует в feature routing, handler получает только обычный `Message`.
 - [ ] `AdminUsersPlugin` подключается к новому боту без копирования Game Admin handlers.
@@ -626,7 +639,7 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 - [ ] Unit, integration, Ruff, strict mypy и documentation drift проходят.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
-- [ ] `STATUS.md` различает planned, implemented и live-verified состояние.
+- [x] `STATUS.md` различает planned, implemented и live-verified состояние.
 - [ ] Notifications, settings, S3, AI и dynamic discovery не выданы за реализованные plugins.
 
 ## Источники архитектурных решений

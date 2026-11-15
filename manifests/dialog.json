@@ -2221,7 +2221,7 @@
       "target": "src/mattergram_dialog/widgets/form.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "b84854d28c2d8cb8d1f97ca0933cc283cfc23d1f616d29608baae47e30d461a6"
+      "source_sha256": "9248f9da9bfc13737760750ff203cdb810b1532bd391e26ddcf778f29c68c996"
     },
     {
       "target": "src/mattergram_dialog/widgets/paged.py",

@@ -819,6 +819,110 @@ Dedicated credential and pool; never a runtime Bot or automatic reconciler.
 
 Only attached native slash handlers; never inspect posted message commands.
 
+## `mattergram.plugins`
+
+Dependency group: `core`.
+
+| Export | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `HealthCheck` | value | — | [src/mattergram/plugins/__init__.py](../../src/mattergram/plugins/__init__.py#L1) |
+| `MattergramPlugin` | class | `(*args, **kwargs)` | [src/mattergram/plugins/api.py](../../src/mattergram/plugins/api.py#L43) |
+| `MissingPluginCapabilityError` | class | — | [src/mattergram/plugins/exceptions.py](../../src/mattergram/plugins/exceptions.py#L14) |
+| `PluginBuilder` | class | `(plugin_id: str) -> None` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L23) |
+| `PluginContext` | class | `(bot: Bot, dispatcher: Dispatcher, dialog_registry: DialogRegistry, command_manifest: CommandManifest, providers: Mapping[ProviderKey[Any], object], capabilities: frozenset[str]) -> None` | [src/mattergram/plugins/context.py](../../src/mattergram/plugins/context.py#L30) |
+| `PluginError` | class | — | [src/mattergram/plugins/exceptions.py](../../src/mattergram/plugins/exceptions.py#L6) |
+| `PluginLifecycleError` | class | — | [src/mattergram/plugins/exceptions.py](../../src/mattergram/plugins/exceptions.py#L18) |
+| `PluginManager` | class | `(*, bot: Bot, dispatcher: Dispatcher, plugins: Sequence[MattergramPlugin], dialog_registry: DialogRegistry \| None = None, capabilities: Iterable[str] = ()) -> None` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L23) |
+| `PluginManifest` | class | `(id: str, version: str, requires: tuple[str, ...] = (), capabilities: tuple[str, ...] = ()) -> None` | [src/mattergram/plugins/api.py](../../src/mattergram/plugins/api.py#L16) |
+| `PluginValidationError` | class | — | [src/mattergram/plugins/exceptions.py](../../src/mattergram/plugins/exceptions.py#L10) |
+| `ProviderKey` | class | `(name: str) -> None` | [src/mattergram/plugins/context.py](../../src/mattergram/plugins/context.py#L19) |
+
+### `MattergramPlugin`
+
+One explicitly configured reusable application module.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/plugins/api.py](../../src/mattergram/plugins/api.py#L48) |
+| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/plugins/api.py](../../src/mattergram/plugins/api.py#L54) |
+| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/plugins/api.py](../../src/mattergram/plugins/api.py#L51) |
+
+### `MissingPluginCapabilityError`
+
+A plugin requires a Mattermost capability not declared by the application.
+
+### `PluginBuilder`
+
+Restricted registration surface passed to ``MattergramPlugin.setup``.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `add_commands` | method | `(self, *specs: CommandSpec) -> None` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L50) |
+| `add_health_check` | method | `(self, check: HealthCheck) -> None` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L66) |
+| `all_contributions` | method | `(self) -> Sequence[object]` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L71) |
+| `include_dialog` | method | `(self, dialog: Dialog) -> Dialog` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L42) |
+| `include_router` | method | `(self, router: Router) -> Router` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L34) |
+| `provide` | method | `(self, interface: ProviderKey[T], value: T) -> None` | [src/mattergram/plugins/builder.py](../../src/mattergram/plugins/builder.py#L57) |
+
+### `PluginContext`
+
+Runtime objects available only to plugin lifecycle hooks.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `provider` | method | `(self, key: ProviderKey[T]) -> T` | [src/mattergram/plugins/context.py](../../src/mattergram/plugins/context.py#L44) |
+
+### `PluginError`
+
+Base error for the application-plugin layer.
+
+### `PluginLifecycleError`
+
+One or more plugin shutdown operations failed.
+
+### `PluginManager`
+
+Compose plugins over the existing Router, DialogRegistry and named DI.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `context` | property | `(self) -> PluginContext` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L50) |
+| `ordered_plugin_ids` | property | `(self) -> tuple[str, ...]` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L56) |
+| `setup` | method | `(self) -> PluginContext` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L60) |
+| `shutdown` | async-method | `(self) -> None` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L123) |
+| `startup` | async-method | `(self) -> None` | [src/mattergram/plugins/manager.py](../../src/mattergram/plugins/manager.py#L99) |
+
+### `PluginManifest`
+
+Stable plugin identity, dependency edges and required platform capabilities.
+
+### `PluginValidationError`
+
+The declared plugin graph or its contributions are invalid.
+
+### `ProviderKey`
+
+Typed token whose name is also used by Mattergram's named handler DI.
+
+## `mattergram.contrib.composer_keyboard`
+
+Dependency group: `core`.
+
+| Export | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `ComposerKeyboardPlugin` | class | `(*, targets: tuple[str, ...], keyboard: ComposerKeyboard) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L11) |
+| `MENU_CAPABILITY` | value | — | [src/mattergram/contrib/composer_keyboard/__init__.py](../../src/mattergram/contrib/composer_keyboard/__init__.py#L1) |
+
+### `ComposerKeyboardPlugin`
+
+Install one complete keyboard in explicitly configured direct channels.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L40) |
+| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L70) |
+| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L43) |
+
 ## `mattergram.ui`
 
 Dependency group: `core`.

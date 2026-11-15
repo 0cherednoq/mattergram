@@ -41,6 +41,7 @@ Use only imports present in docs/reference/public-api.json. Treat capability and
 - [Проектирование интерфейсов mattergram_dialog](docs/dialog-ui-design.md): Выбрать структуру карточки, строки кнопок, пагинацию, таблицу и поля формы по UX-бюджету сценария.
 - [Админка игровых аккаунтов](docs/game-accounts-admin.md): Подключить декларативное управление пользователями, push-маршрутами, импортом и проверками игровых аккаунтов без вывода секретов.
 - [Plugin architecture и рефакторинг Game Admin](docs/game-admin-routing-refactor.md): Добавить минимальный Python plugin lifecycle и первый reusable AdminUsersPlugin, сохранив keyboard как независимый необязательный UI adapter обычных текстовых сообщений.
+- [Application plugins Mattergram](docs/application-plugins.md): Собрать явный набор Python plugins, проверить dependency graph и contributions и подключить optional composer keyboard lifecycle без нового routing engine.
 - [Постоянные клавиатуры Mattermost](docs/composer-keyboards.md): Описать plugin-backed composer keyboard, собрать, подписать, установить и проверить plugin или отдельный Mattermost image.
 
 ## Important boundaries

@@ -34,9 +34,11 @@ from game_accounts_admin import (
 from pydantic import SecretStr
 
 from mattergram import Bot, Dispatcher
+from mattergram.contrib.composer_keyboard import MENU_CAPABILITY, ComposerKeyboardPlugin
 from mattergram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 from mattergram.http import CallbackSigner, HttpAdapter, SlashBinding
 from mattergram.http import DialogManager as NativeDialogManager
+from mattergram.plugins import PluginManager
 from mattergram.ui import UIProfile
 from mattergram.ui.capabilities import SERVER_FEATURES
 from mattergram_dialog import DialogRegistry, DialogRuntime, DialogStorage, setup_dialogs
@@ -298,13 +300,20 @@ async def run(args: argparse.Namespace) -> None:
         if public_keyboard is not None:
             await bot.delete_composer_keyboard(stand.channel_id)
         direct_channel = await bot.create_direct_channel(stand.admin_id)
-        keyboard = await bot.set_composer_keyboard(direct_channel.id, build_admin_keyboard())
-        logger.info(
-            "Installed game-admin keyboard revision %s in bot DM %s",
-            keyboard.revision,
-            keyboard.channel_id,
-        )
         registry = DialogRegistry(build_admin_dialog(service))
+        plugin_manager = PluginManager(
+            bot=bot,
+            dispatcher=dispatcher,
+            dialog_registry=registry,
+            plugins=(
+                ComposerKeyboardPlugin(
+                    targets=(direct_channel.id,),
+                    keyboard=build_admin_keyboard(),
+                ),
+            ),
+            capabilities=(MENU_CAPABILITY,),
+        )
+        plugin_manager.setup()
         runtime = DialogRuntime(
             bot,
             dialog_storage,

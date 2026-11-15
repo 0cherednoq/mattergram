@@ -12,6 +12,8 @@
     {"name": "mattergram.http", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.native", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.provisioning", "exports": "__all__", "dependency": "provisioning"},
+    {"name": "mattergram.plugins", "exports": "__all__", "dependency": "core"},
+    {"name": "mattergram.contrib.composer_keyboard", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.ui", "exports": "__all__", "dependency": "core"},
     {
       "name": "mattergram.ui.actions",
@@ -62,6 +64,7 @@
     {"path": "docs/dialog-ui-design.md", "title": "Проектирование интерфейсов mattergram_dialog", "audience": "implementer", "type": "how-to", "summary": "Выбрать структуру карточки, строки кнопок, пагинацию, таблицу и поля формы по UX-бюджету сценария.", "topics": ["dialog", "ux", "layout", "tables", "pagination", "forms", "websocket"]},
     {"path": "docs/game-accounts-admin.md", "title": "Админка игровых аккаунтов", "audience": "implementer", "type": "how-to", "summary": "Подключить декларативное управление пользователями, push-маршрутами, импортом и проверками игровых аккаунтов без вывода секретов.", "topics": ["dialog", "admin", "accounts", "imports", "security", "forms", "pagination"]},
     {"path": "docs/game-admin-routing-refactor.md", "title": "Plugin architecture и рефакторинг Game Admin", "audience": "maintainer", "type": "explanation", "summary": "Добавить минимальный Python plugin lifecycle и первый reusable AdminUsersPlugin, сохранив keyboard как независимый необязательный UI adapter обычных текстовых сообщений.", "topics": ["plugins", "admin-users", "keyboard", "dialog", "routing", "callbacks", "architecture", "progress", "maintenance"]},
+    {"path": "docs/application-plugins.md", "title": "Application plugins Mattergram", "audience": "implementer", "type": "how-to", "summary": "Собрать явный набор Python plugins, проверить dependency graph и contributions и подключить optional composer keyboard lifecycle без нового routing engine.", "topics": ["plugins", "routing", "dialog", "dependency-injection", "lifecycle", "keyboard"]},
     {"path": "docs/composer-keyboards.md", "title": "Постоянные клавиатуры Mattermost", "audience": "operator", "type": "how-to", "summary": "Описать plugin-backed composer keyboard, собрать, подписать, установить и проверить plugin или отдельный Mattermost image.", "topics": ["plugin", "keyboard", "composer", "deployment", "signing", "docker", "websocket"]}
   ],
   "examples": [
