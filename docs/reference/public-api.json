@@ -4063,6 +4063,648 @@
       ]
     },
     {
+      "name": "mattergram.contrib.admin_users",
+      "dependency": "core",
+      "exports": [
+        {
+          "name": "ADMIN_USERS_RUNTIME",
+          "qualified_name": "mattergram.contrib.admin_users.ADMIN_USERS_RUNTIME",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "ADMIN_USERS_SERVICE",
+          "qualified_name": "mattergram.contrib.admin_users.ADMIN_USERS_SERVICE",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "ASSIGN_ROLES",
+          "qualified_name": "mattergram.contrib.admin_users.ASSIGN_ROLES",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "AdminUser",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUser",
+          "kind": "class",
+          "signature": "(id: str, mattermost_user_id: str, username: str, role: str, enabled: bool = True) -> None",
+          "summary": "AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'str', enabled: 'bool' = True)",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/models.py",
+            "line": 47
+          },
+          "bases": []
+        },
+        {
+          "name": "AdminUserRepository",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUserRepository",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/repository.py",
+            "line": 12
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "get_by_mattermost_user_id",
+              "kind": "async-method",
+              "signature": "(self, mattermost_user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 17
+              }
+            },
+            {
+              "name": "get_user",
+              "kind": "async-method",
+              "signature": "(self, user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 15
+              }
+            },
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> Sequence[AdminUser]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 13
+              }
+            },
+            {
+              "name": "save_user",
+              "kind": "async-method",
+              "signature": "(self, user: AdminUser) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 19
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUsersActions",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersActions",
+          "kind": "class",
+          "signature": "(service: AdminUsersService) -> None",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/actions.py",
+            "line": 11
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "add",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/actions.py",
+                "line": 15
+              }
+            },
+            {
+              "name": "edit",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/actions.py",
+                "line": 29
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUsersGetters",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersGetters",
+          "kind": "class",
+          "signature": "(service: AdminUsersService) -> None",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/getters.py",
+            "line": 15
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "available_user_options",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/getters.py",
+                "line": 48
+              }
+            },
+            {
+              "name": "selected_user",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/getters.py",
+                "line": 57
+              }
+            },
+            {
+              "name": "users",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/getters.py",
+                "line": 19
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUsersInputError",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersInputError",
+          "kind": "class",
+          "signature": "(field_errors: Mapping[str, str]) -> None",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/service.py",
+            "line": 25
+          },
+          "bases": [
+            "builtins.ValueError"
+          ]
+        },
+        {
+          "name": "AdminUsersPanel",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersPanel",
+          "kind": "class",
+          "signature": "()",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/states.py",
+            "line": 4
+          },
+          "bases": [
+            "mattergram.fsm.state.StatesGroup"
+          ]
+        },
+        {
+          "name": "AdminUsersPlugin",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersPlugin",
+          "kind": "class",
+          "signature": "(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] | None = None, permissions: Sequence[PermissionSpec] | None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink | None = None) -> None",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/plugin.py",
+            "line": 23
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "setup",
+              "kind": "method",
+              "signature": "(self, builder: PluginBuilder) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/plugin.py",
+                "line": 59
+              }
+            },
+            {
+              "name": "shutdown",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/plugin.py",
+                "line": 72
+              }
+            },
+            {
+              "name": "startup",
+              "kind": "async-method",
+              "signature": "(self, context: PluginContext) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/plugin.py",
+                "line": 64
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUsersRuntime",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersRuntime",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/router.py",
+            "line": 16
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "respond",
+              "kind": "async-method",
+              "signature": "(self, event: Message, state: object, data: object = None) -> DialogRef",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/router.py",
+                "line": 27
+              }
+            },
+            {
+              "name": "start",
+              "kind": "async-method",
+              "signature": "(self, event: SlashCommand, state: object, data: object = None, *, mode: StartMode = <StartMode.NORMAL: 'NORMAL'>) -> DialogRef | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/router.py",
+                "line": 18
+              }
+            }
+          ]
+        },
+        {
+          "name": "AdminUsersService",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUsersService",
+          "kind": "class",
+          "signature": "(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink | None = None) -> None",
+          "summary": "Apply app permissions, team membership and the last-admin invariant.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/service.py",
+            "line": 36
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "add_user",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, *, mattermost_user_id: str, role: str, enabled: bool) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 157
+              }
+            },
+            {
+              "name": "bootstrap",
+              "kind": "async-method",
+              "signature": "(self) -> None",
+              "summary": "Idempotently ensure only explicitly configured initial administrators.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 79
+              }
+            },
+            {
+              "name": "get_user",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, user_id: str) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 136
+              }
+            },
+            {
+              "name": "list_available_team_users",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> tuple[TeamUser, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 145
+              }
+            },
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> tuple[AdminUser, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 124
+              }
+            },
+            {
+              "name": "permissions_for",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> frozenset[str]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 106
+              }
+            },
+            {
+              "name": "require_permission",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, permission: str) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 113
+              }
+            },
+            {
+              "name": "role",
+              "kind": "method",
+              "signature": "(self, role_id: str) -> RoleSpec",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 228
+              }
+            },
+            {
+              "name": "update_user",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, user_id: str, *, role: str, enabled: bool) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 191
+              }
+            }
+          ]
+        },
+        {
+          "name": "AuditRecord",
+          "qualified_name": "mattergram.contrib.admin_users.AuditRecord",
+          "kind": "class",
+          "signature": "(created_at: str, actor_id: str, action: str, target_user_id: str, details: tuple[tuple[str, str], ...] = ()) -> None",
+          "summary": "AuditRecord(created_at: 'str', actor_id: 'str', action: 'str', target_user_id: 'str', details: 'tuple[tuple[str, str], ...]' = ())",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/models.py",
+            "line": 90
+          },
+          "bases": []
+        },
+        {
+          "name": "AuditSink",
+          "qualified_name": "mattergram.contrib.admin_users.AuditSink",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/repository.py",
+            "line": 22
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "write",
+              "kind": "async-method",
+              "signature": "(self, record: AuditRecord) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 23
+              }
+            }
+          ]
+        },
+        {
+          "name": "DEFAULT_PERMISSIONS",
+          "qualified_name": "mattergram.contrib.admin_users.DEFAULT_PERMISSIONS",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "DEFAULT_ROLES",
+          "qualified_name": "mattergram.contrib.admin_users.DEFAULT_ROLES",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "MANAGE_USERS",
+          "qualified_name": "mattergram.contrib.admin_users.MANAGE_USERS",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "MattermostTeamDirectory",
+          "qualified_name": "mattergram.contrib.admin_users.MattermostTeamDirectory",
+          "kind": "class",
+          "signature": "(bot: Bot, *, team_id: str) -> None",
+          "summary": "Read active team members with the ordinary runtime bot token.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/directory.py",
+            "line": 17
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> tuple[TeamUser, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/directory.py",
+                "line": 26
+              }
+            }
+          ]
+        },
+        {
+          "name": "MemoryAdminUserRepository",
+          "qualified_name": "mattergram.contrib.admin_users.MemoryAdminUserRepository",
+          "kind": "class",
+          "signature": "(*, users: Sequence[AdminUser] = ()) -> None",
+          "summary": "Process-local repository for tests and local demos, never durable storage.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/repository.py",
+            "line": 26
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "get_by_mattermost_user_id",
+              "kind": "async-method",
+              "signature": "(self, mattermost_user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 45
+              }
+            },
+            {
+              "name": "get_user",
+              "kind": "async-method",
+              "signature": "(self, user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 41
+              }
+            },
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> tuple[AdminUser, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 37
+              }
+            },
+            {
+              "name": "save_user",
+              "kind": "async-method",
+              "signature": "(self, user: AdminUser) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/repository.py",
+                "line": 52
+              }
+            }
+          ]
+        },
+        {
+          "name": "PermissionSpec",
+          "qualified_name": "mattergram.contrib.admin_users.PermissionSpec",
+          "kind": "class",
+          "signature": "(id: str, title: str) -> None",
+          "summary": "PermissionSpec(id: 'str', title: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/models.py",
+            "line": 15
+          },
+          "bases": []
+        },
+        {
+          "name": "RoleSpec",
+          "qualified_name": "mattergram.contrib.admin_users.RoleSpec",
+          "kind": "class",
+          "signature": "(id: str, title: str, permissions: frozenset[str] = frozenset(), protects_last_member: bool = False) -> None",
+          "summary": "RoleSpec(id: 'str', title: 'str', permissions: 'frozenset[str]' = frozenset(), protects_last_member: 'bool' = False)",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/models.py",
+            "line": 27
+          },
+          "bases": []
+        },
+        {
+          "name": "TeamUser",
+          "qualified_name": "mattergram.contrib.admin_users.TeamUser",
+          "kind": "class",
+          "signature": "(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None",
+          "summary": "One active Mattermost account returned by the configured team directory.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/models.py",
+            "line": 65
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "option_label",
+              "kind": "property",
+              "signature": "(self) -> str",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/models.py",
+                "line": 80
+              }
+            }
+          ]
+        },
+        {
+          "name": "TeamUserDirectory",
+          "qualified_name": "mattergram.contrib.admin_users.TeamUserDirectory",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/directory.py",
+            "line": 13
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> Sequence[TeamUser]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/directory.py",
+                "line": 14
+              }
+            }
+          ]
+        },
+        {
+          "name": "VIEW_USERS",
+          "qualified_name": "mattergram.contrib.admin_users.VIEW_USERS",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "build_admin_users_dialog",
+          "qualified_name": "mattergram.contrib.admin_users.build_admin_users_dialog",
+          "kind": "function",
+          "signature": "(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...]) -> Dialog",
+          "summary": "Build one reusable users dialog without embedding service implementation.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/dialog.py",
+            "line": 48
+          }
+        }
+      ]
+    },
+    {
       "name": "mattergram.contrib.composer_keyboard",
       "dependency": "core",
       "exports": [

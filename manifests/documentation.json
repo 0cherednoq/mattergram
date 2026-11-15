@@ -13,6 +13,7 @@
     {"name": "mattergram.native", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.provisioning", "exports": "__all__", "dependency": "provisioning"},
     {"name": "mattergram.plugins", "exports": "__all__", "dependency": "core"},
+    {"name": "mattergram.contrib.admin_users", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.contrib.composer_keyboard", "exports": "__all__", "dependency": "core"},
     {"name": "mattergram.ui", "exports": "__all__", "dependency": "core"},
     {

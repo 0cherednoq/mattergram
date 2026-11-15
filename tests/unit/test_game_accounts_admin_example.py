@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from examples.game_accounts_admin import (
+    GAME_ADMIN_KEYBOARD_ROUTES,
     AdminInputError,
     AdminPanel,
     AdminUser,
@@ -281,6 +282,7 @@ async def test_admin_dialog_click_budget_rows_and_masked_account_card() -> None:
             assert [handler.callback.__name__ for handler in game_admin_router.message.handlers] == [
                 "respond_to_game_admin_keyboard"
             ]
+            assert "Пользователи" not in GAME_ADMIN_KEYBOARD_ROUTES
 
             await manager.switch_to(AdminPanel.accounts)
             accounts = renderer.calls[-1][0]

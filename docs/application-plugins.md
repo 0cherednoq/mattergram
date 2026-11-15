@@ -109,13 +109,15 @@ keyboard = ComposerKeyboardPlugin(
     targets=(ADMIN_BOT_DM_CHANNEL_ID,),
     keyboard=ComposerKeyboard(
         title="Администрирование",
-        rows=((
-            ComposerButton(
-                id="adminUsers",
-                text="Пользователи",
-                message=OPEN_USERS_TEXT,
+        rows=(
+            (
+                ComposerButton(
+                    id="adminUsers",
+                    text="Пользователи",
+                    message=OPEN_USERS_TEXT,
+                ),
             ),
-        ),),
+        ),
     ),
 )
 
@@ -138,11 +140,65 @@ Keyboard adapter не регистрирует handlers и не интерпре
 user post. Feature router должен независимо обработать точный текст и снова проверить права actor;
 ручной ввод того же текста обязан работать без keyboard plugin.
 
+## Подключить AdminUsersPlugin
+
+`AdminUsersPlugin` управляет только app-scoped ролями. Он не создаёт Mattermost accounts, не меняет
+system/team roles и работает с ordinary runtime bot token:
+
+```python
+from mattergram.contrib.admin_users import (
+    ADMIN_USERS_RUNTIME,
+    AdminUsersPlugin,
+    MattermostTeamDirectory,
+)
+
+admin_users = AdminUsersPlugin(
+    repository=PostgresAdminUserRepository(pool),
+    directory=MattermostTeamDirectory(bot, team_id=TEAM_ID),
+    initial_admin_ids=(OWNER_USER_ID,),
+    command="app-users",
+    messages=(OPEN_USERS_TEXT,),
+)
+
+plugins = PluginManager(
+    bot=bot,
+    dispatcher=dispatcher,
+    dialog_registry=registry,
+    plugins=(admin_users,),
+)
+plugins.setup()
+
+runtime = DialogRuntime(bot, dialog_storage, registry, ...)
+dispatcher.workflow_data[ADMIN_USERS_RUNTIME.name] = runtime
+setup_dialogs(dispatcher, runtime)
+```
+
+Registry заполняется во время `plugins.setup()`, поэтому общий `DialogRuntime` создаётся после setup,
+но до `dispatcher.start()`. Runtime binding проверяется в plugin startup; отсутствие binding не
+оставляет частично работающий router.
+
+Входы `/app-users` и точный текст `Пользователи` используют один service. Текст принимается только
+в direct channel и создаёт новый bot-post через `DialogRuntime.respond`; slash entry также создаёт
+новый dialog post. Inline-фильтр, pager, выбор записи и формы обновляют только принадлежащий им post.
+Ручной текст работает без `ComposerKeyboardPlugin`.
+
+`AdminUserRepository` — async protocol. В core входит только `MemoryAdminUserRepository` для tests и
+локальных demos; production приложение предоставляет durable реализацию и должно сериализовать
+конкурирующие user writes транзакцией. `MattermostTeamDirectory` каждый раз читает active team
+members runtime bot token'ом. Выбранный Mattermost ID повторно проверяется при submit, username
+берётся из актуального directory, bot accounts отклоняются.
+
+Roles и permissions передаются декларативно через `RoleSpec`/`PermissionSpec`. Service независимо
+проверяет `admin_users.view`, `admin_users.manage`, `admin_users.assign_roles`, запрещает неизвестные
+roles/permissions и не позволяет отключить или понизить последнего enabled member защищённой роли.
+Initial administrators всегда задаются точными Mattermost user IDs; пустой repository, username
+`admin` и Mattermost system-admin role не дают неявных прав.
+
 ## Текущие границы
 
 - Plugins перечисляются явно; Python entry-point discovery, hot reload и runtime install отсутствуют.
 - Mattermost server/webapp bundle устанавливает system administrator отдельно от bot runtime.
-- `AdminUsersPlugin`, settings, notifications, jobs, S3 и AI plugins ещё не входят в реализованный API.
+- Settings, notifications, jobs, S3 и AI plugins ещё не входят в реализованный API.
 - Наличие кнопки не является авторизацией.
 - Production code не должен хранить secrets в provider values, render data или health errors.
 

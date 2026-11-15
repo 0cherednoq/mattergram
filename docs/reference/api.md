@@ -904,6 +904,152 @@ The declared plugin graph or its contributions are invalid.
 
 Typed token whose name is also used by Mattergram's named handler DI.
 
+## `mattergram.contrib.admin_users`
+
+Dependency group: `core`.
+
+| Export | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `ADMIN_USERS_RUNTIME` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `ADMIN_USERS_SERVICE` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `ASSIGN_ROLES` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `AdminUser` | class | `(id: str, mattermost_user_id: str, username: str, role: str, enabled: bool = True) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L47) |
+| `AdminUserRepository` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L12) |
+| `AdminUsersActions` | class | `(service: AdminUsersService) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L11) |
+| `AdminUsersGetters` | class | `(service: AdminUsersService) -> None` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L15) |
+| `AdminUsersInputError` | class | `(field_errors: Mapping[str, str]) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L25) |
+| `AdminUsersPanel` | class | `()` | [src/mattergram/contrib/admin_users/states.py](../../src/mattergram/contrib/admin_users/states.py#L4) |
+| `AdminUsersPlugin` | class | `(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] \| None = None, permissions: Sequence[PermissionSpec] \| None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink \| None = None) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L23) |
+| `AdminUsersRuntime` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L16) |
+| `AdminUsersService` | class | `(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink \| None = None) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L36) |
+| `AuditRecord` | class | `(created_at: str, actor_id: str, action: str, target_user_id: str, details: tuple[tuple[str, str], ...] = ()) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L90) |
+| `AuditSink` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L22) |
+| `DEFAULT_PERMISSIONS` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `DEFAULT_ROLES` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `MANAGE_USERS` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `MattermostTeamDirectory` | class | `(bot: Bot, *, team_id: str) -> None` | [src/mattergram/contrib/admin_users/directory.py](../../src/mattergram/contrib/admin_users/directory.py#L17) |
+| `MemoryAdminUserRepository` | class | `(*, users: Sequence[AdminUser] = ()) -> None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L26) |
+| `PermissionSpec` | class | `(id: str, title: str) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L15) |
+| `RoleSpec` | class | `(id: str, title: str, permissions: frozenset[str] = frozenset(), protects_last_member: bool = False) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L27) |
+| `TeamUser` | class | `(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L65) |
+| `TeamUserDirectory` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/directory.py](../../src/mattergram/contrib/admin_users/directory.py#L13) |
+| `VIEW_USERS` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
+| `build_admin_users_dialog` | function | `(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...]) -> Dialog` | [src/mattergram/contrib/admin_users/dialog.py](../../src/mattergram/contrib/admin_users/dialog.py#L48) |
+
+### `AdminUser`
+
+AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'str', enabled: 'bool' = True)
+
+### `AdminUserRepository`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `get_by_mattermost_user_id` | async-method | `(self, mattermost_user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L17) |
+| `get_user` | async-method | `(self, user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L15) |
+| `list_users` | async-method | `(self) -> Sequence[AdminUser]` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L13) |
+| `save_user` | async-method | `(self, user: AdminUser) -> None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L19) |
+
+### `AdminUsersActions`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `add` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L15) |
+| `edit` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L29) |
+
+### `AdminUsersGetters`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `available_user_options` | async-method | `(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L48) |
+| `selected_user` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L57) |
+| `users` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L19) |
+
+### `AdminUsersPlugin`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L59) |
+| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L72) |
+| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L64) |
+
+### `AdminUsersRuntime`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `respond` | async-method | `(self, event: Message, state: object, data: object = None) -> DialogRef` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L27) |
+| `start` | async-method | `(self, event: SlashCommand, state: object, data: object = None, *, mode: StartMode = <StartMode.NORMAL: 'NORMAL'>) -> DialogRef \| None` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L18) |
+
+### `AdminUsersService`
+
+Apply app permissions, team membership and the last-admin invariant.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L157) |
+| `bootstrap` | async-method | `(self) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L79) |
+| `get_user` | async-method | `(self, actor_id: str, user_id: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L136) |
+| `list_available_team_users` | async-method | `(self, actor_id: str) -> tuple[TeamUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L145) |
+| `list_users` | async-method | `(self, actor_id: str) -> tuple[AdminUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L124) |
+| `permissions_for` | async-method | `(self, actor_id: str) -> frozenset[str]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L106) |
+| `require_permission` | async-method | `(self, actor_id: str, permission: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L113) |
+| `role` | method | `(self, role_id: str) -> RoleSpec` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L228) |
+| `update_user` | async-method | `(self, actor_id: str, user_id: str, *, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L191) |
+
+### `AuditRecord`
+
+AuditRecord(created_at: 'str', actor_id: 'str', action: 'str', target_user_id: 'str', details: 'tuple[tuple[str, str], ...]' = ())
+
+### `AuditSink`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `write` | async-method | `(self, record: AuditRecord) -> None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L23) |
+
+### `MattermostTeamDirectory`
+
+Read active team members with the ordinary runtime bot token.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `list_users` | async-method | `(self) -> tuple[TeamUser, ...]` | [src/mattergram/contrib/admin_users/directory.py](../../src/mattergram/contrib/admin_users/directory.py#L26) |
+
+### `MemoryAdminUserRepository`
+
+Process-local repository for tests and local demos, never durable storage.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `get_by_mattermost_user_id` | async-method | `(self, mattermost_user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L45) |
+| `get_user` | async-method | `(self, user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L41) |
+| `list_users` | async-method | `(self) -> tuple[AdminUser, ...]` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L37) |
+| `save_user` | async-method | `(self, user: AdminUser) -> None` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L52) |
+
+### `PermissionSpec`
+
+PermissionSpec(id: 'str', title: 'str')
+
+### `RoleSpec`
+
+RoleSpec(id: 'str', title: 'str', permissions: 'frozenset[str]' = frozenset(), protects_last_member: 'bool' = False)
+
+### `TeamUser`
+
+One active Mattermost account returned by the configured team directory.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `option_label` | property | `(self) -> str` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L80) |
+
+### `TeamUserDirectory`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `list_users` | async-method | `(self) -> Sequence[TeamUser]` | [src/mattergram/contrib/admin_users/directory.py](../../src/mattergram/contrib/admin_users/directory.py#L14) |
+
+### `build_admin_users_dialog`
+
+Build one reusable users dialog without embedding service implementation.
+
 ## `mattergram.contrib.composer_keyboard`
 
 Dependency group: `core`.

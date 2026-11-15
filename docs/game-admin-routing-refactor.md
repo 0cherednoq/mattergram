@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–2 реализованы и contract-verified; этапы 3–8 остаются в работе.
+**Статус:** этапы 0–3 реализованы и contract-verified; этапы 4–8 остаются в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -493,7 +493,11 @@ Secrets нельзя читать обратно через администра
   прежнее состояние при rollback/shutdown;
 - local Game Admin composition root использует новый keyboard plugin, но живой stand после этой
   замены ещё не запускался;
-- следующий незавершённый этап — отдельный `AdminUsersPlugin`.
+- этап 3: `mattergram.contrib.admin_users.AdminUsersPlugin` реализует app-scoped roles/permissions,
+  repository/directory protocols, explicit initial admins, last-admin invariant, list/add/edit dialog,
+  slash и exact-DM-text entry без импорта keyboard API. Game Admin подключает plugin через временные
+  adapters к общей in-memory repository;
+- следующий незавершённый этап — короткая manager-only сигнатура `Button` callback.
 
 ### Этап 0. Зафиксировать contracts
 
@@ -623,24 +627,25 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 - [x] Dependency cycles и registration conflicts отклоняются до startup side effects.
 - [x] Partial startup корректно вызывает shutdown уже запущенных plugins.
 - [x] `ComposerKeyboardPlugin` принимает целую declaration от composition root и выполняет один keyboard write на target.
-- [ ] `AdminUsersPlugin` работает без установленного keyboard при ручной отправке exact text.
-- [ ] Button ID не участвует в feature routing, handler получает только обычный `Message`.
-- [ ] `AdminUsersPlugin` подключается к новому боту без копирования Game Admin handlers.
-- [ ] Roles и permissions являются явными app-scoped declarations.
-- [ ] Последний enabled administrator защищён service-level invariant.
-- [ ] Team membership повторно проверяется на submit обычным runtime bot token.
+- [x] `AdminUsersPlugin` работает без установленного keyboard при ручной отправке exact text.
+- [x] Button ID не участвует в feature routing, handler получает только обычный `Message`.
+- [x] `AdminUsersPlugin` подключается к новому боту без копирования Game Admin handlers.
+- [x] Roles и permissions являются явными app-scoped declarations.
+- [x] Последний enabled administrator защищён service-level invariant.
+- [x] Team membership повторно проверяется на submit обычным runtime bot token.
+- [x] `AdminUsersPlugin` не импортирует composer keyboard API и не получает button callback.
 - [ ] `Button` принимает manager-only и полную callback-сигнатуры.
 - [ ] Неподдерживаемые сигнатуры отклоняются при создании widget.
 - [ ] В Game Admin нет `del event, button` для `Button` callbacks.
 - [ ] Статическая навигация выражена widgets, а не ручными manager calls.
 - [ ] `build_admin_dialog` содержит декларацию, но не service implementation.
 - [ ] Getters и actions тестируются отдельно без запуска HTTP ingress.
-- [ ] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
-- [ ] Unit, integration, Ruff, strict mypy и documentation drift проходят.
+- [x] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
+- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–3.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
 - [x] `STATUS.md` различает planned, implemented и live-verified состояние.
-- [ ] Notifications, settings, S3, AI и dynamic discovery не выданы за реализованные plugins.
+- [x] Notifications, settings, S3, AI и dynamic discovery не выданы за реализованные plugins.
 
 ## Источники архитектурных решений
 

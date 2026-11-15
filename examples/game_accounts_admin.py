@@ -729,7 +729,6 @@ GAME_ADMIN_KEYBOARD_ROUTES: dict[str, State] = {
     "Обзор": AdminPanel.home,
     "Аккаунты": AdminPanel.accounts,
     "Импорт": AdminPanel.import_menu,
-    "Пользователи": AdminPanel.users,
     "Push-настройки": AdminPanel.pushes,
     "История импортов": AdminPanel.import_history,
     "История проверок": AdminPanel.check_history,

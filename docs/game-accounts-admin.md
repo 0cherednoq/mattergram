@@ -1,8 +1,14 @@
 # Админка игровых аккаунтов
 
+Управление app-scoped пользователями вынесено в reusable
+`mattergram.contrib.admin_users.AdminUsersPlugin`. Local demo временно делит прежнюю in-memory
+repository через compatibility adapter; accounts, imports, checks и push rules остаются в
+`examples/game_accounts_admin.py`. Composer keyboard только отправляет точный текст
+`Пользователи` и не является зависимостью или источником авторизации users plugin.
+
 [`examples/game_accounts_admin.py`](../examples/game_accounts_admin.py) — декларативный каркас админки с Telegram-подобной reply-клавиатурой. Каждая глобальная команда создаёт новый bot-post; локальные inline-действия редактируют только post своего экрана. Пример покрывает пользователей, push-маршруты, импорт игровых аккаунтов, проверки и обе истории. Реальные хранилище, чтение файла, checker и доставка уведомлений намеренно передаются снаружи.
 
-Для локальной проверки на owned Mattermost 12.0.2 используйте [`examples/game_accounts_admin_bot.py`](../examples/game_accounts_admin_bot.py). Runner заменяет только `/game-admin` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
+Для локальной проверки на owned Mattermost 12.0.2 используйте [`examples/game_accounts_admin_bot.py`](../examples/game_accounts_admin_bot.py). Runner заменяет только `/game-admin` и `/app-users` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
 
 ## Карта интерфейса
 

@@ -407,3 +407,33 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   repository/directory protocols, service-level authorization и last-admin invariant, не добавляя
   зависимости от composer keyboard.
 
+## AdminUsersPlugin — этап 3 реализован
+
+- Добавлен `mattergram.contrib.admin_users`: явные `PermissionSpec`/`RoleSpec`, immutable
+  `AdminUser`/`TeamUser`, async `AdminUserRepository`, `TeamUserDirectory`, `AuditSink` и
+  process-local `MemoryAdminUserRepository` только для tests/local demo.
+- `AdminUsersService` проверяет permission на каждом read/write use case, принимает только известные
+  app roles, повторно читает active team members на submit, отвергает bot/outside-team IDs,
+  реактивирует disabled user с прежним application ID и защищает последнего enabled member роли с
+  `protects_last_member=True`. Initial admins задаются только точными Mattermost IDs и создаются
+  идемпотентно; пустой repository не даёт administrative fallback.
+- Reusable dialog разделён на getters, form actions и declaration. List использует `PagedTable`,
+  filter `3`, pager+page selector `6`, выбранную detail card и локальное edit action; add/edit —
+  native forms с cancel lifecycle. От entry-list добавление требует 2 действий, редактирование — 3,
+  максимальная глубина — 1 form transition. Exact row geometry требует подтверждённый Blocks profile.
+- Router владеет `/app-users` и exact text `Пользователи` только в bot DM. Text handler принимает
+  обычный `Message` и создаёт новый post через `DialogRuntime.respond`; plugin не импортирует
+  composer keyboard types и не получает button ID/callback.
+- Game Admin local composition root подключает `AdminUsersPlugin` и временные adapters к прежней
+  in-memory repository/directory. `Пользователи` удалён из старого keyboard message router, поэтому
+  один visible text обрабатывается только новым plugin. `/app-users` получает отдельную scoped slash
+  binding; старые imports и persisted `AdminPanel.users` сохранены на migration cycle.
+- Шесть focused tests проверяют explicit/idempotent bootstrap, authorization, team revalidation,
+  reactivation, last-admin invariant, current username, manual DM text без keyboard и фактические
+  rows/forms. Полный suite: `523 passed, 23 skipped, 309 subtests`; Ruff/format для 267 файлов,
+  strict mypy для 215 source files и documentation drift
+  (`293 exports / 478 members / 19 examples / 29 guides`) прошли. Live Mattermost после этого этапа
+  ещё не запускался.
+- Следующий конкретный шаг плана: этап 4, manager-only callback signature для `Button`, затем замена
+  статических imperative callbacks на declarative navigation widgets.
+

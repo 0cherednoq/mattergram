@@ -1,8 +1,8 @@
 """Run the game-account admin dialog on an owned local Mattermost stand.
 
 This operator tool is intentionally local-only. It replaces only the
-``/game-admin`` command in the selected owned fixture and keeps all application
-data in process memory.
+``/game-admin`` and ``/app-users`` commands in the selected owned fixture and
+keeps all application data in process memory.
 """
 
 from __future__ import annotations
@@ -14,12 +14,13 @@ import logging
 import secrets
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import aiohttp
 from game_accounts_admin import (
     AccountCredentials,
     AdminInputError,
+    AdminRole,
     AdminUser,
     GameAccountsAdminService,
     MemoryAdminRepository,
@@ -34,6 +35,7 @@ from game_accounts_admin import (
 from pydantic import SecretStr
 
 from mattergram import Bot, Dispatcher
+from mattergram.contrib import admin_users as admin_users_plugin
 from mattergram.contrib.composer_keyboard import MENU_CAPABILITY, ComposerKeyboardPlugin
 from mattergram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 from mattergram.http import CallbackSigner, HttpAdapter, SlashBinding
@@ -59,6 +61,7 @@ class DemoStand:
     bot_id: str
     bot_token: str
     slash_token: str
+    admin_users_slash_token: str
 
 
 class DemoAccountVerifier:
@@ -145,6 +148,68 @@ class MattermostTeamUserDirectory:
             page += 1
 
 
+class GameAdminUsersRepositoryAdapter:
+    """Migration adapter sharing the local demo's existing in-memory user records."""
+
+    def __init__(self, repository: MemoryAdminRepository) -> None:
+        self.repository = repository
+
+    @staticmethod
+    def _plugin_user(user: AdminUser) -> admin_users_plugin.AdminUser:
+        return admin_users_plugin.AdminUser(
+            user.id,
+            user.mattermost_user_id,
+            user.username,
+            user.role,
+            user.enabled,
+        )
+
+    async def list_users(self) -> tuple[admin_users_plugin.AdminUser, ...]:
+        async with self.repository.lock:
+            return tuple(self._plugin_user(user) for user in self.repository.users.values())
+
+    async def get_user(self, user_id: str) -> admin_users_plugin.AdminUser | None:
+        async with self.repository.lock:
+            user = self.repository.users.get(user_id)
+            return None if user is None else self._plugin_user(user)
+
+    async def get_by_mattermost_user_id(
+        self,
+        mattermost_user_id: str,
+    ) -> admin_users_plugin.AdminUser | None:
+        async with self.repository.lock:
+            user = next(
+                (
+                    value
+                    for value in self.repository.users.values()
+                    if value.mattermost_user_id == mattermost_user_id
+                ),
+                None,
+            )
+            return None if user is None else self._plugin_user(user)
+
+    async def save_user(self, user: admin_users_plugin.AdminUser) -> None:
+        async with self.repository.lock:
+            self.repository.users[user.id] = AdminUser(
+                user.id,
+                user.mattermost_user_id,
+                user.username,
+                cast(AdminRole, user.role),
+                user.enabled,
+            )
+
+
+class GameAdminTeamDirectoryAdapter:
+    def __init__(self, directory: MattermostTeamUserDirectory) -> None:
+        self.directory = directory
+
+    async def list_users(self) -> tuple[admin_users_plugin.TeamUser, ...]:
+        return tuple(
+            admin_users_plugin.TeamUser(user.id, user.username, user.display_name, user.is_bot)
+            for user in await self.directory.list_users()
+        )
+
+
 async def _request_json(
     session: aiohttp.ClientSession,
     method: str,
@@ -204,7 +269,7 @@ async def provision_demo(
             headers=headers,
         )
         for command in commands:
-            if command.get("trigger") == "game-admin":
+            if command.get("trigger") in {"game-admin", "app-users"}:
                 await _request_json(
                     session,
                     "DELETE",
@@ -228,7 +293,28 @@ async def provision_demo(
                 "auto_complete_desc": "Open the game-account administrator panel",
             },
         )
-    if not isinstance(command, dict) or not isinstance(command.get("token"), str):
+        admin_users_command = await _request_json(
+            session,
+            "POST",
+            base_url + "/api/v4/commands",
+            headers=headers,
+            json_body={
+                "team_id": state["team_id"],
+                "trigger": "app-users",
+                "method": "P",
+                "url": callback_base + "/mattergram/slash",
+                "display_name": "Application users",
+                "description": "Manage application-scoped users and roles",
+                "auto_complete": True,
+                "auto_complete_desc": "Open application user administration",
+            },
+        )
+    if (
+        not isinstance(command, dict)
+        or not isinstance(command.get("token"), str)
+        or not isinstance(admin_users_command, dict)
+        or not isinstance(admin_users_command.get("token"), str)
+    ):
         raise RuntimeError("Owned Mattermost command response omitted its token")
     return DemoStand(
         base_url,
@@ -241,6 +327,7 @@ async def provision_demo(
         state["bot_id"],
         state["bot_token"],
         command["token"],
+        admin_users_command["token"],
     )
 
 
@@ -300,12 +387,20 @@ async def run(args: argparse.Namespace) -> None:
         if public_keyboard is not None:
             await bot.delete_composer_keyboard(stand.channel_id)
         direct_channel = await bot.create_direct_channel(stand.admin_id)
+        admin_users = admin_users_plugin.AdminUsersPlugin(
+            repository=GameAdminUsersRepositoryAdapter(service.repository),
+            directory=GameAdminTeamDirectoryAdapter(user_directory),
+            initial_admin_ids=(stand.admin_id,),
+            command="app-users",
+            messages=("Пользователи",),
+        )
         registry = DialogRegistry(build_admin_dialog(service))
         plugin_manager = PluginManager(
             bot=bot,
             dispatcher=dispatcher,
             dialog_registry=registry,
             plugins=(
+                admin_users,
                 ComposerKeyboardPlugin(
                     targets=(direct_channel.id,),
                     keyboard=build_admin_keyboard(),
@@ -325,13 +420,21 @@ async def run(args: argparse.Namespace) -> None:
             ui_profile=profile,
             action_ttl=action_ttl,
         )
+        dispatcher.workflow_data[admin_users_plugin.ADMIN_USERS_RUNTIME.name] = runtime
         setup_dialogs(dispatcher, runtime)
         register_admin_panel(dispatcher, runtime, service)
         http = HttpAdapter(
             bot,
             dispatcher,
             trusted_peers=("127.0.0.1/32",),
-            slash_bindings=(SlashBinding(stand.team_id, "game-admin", SecretStr(stand.slash_token)),),
+            slash_bindings=(
+                SlashBinding(stand.team_id, "game-admin", SecretStr(stand.slash_token)),
+                SlashBinding(
+                    stand.team_id,
+                    "app-users",
+                    SecretStr(stand.admin_users_slash_token),
+                ),
+            ),
             callback_signer=signer,
             dialogs=native_dialogs,
             own_dialogs=True,
