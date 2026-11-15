@@ -4,7 +4,7 @@
   "scenario": "one post -> branch navigation -> pagination/filter -> native form -> same-post confirmation",
   "local_integration": {
     "path": "tests/integration/test_dialog_runtime.py",
-    "sha256": "78b6e8453c388073107b685b242fb814ed68a62bd1a6e60d015406da95dcc633",
+    "sha256": "e74f5bdb2c69408d87b84e897c5d09aa8d39778ab4b95412e6f304b3e0f055b7",
     "cases": [
       "trusted slash/callback/dialog HTTP ingress edits one post through the complete scenario",
       "Back restores the actual source branch through a shared window",
@@ -12,7 +12,7 @@
       "outdated signed post action is acknowledged without repeating the transition",
       "terminal form replay does not repeat the business effect",
       "FormWindow to FormWindow uses the native next response and rotated state",
-      "rendered native form requests cancel notification and cancel returns to the window that opened it",
+      "rendered native form requests cancel notification, returns to its source and keeps source actions usable with stale replay rejection",
       "unrelated signed callback reaches the next Router handler",
       "Blocks transition patches the source post, rotates mm_blocks_actions and ACKs the callback",
       "dialog action TTL is explicit, propagated to signed controls and bounded by signer max_ttl",

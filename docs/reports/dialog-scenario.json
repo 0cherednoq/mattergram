@@ -16,7 +16,7 @@
   "local_regressions": [
     "outdated post actions are acknowledged and do not repeat navigation",
     "FormWindow to FormWindow uses DialogSubmission.next and rotates managed form state",
-    "native cancel restores the window that opened the form",
+    "native cancel restores the source window, keeps its actions usable and rejects stale replay",
     "unrelated signed callbacks are left to subsequent Router handlers"
   ],
   "server_version": "11.1.0",

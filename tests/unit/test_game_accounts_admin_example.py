@@ -22,7 +22,7 @@ from examples.game_accounts_admin import (
 )
 from mattergram.fsm.storage.base import StorageKey
 from mattergram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
-from mattergram_dialog import DialogManager, DialogRegistry, DialogStorage, ShowMode
+from mattergram_dialog import DialogManager, DialogRegistry, DialogStorage, OpenForm, ShowMode
 from mattergram_dialog.rendering import FormRender, PostRender, RenderPlan
 
 
@@ -302,6 +302,19 @@ async def test_admin_dialog_click_budget_rows_and_masked_account_card() -> None:
             assert "Cookies:** 1 · домены: game.example" in detail
             assert "secret-A" not in repr(card)
             assert "token-A" not in repr(card)
+            account_edit = manager.find("adminAccountEdit")
+            assert isinstance(account_edit, OpenForm)
+            assert account_edit.state == AdminPanel.account_edit
+
+            await manager.switch_to(AdminPanel.pushes)
+            push_edit = manager.find("adminPushEdit")
+            assert isinstance(push_edit, OpenForm)
+            assert push_edit.state == AdminPanel.push_edit
+
+            await manager.switch_to(AdminPanel.users)
+            user_edit = manager.find("adminUserEdit")
+            assert isinstance(user_edit, OpenForm)
+            assert user_edit.state == AdminPanel.user_edit
 
             await manager.switch_to(AdminPanel.user_add)
             add_form = renderer.calls[-1][0]

@@ -451,6 +451,26 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Проверки: полный suite `531 passed, 23 skipped, 309 subtests`; Ruff lint/format для 269 файлов,
   strict mypy для 215 source files, dialog extraction replay и documentation drift
   (`300 exports / 478 members / 19 examples / 29 guides`) прошли.
-- Следующий конкретный шаг плана: этап 5 — заменить статические переходы Game Admin на `SwitchTo`,
-  `Back` и `OpenForm`, сохранив widget IDs, state names и stale-action поведение.
+## Декларативная навигация Game Admin — этап 5 реализован
+
+- Три статических edit-перехода больше не проходят через imperative callbacks:
+  `adminUserEdit`, `adminPushEdit` и `adminAccountEdit` объявлены как `OpenForm` с прежними target
+  states и условиями видимости. Остальные переходы уже используют `SwitchTo`/`OpenForm`;
+  прямые keyboard-разделы сохраняют явный переход на главную, потому что новый post начинает
+  dialog без предыдущего окна для path-aware `Back`.
+- Четыре прикладных `Button` callback (`refresh_home`, проверки выбранного, всех и импортированных
+  аккаунтов) используют manager-only форму. В `examples/game_accounts_admin.py` больше нет
+  `del event, button`.
+- UX не изменился: accounts edit остаётся двумя действиями (выбор строки и открытие формы),
+  add/edit form находится на глубине 1, ряды accounts остаются `5/6/2` внутри data block и `3` в
+  navigation row. Exact row geometry по-прежнему требует подтверждённый Blocks profile; legacy
+  attachments сохраняют порядок и допускают client wrapping.
+- Unit test фиксирует тип widget, прежние IDs/states, row shapes и masked credentials. HTTP
+  integration test закрывает native form, затем успешно использует действие исходного post и
+  отклоняет его повторный replay как outdated. Live Mattermost на этом этапе не запускался.
+- Проверки: полный suite `531 passed, 23 skipped, 309 subtests`; Ruff lint/format для 269 файлов,
+  strict mypy для 215 source files, E8-03 evidence receipt и documentation drift
+  (`300 exports / 478 members / 19 examples / 29 guides`) прошли.
+- Следующий конкретный шаг плана: этап 6 — вынести accounts/imports/checks из большого
+  `build_admin_dialog`, сохранив совместимые re-exports и поведение service.
 

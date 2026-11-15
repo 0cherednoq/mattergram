@@ -818,24 +818,10 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
         selected = manager.dialog_data.get("selected_account_id")
         return next((account for account in values if account["id"] == selected), {})
 
-    async def open_user_edit(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
-        await manager.switch_to(AdminPanel.user_edit, show_mode=ShowMode.NO_UPDATE)
-
-    async def open_push_edit(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
-        await manager.switch_to(AdminPanel.push_edit, show_mode=ShowMode.NO_UPDATE)
-
-    async def open_account_edit(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
-        await manager.switch_to(AdminPanel.account_edit, show_mode=ShowMode.NO_UPDATE)
-
-    async def refresh_home(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
+    async def refresh_home(manager: DialogManager) -> None:
         manager.dialog_data["home_refreshed_at"] = _now()
 
-    async def check_selected(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
+    async def check_selected(manager: DialogManager) -> None:
         selected = manager.dialog_data.get("selected_account_id")
         if not isinstance(selected, str):
             return
@@ -844,15 +830,13 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
             f"Проверка: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
         )
 
-    async def check_all(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
+    async def check_all(manager: DialogManager) -> None:
         run = await service.check_all(manager.actor_id)
         manager.dialog_data["check_summary"] = (
             f"Проверено {run.total}: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
         )
 
-    async def check_imported(event: Any, button: Button, manager: DialogManager) -> None:
-        del event, button
+    async def check_imported(manager: DialogManager) -> None:
         import_id = manager.dialog_data.get("last_import_id")
         if not isinstance(import_id, str):
             return
@@ -1056,10 +1040,10 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
                         ),
                     ),
                 ),
-                Button(
+                OpenForm(
                     Const("Изменить выбранного"),
                     id="adminUserEdit",
-                    on_click=open_user_edit,
+                    state=AdminPanel.user_edit,
                     when=_selected_visible("adminUsersTable", "selected_user_id"),
                 ),
             ),
@@ -1137,10 +1121,10 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
                         detail=Format("**События:** {item[events]}  \n**Включено:** {item[enabled]}"),
                     ),
                 ),
-                Button(
+                OpenForm(
                     Const("Изменить маршрут"),
                     id="adminPushEdit",
-                    on_click=open_push_edit,
+                    state=AdminPanel.push_edit,
                     when=_selected_visible("adminPushTable", "selected_push_id"),
                 ),
             ),
@@ -1252,10 +1236,10 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
                         on_click=check_selected,
                         when=_selected_visible("adminAccountsTable", "selected_account_id"),
                     ),
-                    Button(
+                    OpenForm(
                         Const("Изменить учётные данные"),
                         id="adminAccountEdit",
-                        on_click=open_account_edit,
+                        state=AdminPanel.account_edit,
                         when=_selected_visible("adminAccountsTable", "selected_account_id"),
                     ),
                 ),

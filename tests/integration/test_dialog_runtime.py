@@ -632,7 +632,7 @@ class DialogRuntimeHTTPTests(unittest.IsolatedAsyncioTestCase):
         with self.assertRaisesRegex(RuntimeError, "closed"):
             updater.submit(self.dialog_ref, 3, {"item": "Too late"})
 
-    async def test_native_cancel_returns_to_the_post_that_opened_the_form(self) -> None:
+    async def test_native_cancel_returns_to_post_and_keeps_source_actions_usable(self) -> None:
         form = await self.open_form()
         self.assertIs(form["notify_on_cancel"], True)
         async with self.client.post(
@@ -661,6 +661,19 @@ class DialogRuntimeHTTPTests(unittest.IsolatedAsyncioTestCase):
         assert current is not None
         self.assertEqual(current.state, Scenario.card)
         self.assertEqual(len(self.posts), 1)
+
+        back_context = deepcopy(self.action_context(self.posts[0], 3))
+        status, replacement = await self.callback(
+            self.posts[0],
+            "post-1",
+            context=back_context,
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(replacement["update"]["message"], "Catalog")
+        self.assertEqual(
+            await self.callback(self.posts[0], "post-1", context=back_context),
+            (200, {"ephemeral_text": "This dialog action is outdated"}),
+        )
 
     async def test_unrelated_callback_reaches_the_next_router_handler(self) -> None:
         context = self.signer.seal(

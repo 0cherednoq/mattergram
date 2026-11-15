@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–4 реализованы и contract-verified; этапы 5–8 остаются в работе.
+**Статус:** этапы 0–5 реализованы и contract-verified; этапы 6–8 остаются в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -361,7 +361,7 @@ ButtonClick: TypeAlias = SimpleButtonClick | FullButtonClick
 Navigation-only callbacks нужно удалить полностью и заменить widgets. Например, `open_user_edit` не нужен:
 
 ```python
-SwitchTo(
+OpenForm(
     Const("Изменить"),
     id="adminUserEdit",
     state=AdminPanel.user_edit,
@@ -374,7 +374,6 @@ SwitchTo(
 ```python
 from dataclasses import dataclass
 
-from mattergram_dialog import ShowMode
 from mattergram_dialog.api.protocols.manager import DialogManager
 
 
@@ -392,14 +391,10 @@ class GameAdminActions:
         run = await self.service.check_account(manager.actor_id, account_id)
         manager.dialog_data["check_summary"] = format_check_summary(run)
 
-    async def open_account_edit(self, manager: DialogManager) -> None:
-        await manager.switch_to(
-            AdminPanel.account_edit,
-            show_mode=ShowMode.NO_UPDATE,
-        )
 ```
 
-Последний method допустим только когда переход зависит от бизнес-условия. Если переход статичен, использовать `SwitchTo` и удалить method.
+Imperative transition допустим только когда target действительно выбирается по результату
+прикладного действия. Если переход статичен, использовать `SwitchTo`, `Back` или `OpenForm`.
 
 Dialog builder получает готовые collaborators и остаётся декларативным:
 
@@ -418,7 +413,7 @@ def build_admin_dialog(
                 on_click=actions.check_selected,
                 when=selected_account_visible,
             ),
-            SwitchTo(
+            OpenForm(
                 Const("Изменить"),
                 id="adminAccountEdit",
                 state=AdminPanel.account_edit,
@@ -506,8 +501,9 @@ Secrets нельзя читать обратно через администра
 - этап 4: `Button` принимает полную и manager-only callback-сигнатуры, компилирует adapter при
   создании widget, отклоняет неоднозначные формы до первого клика и не повторяет callback при
   `TypeError` из прикладного кода;
-- следующий незавершённый этап — замена статических imperative callbacks Game Admin на
-  декларативные navigation widgets.
+- этап 5: edit-переходы пользователя, push-маршрута и аккаунта выражены через `OpenForm` с
+  прежними widget IDs и states; оставшиеся refresh/check callbacks принимают только manager;
+- следующий незавершённый этап — разделение оставшихся accounts/imports/checks частей Game Admin.
 
 ### Этап 0. Зафиксировать contracts
 
@@ -646,12 +642,12 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 - [x] `AdminUsersPlugin` не импортирует composer keyboard API и не получает button callback.
 - [x] `Button` принимает manager-only и полную callback-сигнатуры.
 - [x] Неподдерживаемые сигнатуры отклоняются при создании widget.
-- [ ] В Game Admin нет `del event, button` для `Button` callbacks.
-- [ ] Статическая навигация выражена widgets, а не ручными manager calls.
+- [x] В Game Admin нет `del event, button` для `Button` callbacks.
+- [x] Статическая навигация выражена widgets, а не ручными manager calls.
 - [ ] `build_admin_dialog` содержит декларацию, но не service implementation.
 - [ ] Getters и actions тестируются отдельно без запуска HTTP ingress.
 - [x] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
-- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–4.
+- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–5.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
 - [x] `STATUS.md` различает planned, implemented и live-verified состояние.
