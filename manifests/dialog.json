@@ -2131,7 +2131,7 @@
       "target": "src/mattergram_dialog/__init__.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "2e7d2b655b881f297f66868240db877b5ca2d953ec8313b0eeb221792e54df88"
+      "source_sha256": "bcfb2b12720824dad4d54d0021cb93bbd9ff124507c946a2c5531451e8486950"
     },
     {
       "target": "src/mattergram_dialog/api/__init__.py",
@@ -2197,7 +2197,7 @@
       "target": "src/mattergram_dialog/widgets/__init__.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "40808bec82980fe6e570d48d5087c10a7ff7c8655ad00ef0307d05aeffcbf580"
+      "source_sha256": "291932e5cad52565f089ec62f6bfeaf8ef12f46c29978147d4a8aefcb5bdbff5"
     },
     {
       "target": "src/mattergram_dialog/widgets/common/__init__.py",
@@ -2263,7 +2263,7 @@
       "target": "src/mattergram_dialog/widgets/message.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "b78562b9a5cc404b55049a62534a7f0eeef0f8e0c65cc6f0a525e4b5fafc2678"
+      "source_sha256": "2d0e276df0ddd3ee672ba9d347e23fd4dc6de5de2bc4612a711bb9de1f742ddd"
     },
     {
       "target": "src/mattergram_dialog/bindings.py",

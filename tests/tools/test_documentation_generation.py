@@ -19,7 +19,7 @@ class DocumentationGenerationTests(unittest.TestCase):
             self.assertEqual(content, (ROOT / relative).read_text(encoding="utf-8"), relative)
             self.assertIsNone(ADDRESS.search(content), relative)
         self.assertEqual(report["public_modules"], 23)
-        self.assertEqual(report["public_exports"], 293)
+        self.assertEqual(report["public_exports"], 300)
         self.assertEqual(report["public_members"], 478)
         self.assertEqual(report["guides"], 29)
         self.assertEqual(report["examples"], 19)

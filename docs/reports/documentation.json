@@ -4,7 +4,7 @@
   "version": "0.1.0a1",
   "manifest_sha256": "068dccc9de77ad071c5c041c7a97dc65685b3814df90852a2d925f2dcac3181e",
   "public_modules": 23,
-  "public_exports": 293,
+  "public_exports": 300,
   "public_members": 478,
   "guides": 29,
   "examples": 19,
@@ -17,10 +17,10 @@
   },
   "artifacts": {
     "docs/examples.md": "a39c106c16e6cb1264f8a35aa74c29412f1a09c01ccbf58b4429d732e62fdfae",
-    "docs/reference/api.md": "1098162d934547c18ab861f1a163847bfbbef5cb039bb3bfada06d2e227d67bb",
+    "docs/reference/api.md": "5b907953ce1210331e6d1f9b694ab7ccf58ae3cd05b9369250b273e24f5015f2",
     "docs/reference/capabilities.md": "da4cd7b1ebc544c575cc9ac25b21179698a594bfe3265ccbe0dfcbedff7f501e",
     "docs/reference/exceptions.md": "a3b50fd05e23efe523dfd701b32db9b58719499a4e21dcc541cdba9607b9b74a",
-    "docs/reference/public-api.json": "30065daa3896180d330cbf1eeb80ae0d70e9b55e29c8fe9aaec09558b052a86f",
+    "docs/reference/public-api.json": "8ba8b7f87868ceb2a89db40357a092ad51fc2964e4f4a71e58b94454304a5a93",
     "llms.txt": "6a62fdba0904eec3d9146f26793636137fa0391578f8efa519875205aaf6ae9f"
   },
   "network_access": "none",

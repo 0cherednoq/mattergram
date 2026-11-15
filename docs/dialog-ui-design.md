@@ -270,6 +270,31 @@ async def refresh(message: Message) -> None:
 
 Полный runnable-сценарий находится в `examples/dialog_navigation_bot.py`: он показывает несколько окон, две независимые Markdown-таблицы в сводке, Blocks-строки с edit/delete на экране заказов, full/cursor pagination, фильтры, typed forms и WS-to-REST refresh.
 
+## Callback кнопки
+
+Для обычного прикладного действия используйте короткую сигнатуру: `Button` передаст только
+`DialogManager`, а после выполнения перестроит текущее окно.
+
+```python
+async def cancel_job(manager: DialogManager) -> None:
+    manager.dialog_data["phase"] = "cancelled"
+
+
+Button(Const("Отменить"), id="cancelJob", on_click=cancel_job)
+```
+
+Полная форма остаётся доступна, когда нужны исходное событие или сам widget:
+
+```python
+async def inspect_click(event: CallbackQuery, button: Button, manager: DialogManager) -> None:
+    ...
+```
+
+Поддерживаются sync и async функции, bound methods, `functools.partial` и callable objects с
+однозначной итоговой сигнатурой. Другие формы отклоняются `TypeError` уже при создании `Button`.
+Исключение из тела callback не перехватывается и не запускает callback повторно; action token при
+этом остаётся одноразовым.
+
 ## Длительная задача и прогресс
 
 Для загрузки, парсинга и импорта используйте `Progress` внутри локального `DataBlock`.

@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–3 реализованы и contract-verified; этапы 4–8 остаются в работе.
+**Статус:** этапы 0–4 реализованы и contract-verified; этапы 5–8 остаются в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -39,14 +39,19 @@ Game Admin должен сохранить текущую семантику Mat
 | `import_accounts` сервиса | 65 строк | Совмещает parsing, validation, persistence и итоговый audit record |
 | `register_admin_panel` | 20 строк | Уже мал и не должен снова получать прикладную логику |
 
-`Button` сейчас принимает только полную callback-сигнатуру:
+`Button` принимает полную callback-сигнатуру и короткую manager-only форму:
 
 ```python
 async def on_click(event: Any, button: Button, manager: DialogManager) -> None:
     ...
+
+async def simple_click(manager: DialogManager) -> None:
+    ...
 ```
 
-Поэтому callbacks, которым нужен только manager, содержат строки `del event, button`. Это корректный Python, но `del` здесь не управляет ресурсами и не нужен runtime. Он только подавляет ощущение неиспользуемых параметров. До расширения API лучше называть такие параметры `_event` и `_button`. После расширения API следует использовать короткую сигнатуру.
+Существующие полные callbacks остаются совместимыми. Новым callbacks, которым нужен только manager,
+не требуются фиктивные `event`, `button` и строки `del event, button`: они используют короткую форму.
+Оставшиеся такие строки в Game Admin удаляются на этапе 5 вместе с imperative navigation callbacks.
 
 ## Граница между Router и Dialog
 
@@ -306,7 +311,7 @@ keyboard = ComposerKeyboardPlugin(
 
 ### Поддерживаемые сигнатуры
 
-Добавить к `Button` ровно две явные формы callback:
+`Button` поддерживает ровно две явные формы callback:
 
 ```python
 async def simple_click(manager: DialogManager) -> None:
@@ -326,7 +331,8 @@ async def full_click(
 
 ### Валидация и вызов
 
-`Button.__init__` должен один раз проанализировать callback через `inspect.signature` и сохранить готовый adapter. Нельзя определять форму callback на каждом клике.
+`Button.__init__` один раз анализирует callback через `inspect.signature` и сохраняет готовый adapter.
+Форма callback на каждом клике повторно не определяется.
 
 Требования к adapter:
 
@@ -497,7 +503,11 @@ Secrets нельзя читать обратно через администра
   repository/directory protocols, explicit initial admins, last-admin invariant, list/add/edit dialog,
   slash и exact-DM-text entry без импорта keyboard API. Game Admin подключает plugin через временные
   adapters к общей in-memory repository;
-- следующий незавершённый этап — короткая manager-only сигнатура `Button` callback.
+- этап 4: `Button` принимает полную и manager-only callback-сигнатуры, компилирует adapter при
+  создании widget, отклоняет неоднозначные формы до первого клика и не повторяет callback при
+  `TypeError` из прикладного кода;
+- следующий незавершённый этап — замена статических imperative callbacks Game Admin на
+  декларативные navigation widgets.
 
 ### Этап 0. Зафиксировать contracts
 
@@ -634,14 +644,14 @@ Contract test обязан доказать, что `AdminUsersPlugin` рабо�
 - [x] Последний enabled administrator защищён service-level invariant.
 - [x] Team membership повторно проверяется на submit обычным runtime bot token.
 - [x] `AdminUsersPlugin` не импортирует composer keyboard API и не получает button callback.
-- [ ] `Button` принимает manager-only и полную callback-сигнатуры.
-- [ ] Неподдерживаемые сигнатуры отклоняются при создании widget.
+- [x] `Button` принимает manager-only и полную callback-сигнатуры.
+- [x] Неподдерживаемые сигнатуры отклоняются при создании widget.
 - [ ] В Game Admin нет `del event, button` для `Button` callbacks.
 - [ ] Статическая навигация выражена widgets, а не ручными manager calls.
 - [ ] `build_admin_dialog` содержит декларацию, но не service implementation.
 - [ ] Getters и actions тестируются отдельно без запуска HTTP ingress.
 - [x] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
-- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–3.
+- [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–4.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
 - [x] `STATUS.md` различает planned, implemented и live-verified состояние.

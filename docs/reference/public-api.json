@@ -6273,7 +6273,7 @@
           "summary": "Declare controls that belong to one logical horizontal row.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 125
+            "line": 184
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6286,7 +6286,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 141
+                "line": 200
               }
             },
             {
@@ -6296,7 +6296,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 173
+                "line": 232
               }
             },
             {
@@ -6306,7 +6306,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 148
+                "line": 207
               }
             },
             {
@@ -6316,7 +6316,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 156
+                "line": 215
               }
             }
           ]
@@ -6401,7 +6401,7 @@
           "summary": "Return to the actual previous window in this dialog context.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 294
+            "line": 353
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6414,7 +6414,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 301
+                "line": 360
               }
             }
           ]
@@ -6424,10 +6424,10 @@
           "qualified_name": "mattergram_dialog.Button",
           "kind": "class",
           "signature": "(text: Text, *, id: str, on_click: ButtonClick | None = None, style: str | None = None, disabled: bool = False, when: WhenCondition = None) -> None",
-          "summary": "Run an application callback and then rebuild the current post window.",
+          "summary": "Run a full or manager-only callback, then rebuild the current post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 24
+            "line": 82
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6440,7 +6440,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 86
+                "line": 145
               }
             },
             {
@@ -6450,7 +6450,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 73
+                "line": 132
               }
             },
             {
@@ -6460,10 +6460,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 49
+                "line": 108
               }
             }
           ]
+        },
+        {
+          "name": "ButtonClick",
+          "qualified_name": "mattergram_dialog.ButtonClick",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "ButtonGrid",
@@ -6473,7 +6484,7 @@
           "summary": "Render explicitly declared action rows as one logical control group.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 186
+            "line": 245
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6486,7 +6497,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 230
+                "line": 289
               }
             },
             {
@@ -6496,10 +6507,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 206
+                "line": 265
               }
             }
           ]
+        },
+        {
+          "name": "ButtonResult",
+          "qualified_name": "mattergram_dialog.ButtonResult",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "ButtonRow",
@@ -6509,7 +6531,7 @@
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 241
+            "line": 300
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6522,7 +6544,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 284
+                "line": 343
               }
             },
             {
@@ -6532,7 +6554,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 263
+                "line": 322
               }
             }
           ]
@@ -6641,7 +6663,7 @@
           "summary": "Stable three-control preset: < 1/25 >.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 421
+            "line": 480
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -6654,7 +6676,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 424
+                "line": 483
               }
             }
           ]
@@ -6739,7 +6761,7 @@
           "summary": "Two-control preset for APIs that expose an opaque next cursor.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 675
+            "line": 734
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -6752,7 +6774,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 733
+                "line": 792
               }
             },
             {
@@ -6762,7 +6784,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 736
+                "line": 795
               }
             },
             {
@@ -6772,7 +6794,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 702
+                "line": 761
               }
             }
           ]
@@ -7365,7 +7387,7 @@
           "summary": "Render a fixed allowlist of filters for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 744
+            "line": 803
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7378,7 +7400,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 805
+                "line": 864
               }
             },
             {
@@ -7388,7 +7410,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 810
+                "line": 869
               }
             },
             {
@@ -7398,10 +7420,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 784
+                "line": 843
               }
             }
           ]
+        },
+        {
+          "name": "FullButtonClick",
+          "qualified_name": "mattergram_dialog.FullButtonClick",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "InlinePager",
@@ -7411,7 +7444,7 @@
           "summary": "Stable two-control preset for a DataBlock that also contains filters.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 456
+            "line": 515
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -7424,7 +7457,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 476
+                "line": 535
               }
             }
           ]
@@ -7553,7 +7586,7 @@
           "summary": "Render a signed post action that switches to another post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 118
+            "line": 177
           },
           "bases": [
             "mattergram_dialog.widgets.message.OpenForm"
@@ -7567,7 +7600,7 @@
           "summary": "Open the next declared window and record the current one for Back.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 317
+            "line": 376
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7580,7 +7613,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 324
+                "line": 383
               }
             }
           ]
@@ -7593,7 +7626,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 92
+            "line": 151
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7606,7 +7639,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 100
+                "line": 159
               }
             },
             {
@@ -7616,7 +7649,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 113
+                "line": 172
               }
             }
           ]
@@ -7707,7 +7740,7 @@
           "summary": "Select one item from the visible page next to its pagination controls.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 547
+            "line": 606
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7720,7 +7753,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 660
+                "line": 719
               }
             },
             {
@@ -7730,7 +7763,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 668
+                "line": 727
               }
             },
             {
@@ -7740,7 +7773,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 603
+                "line": 662
               }
             },
             {
@@ -7750,7 +7783,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 635
+                "line": 694
               }
             }
           ]
@@ -7833,7 +7866,7 @@
           "summary": "Stable five-control preset: << < 1/25 > >>.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 507
+            "line": 566
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -7846,7 +7879,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 510
+                "line": 569
               }
             }
           ]
@@ -7859,7 +7892,7 @@
           "summary": "Render bounded previous/next controls for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 343
+            "line": 402
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7872,7 +7905,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 410
+                "line": 469
               }
             },
             {
@@ -7882,7 +7915,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 413
+                "line": 472
               }
             },
             {
@@ -7892,7 +7925,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 372
+                "line": 431
               }
             }
           ]
@@ -7933,7 +7966,7 @@
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 241
+            "line": 300
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7946,7 +7979,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 284
+                "line": 343
               }
             },
             {
@@ -7956,10 +7989,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 263
+                "line": 322
               }
             }
           ]
+        },
+        {
+          "name": "SimpleButtonClick",
+          "qualified_name": "mattergram_dialog.SimpleButtonClick",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "RowAction",
@@ -8081,7 +8125,7 @@
           "summary": "Render a signed post action that switches to another post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 118
+            "line": 177
           },
           "bases": [
             "mattergram_dialog.widgets.message.OpenForm"
@@ -8328,7 +8372,7 @@
           "summary": "Declare controls that belong to one logical horizontal row.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 125
+            "line": 184
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8341,7 +8385,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 141
+                "line": 200
               }
             },
             {
@@ -8351,7 +8395,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 173
+                "line": 232
               }
             },
             {
@@ -8361,7 +8405,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 148
+                "line": 207
               }
             },
             {
@@ -8371,7 +8415,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 156
+                "line": 215
               }
             }
           ]
@@ -8384,7 +8428,7 @@
           "summary": "Return to the actual previous window in this dialog context.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 294
+            "line": 353
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8397,7 +8441,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 301
+                "line": 360
               }
             }
           ]
@@ -8407,10 +8451,10 @@
           "qualified_name": "mattergram_dialog.widgets.message.Button",
           "kind": "class",
           "signature": "(text: Text, *, id: str, on_click: ButtonClick | None = None, style: str | None = None, disabled: bool = False, when: WhenCondition = None) -> None",
-          "summary": "Run an application callback and then rebuild the current post window.",
+          "summary": "Run a full or manager-only callback, then rebuild the current post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 24
+            "line": 82
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8423,7 +8467,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 86
+                "line": 145
               }
             },
             {
@@ -8433,7 +8477,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 73
+                "line": 132
               }
             },
             {
@@ -8443,7 +8487,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 49
+                "line": 108
               }
             }
           ]
@@ -8456,7 +8500,18 @@
           "summary": null,
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 20
+            "line": 1
+          }
+        },
+        {
+          "name": "ButtonResult",
+          "qualified_name": "mattergram_dialog.widgets.message.ButtonResult",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/widgets/message.py",
+            "line": 1
           }
         },
         {
@@ -8467,7 +8522,7 @@
           "summary": "Render explicitly declared action rows as one logical control group.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 186
+            "line": 245
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8480,7 +8535,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 230
+                "line": 289
               }
             },
             {
@@ -8490,7 +8545,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 206
+                "line": 265
               }
             }
           ]
@@ -8503,7 +8558,7 @@
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 241
+            "line": 300
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8516,7 +8571,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 284
+                "line": 343
               }
             },
             {
@@ -8526,7 +8581,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 263
+                "line": 322
               }
             }
           ]
@@ -8539,7 +8594,7 @@
           "summary": "Stable three-control preset: < 1/25 >.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 421
+            "line": 480
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -8552,7 +8607,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 424
+                "line": 483
               }
             }
           ]
@@ -8565,7 +8620,7 @@
           "summary": "Two-control preset for APIs that expose an opaque next cursor.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 675
+            "line": 734
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8578,7 +8633,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 733
+                "line": 792
               }
             },
             {
@@ -8588,7 +8643,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 736
+                "line": 795
               }
             },
             {
@@ -8598,7 +8653,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 702
+                "line": 761
               }
             }
           ]
@@ -8611,7 +8666,7 @@
           "summary": "Render a fixed allowlist of filters for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 744
+            "line": 803
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8624,7 +8679,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 805
+                "line": 864
               }
             },
             {
@@ -8634,7 +8689,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 810
+                "line": 869
               }
             },
             {
@@ -8644,10 +8699,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 784
+                "line": 843
               }
             }
           ]
+        },
+        {
+          "name": "FullButtonClick",
+          "qualified_name": "mattergram_dialog.widgets.message.FullButtonClick",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/widgets/message.py",
+            "line": 1
+          }
         },
         {
           "name": "InlinePager",
@@ -8657,7 +8723,7 @@
           "summary": "Stable two-control preset for a DataBlock that also contains filters.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 456
+            "line": 515
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -8670,7 +8736,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 476
+                "line": 535
               }
             }
           ]
@@ -8683,7 +8749,7 @@
           "summary": "Render a signed post action that switches to another post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 118
+            "line": 177
           },
           "bases": [
             "mattergram_dialog.widgets.message.OpenForm"
@@ -8697,7 +8763,7 @@
           "summary": "Open the next declared window and record the current one for Back.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 317
+            "line": 376
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8710,7 +8776,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 324
+                "line": 383
               }
             }
           ]
@@ -8723,7 +8789,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 92
+            "line": 151
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8736,7 +8802,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 100
+                "line": 159
               }
             },
             {
@@ -8746,7 +8812,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 113
+                "line": 172
               }
             }
           ]
@@ -8759,7 +8825,7 @@
           "summary": "Select one item from the visible page next to its pagination controls.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 547
+            "line": 606
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8772,7 +8838,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 660
+                "line": 719
               }
             },
             {
@@ -8782,7 +8848,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 668
+                "line": 727
               }
             },
             {
@@ -8792,7 +8858,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 603
+                "line": 662
               }
             },
             {
@@ -8802,7 +8868,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 635
+                "line": 694
               }
             }
           ]
@@ -8815,7 +8881,7 @@
           "summary": "Stable five-control preset: << < 1/25 > >>.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 507
+            "line": 566
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -8828,7 +8894,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 510
+                "line": 569
               }
             }
           ]
@@ -8841,7 +8907,7 @@
           "summary": "Render bounded previous/next controls for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 343
+            "line": 402
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8854,7 +8920,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 410
+                "line": 469
               }
             },
             {
@@ -8864,7 +8930,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 413
+                "line": 472
               }
             },
             {
@@ -8874,7 +8940,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 372
+                "line": 431
               }
             }
           ]
@@ -8887,7 +8953,7 @@
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 241
+            "line": 300
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8900,7 +8966,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 284
+                "line": 343
               }
             },
             {
@@ -8910,10 +8976,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 263
+                "line": 322
               }
             }
           ]
+        },
+        {
+          "name": "SimpleButtonClick",
+          "qualified_name": "mattergram_dialog.widgets.message.SimpleButtonClick",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram_dialog/widgets/message.py",
+            "line": 1
+          }
         },
         {
           "name": "SwitchTo",
@@ -8923,7 +9000,7 @@
           "summary": "Render a signed post action that switches to another post window.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 118
+            "line": 177
           },
           "bases": [
             "mattergram_dialog.widgets.message.OpenForm"

@@ -1471,22 +1471,24 @@ Dependency group: `core`.
 | --- | --- | --- | --- |
 | `AccessSettings` | class | `(actor_ids: tuple[str, ...] = (), custom: Any = None) -> None` | [src/mattergram_dialog/api/entities/access.py](../../src/mattergram_dialog/api/entities/access.py#L7) |
 | `ActionColumn` | class | `(title: str, value: CellGetter, max_chars: int = 24) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L111) |
-| `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L125) |
+| `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L184) |
 | `ActionTable` | class | `(*columns: ActionColumn, id: str, title: str, items: ItemsGetter, item_id: CellGetter, selection_key: str, actions: tuple[RowAction, ...], color: str = '#3d85c6', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L156) |
 | `ActionWidget` | class | `(*args, **kwargs)` | [src/mattergram_dialog/widgets/common/action.py](../../src/mattergram_dialog/widgets/common/action.py#L24) |
-| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L294) |
-| `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L24) |
-| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L186) |
-| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L241) |
+| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L82) |
+| `ButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
+| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
+| `ButtonResult` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
+| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
 | `Case` | class | `(texts: Mapping[Any, Text], selector: Selector, *, default: Text \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/multi.py](../../src/mattergram_dialog/widgets/text/multi.py#L12) |
 | `Checkbox` | class | `(*, id: str, label: str, default: bool \| None \| DynamicFormValue = None, help_text: str \| None = None, placeholder: str \| None = None, label_position: Literal['before', 'after'] \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L108) |
 | `CheckboxGroup` | class | `(*, id: str, label: str, options: tuple[Option, ...], default_values: tuple[str, ...] \| DynamicFormValue = (), help_text: str \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L267) |
 | `CoalescingDialogUpdater` | class | `(runtime: DialogRuntime, *, interval: float = 1.0) -> None` | [src/mattergram_dialog/updates.py](../../src/mattergram_dialog/updates.py#L24) |
-| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L421) |
+| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L480) |
 | `Const` | class | `(text: str, *, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L20) |
 | `CursorList` | class | `(item_text: Text, *, id: str, loader: CursorLoader, page_size: int = 20, empty: Text \| None = None, sep: str = '\n', page_label: str \| None = 'Page {page}', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/cursor.py](../../src/mattergram_dialog/widgets/cursor.py#L24) |
 | `CursorPage` | class | `(items: Sequence[Any], next_cursor: str \| None = None) -> None` | [src/mattergram_dialog/widgets/cursor.py](../../src/mattergram_dialog/widgets/cursor.py#L13) |
-| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L675) |
+| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L734) |
 | `DataBlock` | class | `(title: str \| Text, content: Text, *widgets: Widget, id: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L63) |
 | `Dialog` | class | `(*windows: Window, launch_mode: LaunchMode = <LaunchMode.STANDARD: 'standard'>, on_start: Lifecycle \| None = None, on_process_result: Lifecycle \| None = None, on_close: Lifecycle \| None = None) -> None` | [src/mattergram_dialog/dialog.py](../../src/mattergram_dialog/dialog.py#L15) |
 | `DialogActions` | class | `(callback_url: str, context: ActionContext, *, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L50) |
@@ -1503,34 +1505,36 @@ Dependency group: `core`.
 | `FormWindow` | class | `(*items: Text \| FormElement \| NativeField, state: State, title: Text \| None = None, callback_id: str \| None = None, introduction: Text \| None = None, submit_label: str \| None = None, submit_text: Text \| None = None, on_submit: Any = None, getter: Getter \| None = None) -> None` | [src/mattergram_dialog/window.py](../../src/mattergram_dialog/window.py#L54) |
 | `FormValueGetter` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
 | `Format` | class | `(text: str, *, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/format.py](../../src/mattergram_dialog/widgets/text/format.py#L11) |
-| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L744) |
-| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L456) |
+| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L803) |
+| `FullButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
+| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L515) |
 | `LaunchMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/launch_mode.py](../../src/mattergram_dialog/api/entities/launch_mode.py#L4) |
 | `MattermostRenderer` | class | `(bot: Bot, channel_id: str, *, root_id: str \| None = None, open_form: Callable[[Form], Awaitable[object]] \| None = None, actions_factory: Callable[[tuple[PostControl, ...] \| tuple[PostControlGroup, ...]], Actions \| BoundActions] \| None = None, update_post: Callable[[str, Mapping[str, Any] \| None], Awaitable[object]] \| None = None, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L132) |
 | `MarkdownColumn` | class | `(title: str, value: CellGetter, max_chars: int = 24, align: Alignment = 'left') -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L23) |
 | `Multi` | class | `(*texts: Text, sep: str = '\n', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L30) |
 | `MultiSelect` | class | `(*, id: str, label: str, options: tuple[Option, ...] \| DynamicFormValue = (), data_source: Literal['users', 'channels', 'dynamic'] \| None = None, data_source_url: str \| None = None, default_values: tuple[str, ...] \| DynamicFormValue = (), placeholder: str \| None = None, help_text: str \| None = None, refresh: bool = False, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L204) |
 | `NativeField` | class | `(field: FormElement, *, dynamic_values: Mapping[str, DynamicFormValue] \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L40) |
-| `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L118) |
-| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L317) |
-| `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L92) |
+| `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
+| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L376) |
+| `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L151) |
 | `OpenFormActions` | class | `(callback_url: str, context: ActionContext, *, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L50) |
 | `Or` | class | `(*texts: Text, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L40) |
-| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L547) |
+| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L606) |
 | `PagedList` | class | `(item_text: Text, *, id: str, items: ItemsGetter, page_size: int = 10, filter_by: FilterGetter \| None = None, empty: Text \| None = None, sep: str = '\n', page_label: str \| None = 'Page {page}/{pages}', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/paged.py](../../src/mattergram_dialog/widgets/paged.py#L14) |
 | `PagedTable` | class | `(*columns: MarkdownColumn, id: str, items: ItemsGetter, page_size: int = 10, filter_by: FilterGetter \| None = None, empty: Text \| None = None, page_label: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L51) |
-| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L507) |
-| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
+| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L566) |
+| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L402) |
 | `Progress` | class | `(*, current: ProgressValue, total: ProgressValue \| None = None, label: str \| Text \| None = None, width: int = 12, filled: str = '█', empty: str = '░', show_percent: bool = True, show_count: bool = True, indeterminate_prefix: str = '⏳', id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/progress.py](../../src/mattergram_dialog/widgets/progress.py#L20) |
 | `Radio` | class | `(*, id: str, label: str, options: tuple[Option, ...], default: str \| None \| DynamicFormValue = None, help_text: str \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L240) |
-| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L241) |
+| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `SimpleButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
 | `RowAction` | class | `(id: str, label: str, state: State, style: str \| None = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L136) |
 | `Section` | class | `(title: str \| Text, *body: Text, level: int = 2, divider: bool = False, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L33) |
 | `Select` | class | `(*, id: str, label: str, options: tuple[Option, ...] \| DynamicFormValue = (), data_source: Literal['users', 'channels', 'dynamic'] \| None = None, data_source_url: str \| None = None, default: str \| None \| DynamicFormValue = None, placeholder: str \| None = None, help_text: str \| None = None, refresh: bool = False, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L168) |
 | `ShowMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/modes.py](../../src/mattergram_dialog/api/entities/modes.py#L4) |
 | `StartMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/modes.py](../../src/mattergram_dialog/api/entities/modes.py#L12) |
 | `SubManager` | class | `(manager: DialogManager, widget_id: str, item_id: str) -> None` | [src/mattergram_dialog/manager/sub_manager.py](../../src/mattergram_dialog/manager/sub_manager.py#L9) |
-| `SwitchTo` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L118) |
+| `SwitchTo` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
 | `Text` | class | `(*, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L10) |
 | `TextArea` | class | `(*, id: str, label: str, default: str \| None \| DynamicFormValue = None, placeholder: str \| None = None, help_text: str \| None = None, min_length: int = 0, max_length: int = 3000, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L137) |
 | `TextInput` | class | `(*, id: str, label: str, subtype: Literal['text', 'email', 'number', 'password', 'tel', 'url'] = 'text', default: str \| None \| DynamicFormValue = None, placeholder: str \| None = None, help_text: str \| None = None, min_length: int = 0, max_length: int = 150, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L75) |
@@ -1557,10 +1561,10 @@ Declare controls that belong to one logical horizontal row.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `content_position` | property | `(self) -> str` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L141) |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L173) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L148) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L156) |
+| `content_position` | property | `(self) -> str` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L200) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L232) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L207) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L215) |
 
 ### `ActionTable`
 
@@ -1584,17 +1588,17 @@ Return to the actual previous window in this dialog context.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L301) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L360) |
 
 ### `Button`
 
-Run an application callback and then rebuild the current post window.
+Run a full or manager-only callback, then rebuild the current post window.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L86) |
-| `process_event` | async-method | `(self, value: str \| None, event: Any, manager: Any) -> bool` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L73) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L49) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L145) |
+| `process_event` | async-method | `(self, value: str \| None, event: Any, manager: Any) -> bool` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L132) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L108) |
 
 ### `ButtonGrid`
 
@@ -1602,8 +1606,8 @@ Render explicitly declared action rows as one logical control group.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L230) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L206) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L289) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L265) |
 
 ### `ButtonRow`
 
@@ -1611,8 +1615,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L284) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L263) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
 
 ### `CoalescingDialogUpdater`
 
@@ -1631,7 +1635,7 @@ Stable three-control preset: < 1/25 >.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L424) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L483) |
 
 ### `CursorList`
 
@@ -1653,9 +1657,9 @@ Two-control preset for APIs that expose an opaque next cursor.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L733) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L736) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L702) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L792) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L795) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L761) |
 
 ### `DataBlock`
 
@@ -1755,9 +1759,9 @@ Render a fixed allowlist of filters for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L805) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L810) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L784) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L864) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L869) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L843) |
 
 ### `InlinePager`
 
@@ -1765,7 +1769,7 @@ Stable two-control preset for a DataBlock that also contains filters.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L476) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L535) |
 
 ### `MattermostRenderer`
 
@@ -1799,14 +1803,14 @@ Open the next declared window and record the current one for Back.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L324) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L383) |
 
 ### `OpenForm`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_control` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> PostControl \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L100) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L113) |
+| `render_control` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> PostControl \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L159) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L172) |
 
 ### `OpenFormActions`
 
@@ -1826,10 +1830,10 @@ Select one item from the visible page next to its pagination controls.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L660) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L668) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L603) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L635) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L719) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L727) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L662) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L694) |
 
 ### `PagedList`
 
@@ -1852,7 +1856,7 @@ Stable five-control preset: << < 1/25 > >>.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L510) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L569) |
 
 ### `Pager`
 
@@ -1860,9 +1864,9 @@ Render bounded previous/next controls for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L410) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L413) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L372) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L469) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L472) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L431) |
 
 ### `Progress`
 
@@ -1874,8 +1878,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L284) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L263) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
 
 ### `RowAction`
 
@@ -1945,24 +1949,27 @@ Dependency group: `core`.
 
 | Export | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L125) |
-| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L294) |
-| `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L24) |
-| `ButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L20) |
-| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L186) |
-| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L241) |
-| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L421) |
-| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L675) |
-| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L744) |
-| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L456) |
-| `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L118) |
-| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L317) |
-| `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L92) |
-| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L547) |
-| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L507) |
-| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
-| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L241) |
-| `SwitchTo` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L118) |
+| `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L184) |
+| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L82) |
+| `ButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
+| `ButtonResult` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
+| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
+| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L480) |
+| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L734) |
+| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L803) |
+| `FullButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
+| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L515) |
+| `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
+| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L376) |
+| `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L151) |
+| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L606) |
+| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L566) |
+| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L402) |
+| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `SimpleButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
+| `SwitchTo` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
 
 ### `ActionRow`
 
@@ -1970,10 +1977,10 @@ Declare controls that belong to one logical horizontal row.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `content_position` | property | `(self) -> str` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L141) |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L173) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L148) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L156) |
+| `content_position` | property | `(self) -> str` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L200) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L232) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L207) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L215) |
 
 ### `Back`
 
@@ -1981,17 +1988,17 @@ Return to the actual previous window in this dialog context.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L301) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L360) |
 
 ### `Button`
 
-Run an application callback and then rebuild the current post window.
+Run a full or manager-only callback, then rebuild the current post window.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L86) |
-| `process_event` | async-method | `(self, value: str \| None, event: Any, manager: Any) -> bool` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L73) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L49) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L145) |
+| `process_event` | async-method | `(self, value: str \| None, event: Any, manager: Any) -> bool` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L132) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L108) |
 
 ### `ButtonGrid`
 
@@ -1999,8 +2006,8 @@ Render explicitly declared action rows as one logical control group.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L230) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L206) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L289) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L265) |
 
 ### `ButtonRow`
 
@@ -2008,8 +2015,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L284) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L263) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
 
 ### `CompactPager`
 
@@ -2017,7 +2024,7 @@ Stable three-control preset: < 1/25 >.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L424) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L483) |
 
 ### `CursorPager`
 
@@ -2025,9 +2032,9 @@ Two-control preset for APIs that expose an opaque next cursor.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L733) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L736) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L702) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L792) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L795) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L761) |
 
 ### `Filter`
 
@@ -2035,9 +2042,9 @@ Render a fixed allowlist of filters for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L805) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L810) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L784) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L864) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L869) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L843) |
 
 ### `InlinePager`
 
@@ -2045,7 +2052,7 @@ Stable two-control preset for a DataBlock that also contains filters.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L476) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L535) |
 
 ### `Navigate`
 
@@ -2057,14 +2064,14 @@ Open the next declared window and record the current one for Back.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L324) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L383) |
 
 ### `OpenForm`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_control` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> PostControl \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L100) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L113) |
+| `render_control` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> PostControl \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L159) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L172) |
 
 ### `PageItemSelect`
 
@@ -2072,10 +2079,10 @@ Select one item from the visible page next to its pagination controls.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L660) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L668) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L603) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L635) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L719) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L727) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L662) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L694) |
 
 ### `PagePager`
 
@@ -2083,7 +2090,7 @@ Stable five-control preset: << < 1/25 > >>.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L510) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L569) |
 
 ### `Pager`
 
@@ -2091,9 +2098,9 @@ Render bounded previous/next controls for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L410) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L413) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L372) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L469) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L472) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L431) |
 
 ### `Row`
 
@@ -2101,8 +2108,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L284) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L263) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
 
 ### `SwitchTo`
 

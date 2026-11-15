@@ -434,6 +434,23 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   strict mypy для 215 source files и documentation drift
   (`293 exports / 478 members / 19 examples / 29 guides`) прошли. Live Mattermost после этого этапа
   ещё не запускался.
-- Следующий конкретный шаг плана: этап 4, manager-only callback signature для `Button`, затем замена
-  статических imperative callbacks на declarative navigation widgets.
+
+## Button callbacks — этап 4 реализован
+
+- `mattergram_dialog.Button` принимает две строгие формы: полную
+  `(event, button, manager)` и короткую `(manager)`. Публичные typing aliases экспортируются из
+  `mattergram_dialog`; compiled adapter остаётся внутренней деталью.
+- Сигнатура анализируется один раз при создании widget. Обычные функции, bound methods,
+  `functools.partial` и callable objects поддерживаются при однозначной итоговой сигнатуре;
+  0, 2, 4 аргумента, variadic и keyword-only формы немедленно отклоняются.
+- Sync и async callbacks поддерживаются одинаково. `TypeError` из прикладного callback не
+  используется как сигнал для повторного вызова, а уже принятый action token остаётся одноразовым.
+- `examples/dialog_progress.py` переведён на manager-only callback без фиктивных параметров.
+  Layout, число кликов и capability requirements не изменились; live Mattermost для этого API
+  среза не запускался.
+- Проверки: полный suite `531 passed, 23 skipped, 309 subtests`; Ruff lint/format для 269 файлов,
+  strict mypy для 215 source files, dialog extraction replay и documentation drift
+  (`300 exports / 478 members / 19 examples / 29 guides`) прошли.
+- Следующий конкретный шаг плана: этап 5 — заменить статические переходы Game Admin на `SwitchTo`,
+  `Back` и `OpenForm`, сохранив widget IDs, state names и stale-action поведение.
 

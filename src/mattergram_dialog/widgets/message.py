@@ -4,7 +4,7 @@ import inspect
 import re
 import secrets
 from collections.abc import Awaitable, Callable, Mapping
-from typing import Any
+from typing import TYPE_CHECKING, Any, TypeAlias, cast
 
 from mattergram.fsm.state import State
 from mattergram.ui.forms import Option
@@ -16,13 +16,71 @@ from mattergram_dialog.widgets.common.when import WhenCondition
 from mattergram_dialog.widgets.paged import PagedList
 from mattergram_dialog.widgets.text import Const, Text
 
+if TYPE_CHECKING:
+    from mattergram_dialog.navigation import DialogManager
+
 _ACTION_ID = re.compile(r"^[A-Za-z][A-Za-z0-9]{0,47}$")
 
-ButtonClick = Callable[[Any, "Button", Any], Awaitable[None] | None]
+ButtonResult: TypeAlias = Awaitable[None] | None
+SimpleButtonClick: TypeAlias = Callable[["DialogManager"], ButtonResult]
+FullButtonClick: TypeAlias = Callable[[Any, "Button", "DialogManager"], ButtonResult]
+ButtonClick: TypeAlias = SimpleButtonClick | FullButtonClick
+_CompiledButtonClick: TypeAlias = Callable[[Any, "Button", "DialogManager"], ButtonResult]
+
+
+def _callback_name(callback: ButtonClick) -> str:
+    return str(
+        getattr(
+            callback,
+            "__qualname__",
+            getattr(callback, "__name__", type(callback).__qualname__),
+        )
+    )
+
+
+def _invalid_callback(callback: ButtonClick) -> TypeError:
+    return TypeError(
+        f"Button callback {_callback_name(callback)!r} must accept exactly "
+        "(manager) or (event, button, manager)"
+    )
+
+
+def _compile_button_click(callback: ButtonClick) -> _CompiledButtonClick:
+    try:
+        signature = inspect.signature(callback)
+    except (TypeError, ValueError):
+        raise _invalid_callback(callback) from None
+    parameters = tuple(signature.parameters.values())
+    if any(
+        parameter.kind
+        in (
+            inspect.Parameter.VAR_POSITIONAL,
+            inspect.Parameter.VAR_KEYWORD,
+            inspect.Parameter.KEYWORD_ONLY,
+        )
+        for parameter in parameters
+    ):
+        raise _invalid_callback(callback)
+    positional = tuple(
+        parameter
+        for parameter in parameters
+        if parameter.kind in (inspect.Parameter.POSITIONAL_ONLY, inspect.Parameter.POSITIONAL_OR_KEYWORD)
+    )
+    if len(positional) == 1:
+        simple = cast(SimpleButtonClick, callback)
+
+        def call_simple(event: Any, button: Button, manager: DialogManager) -> ButtonResult:
+            del event, button
+            return simple(manager)
+
+        return call_simple
+    if len(positional) == 3:
+        return cast(FullButtonClick, callback)
+    raise _invalid_callback(callback)
 
 
 class Button(Widget):
-    """Run an application callback and then rebuild the current post window."""
+    """Run a full or manager-only callback, then rebuild the current post window."""
 
     def __init__(
         self,
@@ -43,6 +101,7 @@ class Button(Widget):
             raise TypeError("Button disabled must be a bool")
         self.text = text
         self.on_click = on_click
+        self._on_click = None if on_click is None else _compile_button_click(on_click)
         self.style = style
         self.disabled = disabled
 
@@ -76,9 +135,9 @@ class Button(Widget):
         if not isinstance(state, dict) or value is None or state.get("action_token") != value:
             return False
         del state["action_token"]
-        if self.disabled or self.on_click is None:
+        if self.disabled or self._on_click is None:
             return True
-        result = self.on_click(event, self, manager)
+        result = self._on_click(event, self, manager)
         if inspect.isawaitable(result):
             await result
         return True
@@ -820,11 +879,13 @@ __all__ = [
     "Back",
     "Button",
     "ButtonClick",
+    "ButtonResult",
     "ButtonGrid",
     "ButtonRow",
     "CompactPager",
     "CursorPager",
     "Filter",
+    "FullButtonClick",
     "InlinePager",
     "Navigate",
     "Next",
@@ -833,5 +894,6 @@ __all__ = [
     "PagePager",
     "Pager",
     "Row",
+    "SimpleButtonClick",
     "SwitchTo",
 ]

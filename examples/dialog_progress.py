@@ -30,8 +30,7 @@ async def load_job(data: Any, manager: DialogManager) -> None:
         manager.dialog_data.update(data)
 
 
-async def cancel_job(event: Any, button: Button, manager: DialogManager) -> None:
-    del event, button
+async def cancel_job(manager: DialogManager) -> None:
     manager.dialog_data.update(
         phase="cancelled",
         stage="Отмена запрошена",
