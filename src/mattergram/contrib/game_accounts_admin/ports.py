@@ -1,9 +1,11 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Awaitable, Callable, Sequence
 from typing import Protocol
 
 from .models import AccountCredentials, PushEvent, PushRule, TeamUser, VerificationResult
+
+OperationProgress = Callable[[int, int, str], Awaitable[None]]
 
 
 class AccountVerifier(Protocol):

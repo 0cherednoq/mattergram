@@ -11,7 +11,7 @@ from .models import (
     _id,
     _now,
 )
-from .ports import AccountVerifier
+from .ports import AccountVerifier, OperationProgress
 from .repository import MemoryAdminRepository
 
 
@@ -33,6 +33,7 @@ async def check_ids(
     actor_id: str,
     account_ids: Sequence[str],
     scope: str,
+    progress: OperationProgress | None = None,
 ) -> CheckRun:
     """Verify a stable credential snapshot and commit only if it is still current."""
 
@@ -48,7 +49,9 @@ async def check_ids(
             if account_id in repository.accounts
         ]
     valid = invalid = errors = 0
-    for account_id, game, credentials, login in accounts:
+    if progress is not None:
+        await progress(0, len(accounts), "verify")
+    for index, (account_id, game, credentials, login) in enumerate(accounts, start=1):
         last_error: str | None
         try:
             result = await verifier.verify(game, credentials)
@@ -83,6 +86,8 @@ async def check_ids(
             invalid += 1
         else:
             errors += 1
+        if progress is not None:
+            await progress(index, len(accounts), "verify")
     run_status: RunStatus = (
         "failed" if accounts and errors == len(accounts) else "partial" if errors else "completed"
     )

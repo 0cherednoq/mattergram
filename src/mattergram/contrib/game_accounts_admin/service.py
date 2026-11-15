@@ -24,7 +24,7 @@ from .models import (
     TeamUser,
     _id,
 )
-from .ports import AccountVerifier, ImportFileReader, PushDispatcher, TeamUserDirectory
+from .ports import AccountVerifier, ImportFileReader, OperationProgress, PushDispatcher, TeamUserDirectory
 from .repository import MemoryAdminRepository
 
 
@@ -233,7 +233,14 @@ class GameAccountsAdminService:
         for rule in rules:
             await self.push_dispatcher.send(rule, event, text)
 
-    async def import_accounts(self, actor_id: str, *, game: str, file_id: str) -> ImportRun:
+    async def import_accounts(
+        self,
+        actor_id: str,
+        *,
+        game: str,
+        file_id: str,
+        progress: OperationProgress | None = None,
+    ) -> ImportRun:
         self.require_admin(actor_id)
         return await run_account_import(
             self.repository,
@@ -243,6 +250,7 @@ class GameAccountsAdminService:
             actor_id=actor_id,
             game=game,
             file_id=file_id,
+            progress=progress,
         )
 
     @staticmethod
@@ -306,7 +314,14 @@ class GameAccountsAdminService:
             account.last_error = None
             return account
 
-    async def _check_ids(self, actor_id: str, account_ids: Sequence[str], *, scope: str) -> CheckRun:
+    async def _check_ids(
+        self,
+        actor_id: str,
+        account_ids: Sequence[str],
+        *,
+        scope: str,
+        progress: OperationProgress | None = None,
+    ) -> CheckRun:
         self.require_admin(actor_id)
         return await check_ids(
             self.repository,
@@ -315,23 +330,40 @@ class GameAccountsAdminService:
             actor_id=actor_id,
             account_ids=account_ids,
             scope=scope,
+            progress=progress,
         )
 
     async def check_account(self, actor_id: str, account_id: str) -> CheckRun:
         return await self._check_ids(actor_id, (account_id,), scope=f"account:{account_id}")
 
-    async def check_all(self, actor_id: str) -> CheckRun:
+    async def check_all(
+        self,
+        actor_id: str,
+        *,
+        progress: OperationProgress | None = None,
+    ) -> CheckRun:
         async with self.repository.lock:
             account_ids = tuple(self.repository.accounts)
-        return await self._check_ids(actor_id, account_ids, scope="all")
+        return await self._check_ids(actor_id, account_ids, scope="all", progress=progress)
 
-    async def check_import(self, actor_id: str, import_id: str) -> CheckRun:
+    async def check_import(
+        self,
+        actor_id: str,
+        import_id: str,
+        *,
+        progress: OperationProgress | None = None,
+    ) -> CheckRun:
         self.require_admin(actor_id)
         async with self.repository.lock:
             run = next((item for item in self.repository.imports if item.id == import_id), None)
         if run is None:
             raise AdminInputError({"import_file": "Импорт больше не существует"})
-        return await self._check_ids(actor_id, run.account_ids, scope=f"import:{import_id}")
+        return await self._check_ids(
+            actor_id,
+            run.account_ids,
+            scope=f"import:{import_id}",
+            progress=progress,
+        )
 
     async def list_imports(self, actor_id: str) -> list[dict[str, Any]]:
         self.require_admin(actor_id)

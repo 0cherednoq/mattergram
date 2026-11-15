@@ -4800,7 +4800,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-            "line": 9
+            "line": 11
           },
           "bases": [
             "typing.Protocol"
@@ -4813,7 +4813,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-                "line": 10
+                "line": 12
               }
             }
           ]
@@ -4882,6 +4882,198 @@
           "bases": []
         },
         {
+          "name": "CheckAllAccountsJob",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CheckAllAccountsJob",
+          "kind": "class",
+          "signature": "() -> None",
+          "summary": "CheckAllAccountsJob()",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 32
+          },
+          "bases": []
+        },
+        {
+          "name": "CheckImportedAccountsJob",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CheckImportedAccountsJob",
+          "kind": "class",
+          "signature": "(import_id: str) -> None",
+          "summary": "CheckImportedAccountsJob(import_id: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 37
+          },
+          "bases": []
+        },
+        {
+          "name": "CoalescingDialogJobUpdater",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CoalescingDialogJobUpdater",
+          "kind": "class",
+          "signature": "(updater: CoalescingDialogUpdater) -> None",
+          "summary": "Adapt the shared dialog coalescer to background-job progress snapshots.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 121
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "update",
+              "kind": "async-method",
+              "signature": "(self, ref: DialogRef, data: dict[str, object] | None = None, *, revision: int | None = None) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 127
+              }
+            }
+          ]
+        },
+        {
+          "name": "DialogJobUpdater",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.DialogJobUpdater",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 111
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "update",
+              "kind": "async-method",
+              "signature": "(self, ref: DialogRef, data: dict[str, object] | None = None, *, revision: int | None = None) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 112
+              }
+            }
+          ]
+        },
+        {
+          "name": "EphemeralMemoryGameAdminJobQueue",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.EphemeralMemoryGameAdminJobQueue",
+          "kind": "class",
+          "signature": "() -> None",
+          "summary": "Process-local, non-durable queue for the owned local demo only.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 242
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "dequeue",
+              "kind": "async-method",
+              "signature": "(self) -> str",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 251
+              }
+            },
+            {
+              "name": "enqueue",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 248
+              }
+            },
+            {
+              "name": "task_done",
+              "kind": "method",
+              "signature": "(self) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 254
+              }
+            }
+          ]
+        },
+        {
+          "name": "EphemeralMemoryGameAdminJobRepository",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.EphemeralMemoryGameAdminJobRepository",
+          "kind": "class",
+          "signature": "() -> None",
+          "summary": "Process-local demo/test repository. Never use it as production persistence.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 171
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "create",
+              "kind": "async-method",
+              "signature": "(self, job: GameAdminJob) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 180
+              }
+            },
+            {
+              "name": "get",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> GameAdminJob | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 189
+              }
+            },
+            {
+              "name": "replace",
+              "kind": "async-method",
+              "signature": "(self, job: GameAdminJob, *, expected_revision: int) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 193
+              }
+            },
+            {
+              "name": "request_cancel",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 207
+              }
+            },
+            {
+              "name": "revisions",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> tuple[GameAdminJob, ...]",
+              "summary": "Expose immutable snapshots for demo diagnostics and contract tests.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 235
+              }
+            },
+            {
+              "name": "terminal_history",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> tuple[GameAdminJob, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 229
+              }
+            }
+          ]
+        },
+        {
           "name": "GameAccount",
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAccount",
           "kind": "class",
@@ -4892,6 +5084,233 @@
             "line": 101
           },
           "bases": []
+        },
+        {
+          "name": "GameAdminJob",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJob",
+          "kind": "class",
+          "signature": "(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int | None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str | None = None) -> None",
+          "summary": "Durable, secret-free snapshot of one background operation.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 46
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "terminal",
+              "kind": "property",
+              "signature": "(self) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 82
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminJobPayload",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobPayload",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "GameAdminJobQueue",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobQueue",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": "Production queue port. Delivery may be at-least-once.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 105
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "enqueue",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 108
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminJobRepository",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobRepository",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": "Durable production port; implementations must use compare-and-swap revisions.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 91
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "create",
+              "kind": "async-method",
+              "signature": "(self, job: GameAdminJob) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 94
+              }
+            },
+            {
+              "name": "get",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> GameAdminJob | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 96
+              }
+            },
+            {
+              "name": "replace",
+              "kind": "async-method",
+              "signature": "(self, job: GameAdminJob, *, expected_revision: int) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 98
+              }
+            },
+            {
+              "name": "request_cancel",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 100
+              }
+            },
+            {
+              "name": "terminal_history",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> tuple[GameAdminJob, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 102
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminJobResult",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobResult",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "GameAdminJobRunner",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobRunner",
+          "kind": "class",
+          "signature": "(service: GameAccountsAdminService, repository: GameAdminJobRepository, updater: DialogJobUpdater) -> None",
+          "summary": "Execute queued imports/checks and publish ordered, actor-scoped progress.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 332
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "run",
+              "kind": "async-method",
+              "signature": "(self, job_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 427
+              }
+            }
+          ]
+        },
+        {
+          "name": "GameAdminJobState",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobState",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "GameAdminJobs",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobs",
+          "kind": "class",
+          "signature": "(service: GameAccountsAdminService, repository: GameAdminJobRepository, queue: GameAdminJobQueue) -> None",
+          "summary": "Authorize and enqueue background work without choosing infrastructure adapters.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 258
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "cancel",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, job_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 318
+              }
+            },
+            {
+              "name": "check_all",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, dialog_ref: DialogRef) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 303
+              }
+            },
+            {
+              "name": "check_import",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, dialog_ref: DialogRef, import_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 306
+              }
+            },
+            {
+              "name": "import_accounts",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, dialog_ref: DialogRef, *, game: str, file_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 293
+              }
+            }
+          ]
         },
         {
           "name": "GameAccountsAdminService",
@@ -4922,27 +5341,27 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 320
+                "line": 336
               }
             },
             {
               "name": "check_all",
               "kind": "async-method",
-              "signature": "(self, actor_id: str) -> CheckRun",
+              "signature": "(self, actor_id: str, *, progress: OperationProgress | None = None) -> CheckRun",
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 323
+                "line": 339
               }
             },
             {
               "name": "check_import",
               "kind": "async-method",
-              "signature": "(self, actor_id: str, import_id: str) -> CheckRun",
+              "signature": "(self, actor_id: str, import_id: str, *, progress: OperationProgress | None = None) -> CheckRun",
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 328
+                "line": 349
               }
             },
             {
@@ -4958,7 +5377,7 @@
             {
               "name": "import_accounts",
               "kind": "async-method",
-              "signature": "(self, actor_id: str, *, game: str, file_id: str) -> ImportRun",
+              "signature": "(self, actor_id: str, *, game: str, file_id: str, progress: OperationProgress | None = None) -> ImportRun",
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
@@ -4972,7 +5391,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 264
+                "line": 272
               }
             },
             {
@@ -4992,7 +5411,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 352
+                "line": 384
               }
             },
             {
@@ -5002,7 +5421,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 336
+                "line": 368
               }
             },
             {
@@ -5052,7 +5471,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 273
+                "line": 281
               }
             },
             {
@@ -5071,11 +5490,11 @@
           "name": "GameAdminActions",
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminActions",
           "kind": "class",
-          "signature": "(service: GameAccountsAdminService) -> None",
+          "signature": "(service: GameAccountsAdminService, jobs: GameAdminJobs | None = None) -> None",
           "summary": "Apply business actions and form submissions for the dialog declaration.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-            "line": 14
+            "line": 15
           },
           "bases": [],
           "members": [
@@ -5086,7 +5505,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 103
+                "line": 131
               }
             },
             {
@@ -5096,7 +5515,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 47
+                "line": 75
+              }
+            },
+            {
+              "name": "cancel_job",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 192
               }
             },
             {
@@ -5106,7 +5535,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 32
+                "line": 46
               }
             },
             {
@@ -5116,7 +5545,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 38
+                "line": 57
               }
             },
             {
@@ -5126,7 +5555,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 23
+                "line": 37
               }
             },
             {
@@ -5136,7 +5565,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 109
+                "line": 137
               }
             },
             {
@@ -5146,7 +5575,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 106
+                "line": 134
               }
             },
             {
@@ -5156,7 +5585,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 61
+                "line": 89
               }
             },
             {
@@ -5166,7 +5595,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 128
+                "line": 156
               }
             },
             {
@@ -5176,7 +5605,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 20
+                "line": 34
               }
             },
             {
@@ -5186,7 +5615,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 80
+                "line": 108
               }
             }
           ]
@@ -5347,7 +5776,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-            "line": 13
+            "line": 15
           },
           "bases": [
             "typing.Protocol"
@@ -5360,10 +5789,22 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-                "line": 14
+                "line": 16
               }
             }
           ]
+        },
+        {
+          "name": "ImportAccountsJob",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.ImportAccountsJob",
+          "kind": "class",
+          "signature": "(game: str, file_id: str) -> None",
+          "summary": "ImportAccountsJob(game: 'str', file_id: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 26
+          },
+          "bases": []
         },
         {
           "name": "ImportRun",
@@ -5388,6 +5829,20 @@
             "line": 9
           },
           "bases": []
+        },
+        {
+          "name": "JobRevisionConflict",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.JobRevisionConflict",
+          "kind": "class",
+          "signature": null,
+          "summary": "The persisted job changed after the caller read it.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 87
+          },
+          "bases": [
+            "builtins.RuntimeError"
+          ]
         },
         {
           "name": "PUSH_EVENTS",
@@ -5419,7 +5874,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-            "line": 17
+            "line": 19
           },
           "bases": [
             "typing.Protocol"
@@ -5432,7 +5887,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-                "line": 18
+                "line": 20
               }
             }
           ]
@@ -5515,7 +5970,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-            "line": 21
+            "line": 23
           },
           "bases": [
             "typing.Protocol"
@@ -5528,10 +5983,21 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
-                "line": 22
+                "line": 24
               }
             }
           ]
+        },
+        {
+          "name": "TERMINAL_JOB_STATES",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.TERMINAL_JOB_STATES",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "VerificationResult",
@@ -5549,11 +6015,11 @@
           "name": "build_admin_dialog",
           "qualified_name": "mattergram.contrib.game_accounts_admin.build_admin_dialog",
           "kind": "function",
-          "signature": "(service: GameAccountsAdminService) -> Dialog",
+          "signature": "(service: GameAccountsAdminService, *, jobs: GameAdminJobs | None = None) -> Dialog",
           "summary": "Build the complete administrator panel against one application service.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/dialog.py",
-            "line": 51
+            "line": 53
           }
         },
         {
@@ -5565,6 +6031,17 @@
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/keyboard.py",
             "line": 6
+          }
+        },
+        {
+          "name": "dialog_ref_from_manager",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.dialog_ref_from_manager",
+          "kind": "function",
+          "signature": "(manager: DialogManager) -> DialogRef",
+          "summary": "Capture durable coordinates for the active Mattermost dialog post.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 150
           }
         },
         {

@@ -17,7 +17,7 @@ from .models import (
     _id,
     _now,
 )
-from .ports import ImportFileReader
+from .ports import ImportFileReader, OperationProgress
 from .repository import MemoryAdminRepository
 
 EmitPush = Callable[[PushEvent, str], Awaitable[None]]
@@ -57,6 +57,7 @@ async def import_accounts(
     actor_id: str,
     game: str,
     file_id: str,
+    progress: OperationProgress | None = None,
 ) -> ImportRun:
     """Parse and persist one bounded JSONL import after caller authorization."""
 
@@ -74,6 +75,8 @@ async def import_accounts(
         raise AdminInputError({"import_file": "Файл должен содержать от 1 до 500 строк"})
     imported: list[str] = []
     issues: list[str] = []
+    if progress is not None:
+        await progress(0, len(lines), "parse")
     async with repository.lock:
         existing = {
             (account.game, account.credentials.login.casefold()) for account in repository.accounts.values()
@@ -103,6 +106,8 @@ async def import_accounts(
                 existing.add(key)
             except (json.JSONDecodeError, ValueError) as error:
                 issues.append(str(error).splitlines()[0])
+            if progress is not None:
+                await progress(number, len(lines), "parse")
         status: RunStatus = "completed" if not issues else "partial" if imported else "failed"
         run = ImportRun(
             _id("imp"),

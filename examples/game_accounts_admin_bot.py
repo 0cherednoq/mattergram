@@ -12,6 +12,7 @@ import asyncio
 import json
 import logging
 import secrets
+from contextlib import suppress
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -22,7 +23,12 @@ from game_accounts_admin import (
     AdminInputError,
     AdminRole,
     AdminUser,
+    CoalescingDialogJobUpdater,
+    EphemeralMemoryGameAdminJobQueue,
+    EphemeralMemoryGameAdminJobRepository,
     GameAccountsAdminService,
+    GameAdminJobRunner,
+    GameAdminJobs,
     MemoryAdminRepository,
     PushEvent,
     PushRule,
@@ -43,10 +49,30 @@ from mattergram.http import DialogManager as NativeDialogManager
 from mattergram.plugins import PluginManager
 from mattergram.ui import UIProfile
 from mattergram.ui.capabilities import SERVER_FEATURES
-from mattergram_dialog import DialogRegistry, DialogRuntime, DialogStorage, setup_dialogs
+from mattergram_dialog import (
+    CoalescingDialogUpdater,
+    DialogRegistry,
+    DialogRuntime,
+    DialogStorage,
+    setup_dialogs,
+)
 
 logger = logging.getLogger(__name__)
 ROOT = Path(__file__).resolve().parents[1]
+
+
+async def run_ephemeral_job_worker(
+    queue: EphemeralMemoryGameAdminJobQueue,
+    runner: GameAdminJobRunner,
+) -> None:
+    """Consume the local demo queue; production must supply durable infrastructure."""
+
+    while True:
+        job_id = await queue.dequeue()
+        try:
+            await runner.run(job_id)
+        finally:
+            queue.task_done()
 
 
 @dataclass(frozen=True, slots=True)
@@ -340,6 +366,8 @@ async def run(args: argparse.Namespace) -> None:
     storage = MemoryStorage()
     isolation = SimpleEventIsolation()
     dialog_storage = DialogStorage(storage, isolation)
+    job_worker: asyncio.Task[None] | None = None
+    dialog_updates: CoalescingDialogUpdater | None = None
     try:
         identity = await bot.get_me()
         if identity.id != stand.bot_id:
@@ -383,6 +411,9 @@ async def run(args: argparse.Namespace) -> None:
             push_dispatcher=MattermostPushDispatcher(bot),
             user_directory=user_directory,
         )
+        job_repository = EphemeralMemoryGameAdminJobRepository()
+        job_queue = EphemeralMemoryGameAdminJobQueue()
+        jobs = GameAdminJobs(service, job_repository, job_queue)
         public_keyboard = await bot.get_composer_keyboard(stand.channel_id)
         if public_keyboard is not None:
             await bot.delete_composer_keyboard(stand.channel_id)
@@ -394,7 +425,7 @@ async def run(args: argparse.Namespace) -> None:
             command="app-users",
             messages=("Пользователи",),
         )
-        registry = DialogRegistry(build_admin_dialog(service))
+        registry = DialogRegistry(build_admin_dialog(service, jobs=jobs))
         plugin_manager = PluginManager(
             bot=bot,
             dispatcher=dispatcher,
@@ -420,6 +451,13 @@ async def run(args: argparse.Namespace) -> None:
             ui_profile=profile,
             action_ttl=action_ttl,
         )
+        dialog_updates = CoalescingDialogUpdater(runtime, interval=0.25)
+        job_runner = GameAdminJobRunner(
+            service,
+            job_repository,
+            CoalescingDialogJobUpdater(dialog_updates),
+        )
+        job_worker = asyncio.create_task(run_ephemeral_job_worker(job_queue, job_runner))
         dispatcher.workflow_data[admin_users_plugin.ADMIN_USERS_RUNTIME.name] = runtime
         setup_dialogs(dispatcher, runtime)
         register_admin_panel(dispatcher, runtime, service)
@@ -443,6 +481,12 @@ async def run(args: argparse.Namespace) -> None:
         logger.info("Game admin demo ready on %s; use /game-admin", stand.base_url)
         await dispatcher.start(bot, http=http, host=args.host, port=args.port)
     finally:
+        if job_worker is not None:
+            job_worker.cancel()
+            with suppress(asyncio.CancelledError):
+                await job_worker
+        if dialog_updates is not None:
+            await dialog_updates.close()
         await dispatcher.close()
         await bot.close()
         await storage.close()

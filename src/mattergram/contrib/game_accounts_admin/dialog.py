@@ -22,6 +22,7 @@ from mattergram_dialog import (
     PagedTable,
     PageItemSelect,
     PagePager,
+    Progress,
     Section,
     Select,
     SwitchTo,
@@ -33,6 +34,7 @@ from mattergram_dialog.widgets.table import MarkdownColumn
 
 from .actions import GameAdminActions
 from .getters import GameAdminGetters
+from .jobs import GameAdminJobs
 from .models import PUSH_EVENTS
 from .service import GameAccountsAdminService
 from .states import AdminPanel
@@ -48,11 +50,15 @@ def _selected_visible(target: str, key: str) -> Callable[[Mapping[str, Any], Dia
     return condition
 
 
-def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
+def build_admin_dialog(
+    service: GameAccountsAdminService,
+    *,
+    jobs: GameAdminJobs | None = None,
+) -> Dialog:
     """Build the complete administrator panel against one application service."""
 
     getters = GameAdminGetters(service)
-    actions = GameAdminActions(service)
+    actions = GameAdminActions(service, jobs)
     role_options = tuple(
         Option(text=label, value=value)
         for label, value in (("Администратор", "admin"), ("Оператор", "operator"), ("Наблюдатель", "viewer"))
@@ -433,6 +439,34 @@ def build_admin_dialog(service: GameAccountsAdminService) -> Dialog:
                 title="Дальше",
             ),
             state=AdminPanel.import_result,
+        ),
+        Window(
+            Section(
+                "Фоновая операция",
+                Format("**Статус:** {job_state}  \n**Этап:** {job_stage}"),
+                Progress(
+                    current="job_current",
+                    total="job_total",
+                    label=Const("Прогресс"),
+                ),
+                Format("**Ошибка:** {job_error_type}", when="job_error_type"),
+                level=1,
+            ),
+            ButtonRow(
+                Button(
+                    Const("Отменить"),
+                    id="adminJobCancel",
+                    on_click=actions.cancel_job,
+                    when=lambda data, manager: (
+                        data.get("job_state") in {"queued", "running"}
+                        and not data.get("job_cancel_requested", False)
+                    ),
+                ),
+                SwitchTo(Const("Аккаунты"), id="adminJobAccounts", state=AdminPanel.accounts),
+                SwitchTo(Const("Главная"), id="adminJobHome", state=AdminPanel.home),
+                title="Управление",
+            ),
+            state=AdminPanel.job_progress,
         ),
         Window(
             Section("История импортов", Const("Без паролей, cookie values и сырого файла."), level=1),

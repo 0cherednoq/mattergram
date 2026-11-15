@@ -6,6 +6,7 @@ from mattergram.types import DialogSubmission
 from mattergram_dialog import DialogManager, ShowMode
 
 from .errors import AdminInputError
+from .jobs import GameAdminJob, GameAdminJobs, dialog_ref_from_manager
 from .models import _now
 from .service import GameAccountsAdminService
 from .states import AdminPanel
@@ -16,6 +17,19 @@ class GameAdminActions:
     """Apply business actions and form submissions for the dialog declaration."""
 
     service: GameAccountsAdminService
+    jobs: GameAdminJobs | None = None
+
+    @staticmethod
+    def _show_job(manager: DialogManager, job: GameAdminJob) -> None:
+        manager.dialog_data.update(
+            job_id=job.id,
+            job_state=job.state,
+            job_stage=job.stage,
+            job_current=job.current,
+            job_total=job.total if job.total else None,
+            job_cancel_requested=job.cancel_requested,
+            job_error_type=job.error_type,
+        )
 
     async def refresh_home(self, manager: DialogManager) -> None:
         manager.dialog_data["home_refreshed_at"] = _now()
@@ -30,6 +44,11 @@ class GameAdminActions:
         )
 
     async def check_all(self, manager: DialogManager) -> None:
+        if self.jobs is not None:
+            job = await self.jobs.check_all(manager.actor_id, dialog_ref_from_manager(manager))
+            self._show_job(manager, job)
+            await manager.switch_to(AdminPanel.job_progress, show_mode=ShowMode.NO_UPDATE)
+            return
         run = await self.service.check_all(manager.actor_id)
         manager.dialog_data["check_summary"] = (
             f"Проверено {run.total}: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
@@ -38,6 +57,15 @@ class GameAdminActions:
     async def check_imported(self, manager: DialogManager) -> None:
         import_id = manager.dialog_data.get("last_import_id")
         if not isinstance(import_id, str):
+            return
+        if self.jobs is not None:
+            job = await self.jobs.check_import(
+                manager.actor_id,
+                dialog_ref_from_manager(manager),
+                import_id,
+            )
+            self._show_job(manager, job)
+            await manager.switch_to(AdminPanel.job_progress, show_mode=ShowMode.NO_UPDATE)
             return
         run = await self.service.check_import(manager.actor_id, import_id)
         manager.dialog_data["check_summary"] = (
@@ -129,6 +157,17 @@ class GameAdminActions:
         if len(event.file_ids) != 1:
             await event.field_errors({"import_file": "Загрузите ровно один JSONL-файл"})
             return
+        if self.jobs is not None:
+            job = await self.jobs.import_accounts(
+                manager.actor_id,
+                dialog_ref_from_manager(manager),
+                game=event.values["game"],
+                file_id=event.file_ids[0],
+            )
+            self._show_job(manager, job)
+            await event.answer()
+            await manager.switch_to(AdminPanel.job_progress, show_mode=ShowMode.EDIT)
+            return
         try:
             run = await self.service.import_accounts(
                 manager.actor_id,
@@ -149,3 +188,12 @@ class GameAdminActions:
         )
         await event.answer()
         await manager.switch_to(AdminPanel.import_result, show_mode=ShowMode.EDIT)
+
+    async def cancel_job(self, manager: DialogManager) -> None:
+        if self.jobs is None:
+            return
+        job_id = manager.dialog_data.get("job_id")
+        if not isinstance(job_id, str):
+            return
+        job = await self.jobs.cancel(manager.actor_id, job_id)
+        self._show_job(manager, job)

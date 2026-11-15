@@ -1,6 +1,6 @@
 # Plugin architecture и рефакторинг Game Admin
 
-**Статус:** этапы 0–6 реализованы и contract-verified; этапы 7–8 остаются в работе.
+**Статус:** этапы 0–7 реализованы и contract-verified; этап 8 остаётся в работе.
 **Основной читатель:** maintainer, который будет добавлять plugin architecture, первый `AdminUsersPlugin` и рефакторить Game Admin.  
 **Тип документа:** план реализации с точными контрактами и критериями приёмки.
 
@@ -506,7 +506,10 @@ Secrets нельзя читать обратно через администра
 - этап 6: оставшийся feature разделён на package-модули models/ports/repository/service,
   import/check orchestration, getters/actions/dialog/keyboard/router; старый example сохранил
   совместимые re-exports;
-- следующий незавершённый этап — background jobs для длительных импортов и batch-проверок.
+- этап 7: добавлены durable repository/queue ports, явно ephemeral local adapters, typed jobs для
+  import/check, cooperative cancellation, terminal history и progress через существующие
+  `CoalescingDialogUpdater`/`DialogRef`; local demo запускает process-local worker;
+- следующий незавершённый этап — документация и обновление skill по стабилизированным API.
 
 ### Этап 0. Зафиксировать contracts
 

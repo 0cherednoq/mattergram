@@ -16,6 +16,7 @@ class AdminPanel(StatesGroup):
     account_edit = State()
     import_accounts = State()
     import_result = State()
+    job_progress = State()
     import_history = State()
     check_history = State()
 

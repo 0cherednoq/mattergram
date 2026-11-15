@@ -1077,34 +1077,52 @@ Dependency group: `core`.
 | --- | --- | --- | --- |
 | `AccountCredentials` | class | `(login: str, password: SecretStr, cookies: tuple[StoredCookie, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L94) |
 | `AccountStatus` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `AccountVerifier` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L9) |
+| `AccountVerifier` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L11) |
 | `AdminInputError` | class | `(field_errors: Mapping[str, str]) -> None` | [src/mattergram/contrib/game_accounts_admin/errors.py](../../src/mattergram/contrib/game_accounts_admin/errors.py#L6) |
 | `AdminPanel` | class | `()` | [src/mattergram/contrib/game_accounts_admin/states.py](../../src/mattergram/contrib/game_accounts_admin/states.py#L6) |
 | `AdminRole` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `AdminUser` | class | `(id: str, mattermost_user_id: str, username: str, role: AdminRole, enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L46) |
 | `CheckRun` | class | `(id: str, created_at: str, actor_id: str, scope: str, total: int, valid: int, invalid: int, errors: int, status: RunStatus) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L131) |
+| `CheckAllAccountsJob` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L32) |
+| `CheckImportedAccountsJob` | class | `(import_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L37) |
+| `CoalescingDialogJobUpdater` | class | `(updater: CoalescingDialogUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L121) |
+| `DialogJobUpdater` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L111) |
+| `EphemeralMemoryGameAdminJobQueue` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L242) |
+| `EphemeralMemoryGameAdminJobRepository` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L171) |
 | `GameAccount` | class | `(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str \| None = None, last_error: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L101) |
+| `GameAdminJob` | class | `(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int \| None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L46) |
+| `GameAdminJobPayload` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
+| `GameAdminJobQueue` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L105) |
+| `GameAdminJobRepository` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L91) |
+| `GameAdminJobResult` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
+| `GameAdminJobRunner` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, updater: DialogJobUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L332) |
+| `GameAdminJobState` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
+| `GameAdminJobs` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, queue: GameAdminJobQueue) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L258) |
 | `GameAccountsAdminService` | class | `(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory) -> None` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L31) |
-| `GameAdminActions` | class | `(service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L14) |
+| `GameAdminActions` | class | `(service: GameAccountsAdminService, jobs: GameAdminJobs \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L15) |
 | `GameAdminGetters` | class | `(service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L13) |
 | `GameAdminHandlerContext` | class | `(runtime: DialogRuntime, service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L26) |
 | `GAME_ADMIN_KEYBOARD_ROUTES` | mapping | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `GAME_ADMIN_SLASH_ROUTES` | mapping | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `ImportFileReader` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L13) |
+| `ImportFileReader` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L15) |
+| `ImportAccountsJob` | class | `(game: str, file_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L26) |
 | `ImportRun` | class | `(id: str, created_at: str, actor_id: str, game: str, total: int, imported: int, rejected: int, status: RunStatus, account_ids: tuple[str, ...] = (), issues: tuple[str, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L117) |
 | `MemoryAdminRepository` | class | `(*, users: Sequence[AdminUser] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/repository.py](../../src/mattergram/contrib/game_accounts_admin/repository.py#L9) |
+| `JobRevisionConflict` | class | — | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L87) |
 | `PUSH_EVENTS` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `PushDestinationKind` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `PushDispatcher` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L17) |
+| `PushDispatcher` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L19) |
 | `PushEvent` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `PushRule` | class | `(id: str, destination_kind: PushDestinationKind, destination_id: str, events: tuple[PushEvent, ...], enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L78) |
 | `RunStatus` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `StoredCookie` | class | `(domain: str, name: str, value: SecretStr) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L87) |
 | `TeamUser` | class | `(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L55) |
-| `TeamUserDirectory` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L21) |
+| `TeamUserDirectory` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L23) |
+| `TERMINAL_JOB_STATES` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `VerificationResult` | class | `(valid: bool, summary: str) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L111) |
-| `build_admin_dialog` | function | `(service: GameAccountsAdminService) -> Dialog` | [src/mattergram/contrib/game_accounts_admin/dialog.py](../../src/mattergram/contrib/game_accounts_admin/dialog.py#L51) |
+| `build_admin_dialog` | function | `(service: GameAccountsAdminService, *, jobs: GameAdminJobs \| None = None) -> Dialog` | [src/mattergram/contrib/game_accounts_admin/dialog.py](../../src/mattergram/contrib/game_accounts_admin/dialog.py#L53) |
 | `build_admin_keyboard` | function | `() -> ComposerKeyboard` | [src/mattergram/contrib/game_accounts_admin/keyboard.py](../../src/mattergram/contrib/game_accounts_admin/keyboard.py#L6) |
+| `dialog_ref_from_manager` | function | `(manager: DialogManager) -> DialogRef` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L150) |
 | `game_admin_router` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `open_game_admin` | async-function | `(event: SlashCommand, game_admin: GameAdminHandlerContext) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L43) |
 | `register_admin_panel` | function | `(dispatcher: Dispatcher, runtime: DialogRuntime, service: GameAccountsAdminService, *, command: str = 'game-admin') -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L67) |
@@ -1118,7 +1136,7 @@ AccountCredentials(login: 'str', password: 'SecretStr', cookies: 'tuple[StoredCo
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `verify` | async-method | `(self, game: str, credentials: AccountCredentials) -> VerificationResult` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L10) |
+| `verify` | async-method | `(self, game: str, credentials: AccountCredentials) -> VerificationResult` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L12) |
 
 ### `AdminUser`
 
@@ -1128,9 +1146,101 @@ AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'AdminRol
 
 CheckRun(id: 'str', created_at: 'str', actor_id: 'str', scope: 'str', total: 'int', valid: 'int', invalid: 'int', errors: 'int', status: 'RunStatus')
 
+### `CheckAllAccountsJob`
+
+CheckAllAccountsJob()
+
+### `CheckImportedAccountsJob`
+
+CheckImportedAccountsJob(import_id: 'str')
+
+### `CoalescingDialogJobUpdater`
+
+Adapt the shared dialog coalescer to background-job progress snapshots.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L127) |
+
+### `DialogJobUpdater`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L112) |
+
+### `EphemeralMemoryGameAdminJobQueue`
+
+Process-local, non-durable queue for the owned local demo only.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `dequeue` | async-method | `(self) -> str` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L251) |
+| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L248) |
+| `task_done` | method | `(self) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L254) |
+
+### `EphemeralMemoryGameAdminJobRepository`
+
+Process-local demo/test repository. Never use it as production persistence.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L180) |
+| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L189) |
+| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L193) |
+| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L207) |
+| `revisions` | async-method | `(self, job_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L235) |
+| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L229) |
+
 ### `GameAccount`
 
 GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)
+
+### `GameAdminJob`
+
+Durable, secret-free snapshot of one background operation.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `terminal` | property | `(self) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L82) |
+
+### `GameAdminJobQueue`
+
+Production queue port. Delivery may be at-least-once.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L108) |
+
+### `GameAdminJobRepository`
+
+Durable production port; implementations must use compare-and-swap revisions.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L94) |
+| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L96) |
+| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L98) |
+| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L100) |
+| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L102) |
+
+### `GameAdminJobRunner`
+
+Execute queued imports/checks and publish ordered, actor-scoped progress.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `run` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L427) |
+
+### `GameAdminJobs`
+
+Authorize and enqueue background work without choosing infrastructure adapters.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `cancel` | async-method | `(self, actor_id: str, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L318) |
+| `check_all` | async-method | `(self, actor_id: str, dialog_ref: DialogRef) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L303) |
+| `check_import` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, import_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L306) |
+| `import_accounts` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, *, game: str, file_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L293) |
 
 ### `GameAccountsAdminService`
 
@@ -1139,20 +1249,20 @@ Administrator-only application service with an explicit secret boundary.
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L101) |
-| `check_account` | async-method | `(self, actor_id: str, account_id: str) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L320) |
-| `check_all` | async-method | `(self, actor_id: str) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L323) |
-| `check_import` | async-method | `(self, actor_id: str, import_id: str) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L328) |
+| `check_account` | async-method | `(self, actor_id: str, account_id: str) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L336) |
+| `check_all` | async-method | `(self, actor_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L339) |
+| `check_import` | async-method | `(self, actor_id: str, import_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L349) |
 | `dashboard` | async-method | `(self, actor_id: str) -> dict[str, int]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L59) |
-| `import_accounts` | async-method | `(self, actor_id: str, *, game: str, file_id: str) -> ImportRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L236) |
-| `list_accounts` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L264) |
+| `import_accounts` | async-method | `(self, actor_id: str, *, game: str, file_id: str, progress: OperationProgress \| None = None) -> ImportRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L236) |
+| `list_accounts` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L272) |
 | `list_available_team_users` | async-method | `(self, actor_id: str) -> list[TeamUser]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L87) |
-| `list_checks` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L352) |
-| `list_imports` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L336) |
+| `list_checks` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L384) |
+| `list_imports` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L368) |
 | `list_push_rules` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L172) |
 | `list_users` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L71) |
 | `require_admin` | method | `(self, actor_id: str) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L53) |
 | `save_push_rule` | async-method | `(self, actor_id: str, *, rule_id: str \| None, destination_kind: PushDestinationKind, destination_id: str, events: Sequence[str], enabled: bool) -> PushRule` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L194) |
-| `update_account` | async-method | `(self, actor_id: str, account_id: str, *, login: str, password: str \| None, cookies_json: str \| None) -> GameAccount` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L273) |
+| `update_account` | async-method | `(self, actor_id: str, account_id: str, *, login: str, password: str \| None, cookies_json: str \| None) -> GameAccount` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L281) |
 | `update_user` | async-method | `(self, actor_id: str, user_id: str, *, username: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L135) |
 
 ### `GameAdminActions`
@@ -1161,17 +1271,18 @@ Apply business actions and form submissions for the dialog declaration.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L103) |
-| `add_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L47) |
-| `check_all` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L32) |
-| `check_imported` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L38) |
-| `check_selected` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L23) |
-| `edit_account` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L109) |
-| `edit_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L106) |
-| `edit_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L61) |
-| `import_accounts` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L128) |
-| `refresh_home` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L20) |
-| `save_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager, *, edit: bool) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L80) |
+| `add_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L131) |
+| `add_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L75) |
+| `cancel_job` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L192) |
+| `check_all` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L46) |
+| `check_imported` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L57) |
+| `check_selected` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L37) |
+| `edit_account` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L137) |
+| `edit_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L134) |
+| `edit_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L89) |
+| `import_accounts` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L156) |
+| `refresh_home` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L34) |
+| `save_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager, *, edit: bool) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L108) |
 
 ### `GameAdminGetters`
 
@@ -1198,7 +1309,11 @@ Dependencies injected into module-level game-admin handlers.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `read` | async-method | `(self, file_id: str) -> bytes` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L14) |
+| `read` | async-method | `(self, file_id: str) -> bytes` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L16) |
+
+### `ImportAccountsJob`
+
+ImportAccountsJob(game: 'str', file_id: 'str')
 
 ### `ImportRun`
 
@@ -1208,11 +1323,15 @@ ImportRun(id: 'str', created_at: 'str', actor_id: 'str', game: 'str', total: 'in
 
 Explicit non-durable repository for tests and local development.
 
+### `JobRevisionConflict`
+
+The persisted job changed after the caller read it.
+
 ### `PushDispatcher`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `send` | async-method | `(self, rule: PushRule, event: PushEvent, text: str) -> None` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L18) |
+| `send` | async-method | `(self, rule: PushRule, event: PushEvent, text: str) -> None` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L20) |
 
 ### `PushRule`
 
@@ -1234,7 +1353,7 @@ One active human Mattermost account available to this application.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `list_users` | async-method | `(self) -> Sequence[TeamUser]` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L22) |
+| `list_users` | async-method | `(self) -> Sequence[TeamUser]` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L24) |
 
 ### `VerificationResult`
 
@@ -1247,6 +1366,10 @@ Build the complete administrator panel against one application service.
 ### `build_admin_keyboard`
 
 Declare the persistent global navigation for the administrator panel.
+
+### `dialog_ref_from_manager`
+
+Capture durable coordinates for the active Mattermost dialog post.
 
 ### `open_game_admin`
 

@@ -497,3 +497,25 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Следующий конкретный шаг плана: этап 7 — определить durable job contract для import/check
   progress, cancellation, monotonic revisions и terminal history.
 
+## Background jobs Game Admin — этап 7 реализован
+
+- Добавлены production-порты `GameAdminJobRepository` и `GameAdminJobQueue`, typed payloads для
+  импорта, проверки всех аккаунтов и проверки одного импорта, а также runner с compare-and-swap
+  ревизиями. Production persistence/queue намеренно не подменяются встроенной реализацией.
+- `EphemeralMemoryGameAdminJobRepository` и `EphemeralMemoryGameAdminJobQueue` явно помечены как
+  process-local demo/test adapters. Они не восстанавливают задания после перезапуска и не подходят
+  для production или нескольких workers.
+- Progress публикуется через существующий `CoalescingDialogUpdater`, `DialogRef` и монотонную
+  revision. Устаревший либо удалённый dialog post отсоединяет UI, но не отменяет бизнес-операцию:
+  job завершается и остаётся в terminal history. Отмена queued job немедленная; running import/check
+  наблюдают запрос кооперативно между элементами.
+- Contract tests покрывают monotonic revisions, неизменяемость terminal snapshot, terminal history,
+  running cancellation, import progress, быстрый переход callback в progress state и устаревший
+  `DialogRef`. Local demo подключает process-local worker; production adapters остаются обязательными.
+- Добавлено одно окно глубины 1: `Progress` и один ряд из трёх действий (отмена, аккаунты, главная).
+  Запуск batch job занимает один click, отмена — ещё один; новые Mattermost client capabilities не
+  требуются. Live Mattermost на этом application-contract этапе не запускался.
+- Проверки: полный suite `537 passed, 23 skipped, 309 subtests`; Ruff/format, strict mypy и generated
+  documentation drift (`24 modules / 352 exports / 544 members / 19 examples / 29 guides`) прошли.
+- Следующий конкретный шаг Game Admin: этап 8 — обновить public guide и skill только фактическими
+  import paths и явно показать production adapters, worker loop и local-demo composition.
