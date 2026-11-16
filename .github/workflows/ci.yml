@@ -30,6 +30,8 @@ jobs:
       - run: uv run --locked mypy
       - run: uv run --locked python -m tools.generate_documentation --check
       - run: uv run --locked python -m tools.fetch_upstream
+      - run: uv run --locked python -m tools.inventory_upstream --source aiogram
+      - run: uv run --locked python -m tools.inventory_upstream --source aiogram_dialog
       - run: uv run --locked pytest --junitxml=build/reports/tests.xml
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
