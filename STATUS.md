@@ -1,8 +1,10 @@
 # Состояние проекта
 
-**Дата:** 15 ноября 2026 года.  
-**Этап:** E0–E4, E5-01–E5-02, E6, E7 и E8 завершены; E5-03 проверка native clients открыта.  
-**Задачи:** закрыты E0-01–E0-04, E1-01–E1-04, E2-01–E2-03, E3-01–E3-03, E4-01–E4-03, E5-01–E5-02, E6-01–E6-03, E7-01–E7-03, E8-01–E8-03, E9-01, CI-01 и CI-03: 31 из 56. Остальные пункты исходного плана открыты.
+**Дата:** 16 ноября 2026 года.
+
+**Этап:** E0–E4, E5-01–E5-02, E6, E7-01–E7-03 и E8 завершены; E7-04 post delivery options и E5-03 проверка native clients открыты.
+
+**Задачи:** закрыты E0-01–E0-04, E1-01–E1-04, E2-01–E2-03, E3-01–E3-03, E4-01–E4-03, E5-01–E5-02, E6-01–E6-03, E7-01–E7-03, E8-01–E8-03, E9-01, CI-01 и CI-03: 31 из 57. Остальные пункты исходного плана открыты.
 
 ## Готово
 
@@ -304,6 +306,12 @@
   read на Mattermost 11.1/12.x пока не объявляется проверенной. Обновление
   установленного skill заблокировано sandbox; готовый patch сохранён в
   `output/mattergram-dialog-ux-team-users.patch`.
+- Для `mattergram-dialog-ux` также подготовлено правило семантики кнопок:
+  необратимые действия используют `danger`, отдельный последний ряд, явную
+  подпись объекта и подтверждение; цвет не является единственным сигналом.
+  Патч `output/mattergram-dialog-ux-button-semantics.patch` не применён к
+  установленному skill, потому что каталог `C:\Users\user\.codex\skills`
+  недоступен для записи из workspace sandbox.
 
 ## План plugin architecture и рефакторинга Game Admin
 
@@ -345,9 +353,11 @@
 
 ## Следующая конкретная задача
 
-E9-02: определить фиксированный набор LLM evaluation задач поверх versioned `llms.txt`,
-записать model/prompt/context/expected assertions и только фактически измеренные результаты.
-Отдельно затем собрать версионированный docs site без изменения source-of-truth guides.
+E7-04: добавить `MessagePriority`, параметры `priority`/`silent`/`file_ids` в
+`Bot.send_message` и `Bot.send_documents` для 1–5 файлов в одном post. Проверить точный REST
+wire contract, раннюю валидацию, uncertain-write semantics и живые Mattermost 11.1/12.x.
+Ephemeral/scheduled/pin/ack/reaction shortcuts и `set_online` в этот scope не входят.
+E9-02 LLM evaluation и версионированный docs site остаются отдельными задачами.
 E5-03 native desktop/mobile остаётся отдельной открытой acceptance-задачей.
 E5-03 native desktop/mobile остаётся открытым; отдельные дополнительные 11.11
 date-bound/timezone/modal-depth combinations не проверены.
@@ -497,6 +507,24 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Следующий конкретный шаг плана: этап 7 — определить durable job contract для import/check
   progress, cancellation, monotonic revisions и terminal history.
 
+## E7-04: runtime и контрактные проверки реализованы
+
+- Добавлен public `MessagePriority(level="important" | "urgent")` со строгими acknowledgement и
+  persistent-notification invariants. `Bot.send_message` получил `priority`, `silent` и `file_ids`:
+  wire mapping остаётся `metadata.priority`, query `silent=true` и ordered body `file_ids`.
+- `Bot.send_documents` загружает 1–5 `InputFile` одним multipart request и создаёт один post.
+  Старый `send_document` сохранил сигнатуру и использует общий путь. Подтверждение post проходит
+  через `_write_message`; автоматического retry и fallback на обычный post нет.
+- Local HTTP tests закрывают important/urgent/ack/persistent/silent, пять existing file IDs,
+  batch 1/5, invalid-before-network, partial/malformed/duplicate upload, cancellation,
+  malformed/mismatched post и notes со всеми потенциально unattached IDs.
+- Обновлены authored REST contract, public stub/spec, `docs/high-level-api.md`, runnable example,
+  generated reference и evidence. Проверки: `547 passed, 23 skipped, 322 subtests`; Ruff/format,
+  strict mypy для 231 source files и docs drift (`24 modules / 353 exports / 546 members`) прошли.
+- Live E7-04 matrix не запускалась: Docker Desktop Linux engine недоступен. Поэтому E7-04 остаётся
+  открытой. Следующий конкретный шаг — Mattermost 11.1 baseline и текущий 12.x с ordinary bot token,
+  фиксация capability/license boundaries и cleanup.
+
 ## Background jobs Game Admin — этап 7 реализован
 
 - Добавлены production-порты `GameAdminJobRepository` и `GameAdminJobQueue`, typed payloads для
@@ -541,3 +569,276 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   (`24 modules / 352 exports / 544 members / 19 examples / 29 guides`) и skill `quick_validate`
   прошли. План `docs/game-admin-routing-refactor.md` завершён; E7-04 остаётся отдельной отложенной
   задачей из `docs/IMPLEMENTATION_PLAN.md`.
+
+## Local Game Admin / AdminUsersPlugin stand — проверен
+
+- Локальный Mattermost 12.0.2 и Game Admin запущены; `AdminUsersPlugin` доступен в личном канале
+  бота через keyboard-команду «Пользователи» и отдельную slash-команду `/app-users`.
+- `AdminUserOnboardingPlugin` связывает generic post-commit `AdminUserChange` с DM lifecycle, не
+  добавляя keyboard dependency в `AdminUsersPlugin`: создаёт direct channel, ставит role-specific
+  keyboard, отправляет первое приветствие и снимает owned keyboard после disable. Mattergram Menu
+  0.2.2 сохраняет `owner_id` и отдаёт bot account только его inventory; startup bridge удаляет
+  собственные DM-клавиатуры, которых больше нет среди enabled app users. Legacy ownerless state
+  0.2.0 очищается system-admin migration до запуска приложения.
+- Встроенная policy оставляет управление пользователями только administrator: operator не получает
+  permissions `AdminUsersPlugin`, viewer сохраняет read-only `view`. Для Game Admin operator имеет
+  отдельную keyboard `3 / 1 / 2` с обзором, аккаунтами, импортом, push-настройками и обеими историями,
+  но без «Пользователей»; `GameAccountsAdminService` разрешает эти операции ролям admin/operator.
+- Browser smoke добавляет fixture operator через настоящую native form, входит второй browser
+  context под operator, подтверждает все шесть игровых команд и отсутствие «Пользователей», затем
+  открывает новый post «Аккаунты» без `Action integration error`/outdated actions.
+- Local runner принимает повторяемый `--operator-username`; deploy явно seed-ит `reaper` как
+  operator при каждом старте process-local repository. Live-проверка под временным user token
+  подтвердила его keyboard из шести игровых действий без «Пользователей» и успешный новый post
+  по сообщению «Обзор»; проверочный token после теста отозван.
+- Ожидаемый отказ больше не завершает WebSocket worker: глобальные entry handlers отвечают понятным
+  сообщением и возвращаются. Deploy-gate отправляет запрещённый текст «Пользователи» от operator,
+  подтверждает новый denial post и живой runner. Отдельный live read-back подтвердил
+  отсутствие keyboard в DM `reaper`; остаются только admin и fixture operator.
+- Проверки: полный suite `555 passed, 23 skipped, 322 subtests`, Ruff/format, strict mypy для 234
+  source files, documentation drift (`24 modules / 356 exports / 553 members`), plugin Node/Go tests
+  и `node --check` прошли; полный `tools/deploy_game_accounts_admin_demo.ps1` завершился с
+  `status: passed`. Report включает `composer_keyboard_access_reconcile=true`,
+  `browser_operator_game_accounts=true`, `browser_operator_user_admin_hidden=true` и
+  `operator_user_command_denied_without_crash=true`.
+- Следующий конкретный шаг: заменить demo in-memory user repository и синхронный change sink на
+  durable repository/outbox с повторяемым reconcile после временной ошибки Mattermost.
+
+## Core RBAC и декларативные роли handlers — реализовано
+
+- В core добавлены `mattergram.security.RoleResolver`, `RBAC`, `RBACMiddleware`, `AccessDenied` и
+  стандартный флаг `required_roles`; публичный `from mattergram import flags` использует уже
+  перенесённый aiogram-style metadata механизм без отдельного policy DSL.
+- `RBACMiddleware` пропускает handlers без role flag, для защищённых событий разрешает точный
+  `event.user_id`, передаёт `actor_role` через DI и отвечает понятным denial text, не запуская
+  handler. Missing/disabled/unknown-role actor получает отказ; repository/resolver errors не
+  маскируются.
+- `AdminUsersService` и `GameAccountsAdminService` реализуют `RoleResolver`.
+  `AdminUsersPlugin` автоматически защищает message/slash entries ролями с permission
+  `admin_users.view`; Game Admin объявляет `admin/operator` прямо на `/game-admin` и keyboard-text
+  handlers. Точные permission, mutation и last-admin checks остаются в services вторым контуром.
+- Добавлены public guide `docs/access-control.md` и skill reference
+  `.codex/skills/mattergram-bot-ux/references/access-control.md`; generated reference теперь содержит
+  `25 modules / 364 exports / 558 members`, manifest — 30 guides. Skill validation прошла.
+- Проверки: `563 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy для 236 source files и
+  documentation drift прошли. Полный локальный deploy Mattermost 12.0.2 завершился со
+  `status: passed`: admin/operator navigation, operator game access, скрытая user-admin surface,
+  видимый отказ `/app-users`, новые posts и отсутствие action integration regressions подтверждены.
+- Следующий конкретный шаг: реализовать durable production repository/outbox для app users и
+  повторяемого DM/keyboard reconcile; core RBAC API для этого менять не требуется.
+
+## SQLAlchemy Admin Users storage и живой channel alert — реализовано
+
+- Добавлен optional extra `mattergram[sqlalchemy]` с SQLAlchemy 2.0 async и SQLite driver.
+  `SQLAlchemyAdminUserRepository` реализует `AdminUserRepository` и `AuditSink`, создаёт отдельный
+  `AsyncSession` на операцию, хранит unique Mattermost identity и экспортирует
+  `admin_users_metadata` для production migrations. `create_schema()` предназначен для local/tests.
+- SQLite tests подтвердили insert/update, reopen persistence, audit order, конкурентный unique
+  conflict и полный `AdminUsersService` flow bootstrap → add operator → role resolution. Engine и
+  schema migration lifecycle остаются у приложения; multi-process last-admin writes должны
+  сериализоваться production БД/очередью.
+- В `Bot` добавлен typed `create_channel(...)` с native permission boundary и проверкой identity
+  write response. Добавлен reusable `MattermostPushDispatcher`: channel mention, direct delivery,
+  optional `MessagePriority` и всегда явный non-silent post.
+- На локальном Mattermost 12.0.2 runtime bot token создал public channel, добавил fixture admin и
+  отправил `@mattergram-ui-admin` alert. Read-back подтвердил post `hmasn5zwcpyj7g7brjrzyrj8gy`
+  в channel `boqf6uppeb8nznj8zk98ozsuuh` с `metadata.priority.priority=important` и
+  `silent=false`. Звук остаётся client-side notification setting и сервером не форсируется.
+- Проверки: `568 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy для 239 source files,
+  documentation drift (`26 modules / 367 exports / 569 members`) и полный local deploy/browser
+  smoke прошли. Wheel содержит SQLAlchemy adapter и metadata extra с `sqlalchemy[asyncio]` и
+  `aiosqlite`. Deploy report: `status: passed`.
+- Следующий конкретный шаг: добавить migration example (Alembic) и production PostgreSQL
+  integration profile; текущий adapter уже совместим с async SQLAlchemy engine, но live DB test
+  выполнен на SQLite.
+
+## Mattergram Bot UX skill: access template — обновлён
+
+- `mattergram-bot-ux` теперь явно выбирает `AdminUsersPlugin` для app-scoped пользователей и ролей,
+  а не предлагает копировать user-management код в каждый feature.
+- Design templates получили access matrix и проверяемый access contract: видимые роли,
+  `required_roles`, точные service permissions, disabled/stale behavior, audit и независимость
+  keyboard visibility от авторизации.
+- Добавлен progressive-disclosure reference `references/admin-users-plugin.md`: custom
+  permissions/roles, SQLAlchemy storage, plugin assembly, RBAC handlers, onboarding/keyboard
+  boundary и обязательные проверки.
+- Добавлен копируемый `assets/code/admin-users-plugin-template.py` с
+  `AdminUsersPlugin + SQLAlchemyAdminUserRepository + RBACMiddleware`. Template проходит Ruff,
+  format, strict mypy и безопасный import/execute; skill `quick_validate` прошёл.
+- Следующий конкретный шаг skill: при появлении Alembic/PostgreSQL production example заменить
+  общий migration абзац ссылкой на проверенный repository artifact.
+
+## Карточка игрового аккаунта в Mattermost Blocks — реализовано
+
+- Добавлен action-free `NativeBlocks` escape hatch для точной декларации `mm_blocks` внутри dialog window.
+- Карточка показывает отдельные fenced code blocks для login/password, IP/Geo/User-Agent, счётчики доменов cookies и изначально закрытый `Collapsible` с форматированным JSON.
+- Компоновка карточки переведена на адаптивные `ColumnSet`: header, login/password, IP/country и region/city идут двухколоночными строками. Cookies используют два нативных уровня раскрытия: короткий preview первых трёх записей и отдельный `Показать все cookies`; полный JSON ограничен `max_height=large` и прокручивается на Web/Desktop, а mobile может открыть scrollable region на весь экран.
+- Длина Markdown fence выбирается по содержимому; превышение лимита cookies показывается явно без частичной публикации секрета.
+- Полные credentials разрешены только в личном диалоге с ботом и повторно проверяются сервисом при открытии карточки.
+- Локальный demo содержит безопасный тестовый аккаунт `acc_demo_1042` с 16 фиктивными cookies.
+- Проверки: профильные тесты `34 passed, 3 skipped`, Ruff и strict mypy прошли; локальный Mattermost deploy завершился `READY`.
+- Следующий конкретный шаг: проверить штатную кнопку Copy в обязательных Desktop/Android/iOS клиентах перед production-выпуском.
+
+## Mattermost UI components: UI-01 AccountList — реализовано
+
+- Добавлен reusable `game_accounts_admin.mattermost_ui.AccountList`: три one-click фильтра, backend sort,
+  стабильный pager, page-local account select и отдельное widget state каждого dialog actor.
+- `GameAccountsAdminService.query_accounts()` фильтрует, сортирует и нарезает данные до render; в post
+  передаются только текущие 10 записей. Demo содержит 24 безопасных аккаунта для трёх страниц.
+- Аккаунты отображаются настоящей Markdown-таблицей `ID / Логин / Креды / Cookies / Страна`.
+  Выбор в page-local select редактирует тот же post и добавляет карточку под таблицей, не меняя state
+  и не создавая/заменяя отдельный post; значения таблицы ограничены одной строкой.
+- Dialog binding поддерживает reusable native control layouts: typed controls получают signed actions,
+  а layout обязан использовать каждый объявленный control ровно один раз.
+- Проверки: `570 passed, 23 skipped, 322 subtests`; Ruff/format и strict mypy для `src` прошли.
+  Полный local deploy Mattermost 12.0.2 завершился `READY` и подтвердил новый Accounts post.
+- Следующий конкретный шаг: UI-02 AccountCard — безопасные индикаторы credentials/cookies и кнопка
+  запуска AccountCheck без публикации действующих secret values.
+
+## Mattermost UI components: UI-02 AccountCard — реализовано
+
+- Добавлен reusable `game_accounts_admin.mattermost_ui.AccountCard`. Выбранный аккаунт остаётся в
+  том же dialog state и том же post: карточка появляется непосредственно под `AccountList`.
+- Внешний `Collapsible` изначально раскрыт; вложенный раздел Cookies закрыт. Карточка показывает ID,
+  login, IP/Geo/User-Agent, состояние проверки, количество и домены cookies. Кнопка `Проверить`
+  объявлена локальным signed action `account_check`.
+- `GameAccountsAdminService.account_card()` возвращает безопасную проекцию: `has_password` и cookie
+  metadata `domain`/`name`. Действующие password и cookie values не попадают в UI model, `props`,
+  callback context или renderer logs. Совместимый builder экспортируется из прежнего модуля, но его
+  реализация теперь принадлежит `mattermost_ui/account_card.py`.
+- Проверки: `570 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy для `src` и generated
+  documentation drift (`382 exports / 582 members / 19 examples / 30 guides`) прошли.
+- Полный local deploy Mattermost 12.0.2 завершился `READY`; отчёт
+  `build/reports/game-accounts-admin-deploy.json` имеет `status: passed`, а browser smoke подтвердил
+  slash-command, reply keyboard, новые post для keyboard navigation и локальные inline actions.
+- Следующий конкретный шаг: UI-03 AccountCheck — отдельная карточка состояний, фактический progress,
+  single-flight и обновление существующего post.
+
+## Mattermost UI components: UI-03 AccountCheck — реализовано
+
+- Добавлен reusable `game_accounts_admin.mattermost_ui.AccountCheck` со состояниями `pending`,
+  `running`, `success`, `failed`, `cancelled`. Компонент показывает stage, время начала/завершения,
+  фактические current/total и valid/invalid/errors; при неизвестном total процент не создаётся.
+- Проверка выбранного аккаунта стала `CheckAccountJob` на существующем Game Admin job runtime.
+  `DialogRef`, monotonic revisions и `CoalescingDialogUpdater` обновляют тот же post; отдельного окна и
+  новой progress-инфраструктуры не появилось.
+- `single_flight_key=actor/account` создаётся атомарно в repository: повторный активный запуск не
+  попадает в очередь, terminal job освобождает ключ. Во время работы повторная кнопка disabled, а
+  карточка предоставляет cancel. Технический exception type не публикуется в AccountCheck UI.
+- Click budget не изменился: открыть Accounts → выбрать account → проверить = 3 действия от
+  persistent keyboard; навигационная глубина не увеличилась. Actions: 13 без выбора, 14 с карточкой,
+  15 во время проверки с cancel.
+- Проверки: `576 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy для 183 source files и
+  generated documentation drift (`389 exports / 587 members / 19 examples / 30 guides`) прошли.
+- Полный local deploy Mattermost 12.0.2 завершился `READY`, report имеет `status: passed`. Browser
+  verifier теперь связывает каждый keyboard response не только с новым post ID, но и с ожидаемым
+  heading; фоновый edit другого Accounts-post больше не может быть принят за ответ новой команды.
+- Следующий конкретный шаг: UI-04 ParsingCard + Playbook — четыре backend-этапа, фактические метрики,
+  retry failed stage и связь одного задания с одним Playbook run.
+
+## Единый post container для Accounts UI — реализовано
+
+- В public `mattergram_dialog` добавлен декларативный `PostContainer`; `Window(container=...)`
+  переносит heading/fallback text и все native control groups в один внешний Mattermost
+  `container`. Message над рамкой в Blocks-профиле не дублируется; legacy fallback не меняется.
+- Accounts post использует одну общую рамку, серый фон, `accent_color="primary"`, vertical flow и
+  medium gap. `AccountList`, выбранный аккаунт, проверка и навигация являются содержимым одного post,
+  а не несколькими визуально независимыми top-level карточками.
+- `AccountCheck` вложен в раскрытый `AccountCard` как lifecycle того же entity и использует короткий
+  заголовок без повторного ID аккаунта; routine list и navigation остаются borderless. Глубина
+  Accounts не изменилась; выбранная карточка теперь имеет
+  16 actions, активная проверка с cancel — 17, что остаётся ниже Blocks-лимита 50.
+- Фильтры AccountList снова следуют строгому UX-контракту: неизменяемые подписи
+  `Все / Креды / Cookies`, активный вариант с нативным `primary`, остальные с `default`. Checkbox
+  используется только в destructive confirmation form, где подтверждается независимое действие.
+- Действия `AccountCard` разделены по назначению: `Проверить` остаётся слева внизу карточки,
+  trailing-группа `✏️` / `🗑️` перенесена вправо в шапку выбранного аккаунта. Icon-only controls имеют
+  native tooltip и полный legacy label;
+  корзина остаётся последней, `danger`, открывает confirmation form с checkbox и повторно проверяет
+  operator-доступ в сервисе.
+- Проверки: `577 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy и generated docs
+  (`390 exports / 589 members`) прошли. Полный local deploy Mattermost 12.0.2 завершился `READY`;
+  browser gates подтвердили `accounts_single_container`, `account_check_nested`, открытие edit form
+  и delete confirmation, а визуальная проверка — `Проверить` на ведущем краю, trailing `✏️` / `🗑️`
+  в шапке, вложенный progress без повторного account ID и обязательный checkbox подтверждения удаления.
+- Следующий конкретный шаг: UI-04 ParsingCard + Playbook — четыре backend-этапа, фактические метрики,
+  retry failed stage и связь одного задания с одним Playbook run.
+
+## Plain dialog groups и UX страницы пользователей — реализовано
+
+- В Blocks-renderer добавлен явный `border=False` для `DataBlock`, `ButtonRow` и `ButtonGrid`:
+  логическая группировка и signed actions сохраняются, но декоративный bordered `Container` с синей
+  левой полосой не создаёт визуального акцента. Bordered presentation остаётся opt-in для важных
+  статусов, предупреждений, destructive confirmation и самостоятельных summary cards.
+- `AdminUsersPlugin` и совместимое окно Game Admin больше не показывают отдельную карточку
+  «Управление». «Добавить пользователя» находится перед таблицей, поэтому не уезжает под длинный
+  список; таблица, фильтры, pager, выбор и редактирование остаются одним локальным data block.
+- Repository skill `mattergram-bot-ux` и design templates фиксируют plain-by-default решение и требуют
+  явного обоснования цветного accent container. Public dialog guide документирует `border=False` и
+  legacy-attachment boundary.
+- Проверки: `569 passed, 23 skipped, 322 subtests`; Ruff/format, strict mypy для `src`, generated docs
+  drift, dialog extraction/scenario receipts и skill `quick_validate` прошли. Полный локальный deploy
+  Mattermost 12.0.2 завершился `status: passed`; browser smoke подтвердил borderless user blocks,
+  кнопку над таблицей, повторное открытие формы после cancel и отсутствие action integration errors.
+- Следующий конкретный шаг: при следующем общем UX-проходе пометить оставшиеся routine data/navigation
+  groups, которым также нужен `border=False`; не менять акцентные status/warning cards механически.
+
+## Mattergram Bot UX standards — обновлены
+
+- В repository skill `mattergram-bot-ux` добавлен обязательный
+  `references/ui-standards.md`: порядок проектных приоритетов, preflight из 11 вопросов, русская
+  локализация, таблицы и backend-пагинация, EntityDetail-паттерн, единый workflow container,
+  копирование, действия, статусы, даты, collapsible, UI state и финальный implementation gate.
+- `EntityDetail` зафиксирован как UX-паттерн, а не выдуманный public API: текущая реализация должна
+  собираться из существующих `DataBlock`, `PostContainer` и native Blocks-примитивов до появления
+  проверенного публичного компонента.
+- Синхронизированы `component-selection.md`, `content-feedback.md`, `verification.md` и design
+  templates: 5 записей по умолчанию, stable sort с уникальным tie-breaker, фильтр слева/сортировка
+  справа, формат дат и времени, сохранение per-user контекста и явная фиксация исключений.
+- Проверка: skill `quick_validate.py` прошёл; обязательный reference связан с `SKILL.md` в source of
+  truth, design sequence, reference routing и completion report.
+- Следующий конкретный шаг: применять standards gate при UI-04 ParsingCard + Playbook и отдельно
+  фиксировать реально проверенные Web/Desktop/mobile capability assumptions.
+
+## Универсальный Agent Skill, единый demo и release artifacts — реализовано
+
+- Канонический `mattergram-bot-ux` перенесён из vendor-specific `.codex/skills` в
+  `.agents/skills/mattergram-bot-ux`. Core skill не содержит зависимости от конкретного coding
+  agent, имеет MIT metadata, проходит `quick_validate.py` и включён в source distribution.
+- В `examples/` оставлен один composition root — `game_accounts_admin.py`. Dialog navigation и
+  showcase, нужные контрактным тестам, перенесены в `tests/fixtures`; временный compatibility
+  re-export и остальные отдельные examples удалены. Documentation manifest и generated index
+  теперь фиксируют ровно один runnable example.
+- Постоянная клавиатура Game Admin сокращена до `Обзор`, `Аккаунты` и доступной администраторам
+  кнопки `Пользователи`. Глобальный game-account text router принимает только `Обзор` и `Аккаунты`;
+  `Пользователи` остаётся независимым entry point `AdminUsersPlugin`. Импорт, push-настройки и
+  истории доступны как контекстные inline actions в post и больше не имеют reply-keyboard routes.
+- Demo приведён к UI standards: русские display-статусы, формат времени, пять строк на страницу,
+  фильтрация слева без декоративных emoji и сортировка справа; канонические enum/role/status values
+  при этом сохраняются в application logic.
+- Проверки: `577 passed, 23 skipped, 322 subtests`; Ruff, strict mypy, generated docs drift и skill
+  validation прошли. Собраны и проверены `dist/mattergram-0.1.0a1.tar.gz`,
+  `dist/mattergram-0.1.0a1-py3-none-any.whl` и
+  `build/plugins/mattergram-menu-0.2.2.tar.gz`; plugin Web/Go tests прошли. Свежий local deploy
+  Mattermost 12.0.2 завершился `READY`: browser smoke подтвердил три admin entry points, два operator
+  entry points, новые post на reply message, единый Accounts container, nested check, edit/delete
+  формы и скрытое управление пользователями для оператора. Внешняя публикация в PyPI/GitHub Release
+  не выполнялась без выбранного registry и release credentials.
+- Следующий конкретный шаг: выбрать release destination, выполнить подписанный upload артефактов и
+  live smoke единственного demo на release candidate.
+
+## GitHub/PyPI release workflow — подготовлен
+
+- Добавлен `.github/workflows/release.yml` для тегов `v<project.version>`: tag/version gate, Ruff,
+  format, strict mypy, generated docs, pytest, воспроизводимая сборка wheel/sdist, installed-artifact
+  verification, Web/Go tests и universal bundle keyboard plugin, SHA-256 checksums.
+- PyPI publish отделён в job с GitHub Environment `pypi`; только этот job имеет `id-token: write` и
+  использует Trusted Publishing без API token. GitHub Release создаётся только после успешного PyPI
+  upload и содержит Python artifacts, keyboard plugin и `SHA256SUMS`. Все third-party actions
+  закреплены exact commit SHA; actionlint 1.7.8 прошёл.
+- GitHub destination: `0cherednoq/mettergram`. Локальный package name остаётся `mattergram`.
+  Настроенный Pending Publisher сейчас ошибочно назван `mettergram`; до его замены на `mattergram`
+  release tag не создаётся, чтобы не опубликовать проект с неверной идентичностью.
+- Следующий конкретный шаг: заменить Pending Publisher project name на `mattergram`, сохранив
+  repository `0cherednoq/mettergram`, workflow `release.yml` и environment `pypi`; затем отправить
+  тег `v0.1.0a1` и проверить PyPI/GitHub Release URLs.

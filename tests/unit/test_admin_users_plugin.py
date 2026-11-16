@@ -12,6 +12,7 @@ from mattergram.contrib.admin_users import (
     DEFAULT_PERMISSIONS,
     DEFAULT_ROLES,
     AdminUser,
+    AdminUserChange,
     AdminUsersInputError,
     AdminUsersPanel,
     AdminUsersPlugin,
@@ -23,6 +24,7 @@ from mattergram.contrib.admin_users import (
 from mattergram.fsm.storage.base import StorageKey
 from mattergram.fsm.storage.memory import MemoryStorage, SimpleEventIsolation
 from mattergram.plugins import PluginManager
+from mattergram.security import REQUIRED_ROLES_FLAG, RBACMiddleware
 from mattergram.types import Channel, Message
 from mattergram_dialog import DialogManager, DialogRegistry, DialogStorage, ShowMode
 from mattergram_dialog.rendering import FormRender, PostRender, RenderPlan
@@ -49,6 +51,14 @@ class Audit:
 
     async def write(self, record: AuditRecord) -> None:
         self.records.append(record)
+
+
+class Changes:
+    def __init__(self) -> None:
+        self.records: list[AdminUserChange] = []
+
+    async def write(self, change: AdminUserChange) -> None:
+        self.records.append(change)
 
 
 class Runtime:
@@ -187,6 +197,62 @@ async def test_last_protected_admin_and_role_permissions_are_enforced() -> None:
 
 
 @pytest.mark.asyncio
+async def test_operator_has_no_application_user_administration_permissions() -> None:
+    users, repository, _, _ = service()
+    await users.bootstrap()
+    operator = await users.add_user(
+        "owner-id",
+        mattermost_user_id="alice-id",
+        role="operator",
+        enabled=True,
+    )
+
+    assert await users.permissions_for("alice-id") == frozenset()
+    with pytest.raises(PermissionError, match="admin_users.view"):
+        await users.list_users("alice-id")
+    with pytest.raises(PermissionError, match="admin_users.manage"):
+        await users.add_user(
+            "alice-id",
+            mattermost_user_id="bob-id",
+            role=users.default_role,
+            enabled=True,
+        )
+    with pytest.raises(PermissionError, match="admin_users.manage"):
+        await users.update_user("alice-id", operator.id, role="admin", enabled=True)
+
+
+@pytest.mark.asyncio
+async def test_committed_user_changes_are_emitted_without_ui_dependency() -> None:
+    repository = MemoryAdminUserRepository()
+    directory = Directory()
+    changes = Changes()
+    users = AdminUsersService(
+        repository,
+        directory,
+        permissions=DEFAULT_PERMISSIONS,
+        roles=DEFAULT_ROLES,
+        initial_admin_ids=("owner-id",),
+        change_sink=changes,
+    )
+    await users.bootstrap()
+
+    created = await users.add_user(
+        "owner-id",
+        mattermost_user_id="alice-id",
+        role="operator",
+        enabled=True,
+    )
+    await users.update_user("owner-id", created.id, role="viewer", enabled=True)
+
+    assert [change.action for change in changes.records] == [
+        "admin_users.add",
+        "admin_users.update",
+    ]
+    assert changes.records[0].previous is None
+    assert changes.records[1].previous == created
+
+
+@pytest.mark.asyncio
 async def test_list_uses_current_directory_username() -> None:
     users, _, directory, _ = service()
     await users.bootstrap()
@@ -232,6 +298,15 @@ async def test_plugin_routes_manual_exact_dm_text_without_keyboard_dependency() 
     )
     message._channel = Channel.from_wire({"id": "direct123", "type": "D"})
     handler = plugin.router.message.handlers[0]
+    assert handler.flags[REQUIRED_ROLES_FLAG] == ("admin", "viewer")
+    assert plugin.router.slash_command.handlers[0].flags[REQUIRED_ROLES_FLAG] == (
+        "admin",
+        "viewer",
+    )
+    assert len(plugin.router.message.middleware) == 1
+    assert isinstance(plugin.router.message.middleware[0], RBACMiddleware)
+    assert await plugin.service.resolve_role("owner-id") == "admin"
+    assert await plugin.service.resolve_role("missing-id") is None
     accepted, _ = await handler.check(message)
     assert accepted
     await handler.call(
@@ -280,10 +355,12 @@ async def test_dialog_rows_forms_and_depth_are_declarative() -> None:
             await manager.start(AdminUsersPanel.users)
             users_post = renderer.calls[-1][0]
             assert isinstance(users_post, PostRender)
-            assert [len(row) for row in users_post.control_groups[0].control_rows] == [3, 6]
-            assert [control.id for control in users_post.control_groups[1].controls] == [
+            assert [control.id for control in users_post.control_groups[0].controls] == [
                 "adminUsersPluginAdd"
             ]
+            assert users_post.control_groups[0].border is False
+            assert [len(row) for row in users_post.control_groups[1].control_rows] == [3, 6]
+            assert users_post.control_groups[1].border is False
 
             await manager.switch_to(AdminUsersPanel.add)
             add_form = renderer.calls[-1][0]
@@ -308,3 +385,23 @@ async def test_dialog_rows_forms_and_depth_are_declarative() -> None:
     finally:
         await storage.close()
         await isolation.close()
+
+
+@pytest.mark.asyncio
+async def test_operator_cannot_open_application_user_dialog() -> None:
+    repository = MemoryAdminUserRepository(
+        users=(
+            AdminUser("owner", "owner-id", "owner", "admin"),
+            AdminUser("alice", "alice-id", "alice", "operator"),
+        )
+    )
+    plugin = AdminUsersPlugin(
+        repository=repository,
+        directory=Directory(),
+        initial_admin_ids=("owner-id",),
+    )
+    await plugin.service.bootstrap()
+
+    with pytest.raises(PermissionError, match="admin_users.view"):
+        await plugin.service.list_users("alice-id")
+    assert await plugin.service.permissions_for("alice-id") == frozenset()

@@ -9,6 +9,7 @@ from pydantic import SecretStr
 from .errors import AdminInputError
 from .models import (
     AccountCredentials,
+    AccountEnvironment,
     GameAccount,
     ImportRun,
     PushEvent,
@@ -21,6 +22,15 @@ from .ports import ImportFileReader, OperationProgress
 from .repository import MemoryAdminRepository
 
 EmitPush = Callable[[PushEvent, str], Awaitable[None]]
+
+
+def _optional_text(raw: dict[str, Any], key: str, line: int, *, limit: int) -> str:
+    value = raw.get(key, "")
+    if value is None:
+        return ""
+    if not isinstance(value, str) or len(value) > limit:
+        raise ValueError(f"строка {line}: {key} должен быть строкой до {limit} символов")
+    return value
 
 
 def parse_cookies(value: Any, line: int) -> tuple[StoredCookie, ...]:
@@ -96,10 +106,18 @@ async def import_accounts(
                 if key in existing:
                     raise ValueError(f"строка {number}: такой login уже существует")
                 cookies = parse_cookies(raw.get("cookies"), number)
+                environment = AccountEnvironment(
+                    ip=_optional_text(raw, "ip", number, limit=64),
+                    country=_optional_text(raw, "country", number, limit=100),
+                    region=_optional_text(raw, "region", number, limit=100),
+                    city=_optional_text(raw, "city", number, limit=100),
+                    user_agent=_optional_text(raw, "user_agent", number, limit=1000),
+                )
                 account = GameAccount(
                     _id("acc"),
                     game,
                     AccountCredentials(login.strip(), SecretStr(password), cookies),
+                    environment=environment,
                 )
                 repository.accounts[account.id] = account
                 imported.append(account.id)

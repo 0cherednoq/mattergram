@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from mattergram.contrib.game_accounts_admin import (
+    ActiveJobConflict,
     AdminPanel,
     AdminUser,
     EphemeralMemoryGameAdminJobQueue,
@@ -165,6 +166,45 @@ async def test_import_job_reports_ordered_progress_and_records_terminal_result()
         revision for _, _, revision in updater.updates
     )
     assert await repository.terminal_history("admin") == (completed,)
+
+
+@pytest.mark.asyncio
+async def test_selected_account_check_is_single_flight_and_publishes_factual_lifecycle() -> None:
+    admin = service()
+    imported = await admin.import_accounts("admin", game="Game", file_id="file-1")
+    account_id = imported.account_ids[0]
+    repository = EphemeralMemoryGameAdminJobRepository()
+    queue = EphemeralMemoryGameAdminJobQueue()
+    jobs = GameAdminJobs(admin, repository, queue)
+    updater = RecordingUpdater()
+    runner = GameAdminJobRunner(admin, repository, updater)
+
+    queued = await jobs.check_account("admin", dialog_ref(), account_id)
+    with pytest.raises(ActiveJobConflict) as conflict:
+        await jobs.check_account("admin", dialog_ref(), account_id)
+    assert conflict.value.job.id == queued.id
+    assert await queue.dequeue() == queued.id
+
+    completed = await runner.run(queued.id)
+
+    assert completed.state == "completed"
+    assert completed.started_at is not None
+    assert completed.finished_at is not None
+    assert completed.result is not None
+    assert (completed.result.valid, completed.result.invalid, completed.result.errors) == (1, 0, 0)
+    snapshots = [data for _, data, _ in updater.updates]
+    assert [snapshot["account_check_state"] for snapshot in snapshots] == [
+        "running",
+        "running",
+        "running",
+        "success",
+    ]
+    assert snapshots[1]["account_check_total"] == 1
+    assert snapshots[-1]["account_check_valid"] == 1
+    assert snapshots[-1]["account_check_error"] is None
+
+    next_job = await jobs.check_account("admin", dialog_ref(), account_id)
+    assert next_job.id != queued.id
 
 
 @pytest.mark.asyncio

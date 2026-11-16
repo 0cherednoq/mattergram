@@ -37,14 +37,9 @@ uv sync --locked --extra provisioning
 
 В PowerShell задайте окружение только для текущего процесса:
 
-```powershell
-$env:MM_URL = "https://chat.example.test/mattermost"
-$env:MM_BOT_TOKEN = "replace-with-runtime-bot-token"
-uv run --locked python examples/create_post.py CHANNEL_ID "mattergram is ready"
-```
-
-Успешный пример печатает подтверждённый native `post_id`. Он не печатает token и не делает
-автоматический retry записи. Если ответ потерян после отправки, SDK поднимет
+Задайте `MM_URL`, `MM_BOT_TOKEN` и `MM_CHANNEL_ID`, затем выполните минимальный код ниже.
+Он печатает подтверждённый native `post_id`, не печатает token и не делает автоматический retry
+записи. Если ответ потерян после отправки, SDK поднимет
 `RequestOutcomeUnknown`: сначала проверьте канал, а не запускайте команду вслепую ещё раз.
 
 Эквивалентный минимальный код:
@@ -73,13 +68,9 @@ Async context проверяет identity, создаёт один HTTP pool и 
 
 ## Запустите обработчик сообщений
 
-Задайте `MM_URL` и `MM_BOT_TOKEN`, затем:
-
-```powershell
-uv run --locked python examples/routing_bot.py
-```
-
-Отправьте `ping` в канал, где состоит bot. Ожидаемый результат — новый channel post `pong`.
+Создайте `Router`, зарегистрируйте message-handler и запустите `Dispatcher.start_websocket()` как
+показано в [руководстве Router и WebSocket](native-routing.md). Отправьте `ping` в канал, где
+состоит bot. Ожидаемый результат — новый channel post `pong`.
 `Dispatcher.start_websocket()` владеет переданным `Bot`, отбрасывает собственные исходящие
 posts и корректно закрывает WebSocket/HTTP ресурсы при остановке.
 
@@ -88,19 +79,20 @@ posts и корректно закрывает WebSocket/HTTP ресурсы п�
 
 ## Выберите следующий сценарий
 
-| Задача | Руководство | Проверяемый пример |
-| --- | --- | --- |
-| Router, filters, middleware и FSM | [Router и WebSocket](native-routing.md) | `examples/routing_bot.py` |
-| Slash command и post action HTTP | [HTTP ingress](native-http.md) | `examples/http_bot.py` |
-| Native form, validation и wizard | [Forms](native-forms.md) | `examples/form_bot.py` |
-| Несколько таблиц/forms и live update | [Showcase](showcase.md) | `examples/showcase_bot.py` |
-| Redis state | [Redis FSM](native-redis.md) | `examples/redis_bot.py` |
-| Автоматическое создание ресурсов | [Bootstrap](bootstrap.md) | `examples/bootstrap.py` |
-| Декларативные окна | [mattergram_dialog](dialog-porting.md) | `examples/dialog_wizard.py` |
+| Задача | Руководство |
+| --- | --- |
+| Полный запускаемый бот | [Game Admin](game-accounts-admin.md) |
+| Router, filters, middleware и FSM | [Router и WebSocket](native-routing.md) |
+| Slash command и post action HTTP | [HTTP ingress](native-http.md) |
+| Native form, validation и wizard | [Forms](native-forms.md) |
+| Несколько таблиц/forms и live update | [Showcase](showcase.md) |
+| Redis state | [Redis FSM](native-redis.md) |
+| Автоматическое создание ресурсов | [Bootstrap](bootstrap.md) |
+| Декларативные окна | [mattergram_dialog](dialog-porting.md) |
 
-Все примеры, их permissions, minimum profile и уровень проверки перечислены в
-[generated examples index](examples.md). `declaration-only` означает только декларацию и не
-должен восприниматься как доказательство работы в UI.
+Единственный запускаемый пример, его permissions, minimum profile и уровень проверки перечислены в
+[generated examples index](examples.md). Остальные контракты проверяются тестами и описываются в
+соответствующих руководствах.
 
 ## Быстрая диагностика
 

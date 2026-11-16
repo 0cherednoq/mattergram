@@ -6,12 +6,14 @@ from collections.abc import Sequence
 
 from mattergram.plugins import PluginBuilder, PluginContext, PluginManifest, ProviderKey
 from mattergram.provisioning import CommandSpec
+from mattergram.security import RBACMiddleware
 
 from .actions import AdminUsersActions
 from .dialog import build_admin_users_dialog
 from .directory import TeamUserDirectory
+from .events import AdminUserChangeSink
 from .getters import AdminUsersGetters
-from .models import DEFAULT_PERMISSIONS, DEFAULT_ROLES, PermissionSpec, RoleSpec
+from .models import DEFAULT_PERMISSIONS, DEFAULT_ROLES, VIEW_USERS, PermissionSpec, RoleSpec
 from .repository import AdminUserRepository, AuditSink
 from .router import AdminUsersRuntime, build_admin_users_router
 from .service import AdminUsersService
@@ -34,6 +36,8 @@ class AdminUsersPlugin:
         command: str = "app-users",
         messages: Sequence[str] = ("Пользователи",),
         audit_sink: AuditSink | None = None,
+        change_sink: AdminUserChangeSink | None = None,
+        default_role: str | None = None,
     ) -> None:
         CommandSpec(command)
         if not messages or any(not isinstance(message, str) or not message for message in messages):
@@ -48,12 +52,28 @@ class AdminUsersPlugin:
             roles=self.roles,
             initial_admin_ids=initial_admin_ids,
             audit_sink=audit_sink,
+            change_sink=change_sink,
+            default_role=default_role,
         )
-        self.router = build_admin_users_router(command=command, messages=tuple(messages))
+        view_roles = tuple(role.id for role in self.roles if VIEW_USERS in role.permissions)
+        if not view_roles:
+            raise ValueError("At least one application role must grant admin_users.view")
+        self.router = build_admin_users_router(
+            command=command,
+            messages=tuple(messages),
+            required_roles=view_roles,
+        )
+        access_middleware = RBACMiddleware(
+            self.service,
+            denied_text="Недостаточно прав для просмотра пользователей приложения",
+        )
+        self.router.message.middleware(access_middleware)
+        self.router.slash_command.middleware(access_middleware)
         self.dialog = build_admin_users_dialog(
             getters=AdminUsersGetters(self.service),
             actions=AdminUsersActions(self.service),
             roles=self.roles,
+            default_role=self.service.default_role,
         )
 
     def setup(self, builder: PluginBuilder) -> None:

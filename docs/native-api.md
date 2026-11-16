@@ -35,7 +35,7 @@ Client владеет своим HTTP pool, проверяет identity при �
 административный fallback. Для automatic provisioning используйте
 [Bootstrap](bootstrap.md), а не `NativeAPI`.
 
-Полный исполняемый read-only пример: [examples/native_api.py](../examples/native_api.py).
+Read-only сценарии покрыты generated Native API tests.
 
 ## Передать path, query и JSON body
 

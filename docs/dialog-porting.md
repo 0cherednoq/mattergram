@@ -13,7 +13,7 @@ text widgets), но использует нативные посты и форм
 
 ## Быстрый пример
 
-Полная декларация находится в [`examples/dialog_wizard.py`](../examples/dialog_wizard.py).
+Полные декларации и сценарии переноса проверяются в `tests/ported/`.
 
 ```python
 from mattergram.fsm.state import State, StatesGroup

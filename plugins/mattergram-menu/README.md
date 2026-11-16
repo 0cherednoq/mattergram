@@ -15,14 +15,14 @@ keyboard = ComposerKeyboard(
     rows=[
         [
             ComposerButton(
-                id="accounts",
-                text="Аккаунты",
-                message="/accounts",
+                id="overview",
+                text="Обзор",
+                message="Обзор",
                 style="primary",
             ),
-            ComposerButton(id="imports", text="Импорт", message="/imports"),
+            ComposerButton(id="accounts", text="Аккаунты", message="Аккаунты"),
+            ComposerButton(id="users", text="Пользователи", message="Пользователи"),
         ],
-        [ComposerButton(id="check_all", text="Проверить все", message="/check_all")],
     ],
 )
 
@@ -30,8 +30,15 @@ async with Bot(token=BOT_TOKEN, base_url=MATTERMOST_URL) as bot:
     await bot.set_composer_keyboard(CHANNEL_ID, keyboard)
 ```
 
+Кнопка публикует обычный видимый текст. Feature router обрабатывает этот текст так же, как сообщение,
+введённое пользователем вручную; он не импортирует plugin API и не зависит от наличия webapp plugin.
+Редкие и контекстные действия размещайте внутри соответствующего post, а не раздувайте постоянную
+клавиатуру.
+
 Bot account должен состоять в целевом канале. Менять и удалять клавиатуру через plugin API могут
-bot accounts и system admins; читать её могут только участники канала.
+bot accounts и system admins; bot account ограничен своими channel memberships, а system admin
+может очистить устаревшее состояние без вступления в чужой DM. Читать клавиатуру могут только
+участники канала.
 
 ## Сборка и тесты
 
@@ -44,7 +51,7 @@ npm run build
 ```
 
 Готовый universal Linux bundle:
-`build/plugins/mattergram-menu-0.2.0.tar.gz`. Он содержит `linux-amd64` и `linux-arm64` server
+`build/plugins/mattergram-menu-0.2.2.tar.gz`. Он содержит `linux-amd64` и `linux-arm64` server
 executables, webapp bundle, MIT license и license/notice files разрешённых Go-модулей. Builder
 нормализует tar/gzip metadata.
 
@@ -56,7 +63,7 @@ executables, webapp bundle, MIT license и license/notice files разрешён
 Для локального стенда можно использовать `demo.compose.yml`, разрешить unsigned upload и выполнить:
 
 ```powershell
-mmctl plugin add ../../build/plugins/mattergram-menu-0.2.0.tar.gz --force
+mmctl plugin add ../../build/plugins/mattergram-menu-0.2.2.tar.gz --force
 mmctl plugin enable com.mattergram.menu
 ```
 
@@ -68,4 +75,6 @@ mmctl plugin enable com.mattergram.menu
 - Нативные iOS/Android клиенты не исполняют webapp plugins. Для них нужен отдельный mobile plugin
   либо обычный post с Blocks/actions.
 - Нажатие — ровно один обычный `POST /api/v4/posts`; неоднозначный write не повторяется.
+- Версия 0.2.2 записывает `owner_id` bot account и даёт владельцу список только своих клавиатур.
+  Это позволяет приложению удалять устаревшие DM-меню после перезапуска или отзыва доступа.
 - Удаление plugin сохраняет KV-данные Mattermost. Перед повторной установкой клавиатуры восстановятся.

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import logging
 import math
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, field
@@ -31,6 +32,8 @@ from .auth import CallbackSigner, SlashBinding, TrustedPeers, decode_form, decod
 from .delayed import DelayedResponder
 from .normalizers import normalize_callback, normalize_slash
 from .responses import HTTPCapabilities, ResponseController
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -400,6 +403,7 @@ class HttpAdapter:
                 raise
             return HTTPResult(503, {"error": "shutdown"})
         except Exception:
+            logger.exception("Mattergram HTTP handler failed")
             response.expire()
             self.handler_errors += 1
             return HTTPResult(500, {"error": "handler_failed"})

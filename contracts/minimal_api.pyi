@@ -1,10 +1,10 @@
 """E2 design contract, not installed stubs. Native client and routing slice are implemented."""
 
-from collections.abc import AsyncGenerator, Mapping
+from collections.abc import AsyncGenerator, Mapping, Sequence
 from datetime import datetime
 from pathlib import Path
 from types import TracebackType
-from typing import Any
+from typing import Any, Literal
 
 class User:
     id: str
@@ -71,6 +71,18 @@ class FSInputFile(InputFile):
         chunk_size: int = 64 * 1024,
     ) -> None: ...
 
+class MessagePriority:
+    level: Literal["important", "urgent"]
+    requested_ack: bool
+    persistent_notifications: bool
+    def __init__(
+        self,
+        level: Literal["important", "urgent"],
+        requested_ack: bool = False,
+        persistent_notifications: bool = False,
+    ) -> None: ...
+    def to_wire(self) -> dict[str, str | bool]: ...
+
 class Bot:
     is_closed: bool
     user_id: str | None
@@ -87,7 +99,26 @@ class Bot:
     ) -> list[User]: ...
     async def get_channel(self, channel_id: str) -> Channel: ...
     async def create_direct_channel(self, user_id: str) -> Channel: ...
-    async def send_message(self, chat_id: str, text: str, *, root_id: str | None = None) -> Message: ...
+    async def create_channel(
+        self,
+        *,
+        team_id: str,
+        name: str,
+        display_name: str,
+        type: Literal["O", "P"] = "O",
+        purpose: str = "",
+        header: str = "",
+    ) -> Channel: ...
+    async def send_message(
+        self,
+        chat_id: str,
+        text: str,
+        *,
+        root_id: str | None = None,
+        priority: MessagePriority | None = None,
+        silent: bool = False,
+        file_ids: Sequence[str] | None = None,
+    ) -> Message: ...
     async def edit_message_text(self, chat_id: str, message_id: str, text: str) -> Message: ...
     async def delete_message(self, chat_id: str, message_id: str) -> None: ...
     async def send_document(
@@ -97,6 +128,16 @@ class Bot:
         *,
         text: str | None = None,
         root_id: str | None = None,
+    ) -> Message: ...
+    async def send_documents(
+        self,
+        chat_id: str,
+        documents: Sequence[InputFile],
+        *,
+        text: str | None = None,
+        root_id: str | None = None,
+        priority: MessagePriority | None = None,
+        silent: bool = False,
     ) -> Message: ...
     async def close(self) -> None: ...
     async def __aenter__(self) -> Bot: ...

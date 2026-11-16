@@ -28,8 +28,7 @@ finally:
         await storage.close()
 ```
 
-Создавайте ресурсы внутри async main. Готовый пример —
-[`examples/redis_bot.py`](../examples/redis_bot.py): переменные `MM_URL`,
+Создавайте ресурсы внутри async main. Для запуска задайте переменные `MM_URL`,
 `MM_BOT_TOKEN`, `MM_REDIS_URL`, затем сообщение `start` и тема.
 Пример проходит проверку типов; реальный stand проверяет те же state/DI/transport
 операции отдельным harness, не выдаётся за запуск файла примера.

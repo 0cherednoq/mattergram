@@ -3,26 +3,39 @@ from __future__ import annotations
 from mattergram import ComposerButton, ComposerKeyboard
 
 
-def build_admin_keyboard() -> ComposerKeyboard:
-    """Declare the persistent global navigation for the administrator panel."""
+def _button(identifier: str, text: str, *, primary: bool = False) -> ComposerButton:
+    return ComposerButton(
+        id="gameAdmin" + identifier.title(),
+        text=text,
+        message=text,
+        style="primary" if primary else "default",
+    )
 
-    def button(identifier: str, text: str, *, primary: bool = False) -> ComposerButton:
-        return ComposerButton(
-            id="gameAdmin" + identifier.title(),
-            text=text,
-            message=text,
-            style="primary" if primary else "default",
-        )
+
+def build_admin_keyboard() -> ComposerKeyboard:
+    """Declare only the three primary administrator destinations."""
 
     return ComposerKeyboard(
         title="Администрирование игровых аккаунтов",
         rows=(
             (
-                button("overview", "Обзор", primary=True),
-                button("accounts", "Аккаунты"),
-                button("import", "Импорт"),
+                _button("overview", "Обзор", primary=True),
+                _button("accounts", "Аккаунты"),
+                _button("users", "Пользователи"),
             ),
-            (button("users", "Пользователи"), button("pushes", "Push-настройки")),
-            (button("imports", "История импортов"), button("checks", "История проверок")),
+        ),
+    )
+
+
+def build_operator_keyboard() -> ComposerKeyboard:
+    """Declare primary account destinations without user administration."""
+
+    return ComposerKeyboard(
+        title="Игровые аккаунты",
+        rows=(
+            (
+                _button("overview", "Обзор", primary=True),
+                _button("accounts", "Аккаунты"),
+            ),
         ),
     )

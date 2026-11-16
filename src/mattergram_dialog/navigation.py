@@ -6,7 +6,7 @@ from mattergram.fsm.state import State
 from mattergram_dialog.api.entities import ShowMode
 from mattergram_dialog.api.exceptions import InvalidWidgetIdError, UnknownState
 from mattergram_dialog.manager.manager import DialogManager as BaseDialogManager
-from mattergram_dialog.rendering import PostControl, PostControlGroup, PostRender
+from mattergram_dialog.rendering import PostContainer, PostControl, PostControlGroup, PostRender
 from mattergram_dialog.widgets.data import Getter
 from mattergram_dialog.widgets.text import Text
 from mattergram_dialog.window import Window as BaseWindow
@@ -117,7 +117,14 @@ def _text_widget_ids(text: Text) -> list[str]:
 class Window(BaseWindow):
     """Post window that accepts single or grouped native navigation widgets."""
 
-    def __init__(self, text: Text, *widgets: Any, state: State, getter: Getter | None = None) -> None:
+    def __init__(
+        self,
+        text: Text,
+        *widgets: Any,
+        state: State,
+        getter: Getter | None = None,
+        container: PostContainer | None = None,
+    ) -> None:
         if state.state is None:
             raise ValueError("Window state must have a stable name")
         if any(
@@ -133,6 +140,7 @@ class Window(BaseWindow):
         self.widgets = widgets
         self.state = state
         self.getters = () if getter is None else (getter,)
+        self.container = container
 
     async def render(self, manager: Any) -> PostRender:
         data = await self.load_data(manager)
@@ -150,7 +158,7 @@ class Window(BaseWindow):
             controls.extend(
                 control for rendered_group in rendered_groups for control in rendered_group.controls
             )
-        return PostRender(text, tuple(controls), tuple(groups))
+        return PostRender(text, tuple(controls), tuple(groups), self.container)
 
     def find(self, widget_id: str) -> Any:
         text = _find_text(self.text, widget_id)

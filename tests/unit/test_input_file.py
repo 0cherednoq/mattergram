@@ -24,6 +24,15 @@ class InputFileTests(unittest.IsolatedAsyncioTestCase):
             Bot.edit_message_text: ("self", "chat_id", "message_id", "text", "props"),
             Bot.delete_message: ("self", "chat_id", "message_id"),
             Bot.send_document: ("self", "chat_id", "document", "text", "root_id"),
+            Bot.send_documents: (
+                "self",
+                "chat_id",
+                "documents",
+                "text",
+                "root_id",
+                "priority",
+                "silent",
+            ),
             Message.edit_text: ("self", "text"),
             Message.delete: ("self",),
         }
@@ -33,6 +42,11 @@ class InputFileTests(unittest.IsolatedAsyncioTestCase):
         signature = inspect.signature(Bot.send_document)
         self.assertEqual(signature.parameters["text"].default, None)
         self.assertEqual(signature.parameters["root_id"].default, None)
+        batch_signature = inspect.signature(Bot.send_documents)
+        self.assertEqual(batch_signature.parameters["text"].default, None)
+        self.assertEqual(batch_signature.parameters["root_id"].default, None)
+        self.assertEqual(batch_signature.parameters["priority"].default, None)
+        self.assertEqual(batch_signature.parameters["silent"].default, False)
 
     async def test_buffered_source_is_reusable_and_chunked(self) -> None:
         source = BufferedInputFile(b"abcdef", "report.txt", chunk_size=2)

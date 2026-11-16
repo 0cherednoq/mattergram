@@ -6,8 +6,14 @@ from mattergram.types import DialogSubmission
 from mattergram_dialog import DialogManager, ShowMode
 
 from .errors import AdminInputError
-from .jobs import GameAdminJob, GameAdminJobs, dialog_ref_from_manager
-from .models import _now
+from .jobs import (
+    ActiveJobConflict,
+    GameAdminJob,
+    GameAdminJobs,
+    account_check_dialog_data,
+    dialog_ref_from_manager,
+)
+from .models import _id, _now
 from .service import GameAccountsAdminService
 from .states import AdminPanel
 
@@ -31,6 +37,17 @@ class GameAdminActions:
             job_error_type=job.error_type,
         )
 
+    @classmethod
+    def _show_account_job(cls, manager: DialogManager, job: GameAdminJob) -> None:
+        cls._show_job(manager, job)
+        manager.dialog_data.update(account_check_dialog_data(job))
+
+    @staticmethod
+    async def _refresh_account_check(manager: DialogManager) -> None:
+        show = getattr(manager, "show", None)
+        if show is not None:
+            await show(ShowMode.EDIT)
+
     async def refresh_home(self, manager: DialogManager) -> None:
         manager.dialog_data["home_refreshed_at"] = _now()
 
@@ -38,10 +55,67 @@ class GameAdminActions:
         selected = manager.dialog_data.get("selected_account_id")
         if not isinstance(selected, str):
             return
-        run = await self.service.check_account(manager.actor_id, selected)
-        manager.dialog_data["check_summary"] = (
-            f"Проверка: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
+        if self.jobs is not None:
+            try:
+                job = await self.jobs.check_account(
+                    manager.actor_id,
+                    dialog_ref_from_manager(manager),
+                    selected,
+                )
+            except ActiveJobConflict as error:
+                job = error.job
+            self._show_account_job(manager, job)
+            return
+
+        operation_id = _id("local_check")
+        manager.dialog_data.update(
+            account_check_account_id=selected,
+            account_check_job_id=operation_id,
+            account_check_state="pending",
+            account_check_stage="queued",
+            account_check_current=0,
+            account_check_total=None,
+            account_check_started_at=None,
+            account_check_finished_at=None,
+            account_check_valid=0,
+            account_check_invalid=0,
+            account_check_errors=0,
+            account_check_error=None,
         )
+        await self._refresh_account_check(manager)
+
+        async def report(current: int, total: int, stage: str) -> None:
+            manager.dialog_data.update(
+                account_check_state="running",
+                account_check_stage=stage,
+                account_check_current=current,
+                account_check_total=total,
+                account_check_started_at=(manager.dialog_data.get("account_check_started_at") or _now()),
+            )
+            await self._refresh_account_check(manager)
+
+        run = await self.service.check_account(manager.actor_id, selected, progress=report)
+        manager.dialog_data.update(
+            account_check_state="success",
+            account_check_stage="completed",
+            account_check_finished_at=_now(),
+            account_check_valid=run.valid,
+            account_check_invalid=run.invalid,
+            account_check_errors=run.errors,
+        )
+        manager.dialog_data["check_summary"] = (
+            f"Проверка: действительных {run.valid}, недействительных {run.invalid}, ошибок {run.errors}"
+        )
+        await self._refresh_account_check(manager)
+
+    async def cancel_selected_check(self, manager: DialogManager) -> None:
+        if self.jobs is None:
+            return
+        job_id = manager.dialog_data.get("account_check_job_id")
+        if not isinstance(job_id, str):
+            return
+        job = await self.jobs.cancel(manager.actor_id, job_id)
+        self._show_account_job(manager, job)
 
     async def check_all(self, manager: DialogManager) -> None:
         if self.jobs is not None:
@@ -51,7 +125,8 @@ class GameAdminActions:
             return
         run = await self.service.check_all(manager.actor_id)
         manager.dialog_data["check_summary"] = (
-            f"Проверено {run.total}: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
+            f"Проверено {run.total}: действительных {run.valid}, "
+            f"недействительных {run.invalid}, ошибок {run.errors}"
         )
 
     async def check_imported(self, manager: DialogManager) -> None:
@@ -69,7 +144,8 @@ class GameAdminActions:
             return
         run = await self.service.check_import(manager.actor_id, import_id)
         manager.dialog_data["check_summary"] = (
-            f"Проверено из импорта {run.total}: valid {run.valid}, invalid {run.invalid}, errors {run.errors}"
+            f"Проверено из импорта {run.total}: действительных {run.valid}, "
+            f"недействительных {run.invalid}, ошибок {run.errors}"
         )
 
     async def add_user(self, event: DialogSubmission, manager: DialogManager) -> None:
@@ -150,6 +226,26 @@ class GameAdminActions:
         except AdminInputError as error:
             await event.field_errors(error.field_errors)
             return
+        await event.answer()
+        await manager.back(show_mode=ShowMode.EDIT)
+
+    async def delete_account(self, event: DialogSubmission, manager: DialogManager) -> None:
+        selected = manager.dialog_data.get("selected_account_id")
+        if not isinstance(selected, str):
+            await event.validation_error("Выбранный аккаунт больше недоступен")
+            return
+        if not event.values["confirm_account_delete"]:
+            await event.field_errors({"confirm_account_delete": "Подтвердите удаление выбранного аккаунта"})
+            return
+        try:
+            await self.service.delete_account(manager.actor_id, selected)
+        except AdminInputError:
+            await event.validation_error("Выбранный аккаунт больше недоступен")
+            return
+        manager.dialog_data.pop("selected_account_id", None)
+        for key in tuple(manager.dialog_data):
+            if key.startswith("account_check_"):
+                manager.dialog_data.pop(key, None)
         await event.answer()
         await manager.back(show_mode=ShowMode.EDIT)
 

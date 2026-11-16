@@ -18,6 +18,7 @@ Use only imports present in docs/reference/public-api.json. Treat capability and
 - [Модель Mattermost](docs/mattermost-model.md): Понять server, team, channel, post, thread, user и transport boundaries.
 - [Нативный клиент](docs/native-client.md): Создать пост через typed Bot и понять REST boundary.
 - [Router, WebSocket и FSM](docs/native-routing.md): Запустить Dispatcher, обработать WS message и изолировать FSM state.
+- [Декларативный доступ по ролям](docs/access-control.md): Ограничить handlers через aiogram-style required_roles flags и единый RoleResolver без прикладного policy DSL.
 - [Redis FSM](docs/native-redis.md): Подключить Redis storage и event isolation с явным lifecycle.
 - [Slash-команды и действия поста](docs/native-http.md): Принять trusted slash/action HTTP events и завершить response один раз.
 - [Native UI](docs/native-ui.md): Выбрать Blocks, attachments, actions и явный UIProfile.
@@ -28,7 +29,7 @@ Use only imports present in docs/reference/public-api.json. Treat capability and
 - [Provisioning store](docs/provisioning-store.md): Хранить ownership, secrets и uncertain intents.
 - [Automatic Bootstrap](docs/bootstrap.md): Повторяемо сверить bot, teams, channels, membership и commands.
 - [Low-level Native API](docs/native-api.md): Вызвать только reviewed generated Mattermost operations.
-- [High-level API](docs/high-level-api.md): Использовать typed reads, writes, edit/delete и file upload.
+- [High-level API](docs/high-level-api.md): Использовать typed reads, writes, priority/silent delivery и batch file upload.
 - [Native API coverage](docs/native-api-coverage.md): Проверить классификацию всех pinned operationId.
 - [mattergram_dialog](docs/dialog-porting.md): Использовать декларативные post/form windows и понимать границы переноса.
 - [Многоэкранная карточка](docs/showcase.md): Собрать несколько таблиц, forms и WS-to-REST live updates в одном post.

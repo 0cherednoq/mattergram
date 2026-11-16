@@ -17,7 +17,7 @@
   ],
   "target": {
     "path": "tests/ported/test_dialog_runtime.py",
-    "sha256": "8032911b8abdd57c0758693f99a210c1ab253e499adbe2fc922fb82cde20e14e"
+    "sha256": "958c2b5d276b2e9706ee0724e6d4a005b1ed6575b4eacaafc24a8df233cfa07e"
   },
   "native_cases": [
     "nested transitions and result propagation survive storage reload",
@@ -42,7 +42,8 @@
     "DataBlock retains static content when every local action is hidden",
     "generic Button callbacks consume a per-render token before application dispatch",
     "typed form defaults resolve from Format, MagicFilter, sync and async getter data before native validation",
-    "ActionTable is a public Blocks-only row-action widget rather than demo-only imperative code"
+    "ActionTable is a public Blocks-only row-action widget rather than demo-only imperative code",
+    "borderless control groups preserve interactions without rendering a decorative accent container"
   ],
   "excluded": [
     "Telegram Bot, Chat, Message and CallbackQuery fixtures",

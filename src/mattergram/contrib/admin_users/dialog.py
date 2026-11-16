@@ -50,11 +50,11 @@ def build_admin_users_dialog(
     getters: AdminUsersGetters,
     actions: AdminUsersActions,
     roles: tuple[RoleSpec, ...],
+    default_role: str,
 ) -> Dialog:
     """Build one reusable users dialog without embedding service implementation."""
 
     role_options = tuple(Option(text=role.title, value=role.id) for role in roles)
-    default_role = next((role.id for role in roles if not role.protects_last_member), roles[0].id)
     return Dialog(
         Window(
             Section(
@@ -65,6 +65,15 @@ def build_admin_users_dialog(
                     when="all_team_users_assigned",
                 ),
                 level=1,
+            ),
+            ButtonRow(
+                OpenForm(
+                    Const("Добавить пользователя"),
+                    id="adminUsersPluginAdd",
+                    state=AdminUsersPanel.add,
+                    when="can_add",
+                ),
+                border=False,
             ),
             DataBlock(
                 "Пользователи",
@@ -106,15 +115,7 @@ def build_admin_users_dialog(
                     state=AdminUsersPanel.edit,
                     when=lambda data, manager: data["can_manage"] and _selected_visible(data, manager),
                 ),
-            ),
-            ButtonRow(
-                OpenForm(
-                    Const("Добавить пользователя"),
-                    id="adminUsersPluginAdd",
-                    state=AdminUsersPanel.add,
-                    when="can_add",
-                ),
-                title="Управление",
+                border=False,
             ),
             state=AdminUsersPanel.users,
             getter=getters.users,
@@ -127,11 +128,18 @@ def build_admin_users_dialog(
                 placeholder="Выберите участника команды",
                 help_text="Список перечитывается из настроенной Mattermost-команды.",
             ),
-            Select(id="role", label="Роль", options=role_options, default=default_role),
+            Select(
+                id="role",
+                label="Роль",
+                options=role_options,
+                default=default_role,
+                when="can_assign",
+            ),
             Checkbox(id="enabled", label="Активен", default=True),
             title=Const("Добавить пользователя"),
             submit_text=Const("Добавить"),
             on_submit=actions.add,
+            getter=getters.form_permissions,
             callback_id="admin_users_add",
             state=AdminUsersPanel.add,
         ),
@@ -141,6 +149,7 @@ def build_admin_users_dialog(
                 label="Роль",
                 options=role_options,
                 default=lambda data, manager: data["role"],
+                when="can_assign",
             ),
             Checkbox(
                 id="enabled",

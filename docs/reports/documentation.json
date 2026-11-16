@@ -2,26 +2,22 @@
   "schema_version": 1,
   "result": "generated-reference-current",
   "version": "0.1.0a1",
-  "manifest_sha256": "7fbca07e944418eedb376e37821251cfada0df823169db21a74cd54bf4d30d7c",
-  "public_modules": 24,
-  "public_exports": 352,
-  "public_members": 544,
-  "guides": 29,
-  "examples": 19,
+  "manifest_sha256": "59d13cb7c4007ee36d4d69260c780dc42a59f4007246939faee06e3f160d21b4",
+  "public_modules": 26,
+  "public_exports": 390,
+  "public_members": 589,
+  "guides": 30,
+  "examples": 1,
   "example_statuses": {
-    "contract-verified": 8,
-    "declaration-only": 1,
-    "live-verified": 7,
-    "offline-verified": 2,
-    "real-redis-verified": 1
+    "contract-verified": 1
   },
   "artifacts": {
-    "docs/examples.md": "ae8e86d97b9010f8b57fa86d29b12d8d2515900df0d7549f42a8ffec07002093",
-    "docs/reference/api.md": "d2b214cf788af9dc557c8c5956dc21b9de899fc4ce0a1ef77130736d86e15ce0",
+    "docs/examples.md": "3b71e81437eaedec0deedeed8d66435cb5f4c7da8818a799b2293924ccc35c02",
+    "docs/reference/api.md": "87f05f44a81a39249a1aba7a4087e3d7b3efef630dbbf35d6d206d2c70895e7a",
     "docs/reference/capabilities.md": "da4cd7b1ebc544c575cc9ac25b21179698a594bfe3265ccbe0dfcbedff7f501e",
     "docs/reference/exceptions.md": "a3b50fd05e23efe523dfd701b32db9b58719499a4e21dcc541cdba9607b9b74a",
-    "docs/reference/public-api.json": "f9fa4d00432215502b5d69355bb78d5bc39c32b7d35481f51166ac9756d508e3",
-    "llms.txt": "6a62fdba0904eec3d9146f26793636137fa0391578f8efa519875205aaf6ae9f"
+    "docs/reference/public-api.json": "4cd189133a31ceda7396b75a4a3d03decd877059ff29cec33c510df8f2ad5fca",
+    "llms.txt": "267795374713c710792b6e9b89d93d35ad852459ce44424cb8eff718002fe343"
   },
   "network_access": "none",
   "mutating_operations": "none"

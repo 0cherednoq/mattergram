@@ -23,13 +23,23 @@
           ],
           "members": [
             {
+              "name": "create_channel",
+              "kind": "async-method",
+              "signature": "(self, *, team_id: str, name: str, display_name: str, type: Literal['O', 'P'] = 'O', purpose: str = '', header: str = '') -> Channel",
+              "summary": "Create a public or private channel with the authenticated bot account.",
+              "source": {
+                "path": "src/mattergram/bot.py",
+                "line": 352
+              }
+            },
+            {
               "name": "create_direct_channel",
               "kind": "async-method",
               "signature": "(self, user_id: str) -> Channel",
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 274
+                "line": 396
               }
             },
             {
@@ -39,7 +49,7 @@
               "summary": "Remove the plugin-backed persistent keyboard from one channel.",
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 178
+                "line": 256
               }
             },
             {
@@ -49,7 +59,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 322
+                "line": 444
               }
             },
             {
@@ -59,7 +69,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 293
+                "line": 415
               }
             },
             {
@@ -69,7 +79,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 269
+                "line": 347
               }
             },
             {
@@ -79,7 +89,7 @@
               "summary": "Read the active keyboard; ``None`` means no keyboard is configured.",
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 160
+                "line": 217
               }
             },
             {
@@ -89,7 +99,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 226
+                "line": 304
               }
             },
             {
@@ -99,7 +109,17 @@
               "summary": "Return one native page of users belonging to a Mattermost team.",
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 229
+                "line": 307
+              }
+            },
+            {
+              "name": "list_composer_keyboards",
+              "kind": "async-method",
+              "signature": "(self) -> tuple[ComposerKeyboardState, ...]",
+              "summary": "List keyboard states owned by this bot through the plugin manager endpoint.",
+              "source": {
+                "path": "src/mattergram/bot.py",
+                "line": 235
               }
             },
             {
@@ -109,7 +129,7 @@
               "summary": "Native operation; only a real, unexpired user trigger can open a form.",
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 391
+                "line": 556
               }
             },
             {
@@ -129,13 +149,23 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 337
+                "line": 459
+              }
+            },
+            {
+              "name": "send_documents",
+              "kind": "async-method",
+              "signature": "(self, chat_id: str, documents: Sequence[InputFile], *, text: str | None = None, root_id: str | None = None, priority: MessagePriority | None = None, silent: bool = False) -> Message",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/bot.py",
+                "line": 474
               }
             },
             {
               "name": "send_message",
               "kind": "async-method",
-              "signature": "(self, chat_id: str, text: str, *, root_id: str | None = None, actions: Actions | None = None, blocks: Sequence[Block] | None = None, attachments: Sequence[Attachment] | None = None, ui_profile: UIProfile | None = None, action_context: ActionContext | None = None, markdown_actions: dict[str, Action] | None = None) -> Message",
+              "signature": "(self, chat_id: str, text: str, *, root_id: str | None = None, actions: Actions | None = None, blocks: Sequence[Block] | None = None, attachments: Sequence[Attachment] | None = None, ui_profile: UIProfile | None = None, action_context: ActionContext | None = None, markdown_actions: dict[str, Action] | None = None, priority: MessagePriority | None = None, silent: bool = False, file_ids: Sequence[str] | None = None) -> Message",
               "summary": null,
               "source": {
                 "path": "src/mattergram/bot.py",
@@ -149,7 +179,7 @@
               "summary": "Create or replace the plugin-backed persistent keyboard for one channel.",
               "source": {
                 "path": "src/mattergram/bot.py",
-                "line": 141
+                "line": 198
               }
             }
           ]
@@ -240,7 +270,7 @@
           "name": "ComposerKeyboardState",
           "qualified_name": "mattergram.ComposerKeyboardState",
           "kind": "class",
-          "signature": "(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], keyboard: mattergram.ui.composer.ComposerKeyboard) -> None",
+          "signature": "(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], owner_id: Annotated[str | None, MinLen(min_length=1)] = None, keyboard: mattergram.ui.composer.ComposerKeyboard) -> None",
           "summary": "Plugin-confirmed keyboard state and its monotonically increasing revision.",
           "source": {
             "path": "src/mattergram/ui/composer.py",
@@ -251,13 +281,13 @@
           ],
           "members": [
             {
-              "name": "valid_channel_id",
+              "name": "valid_native_id",
               "kind": "class-method",
-              "signature": "(cls, value: str) -> str",
+              "signature": "(cls, value: str | None) -> str | None",
               "summary": null,
               "source": {
                 "path": "src/mattergram/ui/composer.py",
-                "line": 84
+                "line": 85
               }
             }
           ]
@@ -356,7 +386,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/__init__.py",
-            "line": 13
+            "line": 14
           }
         },
         {
@@ -507,7 +537,18 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/__init__.py",
-            "line": 11
+            "line": 12
+          }
+        },
+        {
+          "name": "flags",
+          "qualified_name": "mattergram.flags",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/__init__.py",
+            "line": 1
           }
         }
       ]
@@ -1384,6 +1425,30 @@
               "source": {
                 "path": "src/mattergram/types/base.py",
                 "line": 112
+              }
+            }
+          ]
+        },
+        {
+          "name": "MessagePriority",
+          "qualified_name": "mattergram.types.MessagePriority",
+          "kind": "class",
+          "signature": "(level: Literal['important', 'urgent'], requested_ack: bool = False, persistent_notifications: bool = False) -> None",
+          "summary": "Priority metadata for one root post.",
+          "source": {
+            "path": "src/mattergram/types/message_priority.py",
+            "line": 9
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "to_wire",
+              "kind": "method",
+              "signature": "(self) -> dict[str, str | bool]",
+              "summary": "Return the exact object nested under ``metadata.priority``.",
+              "source": {
+                "path": "src/mattergram/types/message_priority.py",
+                "line": 32
               }
             }
           ]
@@ -2588,7 +2653,7 @@
           "summary": "HTTPResult(status: 'int', payload: 'dict[str, Any]')",
           "source": {
             "path": "src/mattergram/http/adapter.py",
-            "line": 36
+            "line": 39
           },
           "bases": []
         },
@@ -2644,7 +2709,7 @@
           "summary": "HTTP-only ingress borrowing Bot/Dispatcher. Explicit defer is bounded and non-durable.",
           "source": {
             "path": "src/mattergram/http/adapter.py",
-            "line": 53
+            "line": 56
           },
           "bases": [],
           "members": [
@@ -2655,7 +2720,7 @@
               "summary": "Bind a token issued by the server/provisioner; never creates a server command.",
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 126
+                "line": 129
               }
             },
             {
@@ -2665,7 +2730,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 422
+                "line": 426
               }
             },
             {
@@ -2675,7 +2740,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 212
+                "line": 215
               }
             },
             {
@@ -2685,7 +2750,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 122
+                "line": 125
               }
             },
             {
@@ -2695,7 +2760,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 146
+                "line": 149
               }
             },
             {
@@ -2705,7 +2770,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 186
+                "line": 189
               }
             },
             {
@@ -2715,7 +2780,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/http/adapter.py",
-                "line": 134
+                "line": 137
               }
             }
           ]
@@ -4063,6 +4128,133 @@
       ]
     },
     {
+      "name": "mattergram.security",
+      "dependency": "core",
+      "exports": [
+        {
+          "name": "AccessDenied",
+          "qualified_name": "mattergram.security.AccessDenied",
+          "kind": "class",
+          "signature": null,
+          "summary": "Raised when an enabled application role does not authorize an action.",
+          "source": {
+            "path": "src/mattergram/security/rbac.py",
+            "line": 16
+          },
+          "bases": [
+            "builtins.PermissionError"
+          ]
+        },
+        {
+          "name": "DEFAULT_ACCESS_DENIED_TEXT",
+          "qualified_name": "mattergram.security.DEFAULT_ACCESS_DENIED_TEXT",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/security/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "RBAC",
+          "qualified_name": "mattergram.security.RBAC",
+          "kind": "class",
+          "signature": "(resolver: RoleResolver) -> None",
+          "summary": "Resolve roles and enforce explicit role sets outside the dispatcher too.",
+          "source": {
+            "path": "src/mattergram/security/rbac.py",
+            "line": 45
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "require_role",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, *roles: str) -> str",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/security/rbac.py",
+                "line": 61
+              }
+            },
+            {
+              "name": "role_for",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> str | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/security/rbac.py",
+                "line": 53
+              }
+            }
+          ]
+        },
+        {
+          "name": "RBACMiddleware",
+          "qualified_name": "mattergram.security.RBACMiddleware",
+          "kind": "class",
+          "signature": "(resolver: RoleResolver, *, denied_text: str = 'Недостаточно прав для этого действия') -> None",
+          "summary": "Enforce ``required_roles`` flags on native Mattergram handlers.",
+          "source": {
+            "path": "src/mattergram/security/rbac.py",
+            "line": 77
+          },
+          "bases": [
+            "mattergram.dispatcher.middlewares.base.BaseMiddleware"
+          ]
+        },
+        {
+          "name": "REQUIRED_ROLES_FLAG",
+          "qualified_name": "mattergram.security.REQUIRED_ROLES_FLAG",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/security/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "RoleResolver",
+          "qualified_name": "mattergram.security.RoleResolver",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": "Resolve one enabled application role for a Mattermost actor.",
+          "source": {
+            "path": "src/mattergram/security/rbac.py",
+            "line": 20
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "resolve_role",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> str | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/security/rbac.py",
+                "line": 24
+              }
+            }
+          ]
+        },
+        {
+          "name": "normalize_required_roles",
+          "qualified_name": "mattergram.security.normalize_required_roles",
+          "kind": "function",
+          "signature": "(value: object) -> tuple[str, ...]",
+          "summary": "Validate and normalize the value of the ``required_roles`` handler flag.",
+          "source": {
+            "path": "src/mattergram/security/rbac.py",
+            "line": 27
+          }
+        }
+      ]
+    },
+    {
       "name": "mattergram.contrib.admin_users",
       "dependency": "core",
       "exports": [
@@ -4110,6 +4302,44 @@
             "line": 47
           },
           "bases": []
+        },
+        {
+          "name": "AdminUserChange",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUserChange",
+          "kind": "class",
+          "signature": "(actor_id: str, action: str, previous: AdminUser | None, current: AdminUser) -> None",
+          "summary": "One committed application-user change emitted without UI assumptions.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/events.py",
+            "line": 11
+          },
+          "bases": []
+        },
+        {
+          "name": "AdminUserChangeSink",
+          "qualified_name": "mattergram.contrib.admin_users.AdminUserChangeSink",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": "Consume committed changes, for example to reconcile external access surfaces.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/events.py",
+            "line": 21
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "write",
+              "kind": "async-method",
+              "signature": "(self, change: AdminUserChange) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/events.py",
+                "line": 24
+              }
+            }
+          ]
         },
         {
           "name": "AdminUserRepository",
@@ -4175,7 +4405,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/admin_users/actions.py",
-            "line": 11
+            "line": 12
           },
           "bases": [],
           "members": [
@@ -4186,7 +4416,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/actions.py",
-                "line": 15
+                "line": 16
               }
             },
             {
@@ -4196,7 +4426,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/actions.py",
-                "line": 29
+                "line": 33
               }
             }
           ]
@@ -4220,7 +4450,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/getters.py",
-                "line": 48
+                "line": 45
+              }
+            },
+            {
+              "name": "form_permissions",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> Mapping[str, Any]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/getters.py",
+                "line": 54
               }
             },
             {
@@ -4230,7 +4470,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/getters.py",
-                "line": 57
+                "line": 58
               }
             },
             {
@@ -4253,7 +4493,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/admin_users/service.py",
-            "line": 25
+            "line": 26
           },
           "bases": [
             "builtins.ValueError"
@@ -4277,11 +4517,11 @@
           "name": "AdminUsersPlugin",
           "qualified_name": "mattergram.contrib.admin_users.AdminUsersPlugin",
           "kind": "class",
-          "signature": "(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] | None = None, permissions: Sequence[PermissionSpec] | None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink | None = None) -> None",
+          "signature": "(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] | None = None, permissions: Sequence[PermissionSpec] | None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink | None = None, change_sink: AdminUserChangeSink | None = None, default_role: str | None = None) -> None",
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/admin_users/plugin.py",
-            "line": 23
+            "line": 25
           },
           "bases": [],
           "members": [
@@ -4292,7 +4532,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/plugin.py",
-                "line": 59
+                "line": 79
               }
             },
             {
@@ -4302,7 +4542,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/plugin.py",
-                "line": 72
+                "line": 92
               }
             },
             {
@@ -4312,7 +4552,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/plugin.py",
-                "line": 64
+                "line": 84
               }
             }
           ]
@@ -4325,7 +4565,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/admin_users/router.py",
-            "line": 16
+            "line": 17
           },
           "bases": [
             "typing.Protocol"
@@ -4338,7 +4578,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/router.py",
-                "line": 27
+                "line": 28
               }
             },
             {
@@ -4348,7 +4588,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/router.py",
-                "line": 18
+                "line": 19
               }
             }
           ]
@@ -4357,11 +4597,11 @@
           "name": "AdminUsersService",
           "qualified_name": "mattergram.contrib.admin_users.AdminUsersService",
           "kind": "class",
-          "signature": "(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink | None = None) -> None",
+          "signature": "(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink | None = None, change_sink: AdminUserChangeSink | None = None, default_role: str | None = None) -> None",
           "summary": "Apply app permissions, team membership and the last-admin invariant.",
           "source": {
             "path": "src/mattergram/contrib/admin_users/service.py",
-            "line": 36
+            "line": 37
           },
           "bases": [],
           "members": [
@@ -4372,7 +4612,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 157
+                "line": 177
               }
             },
             {
@@ -4382,7 +4622,7 @@
               "summary": "Idempotently ensure only explicitly configured initial administrators.",
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 79
+                "line": 92
               }
             },
             {
@@ -4392,7 +4632,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 136
+                "line": 157
               }
             },
             {
@@ -4402,7 +4642,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 145
+                "line": 166
               }
             },
             {
@@ -4412,7 +4652,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 124
+                "line": 145
               }
             },
             {
@@ -4422,7 +4662,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 106
+                "line": 119
               }
             },
             {
@@ -4432,7 +4672,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 113
+                "line": 134
+              }
+            },
+            {
+              "name": "resolve_role",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> str | None",
+              "summary": "Resolve the enabled application role for core RBAC middleware.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/service.py",
+                "line": 126
               }
             },
             {
@@ -4442,7 +4692,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 228
+                "line": 265
               }
             },
             {
@@ -4452,7 +4702,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/admin_users/service.py",
-                "line": 191
+                "line": 220
               }
             }
           ]
@@ -4695,11 +4945,122 @@
           "name": "build_admin_users_dialog",
           "qualified_name": "mattergram.contrib.admin_users.build_admin_users_dialog",
           "kind": "function",
-          "signature": "(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...]) -> Dialog",
+          "signature": "(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...], default_role: str) -> Dialog",
           "summary": "Build one reusable users dialog without embedding service implementation.",
           "source": {
             "path": "src/mattergram/contrib/admin_users/dialog.py",
             "line": 48
+          }
+        }
+      ]
+    },
+    {
+      "name": "mattergram.contrib.admin_users.sqlalchemy",
+      "dependency": "sqlalchemy",
+      "exports": [
+        {
+          "name": "SQLAlchemyAdminUserRepository",
+          "qualified_name": "mattergram.contrib.admin_users.sqlalchemy.SQLAlchemyAdminUserRepository",
+          "kind": "class",
+          "signature": "(sessions: async_sessionmaker[AsyncSession]) -> None",
+          "summary": "Durable async repository and audit sink backed by SQLAlchemy 2.0.",
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+            "line": 51
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "create_schema",
+              "kind": "static-method",
+              "signature": "(engine: AsyncEngine) -> None",
+              "summary": "Create tables for local use; production should run a real migration.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 71
+              }
+            },
+            {
+              "name": "from_engine",
+              "kind": "class-method",
+              "signature": "(cls, engine: AsyncEngine) -> SQLAlchemyAdminUserRepository",
+              "summary": "Create a repository with one new, non-expiring session per operation.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 63
+              }
+            },
+            {
+              "name": "get_by_mattermost_user_id",
+              "kind": "async-method",
+              "signature": "(self, mattermost_user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 93
+              }
+            },
+            {
+              "name": "get_user",
+              "kind": "async-method",
+              "signature": "(self, user_id: str) -> AdminUser | None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 85
+              }
+            },
+            {
+              "name": "list_audit_records",
+              "kind": "async-method",
+              "signature": "(self) -> tuple[AuditRecord, ...]",
+              "summary": "Return persisted audit records in commit order.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 151
+              }
+            },
+            {
+              "name": "list_users",
+              "kind": "async-method",
+              "signature": "(self) -> tuple[AdminUser, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 80
+              }
+            },
+            {
+              "name": "save_user",
+              "kind": "async-method",
+              "signature": "(self, user: AdminUser) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 107
+              }
+            },
+            {
+              "name": "write",
+              "kind": "async-method",
+              "signature": "(self, record: AuditRecord) -> None",
+              "summary": "Persist one plugin audit record, satisfying the ``AuditSink`` protocol.",
+              "source": {
+                "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+                "line": 135
+              }
+            }
+          ]
+        },
+        {
+          "name": "admin_users_metadata",
+          "qualified_name": "mattergram.contrib.admin_users.sqlalchemy.admin_users_metadata",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/admin_users/sqlalchemy.py",
+            "line": 25
           }
         }
       ]
@@ -4721,13 +5082,33 @@
           "bases": [],
           "members": [
             {
+              "name": "install",
+              "kind": "async-method",
+              "signature": "(self, channel_id: str, *, keyboard: ComposerKeyboard | None = None) -> None",
+              "summary": "Install or replace the owned keyboard in one direct channel.",
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 70
+              }
+            },
+            {
+              "name": "prune_owned",
+              "kind": "async-method",
+              "signature": "(self, active_channel_ids: set[str]) -> None",
+              "summary": "Delete this bot's persisted keyboards outside the current access set.",
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 100
+              }
+            },
+            {
               "name": "setup",
               "kind": "method",
               "signature": "(self, builder: PluginBuilder) -> None",
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
-                "line": 40
+                "line": 43
               }
             },
             {
@@ -4737,7 +5118,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
-                "line": 70
+                "line": 63
               }
             },
             {
@@ -4747,7 +5128,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
-                "line": 43
+                "line": 46
+              }
+            },
+            {
+              "name": "uninstall",
+              "kind": "async-method",
+              "signature": "(self, channel_id: str) -> None",
+              "summary": "Restore the state that existed before this plugin first owned the channel.",
+              "source": {
+                "path": "src/mattergram/contrib/composer_keyboard/plugin.py",
+                "line": 113
               }
             }
           ]
@@ -4770,6 +5161,20 @@
       "dependency": "core",
       "exports": [
         {
+          "name": "ActiveJobConflict",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.ActiveJobConflict",
+          "kind": "class",
+          "signature": "(job: GameAdminJob) -> None",
+          "summary": "A job with the same atomic single-flight key is already active.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 101
+          },
+          "bases": [
+            "builtins.RuntimeError"
+          ]
+        },
+        {
           "name": "AccountCredentials",
           "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCredentials",
           "kind": "class",
@@ -4777,9 +5182,244 @@
           "summary": "AccountCredentials(login: 'str', password: 'SecretStr', cookies: 'tuple[StoredCookie, ...]' = ())",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 94
+            "line": 103
           },
           "bases": []
+        },
+        {
+          "name": "AccountCardData",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCardData",
+          "kind": "class",
+          "signature": "(id: str, login: str, has_password: bool, cookies: tuple[CookieMetadata, ...] = (), environment: AccountEnvironment = <factory>, status: AccountStatus = 'unchecked', last_checked_at: str | None = None, last_error: str | None = None) -> None",
+          "summary": "AccountCardData(id: 'str', login: 'str', has_password: 'bool', cookies: 'tuple[CookieMetadata, ...]' = (), environment: 'AccountEnvironment' = <factory>, status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 125
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountCheck",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCheck",
+          "kind": "class",
+          "signature": "(*, id: str, check: str, on_cancel: CheckHandler | None = None, when: WhenCondition = None) -> None",
+          "summary": "Render one account-check lifecycle and an optional cancellation action.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py",
+            "line": 99
+          },
+          "bases": [
+            "mattergram_dialog.widgets.common.base.Widget"
+          ],
+          "members": [
+            {
+              "name": "process_action",
+              "kind": "async-method",
+              "signature": "(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py",
+                "line": 159
+              }
+            },
+            {
+              "name": "render_control_groups",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py",
+                "line": 116
+              }
+            }
+          ]
+        },
+        {
+          "name": "AccountCheckData",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCheckData",
+          "kind": "class",
+          "signature": "(account_id: str, job_id: str, state: AccountCheckState, stage: str, current: int = 0, total: int | None = None, started_at: str | None = None, finished_at: str | None = None, valid: int = 0, invalid: int = 0, errors: int = 0, error: str | None = None) -> None",
+          "summary": "Secret-free snapshot rendered by the reusable account-check component.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 137
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "active",
+              "kind": "property",
+              "signature": "(self) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+                "line": 166
+              }
+            }
+          ]
+        },
+        {
+          "name": "AccountCheckState",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCheckState",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "AccountEnvironment",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountEnvironment",
+          "kind": "class",
+          "signature": "(ip: str = '', country: str = '', region: str = '', city: str = '', user_agent: str = '') -> None",
+          "summary": "AccountEnvironment(ip: 'str' = '', country: 'str' = '', region: 'str' = '', city: 'str' = '', user_agent: 'str' = '')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 110
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountCard",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountCard",
+          "kind": "class",
+          "signature": "(*, id: str, card: str, on_check: CheckHandler, check: str | None = None, on_cancel: CheckHandler | None = None, edit_state: State | None = None, delete_state: State | None = None, when: WhenCondition = None) -> None",
+          "summary": "Render one selected account and its local check action in the current post.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py",
+            "line": 190
+          },
+          "bases": [
+            "mattergram_dialog.widgets.common.base.Widget"
+          ],
+          "members": [
+            {
+              "name": "process_action",
+              "kind": "async-method",
+              "signature": "(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py",
+                "line": 330
+              }
+            },
+            {
+              "name": "render_control_groups",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py",
+                "line": 218
+              }
+            }
+          ]
+        },
+        {
+          "name": "AccountList",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountList",
+          "kind": "class",
+          "signature": "(*, id: str, page: str, when: WhenCondition = None) -> None",
+          "summary": "Backend-paged account table with per-dialog filter and sort state.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py",
+            "line": 70
+          },
+          "bases": [
+            "mattergram_dialog.widgets.common.base.Widget"
+          ],
+          "members": [
+            {
+              "name": "process_action",
+              "kind": "async-method",
+              "signature": "(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py",
+                "line": 276
+              }
+            },
+            {
+              "name": "query",
+              "kind": "method",
+              "signature": "(self, manager: Any) -> AccountListQuery",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py",
+                "line": 94
+              }
+            },
+            {
+              "name": "render_control_groups",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py",
+                "line": 169
+              }
+            }
+          ]
+        },
+        {
+          "name": "AccountListFilter",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountListFilter",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
+        },
+        {
+          "name": "AccountListItem",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountListItem",
+          "kind": "class",
+          "signature": "(id: str, login: str, has_credentials: bool, cookie_count: int, country: str) -> None",
+          "summary": "AccountListItem(id: 'str', login: 'str', has_credentials: 'bool', cookie_count: 'int', country: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 201
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountListPage",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountListPage",
+          "kind": "class",
+          "signature": "(items: tuple[AccountListItem, ...], page: int, pages: int, total: int, query: AccountListQuery) -> None",
+          "summary": "AccountListPage(items: 'tuple[AccountListItem, ...]', page: 'int', pages: 'int', total: 'int', query: 'AccountListQuery')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 210
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountListQuery",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountListQuery",
+          "kind": "class",
+          "signature": "(page: int = 0, page_size: int = 5, filter: AccountListFilter = 'all', sort: AccountListSort = 'newest') -> None",
+          "summary": "AccountListQuery(page: 'int' = 0, page_size: 'int' = 5, filter: 'AccountListFilter' = 'all', sort: 'AccountListSort' = 'newest')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 183
+          },
+          "bases": []
+        },
+        {
+          "name": "AccountListSort",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.AccountListSort",
+          "kind": "value",
+          "signature": null,
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/__init__.py",
+            "line": 1
+          }
         },
         {
           "name": "AccountStatus",
@@ -4865,7 +5505,7 @@
           "summary": "AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'AdminRole', enabled: 'bool' = True)",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 46
+            "line": 55
           },
           "bases": []
         },
@@ -4877,7 +5517,31 @@
           "summary": "CheckRun(id: 'str', created_at: 'str', actor_id: 'str', scope: 'str', total: 'int', valid: 'int', invalid: 'int', errors: 'int', status: 'RunStatus')",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 131
+            "line": 239
+          },
+          "bases": []
+        },
+        {
+          "name": "CheckAccountJob",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CheckAccountJob",
+          "kind": "class",
+          "signature": "(account_id: str) -> None",
+          "summary": "CheckAccountJob(account_id: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 32
+          },
+          "bases": []
+        },
+        {
+          "name": "CookieMetadata",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CookieMetadata",
+          "kind": "class",
+          "signature": "(domain: str, name: str) -> None",
+          "summary": "CookieMetadata(domain: 'str', name: 'str')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/models.py",
+            "line": 119
           },
           "bases": []
         },
@@ -4889,7 +5553,7 @@
           "summary": "CheckAllAccountsJob()",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 32
+            "line": 37
           },
           "bases": []
         },
@@ -4901,7 +5565,7 @@
           "summary": "CheckImportedAccountsJob(import_id: 'str')",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 37
+            "line": 42
           },
           "bases": []
         },
@@ -4913,7 +5577,7 @@
           "summary": "Adapt the shared dialog coalescer to background-job progress snapshots.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 121
+            "line": 139
           },
           "bases": [],
           "members": [
@@ -4924,7 +5588,57 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 127
+                "line": 145
+              }
+            }
+          ]
+        },
+        {
+          "name": "CredentialRevealPolicy",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.CredentialRevealPolicy",
+          "kind": "class",
+          "signature": "(*args, **kwargs)",
+          "summary": null,
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+            "line": 27
+          },
+          "bases": [
+            "typing.Protocol"
+          ],
+          "members": [
+            {
+              "name": "allows",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, channel_id: str) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/ports.py",
+                "line": 28
+              }
+            }
+          ]
+        },
+        {
+          "name": "DenyCredentialRevealPolicy",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.DenyCredentialRevealPolicy",
+          "kind": "class",
+          "signature": "() -> None",
+          "summary": "DenyCredentialRevealPolicy()",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/credentials.py",
+            "line": 10
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "allows",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, channel_id: str) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/credentials.py",
+                "line": 12
               }
             }
           ]
@@ -4937,7 +5651,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 111
+            "line": 129
           },
           "bases": [
             "typing.Protocol"
@@ -4950,7 +5664,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 112
+                "line": 130
               }
             }
           ]
@@ -4963,7 +5677,7 @@
           "summary": "Process-local, non-durable queue for the owned local demo only.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 242
+            "line": 273
           },
           "bases": [],
           "members": [
@@ -4974,7 +5688,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 251
+                "line": 282
               }
             },
             {
@@ -4984,7 +5698,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 248
+                "line": 279
               }
             },
             {
@@ -4994,7 +5708,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 254
+                "line": 285
               }
             }
           ]
@@ -5007,7 +5721,7 @@
           "summary": "Process-local demo/test repository. Never use it as production persistence.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 171
+            "line": 189
           },
           "bases": [],
           "members": [
@@ -5018,7 +5732,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 180
+                "line": 198
               }
             },
             {
@@ -5028,7 +5742,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 189
+                "line": 218
               }
             },
             {
@@ -5038,7 +5752,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 193
+                "line": 222
               }
             },
             {
@@ -5048,7 +5762,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 207
+                "line": 236
               }
             },
             {
@@ -5058,7 +5772,7 @@
               "summary": "Expose immutable snapshots for demo diagnostics and contract tests.",
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 235
+                "line": 266
               }
             },
             {
@@ -5068,7 +5782,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 229
+                "line": 260
               }
             }
           ]
@@ -5077,11 +5791,11 @@
           "name": "GameAccount",
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAccount",
           "kind": "class",
-          "signature": "(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str | None = None, last_error: str | None = None) -> None",
-          "summary": "GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)",
+          "signature": "(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str | None = None, last_error: str | None = None, environment: AccountEnvironment = <factory>, created_at: str = <factory>) -> None",
+          "summary": "GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None, environment: 'AccountEnvironment' = <factory>, created_at: 'str' = <factory>)",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 101
+            "line": 171
           },
           "bases": []
         },
@@ -5089,11 +5803,11 @@
           "name": "GameAdminJob",
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJob",
           "kind": "class",
-          "signature": "(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int | None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str | None = None) -> None",
+          "signature": "(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, started_at: str | None = None, finished_at: str | None = None, single_flight_key: str | None = None, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int | None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str | None = None) -> None",
           "summary": "Durable, secret-free snapshot of one background operation.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 46
+            "line": 53
           },
           "bases": [],
           "members": [
@@ -5104,7 +5818,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 82
+                "line": 92
               }
             }
           ]
@@ -5128,7 +5842,7 @@
           "summary": "Production queue port. Delivery may be at-least-once.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 105
+            "line": 123
           },
           "bases": [
             "typing.Protocol"
@@ -5141,7 +5855,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 108
+                "line": 126
               }
             }
           ]
@@ -5151,10 +5865,10 @@
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAdminJobRepository",
           "kind": "class",
           "signature": "(*args, **kwargs)",
-          "summary": "Durable production port; implementations must use compare-and-swap revisions.",
+          "summary": "Durable port with CAS revisions and atomic active single-flight keys.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 91
+            "line": 109
           },
           "bases": [
             "typing.Protocol"
@@ -5167,7 +5881,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 94
+                "line": 112
               }
             },
             {
@@ -5177,7 +5891,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 96
+                "line": 114
               }
             },
             {
@@ -5187,7 +5901,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 98
+                "line": 116
               }
             },
             {
@@ -5197,7 +5911,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 100
+                "line": 118
               }
             },
             {
@@ -5207,7 +5921,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 102
+                "line": 120
               }
             }
           ]
@@ -5231,7 +5945,7 @@
           "summary": "Execute queued imports/checks and publish ordered, actor-scoped progress.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 332
+            "line": 419
           },
           "bases": [],
           "members": [
@@ -5242,7 +5956,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 427
+                "line": 517
               }
             }
           ]
@@ -5266,7 +5980,7 @@
           "summary": "Authorize and enqueue background work without choosing infrastructure adapters.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 258
+            "line": 289
           },
           "bases": [],
           "members": [
@@ -5277,7 +5991,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 318
+                "line": 366
+              }
+            },
+            {
+              "name": "check_account",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, dialog_ref: DialogRef, account_id: str) -> GameAdminJob",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+                "line": 340
               }
             },
             {
@@ -5287,7 +6011,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 303
+                "line": 337
               }
             },
             {
@@ -5297,7 +6021,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 306
+                "line": 354
               }
             },
             {
@@ -5307,7 +6031,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-                "line": 293
+                "line": 327
               }
             }
           ]
@@ -5316,14 +6040,24 @@
           "name": "GameAccountsAdminService",
           "qualified_name": "mattergram.contrib.game_accounts_admin.GameAccountsAdminService",
           "kind": "class",
-          "signature": "(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory) -> None",
-          "summary": "Administrator-only application service with an explicit secret boundary.",
+          "signature": "(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory, credential_reveal_policy: CredentialRevealPolicy | None = None) -> None",
+          "summary": "Role-aware game-account service with an explicit secret boundary.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-            "line": 31
+            "line": 53
           },
           "bases": [],
           "members": [
+            {
+              "name": "account_card",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, account_id: str) -> AccountCardData",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 388
+              }
+            },
             {
               "name": "add_user",
               "kind": "async-method",
@@ -5331,17 +6065,27 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 101
+                "line": 140
+              }
+            },
+            {
+              "name": "can_reveal_credentials",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, channel_id: str) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 384
               }
             },
             {
               "name": "check_account",
               "kind": "async-method",
-              "signature": "(self, actor_id: str, account_id: str) -> CheckRun",
+              "signature": "(self, actor_id: str, account_id: str, *, progress: OperationProgress | None = None) -> CheckRun",
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 336
+                "line": 474
               }
             },
             {
@@ -5351,7 +6095,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 339
+                "line": 488
               }
             },
             {
@@ -5361,7 +6105,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 349
+                "line": 498
               }
             },
             {
@@ -5371,7 +6115,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 59
+                "line": 97
+              }
+            },
+            {
+              "name": "delete_account",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, account_id: str) -> GameAccount",
+              "summary": "Delete one game account after the caller performed explicit confirmation.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 445
               }
             },
             {
@@ -5381,7 +6135,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 236
+                "line": 277
               }
             },
             {
@@ -5391,7 +6145,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 272
+                "line": 314
               }
             },
             {
@@ -5401,7 +6155,7 @@
               "summary": "Read current active team members and exclude application users already assigned.",
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 87
+                "line": 126
               }
             },
             {
@@ -5411,7 +6165,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 384
+                "line": 533
               }
             },
             {
@@ -5421,7 +6175,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 368
+                "line": 517
               }
             },
             {
@@ -5431,7 +6185,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 172
+                "line": 211
               }
             },
             {
@@ -5441,7 +6195,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 71
+                "line": 109
+              }
+            },
+            {
+              "name": "query_accounts",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, query: AccountListQuery) -> AccountListPage",
+              "summary": "Filter, sort and slice accounts before rendering a user-specific page.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 323
               }
             },
             {
@@ -5451,7 +6215,27 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 53
+                "line": 77
+              }
+            },
+            {
+              "name": "require_operator",
+              "kind": "method",
+              "signature": "(self, actor_id: str) -> AdminUser",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 83
+              }
+            },
+            {
+              "name": "resolve_role",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str) -> str | None",
+              "summary": "Resolve an enabled application role for core RBAC middleware.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/service.py",
+                "line": 89
               }
             },
             {
@@ -5461,7 +6245,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 194
+                "line": 235
               }
             },
             {
@@ -5471,7 +6255,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 281
+                "line": 409
               }
             },
             {
@@ -5481,7 +6265,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/service.py",
-                "line": 135
+                "line": 174
               }
             }
           ]
@@ -5494,7 +6278,7 @@
           "summary": "Apply business actions and form submissions for the dialog declaration.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-            "line": 15
+            "line": 21
           },
           "bases": [],
           "members": [
@@ -5505,7 +6289,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 131
+                "line": 207
               }
             },
             {
@@ -5515,7 +6299,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 75
+                "line": 151
               }
             },
             {
@@ -5525,7 +6309,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 192
+                "line": 288
+              }
+            },
+            {
+              "name": "cancel_selected_check",
+              "kind": "async-method",
+              "signature": "(self, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 111
               }
             },
             {
@@ -5535,7 +6329,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 46
+                "line": 120
               }
             },
             {
@@ -5545,7 +6339,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 57
+                "line": 132
               }
             },
             {
@@ -5555,7 +6349,17 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 37
+                "line": 54
+              }
+            },
+            {
+              "name": "delete_account",
+              "kind": "async-method",
+              "signature": "(self, event: DialogSubmission, manager: DialogManager) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
+                "line": 232
               }
             },
             {
@@ -5565,7 +6369,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 137
+                "line": 213
               }
             },
             {
@@ -5575,7 +6379,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 134
+                "line": 210
               }
             },
             {
@@ -5585,7 +6389,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 89
+                "line": 165
               }
             },
             {
@@ -5595,7 +6399,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 156
+                "line": 252
               }
             },
             {
@@ -5605,7 +6409,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 34
+                "line": 51
               }
             },
             {
@@ -5615,7 +6419,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/actions.py",
-                "line": 108
+                "line": 184
               }
             }
           ]
@@ -5628,7 +6432,7 @@
           "summary": "Load render-only data without owning navigation or form side effects.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-            "line": 13
+            "line": 16
           },
           "bases": [],
           "members": [
@@ -5639,7 +6443,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 44
+                "line": 90
               }
             },
             {
@@ -5649,7 +6453,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 32
+                "line": 78
               }
             },
             {
@@ -5659,7 +6463,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 50
+                "line": 117
               }
             },
             {
@@ -5669,7 +6473,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 19
+                "line": 62
               }
             },
             {
@@ -5679,7 +6483,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 47
+                "line": 114
               }
             },
             {
@@ -5689,7 +6493,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 41
+                "line": 87
               }
             },
             {
@@ -5699,7 +6503,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 63
+                "line": 130
               }
             },
             {
@@ -5709,7 +6513,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 58
+                "line": 125
               }
             },
             {
@@ -5719,7 +6523,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 53
+                "line": 120
               }
             },
             {
@@ -5729,7 +6533,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/getters.py",
-                "line": 25
+                "line": 71
               }
             }
           ]
@@ -5742,7 +6546,7 @@
           "summary": "Dependencies injected into module-level game-admin handlers.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/router.py",
-            "line": 26
+            "line": 30
           },
           "bases": []
         },
@@ -5814,7 +6618,7 @@
           "summary": "ImportRun(id: 'str', created_at: 'str', actor_id: 'str', game: 'str', total: 'int', imported: 'int', rejected: 'int', status: 'RunStatus', account_ids: 'tuple[str, ...]' = (), issues: 'tuple[str, ...]' = ())",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 117
+            "line": 225
           },
           "bases": []
         },
@@ -5831,6 +6635,64 @@
           "bases": []
         },
         {
+          "name": "MattermostDirectMessageCredentialPolicy",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.MattermostDirectMessageCredentialPolicy",
+          "kind": "class",
+          "signature": "(bot: Bot) -> None",
+          "summary": "MattermostDirectMessageCredentialPolicy(bot: 'Bot')",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/credentials.py",
+            "line": 17
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "allows",
+              "kind": "async-method",
+              "signature": "(self, actor_id: str, channel_id: str) -> bool",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/credentials.py",
+                "line": 21
+              }
+            }
+          ]
+        },
+        {
+          "name": "MattermostPushDispatcher",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.MattermostPushDispatcher",
+          "kind": "class",
+          "signature": "(bot: Bot, *, mentions: Sequence[str] = (), priority: MessagePriority | None = None) -> None",
+          "summary": "Deliver enabled Game Admin events as ordinary non-silent Mattermost posts.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/push.py",
+            "line": 16
+          },
+          "bases": [],
+          "members": [
+            {
+              "name": "deliver",
+              "kind": "async-method",
+              "signature": "(self, rule: PushRule, event: PushEvent, text: str) -> Message",
+              "summary": "Deliver one event and return its confirmed post for operational tooling.",
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/push.py",
+                "line": 45
+              }
+            },
+            {
+              "name": "send",
+              "kind": "async-method",
+              "signature": "(self, rule: PushRule, event: PushEvent, text: str) -> None",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram/contrib/game_accounts_admin/push.py",
+                "line": 42
+              }
+            }
+          ]
+        },
+        {
           "name": "JobRevisionConflict",
           "qualified_name": "mattergram.contrib.game_accounts_admin.JobRevisionConflict",
           "kind": "class",
@@ -5838,7 +6700,7 @@
           "summary": "The persisted job changed after the caller read it.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 87
+            "line": 97
           },
           "bases": [
             "builtins.RuntimeError"
@@ -5911,7 +6773,7 @@
           "summary": "PushRule(id: 'str', destination_kind: 'PushDestinationKind', destination_id: 'str', events: 'tuple[PushEvent, ...]', enabled: 'bool' = True)",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 78
+            "line": 87
           },
           "bases": []
         },
@@ -5934,7 +6796,7 @@
           "summary": "StoredCookie(domain: 'str', name: 'str', value: 'SecretStr')",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 87
+            "line": 96
           },
           "bases": []
         },
@@ -5946,7 +6808,7 @@
           "summary": "One active human Mattermost account available to this application.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 55
+            "line": 64
           },
           "bases": [],
           "members": [
@@ -5957,7 +6819,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-                "line": 68
+                "line": 77
               }
             }
           ]
@@ -6007,7 +6869,7 @@
           "summary": "VerificationResult(valid: 'bool', summary: 'str')",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/models.py",
-            "line": 111
+            "line": 219
           },
           "bases": []
         },
@@ -6019,7 +6881,29 @@
           "summary": "Build the complete administrator panel against one application service.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/dialog.py",
-            "line": 53
+            "line": 57
+          }
+        },
+        {
+          "name": "build_account_check_blocks",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.build_account_check_blocks",
+          "kind": "function",
+          "signature": "(check: AccountCheckData, *, cancel: Block | None = None, embedded: bool = False) -> tuple[Block, ...]",
+          "summary": "Build a secret-free status card from factual backend metrics.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py",
+            "line": 28
+          }
+        },
+        {
+          "name": "build_account_card_blocks",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.build_account_card_blocks",
+          "kind": "function",
+          "signature": "(card: AccountCardData, *, check: Block | None = None, edit: Block | None = None, delete: Block | None = None, progress: Block | None = None) -> tuple[Block, ...]",
+          "summary": "Build an expanded safe card without password or session-cookie values.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py",
+            "line": 50
           }
         },
         {
@@ -6027,10 +6911,21 @@
           "qualified_name": "mattergram.contrib.game_accounts_admin.build_admin_keyboard",
           "kind": "function",
           "signature": "() -> ComposerKeyboard",
-          "summary": "Declare the persistent global navigation for the administrator panel.",
+          "summary": "Declare only the three primary administrator destinations.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/keyboard.py",
-            "line": 6
+            "line": 15
+          }
+        },
+        {
+          "name": "build_operator_keyboard",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.build_operator_keyboard",
+          "kind": "function",
+          "signature": "() -> ComposerKeyboard",
+          "summary": "Declare primary account destinations without user administration.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/keyboard.py",
+            "line": 30
           }
         },
         {
@@ -6041,7 +6936,18 @@
           "summary": "Capture durable coordinates for the active Mattermost dialog post.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
-            "line": 150
+            "line": 168
+          }
+        },
+        {
+          "name": "account_check_dialog_data",
+          "qualified_name": "mattergram.contrib.game_accounts_admin.account_check_dialog_data",
+          "kind": "function",
+          "signature": "(job: GameAdminJob) -> dict[str, object]",
+          "summary": "Return JSON-compatible dialog state for one selected-account check.",
+          "source": {
+            "path": "src/mattergram/contrib/game_accounts_admin/jobs.py",
+            "line": 380
           }
         },
         {
@@ -6063,7 +6969,7 @@
           "summary": "Open the panel from the globally registered native slash command.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/router.py",
-            "line": 43
+            "line": 47
           }
         },
         {
@@ -6074,7 +6980,7 @@
           "summary": "Bind dependencies and include the globally declared game-admin router.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/router.py",
-            "line": 67
+            "line": 82
           }
         },
         {
@@ -6085,7 +6991,7 @@
           "summary": "Create a fresh panel post for one visible reply-keyboard message.",
           "source": {
             "path": "src/mattergram/contrib/game_accounts_admin/router.py",
-            "line": 56
+            "line": 69
           }
         }
       ]
@@ -6192,7 +7098,7 @@
           "name": "ComposerKeyboardState",
           "qualified_name": "mattergram.ui.ComposerKeyboardState",
           "kind": "class",
-          "signature": "(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], keyboard: mattergram.ui.composer.ComposerKeyboard) -> None",
+          "signature": "(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], owner_id: Annotated[str | None, MinLen(min_length=1)] = None, keyboard: mattergram.ui.composer.ComposerKeyboard) -> None",
           "summary": "Plugin-confirmed keyboard state and its monotonically increasing revision.",
           "source": {
             "path": "src/mattergram/ui/composer.py",
@@ -6203,13 +7109,13 @@
           ],
           "members": [
             {
-              "name": "valid_channel_id",
+              "name": "valid_native_id",
               "kind": "class-method",
-              "signature": "(cls, value: str) -> str",
+              "signature": "(cls, value: str | None) -> str | None",
               "summary": null,
               "source": {
                 "path": "src/mattergram/ui/composer.py",
-                "line": 84
+                "line": 85
               }
             }
           ]
@@ -7726,7 +8632,7 @@
           "summary": "Return to the actual previous window in this dialog context.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 353
+            "line": 363
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7739,7 +8645,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 360
+                "line": 370
               }
             }
           ]
@@ -7805,7 +8711,7 @@
           "name": "ButtonGrid",
           "qualified_name": "mattergram_dialog.ButtonGrid",
           "kind": "class",
-          "signature": "(*rows: ActionRow, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*rows: ActionRow, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Render explicitly declared action rows as one logical control group.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
@@ -7822,7 +8728,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 289
+                "line": 294
               }
             },
             {
@@ -7832,7 +8738,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 265
+                "line": 269
               }
             }
           ]
@@ -7852,11 +8758,11 @@
           "name": "ButtonRow",
           "qualified_name": "mattergram_dialog.ButtonRow",
           "kind": "class",
-          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 300
+            "line": 305
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -7869,7 +8775,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 343
+                "line": 353
               }
             },
             {
@@ -7879,7 +8785,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 322
+                "line": 331
               }
             }
           ]
@@ -7988,7 +8894,7 @@
           "summary": "Stable three-control preset: < 1/25 >.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 480
+            "line": 490
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -8001,7 +8907,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 483
+                "line": 493
               }
             }
           ]
@@ -8086,7 +8992,7 @@
           "summary": "Two-control preset for APIs that expose an opaque next cursor.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 734
+            "line": 744
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8099,7 +9005,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 792
+                "line": 802
               }
             },
             {
@@ -8109,7 +9015,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 795
+                "line": 805
               }
             },
             {
@@ -8119,7 +9025,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 761
+                "line": 771
               }
             }
           ]
@@ -8128,11 +9034,11 @@
           "name": "DataBlock",
           "qualified_name": "mattergram_dialog.DataBlock",
           "kind": "class",
-          "signature": "(title: str | Text, content: Text, *widgets: Widget, id: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(title: str | Text, content: Text, *widgets: Widget, id: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Keep one data object and all of its local actions in one attachment.",
           "source": {
             "path": "src/mattergram_dialog/widgets/layout.py",
-            "line": 63
+            "line": 64
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8145,7 +9051,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/layout.py",
-                "line": 126
+                "line": 132
               }
             },
             {
@@ -8155,7 +9061,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/layout.py",
-                "line": 83
+                "line": 88
               }
             }
           ]
@@ -8233,7 +9139,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 270
+                "line": 318
               }
             },
             {
@@ -8243,7 +9149,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 306
+                "line": 354
               }
             },
             {
@@ -8253,7 +9159,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 314
+                "line": 362
               }
             },
             {
@@ -8263,7 +9169,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 256
+                "line": 304
               }
             },
             {
@@ -8273,7 +9179,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 263
+                "line": 311
               }
             }
           ]
@@ -8712,7 +9618,7 @@
           "summary": "Render a fixed allowlist of filters for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 803
+            "line": 813
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8725,7 +9631,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 864
+                "line": 874
               }
             },
             {
@@ -8735,7 +9641,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 869
+                "line": 879
               }
             },
             {
@@ -8745,7 +9651,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 843
+                "line": 853
               }
             }
           ]
@@ -8769,7 +9675,7 @@
           "summary": "Stable two-control preset for a DataBlock that also contains filters.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 515
+            "line": 525
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -8782,7 +9688,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 535
+                "line": 545
               }
             }
           ]
@@ -8809,7 +9715,7 @@
           "summary": null,
           "source": {
             "path": "src/mattergram_dialog/rendering.py",
-            "line": 132
+            "line": 202
           },
           "bases": [],
           "members": [
@@ -8820,7 +9726,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/rendering.py",
-                "line": 157
+                "line": 227
               }
             }
           ]
@@ -8878,6 +9784,42 @@
           ]
         },
         {
+          "name": "NativeBlocks",
+          "qualified_name": "mattergram_dialog.NativeBlocks",
+          "kind": "class",
+          "signature": "(source: str, *, fallback: Text, id: str | None = None, when: WhenCondition = None) -> None",
+          "summary": "Render an exact native block tree with a legacy text fallback.",
+          "source": {
+            "path": "src/mattergram_dialog/widgets/layout.py",
+            "line": 151
+          },
+          "bases": [
+            "mattergram_dialog.widgets.common.base.Widget"
+          ],
+          "members": [
+            {
+              "name": "find",
+              "kind": "method",
+              "signature": "(self, widget_id: str) -> Any",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram_dialog/widgets/layout.py",
+                "line": 182
+              }
+            },
+            {
+              "name": "render_control_groups",
+              "kind": "async-method",
+              "signature": "(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]",
+              "summary": null,
+              "source": {
+                "path": "src/mattergram_dialog/widgets/layout.py",
+                "line": 168
+              }
+            }
+          ]
+        },
+        {
           "name": "NativeField",
           "qualified_name": "mattergram_dialog.NativeField",
           "kind": "class",
@@ -8925,7 +9867,7 @@
           "summary": "Open the next declared window and record the current one for Back.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 376
+            "line": 386
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -8938,7 +9880,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 383
+                "line": 393
               }
             }
           ]
@@ -8998,7 +9940,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 270
+                "line": 318
               }
             },
             {
@@ -9008,7 +9950,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 306
+                "line": 354
               }
             },
             {
@@ -9018,7 +9960,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 314
+                "line": 362
               }
             },
             {
@@ -9028,7 +9970,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 256
+                "line": 304
               }
             },
             {
@@ -9038,7 +9980,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/bindings.py",
-                "line": 263
+                "line": 311
               }
             }
           ]
@@ -9058,6 +10000,18 @@
           ]
         },
         {
+          "name": "PostContainer",
+          "qualified_name": "mattergram_dialog.PostContainer",
+          "kind": "class",
+          "signature": "(border: bool = True, background: Literal['none', 'gray'] = 'gray', accent_color: str | None = 'primary', gap: Literal['none', 'small', 'medium', 'large', 'xlarge'] = 'medium') -> None",
+          "summary": "Native Blocks presentation for one visually unified post surface.",
+          "source": {
+            "path": "src/mattergram_dialog/rendering.py",
+            "line": 20
+          },
+          "bases": []
+        },
+        {
           "name": "PageItemSelect",
           "qualified_name": "mattergram_dialog.PageItemSelect",
           "kind": "class",
@@ -9065,7 +10019,7 @@
           "summary": "Select one item from the visible page next to its pagination controls.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 606
+            "line": 616
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9078,7 +10032,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 719
+                "line": 729
               }
             },
             {
@@ -9088,7 +10042,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 727
+                "line": 737
               }
             },
             {
@@ -9098,7 +10052,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 662
+                "line": 672
               }
             },
             {
@@ -9108,7 +10062,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 694
+                "line": 704
               }
             }
           ]
@@ -9191,7 +10145,7 @@
           "summary": "Stable five-control preset: << < 1/25 > >>.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 566
+            "line": 576
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -9204,7 +10158,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 569
+                "line": 579
               }
             }
           ]
@@ -9217,7 +10171,7 @@
           "summary": "Render bounded previous/next controls for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 402
+            "line": 412
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9230,7 +10184,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 469
+                "line": 479
               }
             },
             {
@@ -9240,7 +10194,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 472
+                "line": 482
               }
             },
             {
@@ -9250,7 +10204,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 431
+                "line": 441
               }
             }
           ]
@@ -9287,11 +10241,11 @@
           "name": "Row",
           "qualified_name": "mattergram_dialog.Row",
           "kind": "class",
-          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 300
+            "line": 305
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9304,7 +10258,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 343
+                "line": 353
               }
             },
             {
@@ -9314,7 +10268,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 322
+                "line": 331
               }
             }
           ]
@@ -9350,7 +10304,7 @@
           "summary": "Render a Markdown heading and a deliberately separated content block.",
           "source": {
             "path": "src/mattergram_dialog/widgets/layout.py",
-            "line": 33
+            "line": 34
           },
           "bases": [
             "mattergram_dialog.widgets.text.base.Text"
@@ -9538,7 +10492,7 @@
           "name": "Window",
           "qualified_name": "mattergram_dialog.Window",
           "kind": "class",
-          "signature": "(text: Text, *widgets: Any, state: State, getter: Getter | None = None) -> None",
+          "signature": "(text: Text, *widgets: Any, state: State, getter: Getter | None = None, container: PostContainer | None = None) -> None",
           "summary": "Post window that accepts single or grouped native navigation widgets.",
           "source": {
             "path": "src/mattergram_dialog/navigation.py",
@@ -9555,7 +10509,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/navigation.py",
-                "line": 155
+                "line": 163
               }
             },
             {
@@ -9565,7 +10519,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/navigation.py",
-                "line": 137
+                "line": 145
               }
             }
           ]
@@ -9753,7 +10707,7 @@
           "summary": "Return to the actual previous window in this dialog context.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 353
+            "line": 363
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9766,7 +10720,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 360
+                "line": 370
               }
             }
           ]
@@ -9843,7 +10797,7 @@
           "name": "ButtonGrid",
           "qualified_name": "mattergram_dialog.widgets.message.ButtonGrid",
           "kind": "class",
-          "signature": "(*rows: ActionRow, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*rows: ActionRow, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Render explicitly declared action rows as one logical control group.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
@@ -9860,7 +10814,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 289
+                "line": 294
               }
             },
             {
@@ -9870,7 +10824,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 265
+                "line": 269
               }
             }
           ]
@@ -9879,11 +10833,11 @@
           "name": "ButtonRow",
           "qualified_name": "mattergram_dialog.widgets.message.ButtonRow",
           "kind": "class",
-          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 300
+            "line": 305
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9896,7 +10850,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 343
+                "line": 353
               }
             },
             {
@@ -9906,7 +10860,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 322
+                "line": 331
               }
             }
           ]
@@ -9919,7 +10873,7 @@
           "summary": "Stable three-control preset: < 1/25 >.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 480
+            "line": 490
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -9932,7 +10886,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 483
+                "line": 493
               }
             }
           ]
@@ -9945,7 +10899,7 @@
           "summary": "Two-control preset for APIs that expose an opaque next cursor.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 734
+            "line": 744
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -9958,7 +10912,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 792
+                "line": 802
               }
             },
             {
@@ -9968,7 +10922,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 795
+                "line": 805
               }
             },
             {
@@ -9978,7 +10932,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 761
+                "line": 771
               }
             }
           ]
@@ -9991,7 +10945,7 @@
           "summary": "Render a fixed allowlist of filters for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 803
+            "line": 813
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -10004,7 +10958,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 864
+                "line": 874
               }
             },
             {
@@ -10014,7 +10968,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 869
+                "line": 879
               }
             },
             {
@@ -10024,7 +10978,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 843
+                "line": 853
               }
             }
           ]
@@ -10048,7 +11002,7 @@
           "summary": "Stable two-control preset for a DataBlock that also contains filters.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 515
+            "line": 525
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -10061,7 +11015,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 535
+                "line": 545
               }
             }
           ]
@@ -10088,7 +11042,7 @@
           "summary": "Open the next declared window and record the current one for Back.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 376
+            "line": 386
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -10101,7 +11055,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 383
+                "line": 393
               }
             }
           ]
@@ -10150,7 +11104,7 @@
           "summary": "Select one item from the visible page next to its pagination controls.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 606
+            "line": 616
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -10163,7 +11117,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 719
+                "line": 729
               }
             },
             {
@@ -10173,7 +11127,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 727
+                "line": 737
               }
             },
             {
@@ -10183,7 +11137,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 662
+                "line": 672
               }
             },
             {
@@ -10193,7 +11147,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 694
+                "line": 704
               }
             }
           ]
@@ -10206,7 +11160,7 @@
           "summary": "Stable five-control preset: << < 1/25 > >>.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 566
+            "line": 576
           },
           "bases": [
             "mattergram_dialog.widgets.message.Pager"
@@ -10219,7 +11173,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 569
+                "line": 579
               }
             }
           ]
@@ -10232,7 +11186,7 @@
           "summary": "Render bounded previous/next controls for one PagedList.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 402
+            "line": 412
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -10245,7 +11199,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 469
+                "line": 479
               }
             },
             {
@@ -10255,7 +11209,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 472
+                "line": 482
               }
             },
             {
@@ -10265,7 +11219,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 431
+                "line": 441
               }
             }
           ]
@@ -10274,11 +11228,11 @@
           "name": "Row",
           "qualified_name": "mattergram_dialog.widgets.message.Row",
           "kind": "class",
-          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, when: WhenCondition = None) -> None",
+          "signature": "(*widgets: Widget, id: str | None = None, title: str | None = None, color: str | None = None, border: bool = True, when: WhenCondition = None) -> None",
           "summary": "Combine controls into one logical group that wraps at client width.",
           "source": {
             "path": "src/mattergram_dialog/widgets/message.py",
-            "line": 300
+            "line": 305
           },
           "bases": [
             "mattergram_dialog.widgets.common.base.Widget"
@@ -10291,7 +11245,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 343
+                "line": 353
               }
             },
             {
@@ -10301,7 +11255,7 @@
               "summary": null,
               "source": {
                 "path": "src/mattergram_dialog/widgets/message.py",
-                "line": 322
+                "line": 331
               }
             }
           ]

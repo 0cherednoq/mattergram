@@ -16,7 +16,7 @@ native Block declarations. Дальше используется обычный 
 
 ```sh
 uv sync --locked
-uv run --locked python examples/ui_input_formats.py
+uv run --locked pytest -q tests/unit/test_ui_input_formats.py
 ```
 
 Пример работает без сети. Он компилирует оба формата и проверяет callback signature.

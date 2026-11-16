@@ -29,8 +29,7 @@ manifest = collect_commands(dispatcher)
 # manifest.commands: две CommandSpec, отсортированные по trigger.
 ```
 
-Полный offline example: [command_manifest.py](../examples/command_manifest.py).
-Запуск: `uv run --locked python -m examples.command_manifest`.
+Offline manifest builder проверяется provisioning command test suite.
 Собирать manifest нужно после подключения всех Router. Он представляет снимок:
 последующие регистрации требуют нового вызова `collect_commands`.
 

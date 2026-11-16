@@ -70,7 +70,55 @@ ButtonGrid(
 
 Внутри `DataBlock` каждый переданный control widget образует отдельный ряд. `Filter` автоматически располагается над таблицей, остальные локальные controls — под ней. `DataBlock(table, Filter(...), PagePager(...))` имеет форму `3 / table / 5`. Несколько нижних виджетов одного назначения объединяйте через `ActionRow(...)`; например, `ActionRow(PagePager(...), PageItemSelect(...))` ставит pager и dropdown выбора строки рядом.
 
+В Blocks-профиле `DataBlock`, `ButtonRow` и `ButtonGrid` по умолчанию создают bordered
+`Container` с цветным акцентом слева. Это визуальный акцент, а не обязательная оболочка любого
+контента. Для обычной таблицы, навигации или вторичного действия используйте `border=False`:
+
+```python
+ButtonRow(add_user, border=False)
+DataBlock("Пользователи", users_table, filters, pager, border=False)
+```
+
+Оставляйте bordered container для блока, который действительно нужно отделить от остального поста:
+важного статуса, предупреждения, подтверждения опасного действия или самостоятельной сводной
+карточки. Не оборачивайте им каждый ряд кнопок. На legacy attachments точная геометрия и рамка
+определяются Mattermost-клиентом; `border=False` прежде всего управляет нативным Blocks-rendering.
+
+Если несколько частей принадлежат одному post-сценарию — например список, выбранная запись,
+состояние операции и общая навигация — используйте один внешний `PostContainer`, а внутренние
+routine-группы оставляйте borderless или оформляйте как `collapsible`. Так одна рамка, фон и цветная
+полоса показывают принадлежность одному post, не превращая каждый раздел в отдельную карточку:
+
+```python
+Window(
+    Section("Игровые аккаунты", Const("Фильтры и выбранная запись."), level=1),
+    account_list,
+    account_card,
+    account_check,
+    navigation,
+    state=AdminPanel.accounts,
+    container=PostContainer(
+        border=True,
+        background="gray",
+        accent_color="primary",
+        gap="medium",
+    ),
+)
+```
+
+В Blocks-профиле fallback-текст окна и все его native control groups становятся `content` одного
+внешнего `container`; отдельный текст над рамкой не дублируется. На legacy profile `PostContainer`
+не имитируется несколькими attachments: сохраняются обычный message и нативная для старого клиента
+компоновка.
+
 Локальные фильтры, пагинация и обычный `ButtonRow` выводятся компактно слева. Равномерное растягивание колонок используется только в `ButtonGrid`, когда несколько равноправных переходов действительно образуют dashboard-сетку.
+
+Исключение для плотной карточки одного объекта: основное действие можно оставить на leading edge
+внизу карточки, а универсальные вторичные действия собрать на trailing edge её интерактивной шапки
+в `ColumnSet`. Icon-only варианты
+ограничены `✏️` (редактировать), `⚙️` (настроить) и `🗑️` (удалить). Каждый такой `PostControl`
+обязан задать `tooltip` и полный `legacy_label`; корзина остаётся последней, получает `danger` и
+открывает отдельное подтверждение.
 
 Правила расстановки:
 
@@ -381,7 +429,7 @@ async with CoalescingDialogUpdater(runtime, interval=1.0) as updates:
 transport error вызывающему коду. `immediate=True` используйте для terminal
 `succeeded`/`failed`/`cancelled`; обычные snapshots отправляйте примерно раз в 0.5–2 секунды.
 
-Полная декларация без запуска инфраструктуры: `examples/dialog_progress.py`.
+Контракт декларативного прогресса проверяется в `tests/unit/test_dialog_declarative_widgets.py`.
 
 ## Проверка перед выпуском
 

@@ -7,6 +7,7 @@ from mattergram.ui.forms import Option
 from mattergram_dialog import (
     ActionRow,
     Button,
+    ButtonGrid,
     ButtonRow,
     Checkbox,
     Const,
@@ -22,6 +23,7 @@ from mattergram_dialog import (
     PagedTable,
     PageItemSelect,
     PagePager,
+    PostContainer,
     Progress,
     Section,
     Select,
@@ -35,7 +37,9 @@ from mattergram_dialog.widgets.table import MarkdownColumn
 from .actions import GameAdminActions
 from .getters import GameAdminGetters
 from .jobs import GameAdminJobs
+from .mattermost_ui import AccountCard, AccountList
 from .models import PUSH_EVENTS
+from .presentation import PUSH_EVENT_LABELS
 from .service import GameAccountsAdminService
 from .states import AdminPanel
 
@@ -67,7 +71,7 @@ def build_admin_dialog(
         Option(text="Канал", value="channel"),
         Option(text="Личное сообщение", value="direct"),
     )
-    event_options = tuple(Option(text=value, value=value) for value in PUSH_EVENTS)
+    event_options = tuple(Option(text=PUSH_EVENT_LABELS[value], value=value) for value in PUSH_EVENTS)
     game_options = tuple(Option(text=game, value=game) for game in service.games)
 
     return Dialog(
@@ -86,6 +90,27 @@ def build_admin_dialog(
             ButtonRow(
                 Button(Const("Обновить сводку"), id="adminHomeRefresh", on_click=actions.refresh_home),
                 title="Сводка",
+                border=False,
+            ),
+            ButtonGrid(
+                ActionRow(
+                    SwitchTo(Const("Импорт"), id="adminHomeImport", state=AdminPanel.import_menu),
+                    SwitchTo(Const("Push-настройки"), id="adminHomePushes", state=AdminPanel.pushes),
+                ),
+                ActionRow(
+                    SwitchTo(
+                        Const("История импортов"),
+                        id="adminHomeImports",
+                        state=AdminPanel.import_history,
+                    ),
+                    SwitchTo(
+                        Const("История проверок"),
+                        id="adminHomeChecks",
+                        state=AdminPanel.check_history,
+                    ),
+                ),
+                title="Операции",
+                border=False,
             ),
             state=AdminPanel.home,
             getter=getters.home,
@@ -120,15 +145,24 @@ def build_admin_dialog(
                 ),
                 level=1,
             ),
+            ButtonRow(
+                OpenForm(
+                    Const("Добавить пользователя"),
+                    id="adminUserAdd",
+                    state=AdminPanel.user_add,
+                    when="has_available_users",
+                ),
+                border=False,
+            ),
             DataBlock(
                 "Пользователи",
                 PagedTable(
                     MarkdownColumn("Пользователь", "username", max_chars=24),
-                    MarkdownColumn("Роль", "role", max_chars=12),
+                    MarkdownColumn("Роль", "role_label", max_chars=16),
                     MarkdownColumn("Активен", "enabled", max_chars=8),
                     id="adminUsersTable",
                     items="users",
-                    page_size=8,
+                    page_size=5,
                     filter_by="filter",
                     empty=Const("Пользователей нет"),
                     page_label="Страница {page}/{pages} · всего {total}",
@@ -150,7 +184,7 @@ def build_admin_dialog(
                         detail_title=Format("Пользователь {item[username]}"),
                         detail=Format(
                             "**Mattermost ID:** {item[mattermost_user_id]}  \n"
-                            "**Роль:** {item[role]} · **активен:** {item[enabled]}"
+                            "**Роль:** {item[role_label]} · **активен:** {item[enabled]}"
                         ),
                     ),
                 ),
@@ -160,16 +194,11 @@ def build_admin_dialog(
                     state=AdminPanel.user_edit,
                     when=_selected_visible("adminUsersTable", "selected_user_id"),
                 ),
+                border=False,
             ),
             ButtonRow(
-                OpenForm(
-                    Const("Добавить пользователя"),
-                    id="adminUserAdd",
-                    state=AdminPanel.user_add,
-                    when="has_available_users",
-                ),
                 SwitchTo(Const("Назад"), id="adminUsersBack", state=AdminPanel.home),
-                title="Навигация",
+                border=False,
             ),
             state=AdminPanel.users,
             getter=getters.users,
@@ -212,7 +241,7 @@ def build_admin_dialog(
                     MarkdownColumn("Включено", "enabled", max_chars=8),
                     id="adminPushTable",
                     items="pushes",
-                    page_size=6,
+                    page_size=5,
                     filter_by="filter",
                     empty=Const("Push-маршрутов нет"),
                     page_label="Страница {page}/{pages} · всего {total}",
@@ -252,7 +281,7 @@ def build_admin_dialog(
         ),
         FormWindow(
             Select(id="destination_kind", label="Куда", options=destination_options, default="channel"),
-            TextInput(id="destination_id", label="Channel ID / user ID", max_length=64),
+            TextInput(id="destination_id", label="ID назначения", max_length=64),
             MultiSelect(id="events", label="События", options=event_options, default_values=PUSH_EVENTS),
             Checkbox(id="enabled", label="Включено", default=True),
             title=Const("Добавить push-маршрут"),
@@ -295,77 +324,38 @@ def build_admin_dialog(
         Window(
             Section(
                 "Игровые аккаунты",
-                Const("Пароли и значения cookies не показываются ни в таблице, ни в карточке."),
+                Const("Фильтры, сортировка и страница сохраняются отдельно для каждого пользователя."),
                 Format("{check_summary}", when="check_summary"),
                 level=1,
             ),
-            DataBlock(
-                "Аккаунты",
-                PagedTable(
-                    MarkdownColumn("Игра", "game", max_chars=18),
-                    MarkdownColumn("Логин", "login", max_chars=28),
-                    MarkdownColumn("Статус", "status", max_chars=10),
-                    MarkdownColumn("Cookies", "cookie_count", max_chars=8, align="right"),
-                    id="adminAccountsTable",
-                    items="accounts",
-                    page_size=6,
-                    filter_by="filter",
-                    empty=Const("Аккаунтов нет"),
-                    page_label="Страница {page}/{pages} · всего {total}",
-                ),
-                Filter(
-                    id="adminAccountsFilter",
-                    target="adminAccountsTable",
-                    options={
-                        "Все": None,
-                        "Не проверены": "unchecked",
-                        "Валидные": "valid",
-                        "Невалидные": "invalid",
-                        "Ошибки": "error",
-                    },
-                ),
-                ActionRow(
-                    PagePager(id="adminAccountsPager", target="adminAccountsTable"),
-                    PageItemSelect(
-                        id="adminAccountSelect",
-                        target="adminAccountsTable",
-                        item_id="id",
-                        item_label="login",
-                        selection_key="selected_account_id",
-                        placeholder="Карточка аккаунта",
-                        detail_title=Format("{item[game]} · {item[login]}"),
-                        detail=Format(
-                            "**Статус:** {item[status]}  \n"
-                            "**Пароль:** {item[password_state]} (значение скрыто)  \n"
-                            "**Cookies:** {item[cookie_count]} · домены: {item[cookie_domains]}  \n"
-                            "**Последняя проверка:** {item[last_checked_at]}  \n"
-                            "**Последняя ошибка:** {item[last_error]}"
-                        ),
-                    ),
-                ),
-                ActionRow(
-                    Button(
-                        Const("Проверить выбранный"),
-                        id="adminAccountCheck",
-                        on_click=actions.check_selected,
-                        when=_selected_visible("adminAccountsTable", "selected_account_id"),
-                    ),
-                    OpenForm(
-                        Const("Изменить учётные данные"),
-                        id="adminAccountEdit",
-                        state=AdminPanel.account_edit,
-                        when=_selected_visible("adminAccountsTable", "selected_account_id"),
-                    ),
-                ),
+            AccountList(
+                id="adminAccountList",
+                page="account_page",
+            ),
+            AccountCard(
+                id="adminAccountCard",
+                card="selected_account_card",
+                on_check=actions.check_selected,
+                check="selected_account_check",
+                on_cancel=actions.cancel_selected_check if jobs is not None else None,
+                edit_state=AdminPanel.account_edit,
+                delete_state=AdminPanel.account_delete,
             ),
             ButtonRow(
                 Button(Const("Проверить все"), id="adminCheckAll", on_click=actions.check_all),
                 OpenForm(Const("Импортировать"), id="adminAccountsImport", state=AdminPanel.import_accounts),
                 SwitchTo(Const("Назад"), id="adminAccountsBack", state=AdminPanel.home),
                 title="Навигация",
+                border=False,
             ),
             state=AdminPanel.accounts,
             getter=getters.accounts,
+            container=PostContainer(
+                border=True,
+                background="gray",
+                accent_color="primary",
+                gap="medium",
+            ),
         ),
         FormWindow(
             TextInput(id="login", label="Логин", max_length=150, default=Format("{login}")),
@@ -391,6 +381,21 @@ def build_admin_dialog(
             getter=getters.selected_account,
             callback_id="game_admin_account_edit",
             state=AdminPanel.account_edit,
+        ),
+        FormWindow(
+            Checkbox(
+                id="confirm_account_delete",
+                label="Удалить",
+                help_text="Учётные данные и cookies аккаунта будут удалены без возможности восстановления",
+                default=False,
+            ),
+            title=Format("Удалить аккаунт {login}?"),
+            introduction=Format("Аккаунт **{id}**, логин **{login}**. Это действие нельзя отменить."),
+            submit_text=Const("Удалить аккаунт"),
+            on_submit=actions.delete_account,
+            getter=getters.selected_account,
+            callback_id="game_admin_account_delete",
+            state=AdminPanel.account_delete,
         ),
         FormWindow(
             Select(id="game", label="Игра", options=game_options),
@@ -479,7 +484,7 @@ def build_admin_dialog(
                     MarkdownColumn("Статус", "status", max_chars=10),
                     id="adminImportsTable",
                     items="imports",
-                    page_size=8,
+                    page_size=5,
                     filter_by="filter",
                     empty=Const("Импортов ещё не было"),
                     page_label="Страница {page}/{pages} · всего {total}",
@@ -529,7 +534,7 @@ def build_admin_dialog(
                     MarkdownColumn("Статус", "status", max_chars=10),
                     id="adminChecksTable",
                     items="checks",
-                    page_size=8,
+                    page_size=5,
                     filter_by="filter",
                     empty=Const("Проверок ещё не было"),
                     page_label="Страница {page}/{pages} · всего {total}",

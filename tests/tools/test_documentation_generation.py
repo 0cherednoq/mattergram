@@ -18,11 +18,11 @@ class DocumentationGenerationTests(unittest.TestCase):
         for relative, content in outputs.items():
             self.assertEqual(content, (ROOT / relative).read_text(encoding="utf-8"), relative)
             self.assertIsNone(ADDRESS.search(content), relative)
-        self.assertEqual(report["public_modules"], 24)
-        self.assertEqual(report["public_exports"], 352)
-        self.assertEqual(report["public_members"], 544)
-        self.assertEqual(report["guides"], 29)
-        self.assertEqual(report["examples"], 19)
+        self.assertEqual(report["public_modules"], 26)
+        self.assertEqual(report["public_exports"], 390)
+        self.assertEqual(report["public_members"], 589)
+        self.assertEqual(report["guides"], 30)
+        self.assertEqual(report["examples"], 1)
         self.assertEqual(report["network_access"], "none")
         self.assertEqual(report["mutating_operations"], "none")
 
@@ -46,6 +46,7 @@ class DocumentationGenerationTests(unittest.TestCase):
                 "NativeAPI",
                 "Router",
                 "__version__",
+                "flags",
             },
         )
         for module in modules.values():

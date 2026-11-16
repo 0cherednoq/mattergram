@@ -2,8 +2,8 @@ ARG MATTERMOST_IMAGE=mattermost/mattermost-team-edition:12.0.2
 FROM ${MATTERMOST_IMAGE}
 
 USER root
-COPY build/plugins/mattergram-menu-0.2.0.tar.gz /mattermost/prepackaged_plugins/com.mattergram.menu.tar.gz
-COPY build/plugins/mattergram-menu-0.2.0.tar.gz.sig /mattermost/prepackaged_plugins/com.mattergram.menu.tar.gz.sig
+COPY build/plugins/mattergram-menu-0.2.2.tar.gz /mattermost/prepackaged_plugins/com.mattergram.menu.tar.gz
+COPY build/plugins/mattergram-menu-0.2.2.tar.gz.sig /mattermost/prepackaged_plugins/com.mattergram.menu.tar.gz.sig
 COPY build/plugins/mattergram-menu-public.asc /mattermost/plugin-signing/mattergram-menu-public.asc
 RUN chown -R mattermost:mattermost /mattermost/prepackaged_plugins /mattermost/plugin-signing
 

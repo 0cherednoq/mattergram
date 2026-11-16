@@ -258,6 +258,9 @@ class Bot:
         root_id: str | None = None,
         actions: Actions | None = None,
         blocks: list[Block] | None = None,
+        priority: MessagePriority | None = None,
+        silent: bool = False,
+        file_ids: Sequence[str] | None = None,
     ) -> Message: ...
     async def edit_message_text(
         self, chat_id: str, message_id: str, text: str,
@@ -266,6 +269,11 @@ class Bot:
     async def send_document(
         self, chat_id: str, document: InputFile, *,
         text: str | None = None, root_id: str | None = None,
+    ) -> Message: ...
+    async def send_documents(
+        self, chat_id: str, documents: Sequence[InputFile], *,
+        text: str | None = None, root_id: str | None = None,
+        priority: MessagePriority | None = None, silent: bool = False,
     ) -> Message: ...
     async def get_user(self, user_id: str) -> User: ...
     async def get_channel(self, channel_id: str) -> Channel: ...
@@ -414,7 +422,7 @@ bot = (
 await dp.start(bot, host="0.0.0.0", port=8080)
 ```
 
-`MM_STATE_DIR` должен указывать на постоянное защищённое хранилище, а encryption key передаётся отдельно. `prepare()` собирает metadata обработчиков из переданного Dispatcher, поэтому команды не нужно дублировать отдельным списком. После успешного init job `load_runtime()` использует только сохранённые runtime/command credentials и не требует setup token. Полный рабочий пример: [examples/bootstrap.py](../examples/bootstrap.py), эксплуатационные ограничения: [bootstrap.md](bootstrap.md).
+`MM_STATE_DIR` должен указывать на постоянное защищённое хранилище, а encryption key передаётся отдельно. `prepare()` собирает metadata обработчиков из переданного Dispatcher, поэтому команды не нужно дублировать отдельным списком. После успешного init job `load_runtime()` использует только сохранённые runtime/command credentials и не требует setup token. Эксплуатационные ограничения: [bootstrap.md](bootstrap.md).
 
 Если бот уже существует, bootstrap использует подтверждённый bot_id и существующий доступный secret. Одного совпадения username недостаточно для автоматического присвоения чужого аккаунта.
 

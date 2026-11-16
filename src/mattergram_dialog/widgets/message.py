@@ -251,6 +251,7 @@ class ButtonGrid(Widget):
         id: str | None = None,
         title: str | None = None,
         color: str | None = None,
+        border: bool = True,
         when: WhenCondition = None,
     ) -> None:
         super().__init__(id=id, when=when)
@@ -261,6 +262,9 @@ class ButtonGrid(Widget):
         self.rows = rows
         self.title = title
         self.color = color
+        if type(border) is not bool:
+            raise TypeError("ButtonGrid border must be a bool")
+        self.border = border
 
     async def render_control_groups(
         self, data: Mapping[str, Any], manager: Any
@@ -281,6 +285,7 @@ class ButtonGrid(Widget):
                 controls,
                 title=self.title,
                 color=self.color,
+                border=self.border,
                 rows=rendered_rows,
                 row_width="stretch",
             ),
@@ -306,6 +311,7 @@ class ButtonRow(Widget):
         id: str | None = None,
         title: str | None = None,
         color: str | None = None,
+        border: bool = True,
         when: WhenCondition = None,
     ) -> None:
         super().__init__(id=id, when=when)
@@ -318,6 +324,9 @@ class ButtonRow(Widget):
         self.widgets = widgets
         self.title = title
         self.color = color
+        if type(border) is not bool:
+            raise TypeError("ButtonRow border must be a bool")
+        self.border = border
 
     async def render_control_groups(
         self, data: Mapping[str, Any], manager: Any
@@ -336,6 +345,7 @@ class ButtonRow(Widget):
                 rendered,
                 title=self.title,
                 color=self.color,
+                border=self.border,
                 rows=(rendered,),
             ),
         )

@@ -184,6 +184,10 @@ class NativeHTTPTests(unittest.IsolatedAsyncioTestCase):
             "/mattermost/plugins/com.mattergram.menu/api/v1/channels/{channel_id}/keyboard",
             self.handle_plugin,
         )
+        app.router.add_get(
+            "/mattermost/plugins/com.mattergram.menu/api/v1/keyboards",
+            self.handle_plugin_list,
+        )
         app.router.add_route("*", "/mattermost/api/v4/{tail:.*}", self.handle)
         self.runner = web.AppRunner(app, shutdown_timeout=0.1)
         await self.runner.setup()
@@ -272,7 +276,12 @@ class NativeHTTPTests(unittest.IsolatedAsyncioTestCase):
         channel_id = request.match_info["channel_id"]
         if request.method == "PUT":
             revision = 1 if self.keyboard_state is None else self.keyboard_state["revision"] + 1
-            self.keyboard_state = {"channel_id": channel_id, "revision": revision, "keyboard": body}
+            self.keyboard_state = {
+                "channel_id": channel_id,
+                "revision": revision,
+                "owner_id": "b" * 26,
+                "keyboard": body,
+            }
             return web.json_response(self.keyboard_state)
         if request.method == "GET":
             return web.json_response(self.keyboard_state or {"keyboard": None})
@@ -280,6 +289,12 @@ class NativeHTTPTests(unittest.IsolatedAsyncioTestCase):
             self.keyboard_state = None
             return web.json_response({"status": "OK"})
         return web.json_response({"id": "method_not_allowed"}, status=405)
+
+    async def handle_plugin_list(self, request):
+        self.calls.append((request.method, request.path, request.headers.get("Authorization"), None))
+        if request.headers.get("Authorization") != "Bearer fixture-secret":
+            return web.json_response({"id": "api.context.invalid_token"}, status=401)
+        return web.json_response({"keyboards": [] if self.keyboard_state is None else [self.keyboard_state]})
 
     async def test_plugin_backed_composer_keyboard_lifecycle(self) -> None:
         bot = self.bot()
@@ -295,11 +310,16 @@ class NativeHTTPTests(unittest.IsolatedAsyncioTestCase):
         self.assertIsNone(await bot.get_composer_keyboard("channel1"))
         created = await bot.set_composer_keyboard("channel1", keyboard)
         self.assertEqual(created.revision, 1)
+        self.assertEqual(created.owner_id, "b" * 26)
         self.assertEqual(created.keyboard, keyboard)
         self.assertEqual((await bot.get_composer_keyboard("channel1")).keyboard.title, "Admin")
+        self.assertEqual(await bot.list_composer_keyboards(), (created,))
         await bot.delete_composer_keyboard("channel1")
         self.assertIsNone(await bot.get_composer_keyboard("channel1"))
-        self.assertEqual([call[0] for call in self.calls], ["GET", "PUT", "GET", "DELETE", "GET"])
+        self.assertEqual(
+            [call[0] for call in self.calls],
+            ["GET", "PUT", "GET", "GET", "DELETE", "GET"],
+        )
         self.assertTrue(all("/plugins/com.mattergram.menu/" in call[1] for call in self.calls))
 
     async def test_composer_keyboard_rejects_wrong_model_before_http(self) -> None:
@@ -388,10 +408,10 @@ class NativeHTTPTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(caught.exception.status, 502)
         self.assertNotIn("fixture-secret", repr(caught.exception))
 
-    async def test_successful_but_malformed_responses_are_protocol_errors(self) -> None:
+    async def test_successful_but_malformed_post_writes_have_unknown_outcome(self) -> None:
         for mode in ("malformed", "wrong-type", "invalid-post"):
             self.mode = mode
-            with self.subTest(mode=mode), self.assertRaises(ProtocolError) as caught:
+            with self.subTest(mode=mode), self.assertRaises(RequestOutcomeUnknown) as caught:
                 await self.bot().send_message("channel-real", "hello")
             self.assertNotIn("fixture-secret", repr(caught.exception))
         self.assertEqual(len(self.calls), 3)

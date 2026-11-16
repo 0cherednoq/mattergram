@@ -2,8 +2,7 @@
 
 Это руководство для разработчика бота, которому нужна одна редактируемая карточка Mattermost с несколькими окнами, формами, фильтрами и независимой пагинацией.
 
-Декларативный пример: [`examples/dialog_navigation.py`](../examples/dialog_navigation.py).
-Полный runnable demo для локального Mattermost: [`examples/dialog_navigation_bot.py`](../examples/dialog_navigation_bot.py).
+Проверяемая fixture навигации: [`tests/fixtures/dialog_navigation_app.py`](../tests/fixtures/dialog_navigation_app.py).
 Правила структуры, бюджета кликов, выбора пагинации, таблиц и полей формы собраны в
 [`docs/dialog-ui-design.md`](dialog-ui-design.md).
 
@@ -179,7 +178,7 @@ setup_dialogs(dispatcher, runtime)
 
 ## Live-обновления по WebSocket
 
-WS-событие не является пользовательским callback и не имеет response hook для атомарного обновления исходного поста. В таком handler загрузите актуальные данные и выполните REST edit по сохранённому `last_post_id`. Передавайте новые `props` вместе с текстом, чтобы не потерять controls. Полный рабочий шаблон находится в [`examples/showcase_bot.py`](../examples/showcase_bot.py) и описан в [`docs/showcase.md`](showcase.md).
+WS-событие не является пользовательским callback и не имеет response hook для атомарного обновления исходного поста. В таком handler загрузите актуальные данные и выполните REST edit по сохранённому `last_post_id`. Передавайте новые `props` вместе с текстом, чтобы не потерять controls. Проверяемый шаблон находится в [`tests/fixtures/showcase_app.py`](../tests/fixtures/showcase_app.py) и описан в [`docs/showcase.md`](showcase.md).
 
 ## Проверенные границы
 

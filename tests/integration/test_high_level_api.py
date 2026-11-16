@@ -1,24 +1,28 @@
 from __future__ import annotations
 
+import asyncio
 import unittest
+from collections.abc import AsyncGenerator, Awaitable, Callable
 from typing import Any
 
-from aiohttp import web
+from aiohttp import BodyPartReader, web
 
 from mattergram import Bot
+from mattergram.contrib.game_accounts_admin import MattermostPushDispatcher, PushRule
 from mattergram.exceptions import APIError, RequestOutcomeUnknown
-from mattergram.types import BufferedInputFile, Message
+from mattergram.types import BufferedInputFile, InputFile, Message, MessagePriority
 
 
 def post(
     *,
     message: str = "before",
+    channel_id: str = "channel-real",
     file_ids: list[str] | None = None,
     delete_at: int = 0,
 ) -> dict[str, Any]:
     return {
         "id": "post-real",
-        "channel_id": "channel-real",
+        "channel_id": channel_id,
         "user_id": "bot-real",
         "message": message,
         "create_at": 1,
@@ -52,18 +56,34 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
         if request.method == "POST" and path == "files":
             reader = await request.multipart()
             fields: dict[str, Any] = {}
+            files: list[dict[str, Any]] = []
             while part := await reader.next():
+                if not isinstance(part, BodyPartReader):
+                    raise AssertionError("Nested multipart is not expected")
                 if part.name == "files":
-                    fields["filename"] = part.filename
-                    fields["content_type"] = part.headers.get("Content-Type")
-                    fields["data"] = await part.read()
+                    files.append(
+                        {
+                            "filename": part.filename,
+                            "content_type": part.headers.get("Content-Type"),
+                            "data": await part.read(),
+                        }
+                    )
                 else:
                     fields[part.name or ""] = await part.text()
+            fields["files"] = files
             self.upload = fields
             self.calls.append((request.method, path, fields))
             if self.mode == "bad-upload":
                 return web.json_response({"file_infos": []}, status=201)
-            return web.json_response({"file_infos": [{"id": "file-real"}], "client_ids": []}, status=201)
+            if self.mode == "partial-upload":
+                files = files[:-1]
+            ids = ["file-real"] if len(files) == 1 else [f"file-{index + 1}" for index in range(len(files))]
+            if self.mode == "duplicate-upload":
+                ids = ["file-duplicate"] * len(files)
+            return web.json_response(
+                {"file_infos": [{"id": file_id} for file_id in ids], "client_ids": []},
+                status=201,
+            )
         body: object = await request.json() if request.can_read_body else None
         self.calls.append((request.method, path, body))
         self.queries.append(dict(request.query))
@@ -86,6 +106,12 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
             )
         if request.method == "GET" and path == "channels/channel-real":
             return web.json_response({"id": "channel-real", "team_id": "team-real", "type": "O"})
+        if request.method == "POST" and path == "channels":
+            assert isinstance(body, dict)
+            result = {"id": "channel-created", **body}
+            if self.mode == "other-channel":
+                result["name"] = "another-channel"
+            return web.json_response(result, status=201)
         if request.method == "POST" and path == "channels/direct":
             if self.mode == "bad-direct":
                 return web.json_response({"id": "channel-direct", "type": "O"}, status=201)
@@ -101,8 +127,21 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
             return web.json_response({"status": "MISSING" if self.mode == "bad-delete" else "OK"})
         if request.method == "POST" and path == "posts":
             assert isinstance(body, dict)
+            if self.mode == "post-error":
+                return web.json_response({"id": "app.post.create.app_error"}, status=500)
+            if self.mode == "bad-post":
+                return web.json_response({"status": "OK"}, status=201)
+            if self.mode == "other-post-channel":
+                result = post(message=str(body["message"]), file_ids=list(body.get("file_ids", [])))
+                result["channel_id"] = "other-channel"
+                return web.json_response(result, status=201)
             return web.json_response(
-                post(message=str(body["message"]), file_ids=list(body.get("file_ids", []))), status=201
+                post(
+                    message=str(body["message"]),
+                    channel_id=str(body["channel_id"]),
+                    file_ids=list(body.get("file_ids", [])),
+                ),
+                status=201,
             )
         raise AssertionError(f"Unexpected request: {request.method} {path}")
 
@@ -128,6 +167,76 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
         self.mode = "bad-direct"
         with self.assertRaises(RequestOutcomeUnknown):
             await self.bot.create_direct_channel("user-real")
+
+    async def test_bot_creates_typed_channel_and_rejects_unconfirmed_identity(self) -> None:
+        channel = await self.bot.create_channel(
+            team_id="team-real",
+            name="game-alerts",
+            display_name="Game alerts",
+            purpose="Automated account alerts",
+        )
+
+        self.assertEqual(channel.id, "channel-created")
+        self.assertEqual(channel.team_id, "team-real")
+        self.assertEqual(channel.type, "O")
+        self.assertIn(
+            (
+                "POST",
+                "channels",
+                {
+                    "team_id": "team-real",
+                    "name": "game-alerts",
+                    "display_name": "Game alerts",
+                    "type": "O",
+                    "purpose": "Automated account alerts",
+                    "header": "",
+                },
+            ),
+            self.calls,
+        )
+
+        self.mode = "other-channel"
+        with self.assertRaises(RequestOutcomeUnknown):
+            await self.bot.create_channel(
+                team_id="team-real",
+                name="game-alerts-2",
+                display_name="Other alerts",
+            )
+
+    async def test_game_admin_push_mentions_channel_recipient_and_is_not_silent(self) -> None:
+        dispatcher = MattermostPushDispatcher(
+            self.bot,
+            mentions=("alice",),
+            priority=MessagePriority("important"),
+        )
+        await dispatcher.send(
+            PushRule(
+                id="push-1",
+                destination_kind="channel",
+                destination_id="channel-real",
+                events=("account.invalid",),
+            ),
+            "account.invalid",
+            "Account alice requires attention",
+        )
+
+        method, path, body = self.calls[-1]
+        self.assertEqual((method, path), ("POST", "posts"))
+        self.assertEqual(self.queries[-1], {})
+        self.assertEqual(
+            body,
+            {
+                "channel_id": "channel-real",
+                "message": "@alice\n[account.invalid] Account alice requires attention",
+                "metadata": {
+                    "priority": {
+                        "priority": "important",
+                        "requested_ack": False,
+                        "persistent_notifications": False,
+                    }
+                },
+            },
+        )
 
     async def test_edit_delete_and_message_shortcuts_preserve_channel_binding(self) -> None:
         message = Message.from_wire(post(), bot=self.bot)
@@ -179,9 +288,13 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
             self.upload,
             {
                 "channel_id": "channel-real",
-                "filename": "report.txt",
-                "content_type": "text/plain",
-                "data": b"abcdef",
+                "files": [
+                    {
+                        "filename": "report.txt",
+                        "content_type": "text/plain",
+                        "data": b"abcdef",
+                    }
+                ],
             },
         )
         post_call = self.calls[-1]
@@ -198,6 +311,187 @@ class HighLevelAPIHTTPTests(unittest.IsolatedAsyncioTestCase):
         self.mode = "bad-upload"
         with self.assertRaises(RequestOutcomeUnknown):
             await self.bot.send_document("channel-real", BufferedInputFile(b"again", "report.txt"))
+
+    async def test_send_message_maps_priority_silent_and_existing_file_ids_exactly(self) -> None:
+        important = MessagePriority(level="important", requested_ack=True)
+        await self.bot.send_message(
+            "channel-real",
+            "Acknowledge",
+            priority=important,
+            file_ids=("file-a", "file-b", "file-c", "file-d", "file-e"),
+        )
+        self.assertEqual(self.queries[-1], {})
+        self.assertEqual(
+            self.calls[-1],
+            (
+                "POST",
+                "posts",
+                {
+                    "channel_id": "channel-real",
+                    "message": "Acknowledge",
+                    "metadata": {
+                        "priority": {
+                            "priority": "important",
+                            "requested_ack": True,
+                            "persistent_notifications": False,
+                        }
+                    },
+                    "file_ids": ["file-a", "file-b", "file-c", "file-d", "file-e"],
+                },
+            ),
+        )
+
+        urgent = MessagePriority(
+            level="urgent",
+            requested_ack=True,
+            persistent_notifications=True,
+        )
+        await self.bot.send_message("channel-real", "@alice urgent", priority=urgent)
+        self.assertEqual(self.queries[-1], {})
+        self.assertEqual(
+            self.calls[-1][2],
+            {
+                "channel_id": "channel-real",
+                "message": "@alice urgent",
+                "metadata": {
+                    "priority": {
+                        "priority": "urgent",
+                        "requested_ack": True,
+                        "persistent_notifications": True,
+                    }
+                },
+            },
+        )
+
+        await self.bot.send_message("channel-real", "quiet", silent=True, file_ids=())
+        self.assertEqual(self.queries[-1], {"silent": "true"})
+        self.assertEqual(
+            self.calls[-1][2],
+            {"channel_id": "channel-real", "message": "quiet"},
+        )
+
+    async def test_send_message_rejects_invalid_delivery_options_before_network(self) -> None:
+        urgent = MessagePriority(level="urgent", persistent_notifications=True)
+        invalid_calls: list[Callable[[], Awaitable[Message]]] = [
+            lambda: self.bot.send_message("channel-real", "reply", root_id="root", priority=urgent),
+            lambda: self.bot.send_message("channel-real", "quiet", priority=urgent, silent=True),
+            lambda: self.bot.send_message("channel-real", "bad", silent=1),  # type: ignore[arg-type]
+            lambda: self.bot.send_message("channel-real", "bad", file_ids="file-a"),
+            lambda: self.bot.send_message("channel-real", "bad", file_ids=("",)),
+            lambda: self.bot.send_message(
+                "channel-real",
+                "bad",
+                file_ids=("one", "two", "three", "four", "five", "six"),
+            ),
+        ]
+        for call in invalid_calls:
+            before = len(self.calls)
+            with self.subTest(call=call), self.assertRaises((TypeError, ValueError)):
+                await call()
+            self.assertEqual(len(self.calls), before)
+
+    async def test_send_message_treats_malformed_or_mismatched_success_as_unknown(self) -> None:
+        for mode in ("bad-post", "other-post-channel"):
+            self.mode = mode
+            with self.subTest(mode=mode), self.assertRaises(RequestOutcomeUnknown):
+                await self.bot.send_message("channel-real", "write once")
+
+    async def test_send_documents_uploads_five_files_once_and_preserves_order(self) -> None:
+        documents = [BufferedInputFile(str(index).encode(), f"report-{index}.txt") for index in range(1, 6)]
+        message = await self.bot.send_documents(
+            "channel-real",
+            documents,
+            text="Batch",
+            priority=MessagePriority(level="important", requested_ack=True),
+            silent=True,
+        )
+        self.assertEqual(message.raw["file_ids"], ["file-1", "file-2", "file-3", "file-4", "file-5"])
+        self.assertIsNotNone(self.upload)
+        assert self.upload is not None
+        self.assertEqual(
+            [item["filename"] for item in self.upload["files"]],
+            [f"report-{index}.txt" for index in range(1, 6)],
+        )
+        self.assertEqual([item["data"] for item in self.upload["files"]], [b"1", b"2", b"3", b"4", b"5"])
+        self.assertEqual(len([call for call in self.calls if call[1] == "files"]), 1)
+        self.assertEqual(self.queries[-1], {"silent": "true"})
+        self.assertEqual(
+            self.calls[-1][2],
+            {
+                "channel_id": "channel-real",
+                "message": "Batch",
+                "file_ids": ["file-1", "file-2", "file-3", "file-4", "file-5"],
+                "metadata": {
+                    "priority": {
+                        "priority": "important",
+                        "requested_ack": True,
+                        "persistent_notifications": False,
+                    }
+                },
+            },
+        )
+
+    async def test_send_documents_rejects_invalid_batches_before_network(self) -> None:
+        document = BufferedInputFile(b"one", "one.txt")
+        batches: list[object] = [[], [document] * 6, [document, object()], "not-documents"]
+        for batch in batches:
+            before = len(self.calls)
+            with self.subTest(batch=batch), self.assertRaises((TypeError, ValueError)):
+                await self.bot.send_documents("channel-real", batch)  # type: ignore[arg-type]
+            self.assertEqual(len(self.calls), before)
+
+    async def test_send_documents_reports_partial_upload_and_all_unattached_ids(self) -> None:
+        documents = [BufferedInputFile(b"x", f"{index}.txt") for index in range(5)]
+        self.mode = "partial-upload"
+        with self.assertRaises(RequestOutcomeUnknown):
+            await self.bot.send_documents("channel-real", documents)
+
+        self.mode = "duplicate-upload"
+        with self.assertRaises(RequestOutcomeUnknown):
+            await self.bot.send_documents("channel-real", documents)
+
+        self.mode = "post-error"
+        post_writes = len([call for call in self.calls if call[1] == "posts"])
+        with self.assertRaises(APIError) as caught:
+            await self.bot.send_documents("channel-real", documents)
+        self.assertEqual(len([call for call in self.calls if call[1] == "posts"]), post_writes + 1)
+        self.assertEqual(
+            caught.exception.__notes__,
+            [f"Uploaded native file 'file-{index}' may remain unattached" for index in range(1, 6)],
+        )
+
+        self.mode = "bad-post"
+        post_writes = len([call for call in self.calls if call[1] == "posts"])
+        with self.assertRaises(RequestOutcomeUnknown) as unknown:
+            await self.bot.send_documents("channel-real", documents)
+        self.assertEqual(len([call for call in self.calls if call[1] == "posts"]), post_writes + 1)
+        self.assertEqual(
+            unknown.exception.__notes__,
+            [f"Uploaded native file 'file-{index}' may remain unattached" for index in range(1, 6)],
+        )
+
+    async def test_send_documents_cancellation_closes_the_active_upload_stream(self) -> None:
+        started = asyncio.Event()
+        closed = asyncio.Event()
+
+        class BlockingInputFile(InputFile):
+            async def read(self) -> AsyncGenerator[bytes, None]:
+                try:
+                    started.set()
+                    yield b"first"
+                    await asyncio.Event().wait()
+                finally:
+                    closed.set()
+
+        task = asyncio.create_task(
+            self.bot.send_documents("channel-real", [BlockingInputFile("blocked.bin")])
+        )
+        await asyncio.wait_for(started.wait(), 1)
+        await asyncio.sleep(0)
+        task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await task
+        await asyncio.wait_for(closed.wait(), 1)
 
 
 if __name__ == "__main__":

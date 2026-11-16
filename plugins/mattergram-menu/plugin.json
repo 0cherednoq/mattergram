@@ -2,7 +2,7 @@
   "id": "com.mattergram.menu",
   "name": "Mattergram Menu",
   "description": "Persistent Telegram-style command keyboard above the Mattermost message composer.",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "min_server_version": "11.9.0",
   "server": {
     "executables": {

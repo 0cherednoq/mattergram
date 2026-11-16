@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from collections.abc import AsyncGenerator, Mapping, Sequence
 from copy import deepcopy
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Literal
 from urllib.parse import quote, urlencode
 
 import aiohttp
@@ -20,7 +20,7 @@ from mattergram.exceptions import (
     RequestOutcomeUnknown,
     TransportError,
 )
-from mattergram.types import Channel, InputFile, Message, User
+from mattergram.types import Channel, InputFile, Message, MessagePriority, User
 
 if TYPE_CHECKING:
     from mattergram.provisioning.resources import RuntimeResources
@@ -112,6 +112,9 @@ class Bot(_HTTPClient):
         ui_profile: UIProfile | None = None,
         action_context: ActionContext | None = None,
         markdown_actions: dict[str, Action] | None = None,
+        priority: MessagePriority | None = None,
+        silent: bool = False,
+        file_ids: Sequence[str] | None = None,
     ) -> Message:
         if not isinstance(chat_id, str) or not chat_id:
             raise ValueError("chat_id must be a nonempty channel ID string")
@@ -119,6 +122,12 @@ class Bot(_HTTPClient):
             raise TypeError("text must be a string")
         if root_id is not None and (not isinstance(root_id, str) or not root_id):
             raise ValueError("root_id must be a nonempty post ID string or None")
+        self._validate_delivery_options(
+            root_id=root_id,
+            priority=priority,
+            silent=silent,
+            file_ids=file_ids,
+        )
         payload: dict[str, Any] = {"channel_id": chat_id, "message": text}
         if root_id is not None:
             payload["root_id"] = root_id
@@ -136,7 +145,55 @@ class Bot(_HTTPClient):
                 markdown_actions=markdown_actions,
                 message=text,
             )
-        return Message.from_wire(await self._request("POST", "posts", 201, payload), bot=self)
+        self._apply_delivery_options(payload, priority=priority, file_ids=file_ids)
+        return await self._write_message(
+            "POST",
+            self._post_path(silent=silent),
+            201,
+            payload,
+            channel_id=chat_id,
+        )
+
+    @staticmethod
+    def _post_path(*, silent: bool) -> str:
+        return "posts?silent=true" if silent else "posts"
+
+    @staticmethod
+    def _validate_delivery_options(
+        *,
+        root_id: str | None,
+        priority: MessagePriority | None,
+        silent: bool,
+        file_ids: Sequence[str] | None,
+    ) -> None:
+        if priority is not None and not isinstance(priority, MessagePriority):
+            raise TypeError("priority must be a MessagePriority or None")
+        if type(silent) is not bool:
+            raise TypeError("silent must be a bool")
+        if priority is not None and root_id is not None:
+            raise ValueError("priority is only supported for root posts")
+        if priority is not None and priority.persistent_notifications and silent:
+            raise ValueError("persistent notifications cannot be delivered silently")
+        if file_ids is None:
+            return
+        if isinstance(file_ids, (str, bytes)) or not isinstance(file_ids, Sequence):
+            raise TypeError("file_ids must be a sequence of native file ID strings or None")
+        if len(file_ids) > 5:
+            raise ValueError("file_ids cannot contain more than five native file IDs")
+        if any(not isinstance(file_id, str) or not file_id for file_id in file_ids):
+            raise ValueError("file_ids must contain only nonempty native file ID strings")
+
+    @staticmethod
+    def _apply_delivery_options(
+        payload: dict[str, Any],
+        *,
+        priority: MessagePriority | None,
+        file_ids: Sequence[str] | None,
+    ) -> None:
+        if priority is not None:
+            payload["metadata"] = {"priority": priority.to_wire()}
+        if file_ids:
+            payload["file_ids"] = list(file_ids)
 
     async def set_composer_keyboard(self, chat_id: str, keyboard: ComposerKeyboard) -> ComposerKeyboardState:
         """Create or replace the plugin-backed persistent keyboard for one channel."""
@@ -174,6 +231,27 @@ class Bot(_HTTPClient):
             return ComposerKeyboardState.model_validate(wire)
         except (TypeError, ValueError):
             raise ProtocolError("Mattergram Menu returned invalid keyboard state") from None
+
+    async def list_composer_keyboards(self) -> tuple[ComposerKeyboardState, ...]:
+        """List keyboard states owned by this bot through the plugin manager endpoint."""
+        from mattergram.ui.composer import ComposerKeyboardState
+
+        wire = await self._request_plugin_json(
+            "com.mattergram.menu",
+            "api/v1/keyboards",
+            "GET",
+            200,
+        )
+        values = wire.get("keyboards")
+        if set(wire) != {"keyboards"} or not isinstance(values, list):
+            raise ProtocolError("Mattergram Menu returned an invalid keyboard list")
+        try:
+            states = tuple(ComposerKeyboardState.model_validate(value) for value in values)
+        except (TypeError, ValueError):
+            raise ProtocolError("Mattergram Menu returned an invalid keyboard list") from None
+        if len({state.channel_id for state in states}) != len(states):
+            raise ProtocolError("Mattergram Menu returned duplicate keyboard channels")
+        return states
 
     async def delete_composer_keyboard(self, chat_id: str) -> None:
         """Remove the plugin-backed persistent keyboard from one channel."""
@@ -271,6 +349,50 @@ class Bot(_HTTPClient):
             await self._request("GET", "channels/" + _segment(channel_id, "channel_id"), 200)
         )
 
+    async def create_channel(
+        self,
+        *,
+        team_id: str,
+        name: str,
+        display_name: str,
+        type: Literal["O", "P"] = "O",
+        purpose: str = "",
+        header: str = "",
+    ) -> Channel:
+        """Create a public or private channel with the authenticated bot account."""
+
+        native_team_id = _segment(team_id, "team_id")
+        native_name = _segment(name, "name")
+        if not isinstance(display_name, str) or not display_name.strip():
+            raise ValueError("display_name must be a nonempty string")
+        if type not in {"O", "P"}:
+            raise ValueError("type must be 'O' for public or 'P' for private")
+        if not isinstance(purpose, str):
+            raise TypeError("purpose must be a string")
+        if not isinstance(header, str):
+            raise TypeError("header must be a string")
+        payload = {
+            "team_id": native_team_id,
+            "name": native_name,
+            "display_name": display_name,
+            "type": type,
+            "purpose": purpose,
+            "header": header,
+        }
+        try:
+            channel = Channel.from_wire(await self._request("POST", "channels", 201, payload))
+        except ProtocolError:
+            raise RequestOutcomeUnknown(
+                "Channel write response was not confirmed; reconcile before retrying"
+            ) from None
+        if (
+            channel.team_id != native_team_id
+            or channel.type != type
+            or channel.raw.get("name") != native_name
+        ):
+            raise RequestOutcomeUnknown("Channel write returned another resource; reconcile before retrying")
+        return channel
+
     async def create_direct_channel(self, user_id: str) -> Channel:
         target_id = _segment(user_id, "user_id")
         own_id = _segment(self.user_id or (await self.get_me()).id, "bot user_id")
@@ -342,21 +464,49 @@ class Bot(_HTTPClient):
         text: str | None = None,
         root_id: str | None = None,
     ) -> Message:
+        return await self.send_documents(
+            chat_id,
+            (document,),
+            text=text,
+            root_id=root_id,
+        )
+
+    async def send_documents(
+        self,
+        chat_id: str,
+        documents: Sequence[InputFile],
+        *,
+        text: str | None = None,
+        root_id: str | None = None,
+        priority: MessagePriority | None = None,
+        silent: bool = False,
+    ) -> Message:
         channel_id = _segment(chat_id, "chat_id")
-        if not isinstance(document, InputFile):
-            raise TypeError("document must be an InputFile")
+        if isinstance(documents, (str, bytes)) or not isinstance(documents, Sequence):
+            raise TypeError("documents must be a sequence of InputFile objects")
+        if not 1 <= len(documents) <= 5:
+            raise ValueError("documents must contain between one and five InputFile objects")
+        if any(not isinstance(document, InputFile) for document in documents):
+            raise TypeError("documents must contain only InputFile objects")
         if text is not None and not isinstance(text, str):
             raise TypeError("text must be a string or None")
         if root_id is not None:
             _segment(root_id, "root_id")
+        self._validate_delivery_options(
+            root_id=root_id,
+            priority=priority,
+            silent=silent,
+            file_ids=None,
+        )
         form = aiohttp.FormData()
         form.add_field("channel_id", channel_id)
-        form.add_field(
-            "files",
-            document.read(),
-            filename=document.filename,
-            content_type=document.content_type,
-        )
+        for document in documents:
+            form.add_field(
+                "files",
+                document.read(),
+                filename=document.filename,
+                content_type=document.content_type,
+            )
         try:
             upload = await self._request_multipart("POST", "files", 201, form)
             if not isinstance(upload, dict):
@@ -364,28 +514,43 @@ class Bot(_HTTPClient):
             file_infos = upload.get("file_infos")
             if (
                 not isinstance(file_infos, list)
-                or len(file_infos) != 1
-                or not isinstance(file_infos[0], dict)
-                or not isinstance(file_infos[0].get("id"), str)
-                or not file_infos[0]["id"]
+                or len(file_infos) != len(documents)
+                or any(
+                    not isinstance(file_info, dict)
+                    or not isinstance(file_info.get("id"), str)
+                    or not file_info["id"]
+                    for file_info in file_infos
+                )
             ):
-                raise ProtocolError("File upload response omitted one native file ID")
+                raise ProtocolError("File upload response omitted ordered native file IDs")
         except ProtocolError:
             raise RequestOutcomeUnknown(
                 "Native file upload response was not confirmed; reconcile before retrying"
             ) from None
-        file_id = file_infos[0]["id"]
+        file_ids = [file_info["id"] for file_info in file_infos]
+        if len(set(file_ids)) != len(file_ids):
+            raise RequestOutcomeUnknown(
+                "Native file upload returned duplicate file IDs; reconcile before retrying"
+            )
         payload: dict[str, Any] = {
             "channel_id": channel_id,
             "message": text or "",
-            "file_ids": [file_id],
+            "file_ids": file_ids,
         }
         if root_id is not None:
             payload["root_id"] = root_id
+        self._apply_delivery_options(payload, priority=priority, file_ids=None)
         try:
-            return await self._write_message("POST", "posts", 201, payload, channel_id=channel_id)
-        except (APIError, TransportError) as error:
-            error.add_note(f"Uploaded native file {file_id!r} may remain unattached")
+            return await self._write_message(
+                "POST",
+                self._post_path(silent=silent),
+                201,
+                payload,
+                channel_id=channel_id,
+            )
+        except BaseException as error:
+            for file_id in file_ids:
+                error.add_note(f"Uploaded native file {file_id!r} may remain unattached")
             raise
 
     async def open_dialog(self, trigger_id: SecretStr, form: Form, *, url: str, profile: UIProfile) -> None:

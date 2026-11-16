@@ -21,11 +21,7 @@ class AdminUsersGetters:
         values = await self.service.list_users(manager.actor_id)
         can_manage = MANAGE_USERS in permissions
         can_assign = ASSIGN_ROLES in permissions
-        available = (
-            await self.service.list_available_team_users(manager.actor_id)
-            if can_manage and can_assign
-            else ()
-        )
+        available = await self.service.list_available_team_users(manager.actor_id) if can_manage else ()
         return {
             "users": tuple(
                 {
@@ -41,8 +37,9 @@ class AdminUsersGetters:
                 for user in values
             ),
             "can_manage": can_manage,
-            "can_add": can_manage and can_assign and bool(available),
-            "all_team_users_assigned": can_manage and can_assign and not available,
+            "can_assign": can_assign,
+            "can_add": can_manage and bool(available),
+            "all_team_users_assigned": can_manage and not available,
         }
 
     async def available_user_options(
@@ -54,17 +51,23 @@ class AdminUsersGetters:
         users = await self.service.list_available_team_users(manager.actor_id)
         return tuple(Option(text=user.option_label, value=user.id) for user in users)
 
+    async def form_permissions(self, manager: DialogManager) -> Mapping[str, Any]:
+        permissions = await self.service.permissions_for(manager.actor_id)
+        return {"can_assign": ASSIGN_ROLES in permissions}
+
     async def selected_user(self, manager: DialogManager) -> Mapping[str, Any]:
         selected = manager.dialog_data.get("admin_users_selected_id")
         if not isinstance(selected, str):
             raise AdminUsersInputError({"user": "Выберите пользователя на текущей странице"})
         user = await self.service.get_user(manager.actor_id, selected)
+        permissions = await self.service.permissions_for(manager.actor_id)
         return {
             "id": user.id,
             "mattermost_user_id": user.mattermost_user_id,
             "username": user.username,
             "role": user.role,
             "enabled": user.enabled,
+            "can_assign": ASSIGN_ROLES in permissions,
         }
 
 

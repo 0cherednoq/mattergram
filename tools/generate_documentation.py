@@ -20,7 +20,7 @@ from typing import Any
 
 from tools._common import ROOT, read_json, sha256
 
-DEPENDENCIES = frozenset({"core", "provisioning", "redis"})
+DEPENDENCIES = frozenset({"core", "provisioning", "redis", "sqlalchemy"})
 EXAMPLE_KINDS = frozenset({"declaration", "runnable"})
 EXAMPLE_STATUSES = frozenset(
     {"contract-verified", "declaration-only", "live-verified", "offline-verified", "real-redis-verified"}

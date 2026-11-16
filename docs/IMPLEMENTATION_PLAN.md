@@ -1,13 +1,14 @@
 # План реализации mattergram с повторным использованием aiogram
 
-**Дата:** 13 ноября 2026 года.  
-**Статус:** E0–E4, E5-01, E5-02, E6, E7 и E8 выполнены. HTTP/WS/FSM, backend native forms, automatic provisioning, generated low-level API, high-level facade, полный operationId coverage и dialog runtime/scenario проверены через настоящие Mattermost и Redis; dialog extraction/audit воспроизводимы. E5-03 native clients, E9 documentation/evaluations/release и последующие задачи открыты.
+**Дата:** 16 ноября 2026 года.
+
+**Статус:** E0–E4, E5-01, E5-02, E6, E7-01–E7-03 и E8 выполнены. HTTP/WS/FSM, backend native forms, automatic provisioning, generated low-level API, high-level facade, полный operationId coverage и dialog runtime/scenario проверены через настоящие Mattermost и Redis; dialog extraction/audit воспроизводимы. E7-04 post delivery options, E5-03 native clients, E9 documentation/evaluations/release и последующие задачи открыты.
 
 Основной контракт находится в [дизайне](aiogram_mattermost_fork_spec.md). Документация планируется в [DOCUMENTATION_PLAN.md](DOCUMENTATION_PLAN.md).
 
 ## Прогресс реализации
 
-**Состояние:** E0-01–E0-04, E1-01–E1-04, E2-01–E2-03, E3-01–E3-03, E4-01–E4-03, E5-01–E5-02, E6-01–E6-03, E7-01–E7-03, E8-01–E8-03, E9-01, CI-01 и CI-03 выполнены: 31 из 56. Core SDK, dialog runtime/scenario и documentation scope прошли строгие drift/behavior checks. Полный продукт и публикация открыты.
+**Состояние:** E0-01–E0-04, E1-01–E1-04, E2-01–E2-03, E3-01–E3-03, E4-01–E4-03, E5-01–E5-02, E6-01–E6-03, E7-01–E7-03, E8-01–E8-03, E9-01, CI-01 и CI-03 выполнены: 31 из 57. Core SDK, dialog runtime/scenario и documentation scope прошли строгие drift/behavior checks. Полный продукт и публикация открыты.
 
 Чекбоксы задач находятся в разделе 10, инфраструктуры и публикации в разделе 13, будущих обновлений upstream в разделе 15. ID задач сохраняются между сессиями.
 
@@ -18,8 +19,10 @@
 3. Обновлять [STATUS.md](../STATUS.md): результат, блокеры и следующий конкретный шаг.
 4. Не отмечать интеграционные проверки выполненными, если стенд не запускался. Для неприменимой задачи записывать основание закрытия в журнале.
 
-**Текущая задача:** E9-02 LLM evaluations; E5-03 native client acceptance остаётся открытой.  
-**Следующий шаг:** зафиксировать evaluation tasks, prompt/context/model metadata, assertions и воспроизводимый отчёт без выдуманной оценки.  
+**Текущая задача:** E7-04 live acceptance typed post delivery options; E5-03 native client acceptance и E9-02 LLM evaluations остаются открытыми.
+
+**Следующий шаг:** запустить E7-04 live matrix на Mattermost 11.1 baseline и текущем 12.x: доступные priority/silent/file сценарии ordinary bot token, capability boundaries и cleanup. Runtime, exact local HTTP contract, docs и generated reference уже реализованы.
+
 **Незакрытые решения:** см. раздел «Решения перед реализацией» в STATUS.md.
 
 | Дата | Задачи | Результат и проверки | Следующее действие |
@@ -51,6 +54,8 @@
 | 2026-11-13 | E9-01 частично | Runnable showcase использует один Mattermost post как многоэкранный интерфейс: две независимо paginated/filtered Markdown tables, 3 action groups/11 controls, Overview/Activity/About и 3 native forms. Callback обновляет text+props одним response; live событие приходит через WS, shared post изменяется REST text patch с сохранением props. Owned 11.1 прошёл slash, native form, независимые table mutations и WS→REST path; temporary resources удалены. Windows 3.11/3.13/3.14: 486 tests + 312 subtests с real Redis, no skips; Ruff/format (227), mypy (180). Guide/evidence: `docs/showcase.md`, `docs/reports/showcase.json`. Счёт остаётся 30/56. | Продолжить E9-01: generated reference, остальные guides/examples и documentation drift gates. |
 | 2026-11-13 | E9-01 generated reference частично | Authored documentation manifest покрывает 20 public modules/183 exports, 18 guides и все 14 examples. Детерминированный generator создаёт API/public-api.json, exceptions, capabilities, examples index и llms.txt без сети/мутаций; exact drift/local links/example metadata проверяются тестами и CI. Исправлен stale `dialog_wizard` access. Windows 3.11/3.13/3.14: 489 tests + 312 subtests с real Redis, no skips; Ruff/format (229), mypy (181), actionlint и docs checks прошли. Strict twine прошёл; sdist содержит 9 проверенных docs inputs/outputs, wheel runtime-only. Evidence: `docs/reports/documentation.json`. Счёт 30/56. | Дописать Mattermost model/install/deployment/troubleshooting/migration guides; затем docs site и LLM evaluations. |
 | 2026-11-13 | E9-01 завершён | Documentation manifest расширен до 23 guides: добавлены installation/first bot, Mattermost model, production deployment, troubleshooting/recovery и migration from aiogram. Все 14 examples имеют explicit status/profile/permissions/assertions/evidence; generated reference остаётся 20 modules/183 exports/335 members и детерминирован на Python 3.11/3.13/3.14. Registered local links, syntax/types, drift, Ruff/format (229), mypy (181), actionlint прошли. 3.14 validation выявила 50 ms test cleanup flake при 105 ms Proactor stall: ordinary test bound поднят до 500 ms, dedicated timeout case оставлен 50 ms; 10/10 targeted и полный matrix прошли, production default не менялся. По 489 tests + 312 subtests на 3.11/3.13/3.14 с real Redis, no skips. Strict twine/sdist docs/wheel boundary проверены. Evidence: `docs/reports/documentation.json`. Счёт 31/56. | E9-02: фиксированные LLM evaluation tasks и фактический воспроизводимый отчёт. |
+| 2026-11-16 | E7-04 запланирован | Scope расширен только на typed `priority`, `silent`, `file_ids` в `Bot.send_message` и новый `Bot.send_documents`. Зафиксированы wire mapping, ранняя валидация, неопределённый результат записи, критерии тестов и live-проверки. Код и runtime не изменялись; тесты не запускались. Текущий счёт 31/57. | Реализовать E7-04 без добавления ephemeral/scheduled/pin/ack/reaction shortcuts. |
+| 2026-11-16 | E7-04 частично: runtime и contract tests | Добавлены strict `MessagePriority`, exact `metadata.priority`/`silent=true`/ordered `file_ids`, `_write_message` verification и `Bot.send_documents` с одним multipart upload для 1–5 файлов. `send_document` использует общий путь. Local HTTP tests закрывают important/urgent/ack/persistent/silent, пять existing IDs, batch 1/5, invalid-before-network, partial/malformed/duplicate upload, cancellation, malformed/mismatched post и все orphan IDs. Обновлены authored REST contract, stub, spec, guide, runnable example и generated reference. Проверки: 547 passed, 23 real-Redis profile skips, 322 subtests; Ruff/format, strict mypy (231 source files), docs drift (24 modules/353 exports/546 members). Docker Desktop Linux engine не запущен, поэтому live 11.1/12.x не выполнялся и E7-04 остаётся открытой. | Запустить live matrix, записать реальные capability boundaries и только после этого отметить E7-04 выполненной. |
 
 ## 1. Основной подход
 
@@ -243,6 +248,71 @@ inventory_upstream/extract_core/rewrite_imports/audit_port реализован�
 - [x] **E7-01.** Реализовать генератор low-level API из закреплённой OpenAPI и явных overlays с источниками.
 - [x] **E7-02.** Реализовать согласованные high-level операции отдельно от generated files; не перезаписывать ручной facade.
 - [x] **E7-03.** Сформировать operationId coverage, проверить ошибки и документировать неподдерживаемые операции.
+- [ ] **E7-04.** Расширить отправку post: добавить typed `priority`, `silent` и `file_ids` в `Bot.send_message`, а также `Bot.send_documents` для одного post с несколькими новыми файлами. Остальные post shortcuts в эту задачу не входят.
+
+#### E7-04. Приоритеты, тихая доставка и несколько файлов
+
+Публичный API должен поддержать следующий сценарий без raw `NativeAPI`:
+
+```python
+await bot.send_message(
+    alerts_channel_id,
+    "@alice **CRITICAL: api-01 недоступен**",
+    priority=MessagePriority(
+        level="urgent",
+        requested_ack=True,
+        persistent_notifications=True,
+    ),
+    silent=False,
+)
+
+await bot.send_message(
+    alerts_channel_id,
+    "✅ api-01 снова работает",
+    silent=True,
+)
+```
+
+Планируемые сигнатуры:
+
+```python
+async def send_message(
+    chat_id: str,
+    text: str,
+    *,
+    # существующие keyword-only параметры сохраняются
+    priority: MessagePriority | None = None,
+    silent: bool = False,
+    file_ids: Sequence[str] | None = None,
+) -> Message: ...
+
+async def send_documents(
+    chat_id: str,
+    documents: Sequence[InputFile],
+    *,
+    text: str | None = None,
+    root_id: str | None = None,
+    priority: MessagePriority | None = None,
+    silent: bool = False,
+) -> Message: ...
+```
+
+Требования к реализации:
+
+1. `priority` сериализуется только в `metadata.priority` запроса `CreatePost`. `silent` передаётся query-параметром `silent=true`, а `file_ids` остаётся полем тела post. Нельзя переносить webhook-форму с top-level `priority` в REST-вызов.
+2. `MessagePriority.level` принимает `important` или `urgent`. `requested_ack=True` допускается только для этих уровней, `persistent_notifications=True` только для `urgent`. Priority разрешён только у root post. Комбинация persistent notifications с `silent=True` отклоняется до HTTP-запроса.
+3. `file_ids` содержит не более пяти непустых Mattermost file IDs. Значения копируются в payload без изменения порядка; пустая последовательность эквивалентна отсутствию вложений.
+4. `send_documents` принимает от одного до пяти `InputFile`, загружает их одним multipart-запросом и создаёт ровно один post со всеми полученными `file_ids`. `send_document` сохраняет текущую сигнатуру и совместимость, но использует общий внутренний путь.
+5. Подтверждённая запись проверяет возвращённый channel через `_write_message`. При malformed success, несовпадении resource или разрыве после отправки SDK возвращает `RequestOutcomeUnknown` и не повторяет запись автоматически. Если upload подтверждён, а post нет, исключение перечисляет все потенциально оставшиеся unattached file IDs.
+6. Ошибки capability, лицензии, конфигурации или прав Mattermost не маскируются обычным post. Persistent notifications требуют конкретных `@username` в тексте и серверной поддержки; библиотека документирует это условие, но не подменяет и не расширяет упоминания.
+
+Критерии приёмки:
+
+- unit и local HTTP tests фиксируют exact query/body для `important`, `urgent`, acknowledgement, persistent, `silent` и пяти `file_ids`, а также все запрещённые сочетания до сети;
+- upload tests проверяют 1 и 5 файлов, порядок `file_infos`, malformed/partial response, отмену и ошибку создания post после успешного upload;
+- живой Mattermost 11.1 baseline и текущий 12.x stand проверяют доступные priority/silent/file сценарии bot token. Неподдерживаемая конфигурация записывается как capability boundary, а не как успешная проверка;
+- обновляются authored REST contract, публичные типы и stubs, `docs/high-level-api.md`, example, generated reference/coverage evidence и `STATUS.md`;
+- ephemeral/scheduled messages, pin/unpin, acknowledge/remove acknowledgement, reactions и `set_online` остаются вне E7-04.
 
 ### Этап 8. mattergram_dialog
 
@@ -300,7 +370,7 @@ Telegram fixtures заменять собственными event fixtures. Ис
 - [ ] **CI-08. Документация и API.** Подключить examples checks, API surface drift, coverage reports и запрет Telegram-only exports; сохранить происхождение заимствованных тестов.
 - [ ] **CI-09. Обязательные проверки.** Настроить required checks для слияния, минимальные permissions jobs и проверенные версии actions; убедиться, что ошибка блокирует merge и релиз.
 - [ ] **CI-10. Доступ к индексам.** Настроить GitHub Environments и отдельные Trusted Publishers для TestPyPI/PyPI с точными repository/workflow/environment. Дать `id-token: write` только publish jobs.
-- [ ] **CI-11. Релизный workflow.** Создать `.github/workflows/release.yml`: проверить тег, версию и релизный commit, выполнить обязательные проверки, один раз собрать и проверить артефакты, опубликовать в TestPyPI и затем те же файлы в PyPI через OIDC. Сборку отделить от publish jobs.
+- [x] **CI-11. Релизный workflow.** `.github/workflows/release.yml` проверяет соответствие тега версии, повторяет обязательные проверки, один раз собирает Python distributions и keyboard plugin, устанавливает wheel/sdist вне checkout, публикует Python artifacts в PyPI через OIDC и после этого создаёт GitHub Release с checksums. `id-token: write` выдан только PyPI job; фактический внешний запуск и отдельный TestPyPI gate остаются частью CI-10/CI-12.
 - [ ] **CI-12. Проверка публикации.** Проверить точную версию из TestPyPI в чистом окружении: зависимости из PyPI, пакет из TestPyPI с `--no-deps`. После публикации в PyPI проверить обычную установку и основной сценарий. Сохранить ссылки на CI и релизные артефакты.
 - [ ] **CI-13. Повторные релизы.** Описать changelog, prerelease/stable versions, GitHub Release и восстановление частичной публикации. Проверять совпадение hashes уже загруженных файлов; не пересобирать другое содержимое под той же версией.
 - [ ] **CI-14. Сопровождение CI.** Настроить обновления зависимостей/actions и периодические проверки свежих зависимостей и следующей предварительной версии Python. Экспериментальную поддержку отделить от обязательных проверок.
@@ -349,6 +419,31 @@ UP-01–UP-08 относятся к будущему обновлению upstre
 Lock/inventory/manifest и инструменты переноса подтверждены этапами E0/E1. 19 выбранных модулей перенесены через reviewed patches; строгий audit и behavioral suites проходят.
 
 E2/E3 подтвердили posted → Router/F/DI → handler → настоящий createPost и Memory/Redis FSM. E4 подтвердил issued slash tokens, post-action signed context, response lifecycle/deadlines и реальный combined HTTP/WS runtime. Следующий результат — E5 UI/forms. Документационный сайт, dialog extension и релиз сохраняются в исходном scope последующих этапов.
+
+## 17. Переиспользуемые Mattermost UI-компоненты
+
+Компоненты Game Admin реализуются без отдельного frontend в
+`mattergram.contrib.game_accounts_admin.mattermost_ui`. UI-модули формируют только типизированные
+Mattermost Blocks и dialog declarations; запросы, права, идемпотентность и фоновые операции остаются
+в application services.
+
+- [x] **UI-01 AccountList.** Backend filter/sort/page query, 10 записей в Markdown-таблице, три
+  фильтра, sort select, стабильный pager, page-local account select и отдельное actor state. Выбор
+  добавляет nested account detail в тот же post без перехода в другое окно.
+- [x] **UI-02 AccountCard.** Builder перенесён в `mattermost_ui/account_card.py`. Карточка раскрыта
+  при первом показе, вложенный раздел Cookies закрыт; в post попадают login, окружение, статусы,
+  индикатор наличия password и только безопасные cookie metadata (`domain`, `name`). Действующие
+  password/cookie values не пересекают UI boundary. Кнопка проверки объявлена локальным signed action.
+- [x] **UI-03 AccountCheck.** Отдельная карточка pending/running/success/failed/cancelled показывает
+  только фактические current/total, stage и безопасный результат. Проверка одного аккаунта выполняется
+  через общий job runtime, обновляет существующий post, поддерживает cancel и атомарный actor/account
+  single-flight key; при неизвестном total процент не выдумывается.
+- [ ] **UI-04 ParsingCard + Playbook.** Четыре backend-этапа, фактические метрики, retry failed stage и
+  связь одного задания с одним Playbook run без моделирования технического progress сотнями tasks.
+- [ ] **UI-05 CreatePostDialog.** Native form, validation без потери значений, категории, вложения,
+  timezone, draft/schedule/publish и idempotency key.
+
+Следующий конкретный шаг: UI-04 ParsingCard + Playbook.
 
 ## Источники
 

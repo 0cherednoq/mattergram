@@ -23,8 +23,7 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-Проверяемый CLI: `uv run --locked python examples/create_post.py CHANNEL_ID "Текст"`.
-Он читает MM_URL/MM_BOT_TOKEN из окружения и выводит только полученный post_id.
+Минимальный вызов `Bot.send_message(...)` приведён ниже и проверяется native client suite.
 Пример выполнен на собственном тестовом stand. Пакет ещё не опубликован в PyPI.
 base_url — корень сервера с подпутём установки, например `https://chat.example.test/mattermost`.
 Токен не помещается в URL. Редиректы и автоматические повторы отключены.

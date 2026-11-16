@@ -6,6 +6,7 @@ from typing import Protocol, runtime_checkable
 
 from mattergram.dispatcher.router import Router
 from mattergram.filters import Command
+from mattergram.security import REQUIRED_ROLES_FLAG
 from mattergram.types import Message, SlashCommand
 from mattergram_dialog import DialogRef, StartMode
 
@@ -36,6 +37,7 @@ def build_admin_users_router(
     *,
     command: str,
     messages: tuple[str, ...],
+    required_roles: tuple[str, ...],
 ) -> Router:
     router = Router(name="admin-users")
 
@@ -76,10 +78,15 @@ def build_admin_users_router(
     router.slash_command.register(
         open_users,
         Command(command),
+        flags={REQUIRED_ROLES_FLAG: required_roles},
         description="Управление пользователями и ролями приложения",
         triggers=(command,),
     )
-    router.message.register(respond_users, is_users_message)
+    router.message.register(
+        respond_users,
+        is_users_message,
+        flags={REQUIRED_ROLES_FLAG: required_roles},
+    )
     return router
 
 

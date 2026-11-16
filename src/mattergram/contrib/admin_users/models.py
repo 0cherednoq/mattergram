@@ -112,9 +112,9 @@ DEFAULT_ROLES = (
     RoleSpec(
         id="operator",
         title="Оператор",
-        permissions=frozenset({VIEW_USERS}),
+        permissions=frozenset(),
     ),
-    RoleSpec(id="viewer", title="Наблюдатель"),
+    RoleSpec(id="viewer", title="Наблюдатель", permissions=frozenset({VIEW_USERS})),
 )
 
 

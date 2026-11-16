@@ -30,6 +30,11 @@ class ImportAccountsJob:
 
 
 @dataclass(frozen=True, slots=True)
+class CheckAccountJob:
+    account_id: str
+
+
+@dataclass(frozen=True, slots=True)
 class CheckAllAccountsJob:
     pass
 
@@ -39,7 +44,9 @@ class CheckImportedAccountsJob:
     import_id: str
 
 
-GameAdminJobPayload: TypeAlias = ImportAccountsJob | CheckAllAccountsJob | CheckImportedAccountsJob
+GameAdminJobPayload: TypeAlias = (
+    ImportAccountsJob | CheckAccountJob | CheckAllAccountsJob | CheckImportedAccountsJob
+)
 GameAdminJobResult: TypeAlias = ImportRun | CheckRun | None
 
 
@@ -53,6 +60,9 @@ class GameAdminJob:
     payload: GameAdminJobPayload
     created_at: str
     updated_at: str
+    started_at: str | None = None
+    finished_at: str | None = None
+    single_flight_key: str | None = None
     revision: int = 0
     state: GameAdminJobState = "queued"
     current: int = 0
@@ -88,8 +98,16 @@ class JobRevisionConflict(RuntimeError):
     """The persisted job changed after the caller read it."""
 
 
+class ActiveJobConflict(RuntimeError):
+    """A job with the same atomic single-flight key is already active."""
+
+    def __init__(self, job: GameAdminJob) -> None:
+        super().__init__(f"Job {job.id!r} is already active")
+        self.job = job
+
+
 class GameAdminJobRepository(Protocol):
-    """Durable production port; implementations must use compare-and-swap revisions."""
+    """Durable port with CAS revisions and atomic active single-flight keys."""
 
     async def create(self, job: GameAdminJob) -> None: ...
 
@@ -183,6 +201,17 @@ class EphemeralMemoryGameAdminJobRepository:
         async with self._lock:
             if job.id in self._jobs:
                 raise ValueError(f"Game admin job {job.id!r} already exists")
+            if job.single_flight_key is not None:
+                existing = next(
+                    (
+                        current
+                        for current in self._jobs.values()
+                        if not current.terminal and current.single_flight_key == job.single_flight_key
+                    ),
+                    None,
+                )
+                if existing is not None:
+                    raise ActiveJobConflict(existing)
             self._jobs[job.id] = job
             self._revisions[job.id] = [job]
 
@@ -212,13 +241,15 @@ class EphemeralMemoryGameAdminJobRepository:
             if current.terminal or current.cancel_requested:
                 return current
             state: GameAdminJobState = "cancelled" if current.state == "queued" else current.state
+            timestamp = _now()
             updated = replace(
                 current,
                 revision=current.revision + 1,
                 state=state,
                 stage="cancelled" if state == "cancelled" else current.stage,
                 cancel_requested=True,
-                updated_at=_now(),
+                updated_at=timestamp,
+                finished_at=timestamp if state == "cancelled" else current.finished_at,
             )
             self._jobs[job_id] = updated
             self._revisions[job_id].append(updated)
@@ -273,8 +304,10 @@ class GameAdminJobs:
         actor_id: str,
         dialog_ref: DialogRef,
         payload: GameAdminJobPayload,
+        *,
+        single_flight_key: str | None = None,
     ) -> GameAdminJob:
-        self.service.require_admin(actor_id)
+        self.service.require_operator(actor_id)
         if dialog_ref.actor_id != actor_id:
             raise PermissionError("A background job DialogRef must belong to its actor")
         timestamp = _now()
@@ -285,6 +318,7 @@ class GameAdminJobs:
             payload=payload,
             created_at=timestamp,
             updated_at=timestamp,
+            single_flight_key=single_flight_key,
         )
         await self.repository.create(job)
         await self.queue.enqueue(job.id)
@@ -303,6 +337,20 @@ class GameAdminJobs:
     async def check_all(self, actor_id: str, dialog_ref: DialogRef) -> GameAdminJob:
         return await self._enqueue(actor_id, dialog_ref, CheckAllAccountsJob())
 
+    async def check_account(
+        self,
+        actor_id: str,
+        dialog_ref: DialogRef,
+        account_id: str,
+    ) -> GameAdminJob:
+        await self.service.account_card(actor_id, account_id)
+        return await self._enqueue(
+            actor_id,
+            dialog_ref,
+            CheckAccountJob(account_id),
+            single_flight_key=f"account-check:{actor_id}:{account_id}",
+        )
+
     async def check_import(
         self,
         actor_id: str,
@@ -316,7 +364,7 @@ class GameAdminJobs:
         )
 
     async def cancel(self, actor_id: str, job_id: str) -> GameAdminJob:
-        self.service.require_admin(actor_id)
+        self.service.require_operator(actor_id)
         job = await self.repository.get(job_id)
         if job is None:
             raise KeyError(job_id)
@@ -327,6 +375,45 @@ class GameAdminJobs:
 
 class _JobCancelled(Exception):
     pass
+
+
+def account_check_dialog_data(job: GameAdminJob) -> dict[str, object]:
+    """Return JSON-compatible dialog state for one selected-account check."""
+
+    if not isinstance(job.payload, CheckAccountJob):
+        return {}
+    state = {
+        "queued": "pending",
+        "running": "running",
+        "completed": "success",
+        "failed": "failed",
+        "cancelled": "cancelled",
+    }[job.state]
+    result_failed = isinstance(job.result, CheckRun) and job.result.status == "failed"
+    if result_failed:
+        state = "failed"
+    data: dict[str, object] = {
+        "account_check_account_id": job.payload.account_id,
+        "account_check_job_id": job.id,
+        "account_check_state": state,
+        "account_check_stage": job.stage,
+        "account_check_current": job.current,
+        "account_check_total": job.total,
+        "account_check_started_at": job.started_at,
+        "account_check_finished_at": job.finished_at,
+        "account_check_error": (
+            "Не удалось получить результат проверки. Повторите попытку."
+            if job.state == "failed" or result_failed
+            else None
+        ),
+    }
+    if isinstance(job.result, CheckRun):
+        data.update(
+            account_check_valid=job.result.valid,
+            account_check_invalid=job.result.invalid,
+            account_check_errors=job.result.errors,
+        )
+    return data
 
 
 class GameAdminJobRunner:
@@ -353,6 +440,7 @@ class GameAdminJobRunner:
             "job_cancel_requested": job.cancel_requested,
             "job_error_type": job.error_type,
         }
+        data.update(account_check_dialog_data(job))
         if isinstance(job.result, ImportRun):
             data.update(
                 last_import_id=job.result.id,
@@ -410,12 +498,14 @@ class GameAdminJobRunner:
             raise KeyError(job_id)
         if current.terminal:
             return current
+        timestamp = _now()
         finished = await self._persist(
             current,
             replace(
                 current,
                 revision=current.revision + 1,
-                updated_at=_now(),
+                updated_at=timestamp,
+                finished_at=timestamp,
                 state=state,
                 stage=state,
                 result=result,
@@ -432,12 +522,14 @@ class GameAdminJobRunner:
             return job
         if job.cancel_requested:
             return await self._finish(job.id, "cancelled")
+        timestamp = _now()
         job = await self._persist(
             job,
             replace(
                 job,
                 revision=job.revision + 1,
-                updated_at=_now(),
+                updated_at=timestamp,
+                started_at=timestamp,
                 state="running",
                 stage="starting",
             ),
@@ -473,6 +565,12 @@ class GameAdminJobRunner:
                     file_id=payload.file_id,
                     progress=report,
                 )
+            elif isinstance(payload, CheckAccountJob):
+                result = await self.service.check_account(
+                    job.actor_id,
+                    payload.account_id,
+                    progress=report,
+                )
             elif isinstance(payload, CheckAllAccountsJob):
                 result = await self.service.check_all(job.actor_id, progress=report)
             else:
@@ -492,6 +590,8 @@ class GameAdminJobRunner:
 
 
 __all__ = [
+    "ActiveJobConflict",
+    "CheckAccountJob",
     "CheckAllAccountsJob",
     "CheckImportedAccountsJob",
     "CoalescingDialogJobUpdater",
@@ -509,5 +609,6 @@ __all__ = [
     "ImportAccountsJob",
     "JobRevisionConflict",
     "TERMINAL_JOB_STATES",
+    "account_check_dialog_data",
     "dialog_ref_from_manager",
 ]

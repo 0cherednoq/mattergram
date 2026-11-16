@@ -11,8 +11,8 @@ HTTP slash/callback ingress — [native-http.md](native-http.md), backend forms 
 
 Из checkout выполните `uv sync --locked`. Задайте `MM_URL` (корень сервера,
 включая подпуть установки) и `MM_BOT_TOKEN`. Добавьте bot user в нужный канал.
-Запустите `uv run --locked python examples/routing_bot.py` и отправьте `ping`.
-Пакет пока не опубликован. Токен берётся из окружения и не печатается.
+Зарегистрируйте приведённый ниже handler, запустите приложение и отправьте `ping`.
+Токен берётся из окружения и не печатается.
 
 ```python
 from mattergram import Bot, Dispatcher, F, Router

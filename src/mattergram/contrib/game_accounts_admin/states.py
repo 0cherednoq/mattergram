@@ -14,6 +14,7 @@ class AdminPanel(StatesGroup):
     push_edit = State()
     accounts = State()
     account_edit = State()
+    account_delete = State()
     import_accounts = State()
     import_result = State()
     job_progress = State()
@@ -35,8 +36,4 @@ GAME_ADMIN_SLASH_ROUTES: dict[str, State] = {
 GAME_ADMIN_KEYBOARD_ROUTES: dict[str, State] = {
     "Обзор": AdminPanel.home,
     "Аккаунты": AdminPanel.accounts,
-    "Импорт": AdminPanel.import_menu,
-    "Push-настройки": AdminPanel.pushes,
-    "История импортов": AdminPanel.import_history,
-    "История проверок": AdminPanel.check_history,
 }

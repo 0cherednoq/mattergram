@@ -154,6 +154,8 @@ src/mattergram/
 └── contrib/
     ├── composer_keyboard/
     │   └── plugin.py            # optional UI lifecycle, без feature routing
+    ├── admin_user_onboarding/
+    │   └── plugin.py            # явный bridge app access → DM/keyboard
     └── admin_users/
         ├── plugin.py            # AdminUsersPlugin
         ├── models.py            # AdminUser, RoleSpec, PermissionSpec
@@ -166,8 +168,7 @@ src/mattergram/
         └── router.py
 
 examples/
-├── game_accounts_admin.py       # временные совместимые re-exports
-└── game_accounts_admin_bot.py   # composition root local demo
+└── game_accounts_admin.py       # единственный runnable composition root
 ```
 
 Это не означает механическое создание множества файлов по числу классов. Граница должна следовать ответственности:
@@ -181,7 +182,7 @@ examples/
 
 `mattergram.contrib.admin_users` можно вынести в отдельный distribution `mattergram-plugin-admin-users` позже, когда понадобится независимый release cycle. Первый slice не должен одновременно решать packaging нескольких distributions.
 
-`examples/game_accounts_admin.py` следует оставить на один migration cycle. Он re-export-ит текущие публичные имена, чтобы существующие тесты, документация и runner не сломались одним переносом.
+`examples/game_accounts_admin.py` является единственным runnable composition root. Feature-код импортируется из публичных `mattergram.contrib` packages и не дублируется в `examples`.
 
 ## Первый plugin: AdminUsersPlugin
 
@@ -223,13 +224,21 @@ roles = (
     RoleSpec(
         id="operator",
         title="Оператор",
+        permissions=frozenset(),
+    ),
+    RoleSpec(
+        id="viewer",
+        title="Наблюдатель",
         permissions=frozenset({"admin_users.view"}),
     ),
-    RoleSpec(id="viewer", title="Наблюдатель"),
 )
 ```
 
 `AdminUsersService` проверяет permission для actor перед repository read/write. Скрытая кнопка не считается защитой. Неизвестную роль, permission или Mattermost user ID нужно отклонять до записи.
+
+`operator` не входит в пользовательскую админку: эта роль предназначена для прикладных операций
+Game Admin, а ручной текст и slash-команда пользователей отклоняются service. Membership и роли
+меняет только `admin`; `viewer` имеет read-only доступ к списку и карточке.
 
 Initial administrator задаётся явно через bootstrap/configuration и создаётся идемпотентно. Нельзя использовать первого вошедшего пользователя, username `admin`, Mattermost system-admin role или пустой repository как автоматический administrative fallback.
 
@@ -452,7 +461,7 @@ register_admin_panel(dispatcher, runtime, service)
 6. Terminal snapshot содержит `succeeded`, `failed` или `cancelled` и агрегированные counters. Credentials и исходные строки импорта в него не входят.
 7. Если пользователь уже открыл новый reply-command post и старый `DialogRef` устарел, worker сохраняет terminal result в history и прекращает UI updates для старого post.
 
-Использовать существующие [`Progress`](../examples/dialog_progress.py), `DialogRef`, `CoalescingDialogUpdater` и revision guard. Не создавать второй несовместимый progress runtime внутри Game Admin.
+Использовать существующие `Progress`, `DialogRef`, `CoalescingDialogUpdater` и revision guard. Не создавать второй несовместимый progress runtime внутри Game Admin.
 
 ## Нужны ли новые presets
 
@@ -659,7 +668,7 @@ documentation manifest/evidence и repository skill синхронизирова
 - [x] Статическая навигация выражена widgets, а не ручными manager calls.
 - [x] `build_admin_dialog` содержит декларацию, но не service implementation.
 - [x] Getters и actions тестируются отдельно без запуска HTTP ingress.
-- [x] Старые imports из `examples.game_accounts_admin` продолжают работать на migration cycle.
+- [x] Прикладной код импортируется из публичных packages; временный compatibility re-export удалён.
 - [x] Unit, integration, Ruff, strict mypy и documentation drift проходят для этапов 0–6.
 - [ ] Local browser smoke подтверждает новый post для reply keyboard и same-post update для inline action.
 - [ ] Background progress отдельно проверяет monotonic revisions и terminal history.
@@ -678,5 +687,5 @@ documentation manifest/evidence и repository skill синхронизирова
 - [Текущий composer keyboard plugin](composer-keyboards.md)
 - [`mattergram_dialog` porting boundary](dialog-porting.md)
 - [Навигация и списки](dialog-navigation.md)
-- [Progress background job](../examples/dialog_progress.py)
+- [Progress background job](dialog-ui-design.md)
 

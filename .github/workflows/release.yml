@@ -1,0 +1,129 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Verify and build release artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: astral-sh/setup-uv@94527f2e458b27549849d47d273a16bec83a01e9 # v7
+        with:
+          version: '0.10.12'
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: plugins/mattergram-menu/go.mod
+          cache-dependency-path: plugins/mattergram-menu/go.sum
+
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+
+      - name: Install locked Python environment
+        run: uv sync --locked --python 3.14
+
+      - name: Verify tag matches the Python package version
+        shell: bash
+        run: |
+          expected="v$(uv run --locked python -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])')"
+          if [[ "${GITHUB_REF_NAME}" != "${expected}" ]]; then
+            echo "Release tag ${GITHUB_REF_NAME} does not match package version ${expected}." >&2
+            exit 1
+          fi
+
+      - name: Verify source quality
+        run: |
+          uv run --locked ruff check --config pyproject.toml tools src tests contracts examples
+          uv run --locked ruff format --check --config pyproject.toml tools src tests contracts examples
+          uv run --locked mypy
+          uv run --locked python -m tools.generate_documentation --check
+          uv run --locked pytest
+
+      - name: Build and verify Python distributions
+        run: |
+          uv run --locked python -m build
+          uv run --locked twine check --strict dist/*
+          uv run --locked python -m tools.verify_distributions
+
+      - name: Test and build the Mattermost keyboard plugin
+        working-directory: plugins/mattergram-menu
+        run: npm run check
+
+      - name: Write release checksums
+        shell: bash
+        run: sha256sum dist/* build/plugins/*.tar.gz > SHA256SUMS
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-artifacts-${{ github.ref_name }}
+          path: |
+            dist/*
+            build/plugins/*.tar.gz
+            SHA256SUMS
+          if-no-files-found: error
+          retention-days: 14
+
+  publish-pypi:
+    name: Publish Python distributions to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/mattergram/
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: release-artifacts-${{ github.ref_name }}
+          path: release-artifacts
+
+      - name: Publish with PyPI Trusted Publishing
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          packages-dir: release-artifacts/dist
+
+  publish-github:
+    name: Create GitHub release
+    needs: publish-pypi
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: release-artifacts-${{ github.ref_name }}
+          path: release-artifacts
+
+      - name: Publish GitHub release and assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          release_flags=(--verify-tag --generate-notes --title "mattergram ${GITHUB_REF_NAME}")
+          if [[ "${GITHUB_REF_NAME}" =~ (a|b|rc)[0-9]+$ ]]; then
+            release_flags+=(--prerelease)
+          fi
+          gh release create "${GITHUB_REF_NAME}" \
+            release-artifacts/dist/* \
+            release-artifacts/build/plugins/*.tar.gz \
+            release-artifacts/SHA256SUMS \
+            "${release_flags[@]}"

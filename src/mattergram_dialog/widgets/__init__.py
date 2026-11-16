@@ -15,7 +15,7 @@ from .form import (
     TextArea,
     TextInput,
 )
-from .layout import DataBlock, Section
+from .layout import DataBlock, NativeBlocks, Section
 from .message import (
     ActionRow,
     Back,
@@ -64,6 +64,7 @@ __all__ = [
     "CursorPage",
     "CursorPager",
     "DataBlock",
+    "NativeBlocks",
     "DatePicker",
     "DateTimePicker",
     "DynamicFormValue",

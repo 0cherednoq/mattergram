@@ -13,6 +13,7 @@ from mattergram.ui.composer import ComposerKeyboardState
 
 class KeyboardBot:
     def __init__(self, channel_types: dict[str, str]) -> None:
+        self.user_id = "b" * 26
         self.channel_types = channel_types
         self.states: dict[str, ComposerKeyboardState] = {}
         self.writes: list[tuple[str, str]] = []
@@ -31,6 +32,7 @@ class KeyboardBot:
         state = ComposerKeyboardState(
             channel_id=channel_id,
             revision=self.revision,
+            owner_id=self.user_id,
             keyboard=keyboard,
         )
         self.states[channel_id] = state
@@ -41,11 +43,21 @@ class KeyboardBot:
         self.states.pop(channel_id, None)
         self.writes.append(("delete", channel_id))
 
+    async def list_composer_keyboards(self) -> tuple[ComposerKeyboardState, ...]:
+        return tuple(self.states.values())
+
 
 def keyboard() -> ComposerKeyboard:
     return ComposerKeyboard(
         title="Administration",
         rows=((ComposerButton(id="users", text="Users", message="Users"),),),
+    )
+
+
+def compact_keyboard() -> ComposerKeyboard:
+    return ComposerKeyboard(
+        title="Limited",
+        rows=((ComposerButton(id="profile", text="Profile", message="Profile"),),),
     )
 
 
@@ -88,6 +100,57 @@ async def test_keyboard_plugin_rejects_non_direct_target_before_write() -> None:
     with pytest.raises(ValueError, match="direct channels"):
         await plugins.startup()
     assert bot.writes == []
+
+
+@pytest.mark.asyncio
+async def test_keyboard_plugin_reconciles_dynamic_direct_channels_and_restores_them() -> None:
+    bot = KeyboardBot({"direct123": "D", "direct456": "D"})
+    plugin = ComposerKeyboardPlugin(targets=("direct123",), keyboard=keyboard())
+    plugins = plugin_manager(bot, plugin)
+    plugins.setup()
+    await plugins.startup()
+
+    await plugin.install("direct456", keyboard=compact_keyboard())
+    assert bot.states["direct456"].keyboard == compact_keyboard()
+    await plugin.install("direct456", keyboard=compact_keyboard())
+    assert bot.writes.count(("set", "direct456")) == 1
+    await plugin.uninstall("direct456")
+    assert "direct456" not in bot.states
+
+    await plugins.shutdown()
+    assert bot.writes == [
+        ("set", "direct123"),
+        ("set", "direct456"),
+        ("delete", "direct456"),
+        ("delete", "direct123"),
+    ]
+
+
+@pytest.mark.asyncio
+async def test_keyboard_plugin_prunes_only_stale_states_owned_by_current_bot() -> None:
+    bot = KeyboardBot({"direct123": "D", "stale123": "D", "foreign123": "D"})
+    bot.states["stale123"] = ComposerKeyboardState(
+        channel_id="stale123",
+        revision=1,
+        owner_id=bot.user_id,
+        keyboard=compact_keyboard(),
+    )
+    bot.states["foreign123"] = ComposerKeyboardState(
+        channel_id="foreign123",
+        revision=1,
+        owner_id="f" * 26,
+        keyboard=compact_keyboard(),
+    )
+    plugin = ComposerKeyboardPlugin(targets=("direct123",), keyboard=keyboard())
+    plugins = plugin_manager(bot, plugin)
+    plugins.setup()
+    await plugins.startup()
+
+    await plugin.prune_owned(set())
+
+    assert "stale123" not in bot.states
+    assert "foreign123" in bot.states
+    await plugins.shutdown()
 
 
 def test_keyboard_plugin_requires_explicit_platform_capability() -> None:

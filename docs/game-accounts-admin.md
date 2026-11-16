@@ -1,22 +1,21 @@
 # Админка игровых аккаунтов
 
 Управление app-scoped пользователями вынесено в reusable
-`mattergram.contrib.admin_users.AdminUsersPlugin`. Local demo временно делит прежнюю in-memory
-repository через compatibility adapter; accounts, imports, checks и push rules находятся в
+`mattergram.contrib.admin_users.AdminUsersPlugin`. Accounts, imports, checks и push rules находятся в
 `mattergram.contrib.game_accounts_admin`. Composer keyboard только отправляет точный текст
 `Пользователи` и не является зависимостью или источником авторизации users plugin.
 
 Пакет разделён на models, ports, repository, service, import/check orchestration, getters, actions,
-dialog, keyboard и router. [`examples/game_accounts_admin.py`](../examples/game_accounts_admin.py)
-остаётся тонким compatibility re-export на один migration cycle. Каждая глобальная команда создаёт
+dialog, keyboard и router. Единственный запускаемый пример —
+[`examples/game_accounts_admin.py`](../examples/game_accounts_admin.py). Каждая глобальная команда создаёт
 новый bot-post; локальные inline-действия редактируют только post своего экрана. Реальные хранилище,
 чтение файла, checker и доставка уведомлений намеренно передаются снаружи.
 
-Для локальной проверки на owned Mattermost 12.0.2 используйте [`examples/game_accounts_admin_bot.py`](../examples/game_accounts_admin_bot.py). Runner заменяет только `/game-admin` и `/app-users` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
+Для локальной проверки на owned Mattermost 12.0.2 используйте этот же пример. Runner заменяет только `/game-admin` и `/app-users` выбранного fixture, привязывает точного тестового администратора и держит прикладные данные в памяти процесса. Повторяемый `--operator-username <username>` явно добавляет начальных операторов при каждом запуске; локальный deploy использует `reaper`, поэтому его роль не теряется вместе с process-local repository. Его `DemoAccountVerifier` проверяет только UI-flow и не является интеграцией с игровой платформой.
 
 ## Подключить Game Admin
 
-Импортируйте feature из публичного package, а не из compatibility-модуля `examples`:
+Импортируйте feature из публичного package; файл в `examples` является только composition root:
 
 ```python
 from mattergram.contrib.game_accounts_admin import (
@@ -57,7 +56,7 @@ keyboard = build_admin_keyboard()
 await bot.set_composer_keyboard(direct.id, keyboard)
 ```
 
-Mattermost не имеет отдельной поверхности «окно бота»: личный чат с ботом является direct channel между пользователем и bot account. Поэтому keyboard технически хранится по ID этого DM, но виден только в личке конкретного администратора с ботом и не устанавливается в общий team channel. Для нескольких администраторов runner создаёт отдельный DM и устанавливает ту же декларацию в каждый такой канал.
+Mattermost не имеет отдельной поверхности «окно бота»: личный чат с ботом является direct channel между пользователем и bot account. Поэтому keyboard технически хранится по ID этого DM, но виден только в личке конкретного app user с ботом и не устанавливается в общий team channel. `AdminUserOnboardingPlugin` создаёт такой DM при выдаче доступа, отправляет приветствие и ставит клавиатуру роли: administrator получает полное меню `3 / 2 / 2`, operator — шесть игровых разделов `3 / 1 / 2` без кнопки «Пользователи». Пользователь без enabled app-role получает ноль keyboard actions. На каждом startup bridge сверяет owner-aware inventory с repository и удаляет собственные устаревшие меню, поэтому отозванный доступ не оставляет видимую, но нерабочую кнопку после перезапуска.
 
 `build_admin_keyboard()` возвращает обычный `ComposerKeyboard`: каждая кнопка имеет стабильный `id`, видимый `text`, такой же обычный `message` без slash (`Аккаунты`, `Импорт` и так далее) и стиль. `register_admin_panel(...)` регистрирует native `/game-admin` для team channels и отдельный exact-text message-handler для bot DM. Handler вызывает `DialogRuntime.respond(message, state)`: каждое принятое keyboard-сообщение сбрасывает активный stack и создаёт новый bot-post. Поэтому история явно показывает отдельно доставленную пользовательскую команду и отдельно результат её обработки; предыдущий post не является точкой отказа.
 
@@ -90,18 +89,70 @@ async def respond_to_game_admin_keyboard(
 
 Кнопка импорта сначала открывает короткий post-экран с подтверждением. Это ограничение протокола Mattermost: обычное posted-сообщение от composer keyboard не содержит интерактивного `trigger_id`, необходимого для открытия native form; следующий локальный клик уже открывает форму корректно.
 
-Списки реализованы через `PagedTable`, локальный `Filter`, `PagePager` и `PageItemSelect`. Выбор строки раскрывает карточку в том же post, поэтому отдельный экран просмотра не нужен. Формы добавления и редактирования открываются как native forms. Максимальная глубина — два перехода ниже главного окна, `Назад` всегда занимает один клик.
+Список аккаунтов реализован отдельным reusable-компонентом `AccountList` из
+`game_accounts_admin.mattermost_ui`. Компонент хранит filter/sort/page в dialog context конкретного
+actor, а `GameAccountsAdminService.query_accounts(...)` применяет их до формирования payload и
+возвращает не более 10 записей. Данные отображаются настоящей Markdown-таблицей с колонками
+`ID`, `Логин`, `Креды`, `Cookies`, `Страна`; длинные значения ограничены до формирования сообщения.
+Выбор аккаунта в page-local `static_select` не меняет dialog state: callback редактирует тот же post и
+добавляет вложенную карточку сразу под pager/select. Остальные списки пока
+используют `PagedTable`, `Filter`, `PagePager` и `PageItemSelect`. Формы добавления и редактирования
+открываются как native forms. Максимальная глубина — два перехода ниже главного окна, `Назад`
+всегда занимает один клик.
+
+Accounts window использует один внешний `PostContainer(border=True, background="gray",
+accent_color="primary")`. Заголовок, `AccountList`, выбранный `AccountCard` со вложенным `AccountCheck` и
+навигация находятся в его `content`, поэтому Mattermost показывает одну общую рамку и одну accent
+полосу на весь post. Список и навигация остаются borderless, а проверка является вложенным
+`collapsible` внутри выбранного аккаунта, а не отдельной top-level карточкой. Её заголовок не повторяет
+ID аккаунта: принадлежность выражена структурой карточки. Это Blocks-only
+presentation: legacy clients сохраняют читаемый message/attachments fallback.
+
+Карточка реализована отдельным reusable-компонентом `AccountCard` из того же пакета
+`mattermost_ui`. Внешний `collapsible` при выборе раскрыт, а вложенный раздел Cookies изначально
+закрыт. Карточка показывает ID, login, окружение, состояние проверки, количество и домены cookies,
+но не публикует password или действующие cookie values. Вместо password выводится только индикатор
+наличия; для cookies в UI передаются безопасные метаданные `domain` и `name`. Это ограничение
+закреплено в `GameAccountsAdminService.account_card()`, поэтому секреты не пересекают UI boundary и
+не могут случайно попасть в `props`, callback context или логи renderer. Полное раскрытие секретов
+должно оставаться отдельным защищённым flow, а не режимом этой карточки.
+
+Локальные действия карточки разделены по назначению: `Проверить` находится внизу карточки на
+leading edge, а компактная группа `✏️` / `🗑️` — на trailing edge шапки выбранного аккаунта. Обе icon-only кнопки имеют
+native tooltip и полный текстовый label в legacy fallback. Редактирование открывает native
+`FormWindow` и после сохранения возвращает пользователя к тому же Accounts post. Корзина остаётся
+последней, имеет стиль `danger` и открывает отдельную форму подтверждения с обязательным checkbox.
+Перед удалением сервис повторно проверяет роль `admin/operator`; после записи очищается выбранная
+карточка. Во время активной проверки destructive кнопка disabled.
+
+Локальная кнопка `Проверить` использует signed action `account_check` и повторно проверяет права на
+backend. Она ставит отдельный `CheckAccountJob` в общий Game Admin job runtime; `DialogRef` сохраняет
+координаты текущего post, поэтому pending, running и итоговый статус обновляют тот же post через
+`manager.show(ShowMode.EDIT)`. Вложенный `AccountCheck` показывает stage, время начала/завершения, фактические
+current/total и итоговые valid/invalid/errors. Если total ещё неизвестен, интерфейс не показывает
+вымышленный процент.
+
+Repository обязан атомарно отклонять второй активный job с тем же single-flight key
+`actor/account`; process-local adapter реализует этот контракт под lock. Пока проверка активна,
+кнопка повторного запуска disabled, а `AccountCard` добавляет к вложенной проверке отдельное действие отмены. Состояния
+UI — `pending`, `running`, `success`, `failed`, `cancelled`; ошибка выводится понятным текстом без
+exception detail и секретов. После terminal state новый запуск разрешён.
 
 | Сценарий | Клики от persistent keyboard |
 |---|---:|
 | Открыть историю импортов или проверок | 1 |
-| Открыть карточку аккаунта | 2 |
+| Показать карточку под таблицей | 2: открыть список и выбрать аккаунт |
 | Проверить или изменить выбранный аккаунт | 3 |
 | Импортировать JSONL | 3 |
 | Проверить только что импортированные аккаунты | 4 |
 | Добавить пользователя или push-маршрут | 3 |
 
-В списке аккаунтов локальные ряды имеют форму `5 / 6 / 2`: пять фильтров, pager вместе с выбором строки, затем две операции выбранного аккаунта. Глобальный ряд содержит три действия: проверить все, импортировать, назад. При выбранной записи это 16 actions, что заметно ниже лимита 50 actions на post.
+В `AccountList` зарегистрировано 10 локальных actions: три фильтра, один sort select, стабильный pager
+`5` и один account select. Глобальный ряд содержит три действия: проверить все, импортировать,
+назад. Без выбранной записи получается 13 actions, с карточкой — 16, во время активной проверки с
+кнопкой отмены — 17; все варианты ниже лимита 50. Фильтр и сортировка сохраняются при переходе по страницам;
+смена фильтра или сортировки возвращает пользователя на первую страницу. Недоступные pager-кнопки
+остаются на месте и получают `disabled=true`.
 
 ### Пользователи выбранной Mattermost-команды
 
@@ -143,7 +194,12 @@ setup_dialogs(dispatcher, runtime)
 register_admin_panel(dispatcher, runtime, service, command="game-admin")
 ```
 
-Начального администратора нужно создать явно. В runtime нет административного fallback. Сервис не позволяет выключить или понизить последнего активного администратора. Роли `operator` и `viewer` сохранены для прикладной авторизации остального бота; этот административный интерфейс доступен только роли `admin`.
+Начального администратора нужно создать явно. В runtime нет административного fallback. Сервис не позволяет выключить или понизить последнего активного администратора. `admin` управляет membership и ролями. `operator` работает с игровыми аккаунтами, импортом, проверками, историями и push-настройками, но не имеет permissions `AdminUsersPlugin`: раздел «Пользователи» скрыт, ручной текст и `/app-users` получают отказ. `viewer` имеет read-only доступ к списку пользователей в текущей встроенной policy. Все проверки выполняются service-side, независимо от видимости кнопок.
+
+Глобальные `/game-admin` и keyboard-text handlers имеют декларацию
+`flags={"required_roles": ("admin", "operator")}` и защищены core `RBACMiddleware`. Ветка управления
+пользователями дополнительно требует `admin` в service, а `AdminUsersPlugin` использует собственный
+role-aware entry. Общий механизм описан в [Декларативном доступе по ролям](access-control.md).
 
 ## Обязательные адаптеры
 
@@ -155,6 +211,35 @@ register_admin_panel(dispatcher, runtime, service, command="game-admin")
 - `TeamUserDirectory` — без кэша возвращает активных участников ровно одной
   настроенной Mattermost-команды;
 - список разрешённых игр и явно созданный repository.
+
+Для обычной Mattermost-доставки библиотека содержит `MattermostPushDispatcher`:
+
+```python
+from mattergram.contrib.game_accounts_admin import MattermostPushDispatcher
+
+pushes = MattermostPushDispatcher(
+    bot,
+    mentions=("oncall-user",),  # без @
+)
+```
+
+Для channel rule dispatcher добавляет явные `@mention`, отправляет обычный non-silent root post и
+тем самым создаёт стандартное Mattermost notification event. Звук остаётся настройкой Web/Desktop
+клиента получателя и не может быть принудительно включён bot API. Опциональный `MessagePriority`
+добавляет Important/Urgent metadata, но его доступность зависит от server edition/configuration.
+Direct rule сначала создаёт или находит DM через bot account.
+
+Bot может создать alert channel обычным runtime credential, если его Mattermost role имеет
+`create_public_channel` или `create_private_channel`:
+
+```python
+channel = await bot.create_channel(
+    team_id=TEAM_ID,
+    name="game-alerts",
+    display_name="Game alerts",
+    purpose="Автоматические события игровых аккаунтов",
+)
+```
 
 Runtime bot не должен получать system-admin роль ради user picker. Во время
 provisioning setup-учётка с `add_user_to_team` добавляет bot account в нужную

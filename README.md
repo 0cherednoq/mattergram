@@ -37,7 +37,7 @@ Runtime, публичный API и воспроизводимая граница
 
 Навигация внутри одного редактируемого поста, path-aware `Back` и несколько независимых таблиц: [dialog-navigation.md](docs/dialog-navigation.md).
 
-Декларативные кнопки, action-table, динамические defaults форм и обновление прогресса фоновой задачи в том же посте: [dialog-ui-design.md](docs/dialog-ui-design.md), пример — [dialog_progress.py](examples/dialog_progress.py).
+Декларативные кнопки, action-table, динамические defaults форм и обновление прогресса фоновой задачи в том же посте: [dialog-ui-design.md](docs/dialog-ui-design.md).
 
 Постоянные Telegram-подобные клавиатуры над composer для Web/Desktop через server-backed plugin:
 [composer-keyboards.md](docs/composer-keyboards.md).
@@ -54,9 +54,16 @@ optional keyboard adapter: [application-plugins.md](docs/application-plugins.md)
 [migration-aiogram.md](docs/migration-aiogram.md), recovery — в
 [troubleshooting.md](docs/troubleshooting.md).
 
-Полный прикладной пример одной многоэкранной карточки с двумя независимыми таблицами,
-фильтрами, пагинацией, native forms и корректным WS → REST live-update:
-[showcase.md](docs/showcase.md), исходник — [examples/showcase_bot.py](examples/showcase_bot.py).
+Полный прикладной пример сохранён один: [Game Admin](examples/game_accounts_admin.py). Остальные
+возможности библиотеки описаны отдельными руководствами и проверяются модульными и портированными
+контрактными тестами без дублирования запускаемых examples.
+
+## Универсальный skill для coding agents
+
+Skill проектирования Mattermost-ботов находится в
+[`.agents/skills/mattergram-bot-ux`](.agents/skills/mattergram-bot-ux/SKILL.md). Это переносимый
+Agent Skill без привязки к Codex: каталог входит в source distribution и может использоваться
+совместимыми coding agents либо устанавливаться как обычный skill из Git-репозитория.
 
 Справочные артефакты генерируются из текущего кода и documentation manifest:
 [public API](docs/reference/api.md), [machine-readable exports](docs/reference/public-api.json),
@@ -85,6 +92,9 @@ Low-level generated operations и их границы: [native-api.md](docs/nati
 [high-level-api.md](docs/high-level-api.md).
 
 Пример бота и границы routing/FSM: [native-routing.md](docs/native-routing.md), REST и stand: [native-client.md](docs/native-client.md), команды разработки: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Декларативная авторизация handlers через `required_roles`, единый resolver и middleware:
+[access-control.md](docs/access-control.md).
 
 ## Запуск реализованных инструментов
 

@@ -22,8 +22,7 @@ own_dialogs=True)`. Bot, Dispatcher и manager должны работать в 
 автоматически supported. Уже provisioned `/request` с настоящим issued command token
 можно подключить по [HTTP guide](native-http.md).
 
-`examples/form_bot.py` показывает полное приложение с валидацией; оно type-checked,
-но отдельный запуск именно этого файла не заявлен. Real harness выполняет тот же
+Form runtime и валидация проверяются contract tests. Real harness выполняет тот же
 runtime путь и проверяет actor WS/native API ответы.
 
 ```python

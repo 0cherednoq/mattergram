@@ -16,8 +16,7 @@ Bot token и command token — отдельные credentials. SDK на этом
 
 Задайте `MM_URL`, `MM_BOT_TOKEN`, `MM_TEAM_ID`, `MM_SLASH_TOKEN` и
 `MM_HTTP_TRUSTED_PEERS` — список фактических IP/CIDR отправителя через запятую.
-Запустите `uv run --locked python examples/http_bot.py`. Пример проходит strict mypy;
-его transport/handler путь отдельно исполнен реальным stand harness.
+Transport/handler путь проходит strict mypy и отдельно исполнен реальным stand harness.
 
 `SlashBinding(team_id, "request", SecretStr(token), method="POST")` проверяет
 team, trigger, HTTP method и body token. Если есть `Authorization: Token …`,

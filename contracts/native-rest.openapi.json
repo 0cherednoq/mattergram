@@ -42,6 +42,16 @@
     "/api/v4/posts": {
       "post": {
         "operationId": "CreatePost",
+        "parameters": [
+          {
+            "name": "silent",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -63,6 +73,23 @@
                   "root_id": {
                     "type": "string",
                     "minLength": 1
+                  },
+                  "file_ids": {
+                    "type": "array",
+                    "maxItems": 5,
+                    "items": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "priority": {
+                        "$ref": "#/components/schemas/MessagePriority"
+                      }
+                    },
+                    "additionalProperties": true
                   },
                   "props": {
                     "type": "object",
@@ -174,6 +201,30 @@
       }
     },
     "schemas": {
+      "MessagePriority": {
+        "type": "object",
+        "required": [
+          "priority",
+          "requested_ack",
+          "persistent_notifications"
+        ],
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": [
+              "important",
+              "urgent"
+            ]
+          },
+          "requested_ack": {
+            "type": "boolean"
+          },
+          "persistent_notifications": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "User": {
         "type": "object",
         "required": [

@@ -196,7 +196,7 @@ async def verify() -> dict[str, Any]:
             }
             process = await asyncio.create_subprocess_exec(
                 sys.executable,
-                str(ROOT / "examples/showcase_bot.py"),
+                str(ROOT / "tests/fixtures/showcase_app.py"),
                 cwd=ROOT,
                 env=environment,
                 stdout=asyncio.subprocess.PIPE,

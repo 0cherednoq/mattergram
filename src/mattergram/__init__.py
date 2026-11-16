@@ -4,6 +4,7 @@ from importlib.metadata import version
 
 from .bot import Bot
 from .dispatcher.dispatcher import Dispatcher
+from .dispatcher.flags import flags
 from .dispatcher.router import Router
 from .native import NativeAPI
 from .ui.composer import ComposerButton, ComposerKeyboard, ComposerKeyboardState
@@ -23,4 +24,5 @@ __all__ = [
     "NativeAPI",
     "Router",
     "__version__",
+    "flags",
 ]

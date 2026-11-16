@@ -60,16 +60,29 @@ rebuilt from sdist. It verifies package identity, import location and typing res
 then runs 44 copied model/routing/FSM/local HTTP+WS tests against the installed
 artifact without editable mode. It also asserts the base install has no Redis dependency, installs the optional extra and runs configuration checks. With an explicit real Redis profile, all 13 native Redis cases must execute without skips for both installed artifacts. Real Mattermost integration is checked separately.
 
-CI executes the same commands and retains failure reports. It has no publishing
-permission. Repository hosting, required checks and environments are not configured
+CI executes the same commands and retains failure reports. The ordinary CI workflow has no
+publishing permission. Repository hosting, required checks and environments are not configured
 by the YAML file alone. The real Mattermost profile is documented in
 `docs/native-client.md` and `docs/native-routing.md` and has its own CI job, including
-SDK-owned WS routing. The release workflow remains pending; an absent stand is not
-a passing integration. No external GitHub run has been observed yet.
+SDK-owned WS routing. An absent stand is not a passing integration.
 
-Before publishing, resolve E7 schema licensing, validate package names again, set up
-the repository and Trusted Publishers, then verify TestPyPI and PyPI installs of the
-same exact artifacts. No release command is provided until that path is implemented.
+`.github/workflows/release.yml` runs only for a `v<project.version>` tag. It repeats the mandatory
+quality checks, builds the Python wheel/sdist and Mattermost keyboard plugin once, verifies installed
+distributions, writes checksums, publishes the Python artifacts through the protected `pypi`
+environment with OIDC, and then creates a GitHub prerelease/release containing all artifacts. The
+PyPI Pending Publisher project name must exactly match `project.name` from `pyproject.toml`; repository,
+workflow filename and environment must also match before pushing a release tag.
+
+Create a release only from a clean, reviewed main branch:
+
+```sh
+git tag -a v0.1.0a1 -m "mattergram 0.1.0a1"
+git push origin v0.1.0a1
+```
+
+Never rebuild or reuse the same version after PyPI accepts it. If publication fails before upload,
+fix the release configuration and rerun the same tag workflow; if PyPI accepted the files, increment
+the version for every subsequent release attempt.
 
 The Redis/Memory profiles and transaction/lease boundaries are documented in
 [native-redis.md](docs/native-redis.md). Start the explicitly owned compose service

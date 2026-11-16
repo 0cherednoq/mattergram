@@ -1,8 +1,8 @@
 # Многоэкранная карточка Mattermost с таблицами, формами и live-обновлениями
 
 Это практическое руководство для разработчика, который хочет использовать пост Mattermost как
-небольшой интерактивный интерфейс. Готовый пример находится в
-[`examples/showcase_bot.py`](../examples/showcase_bot.py). Он показывает одну карточку с двумя
+небольшой интерактивный интерфейс. Проверяемая fixture находится в
+[`tests/fixtures/showcase_app.py`](../tests/fixtures/showcase_app.py). Она показывает одну карточку с двумя
 таблицами, независимой пагинацией и фильтрами, несколькими группами действий, отдельными экранами,
 тремя native forms и обновлением после события WebSocket.
 
@@ -60,7 +60,7 @@ python -c "import secrets; print(secrets.token_hex(32))"
 
 ```sh
 uv sync --locked
-uv run --locked python examples/showcase_bot.py
+uv run --locked python tests/fixtures/showcase_app.py
 ```
 
 В Mattermost выполните `/showcase`. Ожидаемый результат: отдельный пост с двумя таблицами и тремя
@@ -193,8 +193,8 @@ Offline-тесты проверяют структуру карточки, signe
 
 ```sh
 uv run --locked pytest -q tests/unit/test_showcase_example.py
-uv run --locked ruff check examples/showcase_bot.py tests/unit/test_showcase_example.py
-uv run --locked mypy examples/showcase_bot.py
+uv run --locked ruff check tests/fixtures/showcase_app.py tests/unit/test_showcase_example.py
+uv run --locked mypy tests/fixtures/showcase_app.py
 ```
 
 Успешный результат unit suite: `4 passed`. Он доказывает rendering/state contracts, но не доказывает

@@ -9,6 +9,7 @@ from datetime import UTC, datetime
 from uuid import uuid4
 
 from .directory import TeamUserDirectory
+from .events import AdminUserChange, AdminUserChangeSink, NullAdminUserChangeSink
 from .models import (
     ASSIGN_ROLES,
     MANAGE_USERS,
@@ -45,6 +46,8 @@ class AdminUsersService:
         roles: Sequence[RoleSpec],
         initial_admin_ids: Sequence[str],
         audit_sink: AuditSink | None = None,
+        change_sink: AdminUserChangeSink | None = None,
+        default_role: str | None = None,
     ) -> None:
         if not permissions or len({permission.id for permission in permissions}) != len(permissions):
             raise ValueError("Permissions must be a nonempty sequence with unique IDs")
@@ -72,8 +75,18 @@ class AdminUsersService:
         self.roles = tuple(roles)
         self.initial_admin_ids = tuple(initial_admin_ids)
         self.audit_sink = audit_sink if audit_sink is not None else _NullAuditSink()
+        self.change_sink = change_sink if change_sink is not None else NullAdminUserChangeSink()
         self._roles = {role.id: role for role in roles}
         self._protected_role = protected[0]
+        managed_default = default_role or next(
+            (role.id for role in roles if not role.protects_last_member),
+            None,
+        )
+        if managed_default is None or managed_default not in self._roles:
+            raise ValueError("A non-protected default application role is required")
+        if self._roles[managed_default].protects_last_member:
+            raise ValueError("The default application role cannot be protected")
+        self.default_role = managed_default
         self._write_lock = asyncio.Lock()
 
     async def bootstrap(self) -> None:
@@ -110,6 +123,14 @@ class AdminUsersService:
         role = self._roles.get(actor.role)
         return frozenset() if role is None else role.permissions
 
+    async def resolve_role(self, actor_id: str) -> str | None:
+        """Resolve the enabled application role for core RBAC middleware."""
+
+        actor = await self.repository.get_by_mattermost_user_id(actor_id)
+        if actor is None or not actor.enabled or actor.role not in self._roles:
+            return None
+        return actor.role
+
     async def require_permission(self, actor_id: str, permission: str) -> AdminUser:
         if permission not in {item.id for item in self.permissions}:
             raise ValueError(f"Unknown permission {permission!r}")
@@ -144,7 +165,6 @@ class AdminUsersService:
 
     async def list_available_team_users(self, actor_id: str) -> tuple[TeamUser, ...]:
         await self.require_permission(actor_id, MANAGE_USERS)
-        await self.require_permission(actor_id, ASSIGN_ROLES)
         assigned = {user.mattermost_user_id for user in await self.repository.list_users() if user.enabled}
         members = await self._directory_members()
         return tuple(
@@ -163,7 +183,9 @@ class AdminUsersService:
         enabled: bool,
     ) -> AdminUser:
         actor = await self.require_permission(actor_id, MANAGE_USERS)
-        await self.require_permission(actor_id, ASSIGN_ROLES)
+        permissions = await self.permissions_for(actor_id)
+        if ASSIGN_ROLES not in permissions and role != self.default_role:
+            raise PermissionError("Application permission admin_users.assign_roles is required")
         role_spec = self._validate_write(mattermost_user_id, role, enabled)
         members = await self._directory_members()
         selected = members.get(mattermost_user_id)
@@ -183,8 +205,15 @@ class AdminUsersService:
                 enabled=enabled,
             )
             await self.repository.save_user(user)
-            await self._audit(
-                actor.mattermost_user_id, "admin_users.reactivate" if current else "admin_users.add", user
+            action = "admin_users.reactivate" if current else "admin_users.add"
+            await self._audit(actor.mattermost_user_id, action, user)
+            await self.change_sink.write(
+                AdminUserChange(
+                    actor_id=actor.mattermost_user_id,
+                    action=action,
+                    previous=current,
+                    current=user,
+                )
             )
             return user
 
@@ -223,6 +252,14 @@ class AdminUsersService:
             )
             await self.repository.save_user(updated)
             await self._audit(actor.mattermost_user_id, "admin_users.update", updated)
+            await self.change_sink.write(
+                AdminUserChange(
+                    actor_id=actor.mattermost_user_id,
+                    action="admin_users.update",
+                    previous=current,
+                    current=updated,
+                )
+            )
             return updated
 
     def role(self, role_id: str) -> RoleSpec:

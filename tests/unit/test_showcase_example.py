@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from examples.showcase_bot import (
+from mattergram.http import CallbackSigner
+from mattergram.ui import UIProfile
+from mattergram.ui.actions import ActionContext
+from mattergram.ui.forms import Checkbox, DatePicker, MultiSelect, Radio, Select, TextArea, TextInput
+from tests.fixtures.showcase_app import (
     CardAction,
     DashboardAccessError,
     DashboardStore,
@@ -14,10 +18,6 @@ from examples.showcase_bot import (
     preferences_form,
     render_card,
 )
-from mattergram.http import CallbackSigner
-from mattergram.ui import UIProfile
-from mattergram.ui.actions import ActionContext
-from mattergram.ui.forms import Checkbox, DatePicker, MultiSelect, Radio, Select, TextArea, TextInput
 
 
 def test_card_contains_two_tables_and_three_independent_control_groups() -> None:

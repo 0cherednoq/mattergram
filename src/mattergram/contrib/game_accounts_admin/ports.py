@@ -22,3 +22,7 @@ class PushDispatcher(Protocol):
 
 class TeamUserDirectory(Protocol):
     async def list_users(self) -> Sequence[TeamUser]: ...
+
+
+class CredentialRevealPolicy(Protocol):
+    async def allows(self, actor_id: str, channel_id: str) -> bool: ...

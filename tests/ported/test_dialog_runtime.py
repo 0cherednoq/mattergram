@@ -7,8 +7,6 @@ from typing import Any
 import pytest
 from magic_filter import F
 
-from examples.dialog_navigation_bot import Demo as DialogDemo
-from examples.dialog_navigation_bot import DemoData, build_dialog
 from mattergram.fsm.state import State, StatesGroup
 from mattergram.http.auth import CallbackSigner
 from mattergram.ui.actions import ActionContext
@@ -67,6 +65,8 @@ from mattergram_dialog.rendering import (
 from mattergram_dialog.widgets import Case, Multi, NativeField, Or
 from mattergram_dialog.widgets.form import DateTimePicker
 from mattergram_dialog.widgets.form import TextInput as DialogTextInput
+from tests.fixtures.dialog_navigation_app import Demo as DialogDemo
+from tests.fixtures.dialog_navigation_app import DemoData, build_dialog
 
 
 class Main(StatesGroup):
@@ -812,6 +812,46 @@ def test_native_action_table_renders_text_cells_and_row_buttons() -> None:
 
     with pytest.raises(ValueError, match="require a supported Mattermost Blocks profile"):
         OpenFormActions("https://app.test/callback", context)((group,))
+
+
+def test_borderless_control_group_renders_without_accent() -> None:
+    control = PostControl(
+        "addUser",
+        "Добавить пользователя",
+        intent_id="intent",
+        source_state=Branch.orders.state,
+    )
+    context = ActionContext(
+        signer=CallbackSigner(
+            instance_id="https://instance.test",
+            bot_id="bot",
+            keys={"key": b"x" * 32},
+            active_key_id="key",
+        ),
+        channel_id="channel",
+        user_id="user",
+    )
+    profile = UIProfile(
+        "12.0.2",
+        client="test",
+        client_features=frozenset({"blocks"}),
+        client_evidence="unit test",
+        mm_blocks_enabled=True,
+    )
+    bound = OpenFormActions(
+        "https://app.test/callback",
+        context,
+        ui_profile=profile,
+    )((PostControlGroup((control,), border=False),))
+    props = compile_post_ui(
+        blocks=bound.blocks,
+        profile=bound.profile,
+        context=bound.context,
+    )
+
+    container = props["mm_blocks"][0]
+    assert container["border"] is False
+    assert "accent_color" not in container
 
 
 @pytest.mark.parametrize("storage", ["memory_storage"], indirect=True)

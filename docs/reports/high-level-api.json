@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
-  "task": "E7-02",
-  "status": "complete",
-  "checked_at": "2026-11-12",
-  "scope": "Typed high-level reads/writes, direct channels, message edit/delete shortcuts and streaming multipart document upload; full generated operationId coverage remains E7-03.",
+  "task": "E7-02 + E7-04",
+  "status": "contract-verified; E7-04 live matrix pending",
+  "checked_at": "2026-11-16",
+  "scope": "Typed high-level reads/writes, direct channels, message edit/delete shortcuts, priority and silent post delivery, existing file IDs, and one-post multipart upload of one to five documents.",
   "runtime_contract": {
     "methods": [
       "Bot.get_user",
@@ -12,12 +12,15 @@
       "Bot.edit_message_text",
       "Bot.delete_message",
       "Bot.send_document",
+      "Bot.send_documents",
+      "Bot.send_message(priority, silent, file_ids)",
       "Message.edit_text",
       "Message.delete"
     ],
     "input_files": "Reusable BufferedInputFile and FSInputFile with bounded chunks, explicit/guessed MIME type and one fresh owned handle per filesystem read.",
     "ownership": "FSInputFile closes its handle on completion/cancellation; caller retains ownership of the path and file. BufferedInputFile.from_file is eager.",
-    "writes": "No automatic retry. Malformed or mismatched successful writes become RequestOutcomeUnknown; an upload confirmed before an unconfirmed post can remain unattached.",
+    "post_delivery": "MessagePriority maps only to metadata.priority; silent maps only to the query; file_ids remain ordered body data. Root-only priority and invalid flag combinations fail before the network.",
+    "writes": "No automatic retry. Malformed or mismatched successful writes become RequestOutcomeUnknown; an upload confirmed before an unconfirmed post reports every potentially unattached file ID.",
     "generated_boundary": "Facade and multipart transport are maintained manually; the E7-01 generated registry is unchanged."
   },
   "provenance": {
@@ -37,9 +40,12 @@
     "upload": "35 bytes streamed in 7-byte chunks and downloaded with the ordinary bot credential; exact bytes matched",
     "cleanup": "created posts soft-deleted; direct-channel creation is idempotent",
     "report": "build/reports/high-level-api-stand.json",
-    "report_sha256": "9bd4c2529a4b444b5ad82f11a38fa85b6ff74be828b87a7cc8acdae8027c8c61"
+    "report_sha256": "9bd4c2529a4b444b5ad82f11a38fa85b6ff74be828b87a7cc8acdae8027c8c61",
+    "e7_04_result": "not run: Docker Desktop Linux engine was unavailable on 2026-11-16",
+    "e7_04_required_matrix": "Mattermost 11.1 baseline and current 12.x priority/silent/one-to-five-file scenarios with an ordinary bot token"
   },
   "tests": {
+    "current_contract": "Windows current interpreter: 547 passed, 23 real-Redis profile skips, 322 subtests; Ruff check/format, strict mypy for 231 source files, authored REST JSON parsing, and generated documentation drift passed.",
     "windows_python": [
       "3.11.15",
       "3.13.12",
@@ -65,10 +71,12 @@
     "published": false
   },
   "source_hashes": {
-    "src/mattergram/bot.py": "79328eaae9628a766e4e6ba21b08ec7fc3fe0c10f68c33403dcccf34d0bd3ac9",
-    "src/mattergram/_http_client.py": "9d628e7f82f6babb4bd0f6a66e61dd6f63162dfcd3b548ffa396acaa984e01ba",
+    "src/mattergram/bot.py": "f98f417bc29bab24c7c5cb875360d186de2078a9012aa375e3d8d7ec19c1233f",
+    "src/mattergram/_http_client.py": "2accdb9340e074b8f8536ad61332d49c60d39e6e38ed927e7b6183f25b57938c",
     "src/mattergram/types/input_file.py": "2bb697a1af3953168e884afee8afd4ecb504c8b97abbe6613c9843750d6bd5ec",
-    "src/mattergram/types/base.py": "2b7b1571ae8680eb9c37546daad1c679eadb31714172f30d8144f4a64707ee34",
-    "contracts/minimal_api.pyi": "6ff9d831eb4064cf6c0c9207087a738023d6f1dc5197e23a1a63709bbca238dd"
+    "src/mattergram/types/message_priority.py": "567b8f67612f310239290565443a54dd677e8e609f912f95f2db38210f593438",
+    "src/mattergram/types/base.py": "f18b83cdb4f8663e3671312676a4b89d4f01bc96b7b384888c21bcbecbbec0ca",
+    "contracts/minimal_api.pyi": "4e05114e5bb474434e79702737b25122a594d1926cb20adaae63f49f31d96f8b",
+    "contracts/native-rest.openapi.json": "f32b23314374282122220275f1c61dba1af399afd4a24e6b8a77ebf95c2701e4"
   }
 }

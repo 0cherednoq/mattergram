@@ -40,12 +40,16 @@ async with Bot(token=BOT_TOKEN, base_url="https://chat.example.com") as bot:
 
 ```python
 current = await bot.get_composer_keyboard(CHANNEL_ID)
+owned = await bot.list_composer_keyboards()
 await bot.delete_composer_keyboard(CHANNEL_ID)
 ```
 
 Set полностью заменяет клавиатуру канала и увеличивает revision. Plugin публикует channel-scoped
 WebSocket event, поэтому открытые Web/Desktop клиенты перечитывают состояние без reload. Нажатие
 создаёт post от actor session — bot token и admin token никогда не попадают в web bundle.
+Начиная с plugin 0.2.2 каждое состояние содержит `owner_id`. Bot account получает через list API
+только созданные им клавиатуры; system administrator видит весь inventory. Это даёт приложению
+возможность сверять persistent UI с актуальным access repository после перезапуска.
 
 ## Собрать bundle
 
@@ -55,7 +59,7 @@ WebSocket event, поэтому открытые Web/Desktop клиенты пе
 cd plugins/mattergram-menu
 npm test
 npm run build
-Get-FileHash ..\..\build\plugins\mattergram-menu-0.2.0.tar.gz -Algorithm SHA256
+Get-FileHash ..\..\build\plugins\mattergram-menu-0.2.2.tar.gz -Algorithm SHA256
 ```
 
 Архив universal для Linux `amd64`/`arm64`. Сначала проверьте его на staging с той же версией
@@ -72,7 +76,7 @@ Plugin устанавливается на весь server/cluster. Нужен s
 4. Установите и включите plugin:
 
 ```bash
-mmctl plugin add mattergram-menu-0.2.0.tar.gz --force
+mmctl plugin add mattergram-menu-0.2.2.tar.gz --force
 mmctl plugin enable com.mattergram.menu
 mmctl plugin list
 ```
@@ -90,8 +94,8 @@ mmctl plugin list
 gpg --local-user YOUR_KEY_ID \
   --personal-digest-preferences SHA256 \
   --detach-sign \
-  --output build/plugins/mattergram-menu-0.2.0.tar.gz.sig \
-  build/plugins/mattergram-menu-0.2.0.tar.gz
+  --output build/plugins/mattergram-menu-0.2.2.tar.gz.sig \
+  build/plugins/mattergram-menu-0.2.2.tar.gz
 
 gpg --armor --export YOUR_KEY_ID \
   > build/plugins/mattergram-menu-public.asc
@@ -113,7 +117,7 @@ Mattermost image как prepackaged plugin. Сначала выполните bu
 docker build \
   -f plugins/mattergram-menu/Dockerfile.mattermost \
   --build-arg MATTERMOST_IMAGE=mattermost/mattermost-team-edition:12.0.2 \
-  -t registry.example.com/mattermost-with-mattergram-menu:12.0.2-0.2.0 \
+  -t registry.example.com/mattermost-with-mattergram-menu:12.0.2-0.2.2 \
   .
 ```
 
@@ -128,7 +132,7 @@ image; private key — никогда.
 
 ## Проверить после deploy
 
-1. `mmctl plugin list` показывает `com.mattergram.menu` версии `0.2.0` как enabled.
+1. `mmctl plugin list` показывает `com.mattergram.menu` версии `0.2.2` как enabled.
 2. Bot account состоит в тестовом канале.
 3. Вызовите `set_composer_keyboard` и затем `get_composer_keyboard`; revision равен 1 или больше.
 4. Откройте канал в чистой Web/Desktop session: rows видны над composer.
@@ -145,6 +149,12 @@ image; private key — никогда.
 загрузите предыдущий проверенный bundle и снова включите plugin. Plugin KV сохраняется при
 disable/remove, поэтому channel keyboards переживают reinstall; явное удаление делайте через
 `delete_composer_keyboard` до uninstall, если состояние сохранять не нужно.
+
+Состояния, созданные версией 0.2.0, не имеют `owner_id`, поэтому их нельзя безопасно приписать
+конкретному bot account. При первом переходе на 0.2.2 system administrator должен один раз сверить
+`GET /plugins/com.mattergram.menu/api/v1/keyboards` с access repository и удалить устаревшие
+channel states. System admin может выполнить DELETE без вступления в чужой DM; обычному bot
+account по-прежнему требуется membership. После миграции owner-aware reconcile выполняется ботом.
 
 Если UI исчез, проверьте по порядку: plugin enabled, server executable стартовал, user состоит в
 канале, GET `/plugins/com.mattergram.menu/api/v1/channels/<id>/keyboard` возвращает 200, web bundle

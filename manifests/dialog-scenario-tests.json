@@ -31,7 +31,7 @@
     "path": "src/mattergram_dialog/runtime.py",
     "sha256": "a8b8f54e1db607e44f58c89b6c1b68c32a2b520ad6f1c4a06fd3520340e42258",
     "binding_path": "src/mattergram_dialog/bindings.py",
-    "binding_sha256": "1ac61d3309fd6612acc0220b01e860cef8993f56f937b283ea5665d009a582c6"
+    "binding_sha256": "6519015b6753e0da5b3009bbe8db699e59f1803b5bc1f4d6c1ba149b7bbe951a"
   },
   "live_profile": {
     "server": "owned Mattermost 11.1.0",

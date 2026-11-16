@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/mattermost/mattermost/server/public/model"
@@ -18,8 +19,9 @@ const (
 )
 
 var (
-	channelPath = regexp.MustCompile(`^/api/v1/channels/([A-Za-z0-9]+)/keyboard$`)
-	buttonID    = regexp.MustCompile(`^[A-Za-z0-9_-]{1,64}$`)
+	channelPath   = regexp.MustCompile(`^/api/v1/channels/([A-Za-z0-9]+)/keyboard$`)
+	keyboardsPath = regexp.MustCompile(`^/api/v1/keyboards$`)
+	buttonID      = regexp.MustCompile(`^[A-Za-z0-9_-]{1,64}$`)
 )
 
 type Plugin struct {
@@ -43,6 +45,7 @@ type composerKeyboard struct {
 type keyboardState struct {
 	ChannelID string           `json:"channel_id"`
 	Revision  int64            `json:"revision"`
+	OwnerID   string           `json:"owner_id,omitempty"`
 	Keyboard  composerKeyboard `json:"keyboard"`
 }
 
@@ -104,20 +107,37 @@ func validateKeyboard(value *composerKeyboard) error {
 func (p *Plugin) ServeHTTP(_ *plugin.Context, w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "no-store")
-	match := channelPath.FindStringSubmatch(r.URL.Path)
-	if match == nil {
-		writeError(w, http.StatusNotFound, "route_not_found", "Route not found")
-		return
-	}
 	userID := r.Header.Get("Mattermost-User-ID")
 	if userID == "" {
 		writeError(w, http.StatusUnauthorized, "authentication_required", "Authentication required")
 		return
 	}
+	if keyboardsPath.MatchString(r.URL.Path) {
+		if r.Method != http.MethodGet {
+			w.Header().Set("Allow", "GET")
+			writeError(w, http.StatusMethodNotAllowed, "method_not_allowed", "Method not allowed")
+			return
+		}
+		if !p.canManage(userID) {
+			writeError(w, http.StatusForbidden, "keyboard_manager_required", "Bot or system administrator required")
+			return
+		}
+		p.listKeyboards(w, userID)
+		return
+	}
+	match := channelPath.FindStringSubmatch(r.URL.Path)
+	if match == nil {
+		writeError(w, http.StatusNotFound, "route_not_found", "Route not found")
+		return
+	}
 	channelID := match[1]
 	if _, appErr := p.API.GetChannelMember(channelID, userID); appErr != nil {
-		writeError(w, http.StatusForbidden, "channel_membership_required", "Channel membership required")
-		return
+		managingAsSystemAdmin := (r.Method == http.MethodPut || r.Method == http.MethodDelete) &&
+			p.isSystemAdmin(userID)
+		if !managingAsSystemAdmin {
+			writeError(w, http.StatusForbidden, "channel_membership_required", "Channel membership required")
+			return
+		}
 	}
 
 	switch r.Method {
@@ -128,7 +148,7 @@ func (p *Plugin) ServeHTTP(_ *plugin.Context, w http.ResponseWriter, r *http.Req
 			writeError(w, http.StatusForbidden, "keyboard_manager_required", "Bot or system administrator required")
 			return
 		}
-		p.putKeyboard(w, r, channelID)
+		p.putKeyboard(w, r, channelID, userID)
 	case http.MethodDelete:
 		if !p.canManage(userID) {
 			writeError(w, http.StatusForbidden, "keyboard_manager_required", "Bot or system administrator required")
@@ -147,6 +167,11 @@ func (p *Plugin) canManage(userID string) bool {
 		return false
 	}
 	return user.IsBot || strings.Contains(" "+user.Roles+" ", " system_admin ")
+}
+
+func (p *Plugin) isSystemAdmin(userID string) bool {
+	user, appErr := p.API.GetUser(userID)
+	return appErr == nil && strings.Contains(" "+user.Roles+" ", " system_admin ")
 }
 
 func (p *Plugin) getKeyboard(w http.ResponseWriter, channelID string) {
@@ -180,7 +205,7 @@ func decodeKeyboard(r *http.Request) (composerKeyboard, error) {
 	return keyboard, validateKeyboard(&keyboard)
 }
 
-func (p *Plugin) putKeyboard(w http.ResponseWriter, r *http.Request, channelID string) {
+func (p *Plugin) putKeyboard(w http.ResponseWriter, r *http.Request, channelID string, ownerID string) {
 	keyboard, err := decodeKeyboard(r)
 	if err != nil {
 		writeError(w, http.StatusBadRequest, "invalid_keyboard", err.Error())
@@ -202,7 +227,7 @@ func (p *Plugin) putKeyboard(w http.ResponseWriter, r *http.Request, channelID s
 			}
 			revision = current.Revision + 1
 		}
-		state := keyboardState{ChannelID: channelID, Revision: revision, Keyboard: keyboard}
+		state := keyboardState{ChannelID: channelID, Revision: revision, OwnerID: ownerID, Keyboard: keyboard}
 		next, marshalErr := json.Marshal(state)
 		if marshalErr != nil {
 			writeError(w, http.StatusInternalServerError, "keyboard_encode_failed", "Keyboard encoding failed")
@@ -220,6 +245,47 @@ func (p *Plugin) putKeyboard(w http.ResponseWriter, r *http.Request, channelID s
 		}
 	}
 	writeError(w, http.StatusConflict, "keyboard_write_conflict", "Keyboard changed concurrently; retry after reading it")
+}
+
+func (p *Plugin) listKeyboards(w http.ResponseWriter, userID string) {
+	const pageSize = 100
+	states := make([]keyboardState, 0)
+	user, appErr := p.API.GetUser(userID)
+	if appErr != nil {
+		writeError(w, http.StatusInternalServerError, "keyboard_owner_read_failed", "Keyboard owner lookup failed")
+		return
+	}
+	allOwners := strings.Contains(" "+user.Roles+" ", " system_admin ")
+	for page := 0; ; page++ {
+		keys, listErr := p.API.KVList(page, pageSize)
+		if listErr != nil {
+			writeError(w, http.StatusInternalServerError, "keyboard_list_failed", "Keyboard list failed")
+			return
+		}
+		for _, key := range keys {
+			if !strings.HasPrefix(key, "keyboard:") {
+				continue
+			}
+			raw, readErr := p.API.KVGet(key)
+			if readErr != nil {
+				writeError(w, http.StatusInternalServerError, "keyboard_read_failed", "Keyboard read failed")
+				return
+			}
+			var state keyboardState
+			if raw == nil || json.Unmarshal(raw, &state) != nil {
+				writeError(w, http.StatusInternalServerError, "keyboard_state_invalid", "Stored keyboard state is invalid")
+				return
+			}
+			if allOwners || state.OwnerID == userID {
+				states = append(states, state)
+			}
+		}
+		if len(keys) < pageSize {
+			break
+		}
+	}
+	sort.Slice(states, func(i, j int) bool { return states[i].ChannelID < states[j].ChannelID })
+	writeJSON(w, http.StatusOK, map[string]any{"keyboards": states})
 }
 
 func (p *Plugin) deleteKeyboard(w http.ResponseWriter, channelID string) {

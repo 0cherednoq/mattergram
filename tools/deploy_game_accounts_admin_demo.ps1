@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [int]$CallbackPort = 18774,
+    [string]$OperatorUsername = "reaper",
     [switch]$SkipBrowser
 )
 
@@ -13,16 +14,21 @@ $StdoutPath = Join-Path $RepoRoot "build/game-accounts-admin-demo.stdout.log"
 $StderrPath = Join-Path $RepoRoot "build/game-accounts-admin-demo.stderr.log"
 $ReportDir = Join-Path $RepoRoot "build/reports"
 $ReportPath = Join-Path $ReportDir "game-accounts-admin-deploy.json"
-$PluginArchive = Join-Path $RepoRoot "build/plugins/mattergram-menu-0.2.0.tar.gz"
+$PluginArchive = Join-Path $RepoRoot "build/plugins/mattergram-menu-0.2.2.tar.gz"
 $OverviewMessage = -join @(
     [char]0x041E, [char]0x0431, [char]0x0437, [char]0x043E, [char]0x0440
+)
+$UsersMessage = -join @(
+    [char]0x041F, [char]0x043E, [char]0x043B, [char]0x044C, [char]0x0437,
+    [char]0x043E, [char]0x0432, [char]0x0430, [char]0x0442, [char]0x0435,
+    [char]0x043B, [char]0x0438
 )
 
 function Stop-OwnedRunner([int]$ProcessId) {
     if ($ProcessId -le 0) { return }
     $process = Get-CimInstance Win32_Process -Filter "ProcessId=$ProcessId" -ErrorAction SilentlyContinue
     if ($null -eq $process) { return }
-    if ($process.CommandLine -notlike "*game_accounts_admin_bot.py*") {
+    if ($process.CommandLine -notlike "*game_accounts_admin.py*") {
         Write-Warning "Ignoring stale runner PID $ProcessId because it now belongs to another process."
         return
     }
@@ -127,7 +133,7 @@ $installedPluginsResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4
 $installedPlugins = $installedPluginsResponse.Content | ConvertFrom-Json
 $installedMenu = @(@($installedPlugins.active) + @($installedPlugins.inactive) | Where-Object { $_.id -eq "com.mattergram.menu" })
 if ($installedMenu.Count -gt 1) { throw "Multiple Mattergram Menu plugin records were returned." }
-if ($installedMenu.Count -eq 1 -and $installedMenu[0].version -ne "0.2.0") {
+if ($installedMenu.Count -eq 1 -and $installedMenu[0].version -ne "0.2.2") {
     Invoke-JsonRequest -Method DELETE -Uri "$BaseUrl/api/v4/plugins/com.mattergram.menu" -Headers $headers | Out-Null
     $installedMenu = @()
 }
@@ -142,8 +148,14 @@ $enablePlugin = Invoke-JsonRequest -Method POST -Uri "$BaseUrl/api/v4/plugins/co
 if ($enablePlugin.StatusCode -ne 200) { throw "Mattergram Menu plugin enable failed." }
 $pluginsResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/plugins" -Headers $headers
 $plugins = $pluginsResponse.Content | ConvertFrom-Json
-$activeMenu = @($plugins.active | Where-Object { $_.id -eq "com.mattergram.menu" -and $_.version -eq "0.2.0" })
-if ($activeMenu.Count -ne 1) { throw "Mattergram Menu 0.2.0 is not active." }
+$activeMenu = @($plugins.active | Where-Object { $_.id -eq "com.mattergram.menu" -and $_.version -eq "0.2.2" })
+if ($activeMenu.Count -ne 1) { throw "Mattergram Menu 0.2.2 is not active." }
+$keyboardInventoryResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/plugins/com.mattergram.menu/api/v1/keyboards" -Headers $headers
+$keyboardInventory = $keyboardInventoryResponse.Content | ConvertFrom-Json
+foreach ($keyboardState in @($keyboardInventory.keyboards)) {
+    if (-not $keyboardState.channel_id) { throw "Mattergram Menu returned a keyboard without channel_id." }
+    Invoke-JsonRequest -Method DELETE -Uri "$BaseUrl/plugins/com.mattergram.menu/api/v1/channels/$($keyboardState.channel_id)/keyboard" -Headers $headers | Out-Null
+}
 $directResponse = Invoke-JsonRequest -Method POST -Uri "$BaseUrl/api/v4/channels/direct" -Headers $headers -Body @(
     $fixture.admin_id,
     $fixture.bot_id
@@ -157,14 +169,30 @@ $botUserResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/users/$(
 $botUser = $botUserResponse.Content | ConvertFrom-Json
 if (-not $botUser.username) { throw "Bot username is missing." }
 $BotDirectUrl = "$BaseUrl/mattergram-ui/messages/@$($botUser.username)"
+$operatorUserResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/users/username/$OperatorUsername" -Headers $headers
+$operatorUser = $operatorUserResponse.Content | ConvertFrom-Json
+if (-not $operatorUser.id -or $operatorUser.is_bot) {
+    throw "Configured local operator @$OperatorUsername is missing or is a bot account."
+}
+$botHeaders = @{ Authorization = "Bearer $($fixture.bot_token)" }
+$operatorDirectResponse = Invoke-JsonRequest -Method POST -Uri "$BaseUrl/api/v4/channels/direct" -Headers $botHeaders -Body @(
+    $fixture.bot_id,
+    $operatorUser.id
+)
+$operatorDirect = $operatorDirectResponse.Content | ConvertFrom-Json
+if (-not $operatorDirect.id -or $operatorDirect.type -ne "D") {
+    throw "Could not create the configured operator-to-bot direct channel."
+}
+$OperatorChannelId = [string]$operatorDirect.id
 
 $uv = Get-Command uv -ErrorAction Stop
 Remove-Item -LiteralPath $StdoutPath, $StderrPath -Force -ErrorAction SilentlyContinue
 $runnerArguments = @(
-    "run", "python", "examples/game_accounts_admin_bot.py",
+    "run", "python", "examples/game_accounts_admin.py",
     "--base-url", $BaseUrl,
     "--callback-base", $CallbackBase,
-    "--port", "$CallbackPort"
+    "--port", "$CallbackPort",
+    "--operator-username", $OperatorUsername
 )
 $launcher = Start-Process -FilePath $uv.Source -ArgumentList $runnerArguments -WorkingDirectory $RepoRoot -WindowStyle Hidden -RedirectStandardOutput $StdoutPath -RedirectStandardError $StderrPath -PassThru
 $listenerPid = 0
@@ -199,6 +227,16 @@ try {
     $dmKeyboard = $dmKeyboardResponse.Content | ConvertFrom-Json
     if ($dmKeyboard.channel_id -ne $AdminChannelId -or $null -eq $dmKeyboard.keyboard) {
         throw "Game-admin keyboard is not installed in the bot DM."
+    }
+    $ownedKeyboardResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/plugins/com.mattergram.menu/api/v1/keyboards" -Headers $headers
+    $ownedKeyboards = @((($ownedKeyboardResponse.Content | ConvertFrom-Json).keyboards))
+    $expectedKeyboardChannels = @($AdminChannelId, $OperatorChannelId) | Sort-Object
+    $actualKeyboardChannels = @($ownedKeyboards | ForEach-Object { $_.channel_id }) | Sort-Object
+    if (
+        $actualKeyboardChannels.Count -ne 2 -or
+        (Compare-Object -ReferenceObject $expectedKeyboardChannels -DifferenceObject $actualKeyboardChannels)
+    ) {
+        throw "Keyboard access reconcile retained a stale or unauthorized direct-message keyboard."
     }
     $publicKeyboardResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/plugins/com.mattergram.menu/api/v1/channels/$($fixture.channel_id)/keyboard" -Headers $headers
     $publicKeyboard = $publicKeyboardResponse.Content | ConvertFrom-Json
@@ -264,6 +302,7 @@ try {
     Invoke-JsonRequest -Method DELETE -Uri "$BaseUrl/api/v4/posts/$($smokeTrigger.id)" -Headers $headers | Out-Null
 
     $browserResult = $null
+    $operatorDeniedWithoutCrash = $null
     if (-not $SkipBrowser) {
         $env:MM_ADMIN_BASE_URL = $BaseUrl
         $env:MM_ADMIN_CHANNEL_ID = $AdminChannelId
@@ -278,10 +317,54 @@ try {
             -not $browserResult.keyboard_new_posts -or
             -not $browserResult.bot_dm -or
             -not $browserResult.accounts_visible -or
-            -not $browserResult.form_cancel_restored_source
+            -not $browserResult.accounts_single_container -or
+            -not $browserResult.account_check_nested -or
+            -not $browserResult.account_edit_form -or
+            -not $browserResult.account_delete_confirmation -or
+            -not $browserResult.form_cancel_restored_source -or
+            -not $browserResult.operator_onboarding -or
+            -not $browserResult.operator_game_accounts -or
+            -not $browserResult.operator_user_admin_hidden
         ) {
-            throw "Browser smoke check did not complete navigation and form-cancel recovery."
+            throw "Browser smoke check did not complete navigation, onboarding, and role-policy verification."
         }
+
+        $actorHeaders = @{ Authorization = "Bearer $($fixture.actor_token)" }
+        $actorDirectResponse = Invoke-JsonRequest -Method POST -Uri "$BaseUrl/api/v4/channels/direct" -Headers $actorHeaders -Body @(
+            $fixture.actor_id,
+            $fixture.bot_id
+        )
+        $actorDirect = $actorDirectResponse.Content | ConvertFrom-Json
+        $deniedBeforeResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/channels/$($actorDirect.id)/posts?page=0&per_page=30" -Headers $actorHeaders
+        $deniedBefore = $deniedBeforeResponse.Content | ConvertFrom-Json
+        $knownDeniedPostIds = @{}
+        foreach ($knownPostId in $deniedBefore.order) { $knownDeniedPostIds[$knownPostId] = $true }
+        $deniedExecute = Invoke-JsonRequest -Method POST -Uri "$BaseUrl/api/v4/posts" -Headers $actorHeaders -Body @{
+            channel_id = $actorDirect.id
+            message = $UsersMessage
+        }
+        $deniedTrigger = $deniedExecute.Content | ConvertFrom-Json
+        $deniedPostId = $null
+        for ($attempt = 0; $attempt -lt 40; $attempt++) {
+            $deniedPostsResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/channels/$($actorDirect.id)/posts?page=0&per_page=30" -Headers $actorHeaders
+            $deniedPosts = $deniedPostsResponse.Content | ConvertFrom-Json
+            foreach ($postId in $deniedPosts.order) {
+                $post = $deniedPosts.posts.$postId
+                if (-not $knownDeniedPostIds.ContainsKey($postId) -and $post.user_id -eq $fixture.bot_id -and $null -eq $post.props.mm_blocks) {
+                    $deniedPostId = $postId
+                    break
+                }
+            }
+            if ($deniedPostId) { break }
+            Start-Sleep -Milliseconds 250
+        }
+        $runnerAfterDenial = Get-Process -Id $listenerPid -ErrorAction SilentlyContinue
+        if (-not $deniedPostId -or $null -eq $runnerAfterDenial) {
+            throw "Denied operator command did not produce a safe response or stopped the bot runner."
+        }
+        $operatorDeniedWithoutCrash = $true
+        Invoke-JsonRequest -Method DELETE -Uri "$BaseUrl/api/v4/posts/$deniedPostId" -Headers $headers | Out-Null
+        Invoke-JsonRequest -Method DELETE -Uri "$BaseUrl/api/v4/posts/$($deniedTrigger.id)" -Headers $actorHeaders | Out-Null
     }
 
     $finalBeforeResponse = Invoke-JsonRequest -Method GET -Uri "$BaseUrl/api/v4/channels/$AdminChannelId/posts?page=0&per_page=30" -Headers $headers
@@ -325,6 +408,7 @@ try {
         command = "/game-admin"
         callback_url = $expectedCommandUrl
         admin_login = $fixture.admin_username
+        seeded_operator = $OperatorUsername
         checks = [ordered]@{
             docker = $true
             mattermost_ping = $true
@@ -334,6 +418,7 @@ try {
             composer_keyboard_plugin = $true
             composer_keyboard_bot_dm = $true
             composer_keyboard_absent_from_shared_channel = $true
+            composer_keyboard_access_reconcile = $true
             slash_execution = $true
             keyboard_message_execution = $true
             structured_post = $true
@@ -343,7 +428,15 @@ try {
             browser_keyboard_new_posts = if ($SkipBrowser) { $null } else { [bool]$browserResult.keyboard_new_posts }
             browser_bot_dm = if ($SkipBrowser) { $null } else { [bool]$browserResult.bot_dm }
             browser_accounts = if ($SkipBrowser) { $null } else { [bool]$browserResult.accounts_visible }
+            browser_accounts_single_container = if ($SkipBrowser) { $null } else { [bool]$browserResult.accounts_single_container }
+            browser_account_check_nested = if ($SkipBrowser) { $null } else { [bool]$browserResult.account_check_nested }
+            browser_account_edit_form = if ($SkipBrowser) { $null } else { [bool]$browserResult.account_edit_form }
+            browser_account_delete_confirmation = if ($SkipBrowser) { $null } else { [bool]$browserResult.account_delete_confirmation }
             browser_form_cancel = if ($SkipBrowser) { $null } else { [bool]$browserResult.form_cancel_restored_source }
+            browser_operator_onboarding = if ($SkipBrowser) { $null } else { [bool]$browserResult.operator_onboarding }
+            browser_operator_game_accounts = if ($SkipBrowser) { $null } else { [bool]$browserResult.operator_game_accounts }
+            browser_operator_user_admin_hidden = if ($SkipBrowser) { $null } else { [bool]$browserResult.operator_user_admin_hidden }
+            operator_user_command_denied_without_crash = $operatorDeniedWithoutCrash
         }
         runtime_state = $RuntimeStatePath
         stdout_log = $StdoutPath

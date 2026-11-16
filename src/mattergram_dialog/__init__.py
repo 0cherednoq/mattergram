@@ -5,7 +5,7 @@ from .dialog import Dialog
 from .manager import SubManager
 from .navigation import DialogManager, Window
 from .registry import DialogRegistry
-from .rendering import MattermostRenderer
+from .rendering import MattermostRenderer, PostContainer
 from .runtime import DialogRef, DialogRuntime, setup_dialogs
 from .updates import CoalescingDialogUpdater, DialogUpdate
 from .widgets import (
@@ -40,6 +40,7 @@ from .widgets import (
     MarkdownColumn,
     Multi,
     MultiSelect,
+    NativeBlocks,
     NativeField,
     Navigate,
     Next,
@@ -111,12 +112,14 @@ __all__ = [
     "MarkdownColumn",
     "Multi",
     "MultiSelect",
+    "NativeBlocks",
     "NativeField",
     "Navigate",
     "Next",
     "OpenForm",
     "OpenFormActions",
     "Or",
+    "PostContainer",
     "PageItemSelect",
     "PagedList",
     "PagedTable",

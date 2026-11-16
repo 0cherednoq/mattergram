@@ -66,6 +66,9 @@ class FlagGenerator:
         return FlagDecorator(Flag(name, True))
 
 
+flags = FlagGenerator()
+
+
 def extract_flags_from_object(obj: Any) -> dict[str, Any]:
     if not hasattr(obj, "mattergram_flag"):
         return {}
@@ -114,3 +117,15 @@ def check_flags(handler: HandlerObject | dict[str, Any], magic: MagicFilter) -> 
     """
     flags = extract_flags(handler)
     return magic.resolve(AttrDict(flags))
+
+
+__all__ = [
+    "Flag",
+    "FlagDecorator",
+    "FlagGenerator",
+    "check_flags",
+    "extract_flags",
+    "extract_flags_from_object",
+    "flags",
+    "get_flag",
+]

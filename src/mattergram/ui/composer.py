@@ -79,11 +79,12 @@ class ComposerKeyboardState(UIModel):
 
     channel_id: str = Field(min_length=1)
     revision: int = Field(ge=1)
+    owner_id: str | None = Field(default=None, min_length=1)
     keyboard: ComposerKeyboard
 
-    @field_validator("channel_id")
+    @field_validator("channel_id", "owner_id")
     @classmethod
-    def valid_channel_id(cls, value: str) -> str:
-        if not re.fullmatch(r"[A-Za-z0-9]+", value):
+    def valid_native_id(cls, value: str | None) -> str | None:
+        if value is not None and not re.fullmatch(r"[A-Za-z0-9]+", value):
             raise ValueError("Expected a native Mattermost channel ID")
         return value

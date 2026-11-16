@@ -14,7 +14,7 @@ date/time и legacy callbacks; обнаруженное ограничение r
 
 ## Отправить меню
 
-`examples/ui_menu_bot.py` показывает posted → signed native action → callback.
+Сценарий posted → signed native action → callback проверяется UI contract suite.
 Ему нужны runtime bot token, доступ к каналу, настроенный callback route,
 доверенный transport peer и постоянный секретный HMAC key, переданные через environment.
 Setup/admin token пример не использует. Пример проверяется mypy; его полный запуск

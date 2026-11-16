@@ -3,6 +3,7 @@
 from .actions import AdminUsersActions
 from .dialog import build_admin_users_dialog
 from .directory import MattermostTeamDirectory, TeamUserDirectory
+from .events import AdminUserChange, AdminUserChangeSink
 from .getters import AdminUsersGetters
 from .models import (
     ASSIGN_ROLES,
@@ -27,6 +28,8 @@ __all__ = [
     "ADMIN_USERS_SERVICE",
     "ASSIGN_ROLES",
     "AdminUser",
+    "AdminUserChange",
+    "AdminUserChangeSink",
     "AdminUserRepository",
     "AdminUsersActions",
     "AdminUsersGetters",

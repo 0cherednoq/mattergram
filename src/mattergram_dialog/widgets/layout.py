@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Any
 
+from mattergram.ui.blocks import Block
 from mattergram_dialog.api.exceptions import InvalidWidget, InvalidWidgetIdError
 from mattergram_dialog.rendering import PostControl, PostControlGroup
 from mattergram_dialog.widgets.common.base import Widget
@@ -70,6 +71,7 @@ class DataBlock(Widget):
         *widgets: Widget,
         id: str | None = None,
         color: str | None = None,
+        border: bool = True,
         when: WhenCondition = None,
     ) -> None:
         super().__init__(id=id, when=when)
@@ -79,6 +81,9 @@ class DataBlock(Widget):
         self.content = content
         self.widgets = widgets
         self.color = color
+        if type(border) is not bool:
+            raise TypeError("DataBlock border must be a bool")
+        self.border = border
 
     async def render_control_groups(
         self, data: Mapping[str, Any], manager: Any
@@ -114,6 +119,7 @@ class DataBlock(Widget):
                 controls,
                 title=title,
                 color=self.color,
+                border=self.border,
                 text=content,
                 rows=tuple(rows),
                 content_row_index=len(before_rows),
@@ -142,4 +148,42 @@ class DataBlock(Widget):
         raise InvalidWidgetIdError(f"Unknown widget id: {widget_id}")
 
 
-__all__ = ["DataBlock", "Section"]
+class NativeBlocks(Widget):
+    """Render an exact native block tree with a legacy text fallback."""
+
+    def __init__(
+        self,
+        source: str,
+        *,
+        fallback: Text,
+        id: str | None = None,
+        when: WhenCondition = None,
+    ) -> None:
+        super().__init__(id=id, when=when)
+        if not source:
+            raise ValueError("NativeBlocks source must be nonempty")
+        self.source = source
+        self.fallback = fallback
+
+    async def render_control_groups(
+        self, data: Mapping[str, Any], manager: Any
+    ) -> tuple[PostControlGroup, ...]:
+        if not await self.is_visible(data, manager):
+            return ()
+        value = data.get(self.source)
+        if isinstance(value, (str, bytes)) or not isinstance(value, Sequence) or not value:
+            raise InvalidWidget(f"NativeBlocks source {self.source!r} must contain native blocks")
+        blocks = tuple(value)
+        if not all(isinstance(block, Block) for block in blocks):
+            raise InvalidWidget(f"NativeBlocks source {self.source!r} contains a non-block value")
+        fallback = await self.fallback.render_text(data, manager)
+        return (PostControlGroup((), text=fallback, native_blocks=blocks),)
+
+    def find(self, widget_id: str) -> Any:
+        fallback = _find_text(self.fallback, widget_id)
+        if fallback is not None:
+            return fallback
+        raise InvalidWidgetIdError(f"Unknown widget id: {widget_id}")
+
+
+__all__ = ["DataBlock", "NativeBlocks", "Section"]

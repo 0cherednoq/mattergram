@@ -13,12 +13,13 @@ Dependency group: `core`.
 | `Bot` | class | `(*, token: str, base_url: str, request_timeout: float = 30.0) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L45) |
 | `ComposerButton` | class | `(*, id: Annotated[str, _PydanticGeneralMetadata(pattern='^[A-Za-z0-9_-]{1,64}$')], text: Annotated[str, MinLen(min_length=1)], message: Annotated[str, MinLen(min_length=1)], style: Literal['default', 'primary', 'danger'] = 'default', disabled: bool = False) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L19) |
 | `ComposerKeyboard` | class | `(*, schema_version: Literal[1] = 1, title: Annotated[str, MinLen(min_length=1)] = 'Choose an action', rows: Annotated[tuple[Annotated[tuple[mattergram.ui.composer.ComposerButton, Ellipsis], BeforeValidator(func=<function sequence>, json_schema_input_type=PydanticUndefined)], Ellipsis], BeforeValidator(func=<function _rows>, json_schema_input_type=PydanticUndefined)]) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L46) |
-| `ComposerKeyboardState` | class | `(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], keyboard: mattergram.ui.composer.ComposerKeyboard) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L77) |
+| `ComposerKeyboardState` | class | `(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], owner_id: Annotated[str \| None, MinLen(min_length=1)] = None, keyboard: mattergram.ui.composer.ComposerKeyboard) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L77) |
 | `Dispatcher` | class | `(*, name: str \| None = None, storage: BaseStorage \| None = None, events_isolation: BaseEventIsolation \| None = None, fsm_strategy: FSMStrategy = <FSMStrategy.USER_IN_CHANNEL: 1>, queue_capacity: int = 64, shutdown_timeout: float = 10.0, reconnect_delay: float = 0.25, **workflow_data: Any) -> None` | [src/mattergram/dispatcher/dispatcher.py](../../src/mattergram/dispatcher/dispatcher.py#L48) |
-| `F` | value | — | [src/mattergram/__init__.py](../../src/mattergram/__init__.py#L13) |
+| `F` | value | — | [src/mattergram/__init__.py](../../src/mattergram/__init__.py#L14) |
 | `NativeAPI` | class | `(*, token: str, base_url: str, request_timeout: float = 30.0) -> None` | [src/mattergram/native/client.py](../../src/mattergram/native/client.py#L79) |
 | `Router` | class | `(*, name: str \| None = None) -> None` | [src/mattergram/dispatcher/router.py](../../src/mattergram/dispatcher/router.py#L17) |
-| `__version__` | value | — | [src/mattergram/__init__.py](../../src/mattergram/__init__.py#L11) |
+| `__version__` | value | — | [src/mattergram/__init__.py](../../src/mattergram/__init__.py#L12) |
+| `flags` | value | — | [src/mattergram/__init__.py](../../src/mattergram/__init__.py#L1) |
 
 ### `Bot`
 
@@ -26,19 +27,22 @@ One owner, one event loop, one HTTP pool; close is terminal and idempotent.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `create_direct_channel` | async-method | `(self, user_id: str) -> Channel` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L274) |
-| `delete_composer_keyboard` | async-method | `(self, chat_id: str) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L178) |
-| `delete_message` | async-method | `(self, chat_id: str, message_id: str) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L322) |
-| `edit_message_text` | async-method | `(self, chat_id: str, message_id: str, text: str, *, props: Mapping[str, Any] \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L293) |
-| `get_channel` | async-method | `(self, channel_id: str) -> Channel` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L269) |
-| `get_composer_keyboard` | async-method | `(self, chat_id: str) -> ComposerKeyboardState \| None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L160) |
-| `get_user` | async-method | `(self, user_id: str) -> User` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L226) |
-| `get_users_in_team` | async-method | `(self, team_id: str, *, page: int = 0, per_page: int = 100, active: bool = True) -> list[User]` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L229) |
-| `open_dialog` | async-method | `(self, trigger_id: SecretStr, form: Form, *, url: str, profile: UIProfile) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L391) |
+| `create_channel` | async-method | `(self, *, team_id: str, name: str, display_name: str, type: Literal['O', 'P'] = 'O', purpose: str = '', header: str = '') -> Channel` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L352) |
+| `create_direct_channel` | async-method | `(self, user_id: str) -> Channel` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L396) |
+| `delete_composer_keyboard` | async-method | `(self, chat_id: str) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L256) |
+| `delete_message` | async-method | `(self, chat_id: str, message_id: str) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L444) |
+| `edit_message_text` | async-method | `(self, chat_id: str, message_id: str, text: str, *, props: Mapping[str, Any] \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L415) |
+| `get_channel` | async-method | `(self, channel_id: str) -> Channel` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L347) |
+| `get_composer_keyboard` | async-method | `(self, chat_id: str) -> ComposerKeyboardState \| None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L217) |
+| `get_user` | async-method | `(self, user_id: str) -> User` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L304) |
+| `get_users_in_team` | async-method | `(self, team_id: str, *, page: int = 0, per_page: int = 100, active: bool = True) -> list[User]` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L307) |
+| `list_composer_keyboards` | async-method | `(self) -> tuple[ComposerKeyboardState, ...]` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L235) |
+| `open_dialog` | async-method | `(self, trigger_id: SecretStr, form: Form, *, url: str, profile: UIProfile) -> None` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L556) |
 | `resources` | property | `(self) -> RuntimeResources` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L54) |
-| `send_document` | async-method | `(self, chat_id: str, document: InputFile, *, text: str \| None = None, root_id: str \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L337) |
-| `send_message` | async-method | `(self, chat_id: str, text: str, *, root_id: str \| None = None, actions: Actions \| None = None, blocks: Sequence[Block] \| None = None, attachments: Sequence[Attachment] \| None = None, ui_profile: UIProfile \| None = None, action_context: ActionContext \| None = None, markdown_actions: dict[str, Action] \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L103) |
-| `set_composer_keyboard` | async-method | `(self, chat_id: str, keyboard: ComposerKeyboard) -> ComposerKeyboardState` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L141) |
+| `send_document` | async-method | `(self, chat_id: str, document: InputFile, *, text: str \| None = None, root_id: str \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L459) |
+| `send_documents` | async-method | `(self, chat_id: str, documents: Sequence[InputFile], *, text: str \| None = None, root_id: str \| None = None, priority: MessagePriority \| None = None, silent: bool = False) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L474) |
+| `send_message` | async-method | `(self, chat_id: str, text: str, *, root_id: str \| None = None, actions: Actions \| None = None, blocks: Sequence[Block] \| None = None, attachments: Sequence[Attachment] \| None = None, ui_profile: UIProfile \| None = None, action_context: ActionContext \| None = None, markdown_actions: dict[str, Action] \| None = None, priority: MessagePriority \| None = None, silent: bool = False, file_ids: Sequence[str] \| None = None) -> Message` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L103) |
+| `set_composer_keyboard` | async-method | `(self, chat_id: str, keyboard: ComposerKeyboard) -> ComposerKeyboardState` | [src/mattergram/bot.py](../../src/mattergram/bot.py#L198) |
 
 ### `ComposerButton`
 
@@ -65,7 +69,7 @@ Plugin-confirmed keyboard state and its monotonically increasing revision.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `valid_channel_id` | class-method | `(cls, value: str) -> str` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L84) |
+| `valid_native_id` | class-method | `(cls, value: str \| None) -> str \| None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L85) |
 
 ### `Dispatcher`
 
@@ -128,6 +132,7 @@ Dependency group: `core`.
 | `FSInputFile` | class | `(path: str \| Path, filename: str \| None = None, *, content_type: str \| None = None, chunk_size: int = 65536) -> None` | [src/mattergram/types/input_file.py](../../src/mattergram/types/input_file.py#L96) |
 | `InputFile` | class | `(filename: str, *, content_type: str \| None = None, chunk_size: int = 65536) -> None` | [src/mattergram/types/input_file.py](../../src/mattergram/types/input_file.py#L27) |
 | `Message` | class | `(*, id: Annotated[str, MinLen(min_length=1)], channel_id: Annotated[str, MinLen(min_length=1)], user_id: Annotated[str, MinLen(min_length=1)], message: str, create_at: Annotated[int, Ge(ge=0)], root_id: Annotated[str, FieldInfo(annotation=NoneType, required=True, metadata=[MinLen(min_length=1)])] \| None = None, **extra_data: Any) -> None` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L96) |
+| `MessagePriority` | class | `(level: Literal['important', 'urgent'], requested_ack: bool = False, persistent_notifications: bool = False) -> None` | [src/mattergram/types/message_priority.py](../../src/mattergram/types/message_priority.py#L9) |
 | `PostRef` | class | `(*, id: Annotated[str, MinLen(min_length=1)], channel_id: Annotated[str, MinLen(min_length=1)], **extra_data: Any) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L19) |
 | `RawEvent` | class | `(*, event_type: str, payload: dict[str, Any], **extra_data: Any) -> None` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L85) |
 | `SlashCommand` | class | `(*, user_id: Annotated[str, MinLen(min_length=1)], channel_id: Annotated[str, MinLen(min_length=1)], team_id: Annotated[str, FieldInfo(annotation=NoneType, required=True, metadata=[MinLen(min_length=1)])] \| None = None, command: Annotated[str, MinLen(min_length=1)], text: str = '', token: pydantic.types.SecretStr, response_url: pydantic.types.SecretStr \| None = None, trigger_id: pydantic.types.SecretStr \| None = None, root_id: Annotated[str, FieldInfo(annotation=NoneType, required=True, metadata=[MinLen(min_length=1)])] \| None = None, user_name: str \| None = None, channel_name: str \| None = None, team_domain: str \| None = None) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L60) |
@@ -277,6 +282,14 @@ One reusable upload source; each read owns and closes its own local handle.
 | `reply` | async-method | `(self, text: str) -> Message` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L161) |
 | `text` | property | `(self) -> str` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L131) |
 | `valid_timestamp` | class-method | `(cls, value: int) -> int` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L112) |
+
+### `MessagePriority`
+
+Priority metadata for one root post.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `to_wire` | method | `(self) -> dict[str, str \| bool]` | [src/mattergram/types/message_priority.py](../../src/mattergram/types/message_priority.py#L32) |
 
 ### `PostRef`
 
@@ -520,9 +533,9 @@ Dependency group: `core`.
 | `DialogManager` | class | `(bot: Bot, *, profile: UIProfile, callback_url: str \| None = None, store: DialogStore \| None = None, ttl: float = 900, max_steps: int = 32, clock: Callable[[], float] = <function time.time>) -> None` | [src/mattergram/http/dialogs.py](../../src/mattergram/http/dialogs.py#L124) |
 | `MemoryDialogStore` | class | `(*, capacity: int = 1024, max_ttl: float = 1800, clock: Callable[[], float] = <function time.time>) -> None` | [src/mattergram/http/dialog_store.py](../../src/mattergram/http/dialog_store.py#L27) |
 | `HTTPCapabilities` | class | `(post_action_navigation: bool = False, post_action_error: bool = False) -> None` | [src/mattergram/http/responses.py](../../src/mattergram/http/responses.py#L22) |
-| `HTTPResult` | class | `(status: int, payload: dict[str, Any]) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L36) |
+| `HTTPResult` | class | `(status: int, payload: dict[str, Any]) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L39) |
 | `HTTPServer` | class | `(adapter: HttpAdapter, *, host: str = '127.0.0.1', port: int = 8080) -> None` | [src/mattergram/http/server.py](../../src/mattergram/http/server.py#L8) |
-| `HttpAdapter` | class | `(bot: Bot, dispatcher: Dispatcher, *, trusted_peers: Sequence[str], slash_bindings: Sequence[SlashBinding] = (), callback_signer: CallbackSigner \| None = None, path_prefix: str = '/mattergram', request_timeout: float = 2.5, deferred_timeout: float = 60, shutdown_timeout: float = 10, max_body_bytes: int = 65536, max_inflight: int = 64, max_deferred: int = 16, response_origins: Sequence[str] \| None = None, capabilities: HTTPCapabilities \| None = None, dialogs: DialogManager \| None = None, own_dialogs: bool = False) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L53) |
+| `HttpAdapter` | class | `(bot: Bot, dispatcher: Dispatcher, *, trusted_peers: Sequence[str], slash_bindings: Sequence[SlashBinding] = (), callback_signer: CallbackSigner \| None = None, path_prefix: str = '/mattergram', request_timeout: float = 2.5, deferred_timeout: float = 60, shutdown_timeout: float = 10, max_body_bytes: int = 65536, max_inflight: int = 64, max_deferred: int = 16, response_origins: Sequence[str] \| None = None, capabilities: HTTPCapabilities \| None = None, dialogs: DialogManager \| None = None, own_dialogs: bool = False) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L56) |
 | `ResponseController` | class | `(kind: ResponseKind, *, timeout: float = 2.5, capabilities: HTTPCapabilities \| None = None, reserve_deferred: Callable[[], None] \| None = None, followup: Callable[[dict[str, Any]], Awaitable[None]] \| None = None, open_dialog: Callable[[Form], Awaitable[DialogHandle]] \| None = None, replace_form: Callable[[Form], Awaitable[dict[str, Any]]] \| None = None, field_names: frozenset[str] = frozenset()) -> None` | [src/mattergram/http/responses.py](../../src/mattergram/http/responses.py#L30) |
 | `SlashBinding` | class | `(team_id: str \| None, command: str, token: SecretStr, method: Literal['GET', 'POST'] = 'POST') -> None` | [src/mattergram/http/auth.py](../../src/mattergram/http/auth.py#L27) |
 | `TrustedPeers` | class | `(networks: Collection[str]) -> None` | [src/mattergram/http/auth.py](../../src/mattergram/http/auth.py#L62) |
@@ -591,13 +604,13 @@ HTTP-only ingress borrowing Bot/Dispatcher. Explicit defer is bounded and non-du
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add_slash_binding` | method | `(self, binding: SlashBinding) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L126) |
-| `create_app` | method | `(self) -> web.Application` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L422) |
-| `handle` | async-method | `(self, *, method: str, path: str, headers: Mapping[str, str], body: bytes, peer: str \| None, query: bytes = b'', received_at: float \| None = None) -> HTTPResult` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L212) |
-| `listening_addresses` | property | `(self) -> tuple[tuple[str, int], ...]` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L122) |
-| `pending_deferred` | property | `(self) -> int` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L146) |
-| `shutdown` | async-method | `(self) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L186) |
-| `startup` | async-method | `(self) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L134) |
+| `add_slash_binding` | method | `(self, binding: SlashBinding) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L129) |
+| `create_app` | method | `(self) -> web.Application` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L426) |
+| `handle` | async-method | `(self, *, method: str, path: str, headers: Mapping[str, str], body: bytes, peer: str \| None, query: bytes = b'', received_at: float \| None = None) -> HTTPResult` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L215) |
+| `listening_addresses` | property | `(self) -> tuple[tuple[str, int], ...]` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L125) |
+| `pending_deferred` | property | `(self) -> int` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L149) |
+| `shutdown` | async-method | `(self) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L189) |
+| `startup` | async-method | `(self) -> None` | [src/mattergram/http/adapter.py](../../src/mattergram/http/adapter.py#L137) |
 
 ### `ResponseController`
 
@@ -904,6 +917,49 @@ The declared plugin graph or its contributions are invalid.
 
 Typed token whose name is also used by Mattergram's named handler DI.
 
+## `mattergram.security`
+
+Dependency group: `core`.
+
+| Export | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `AccessDenied` | class | — | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L16) |
+| `DEFAULT_ACCESS_DENIED_TEXT` | value | — | [src/mattergram/security/__init__.py](../../src/mattergram/security/__init__.py#L1) |
+| `RBAC` | class | `(resolver: RoleResolver) -> None` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L45) |
+| `RBACMiddleware` | class | `(resolver: RoleResolver, *, denied_text: str = 'Недостаточно прав для этого действия') -> None` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L77) |
+| `REQUIRED_ROLES_FLAG` | value | — | [src/mattergram/security/__init__.py](../../src/mattergram/security/__init__.py#L1) |
+| `RoleResolver` | class | `(*args, **kwargs)` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L20) |
+| `normalize_required_roles` | function | `(value: object) -> tuple[str, ...]` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L27) |
+
+### `AccessDenied`
+
+Raised when an enabled application role does not authorize an action.
+
+### `RBAC`
+
+Resolve roles and enforce explicit role sets outside the dispatcher too.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `require_role` | async-method | `(self, actor_id: str, *roles: str) -> str` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L61) |
+| `role_for` | async-method | `(self, actor_id: str) -> str \| None` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L53) |
+
+### `RBACMiddleware`
+
+Enforce ``required_roles`` flags on native Mattergram handlers.
+
+### `RoleResolver`
+
+Resolve one enabled application role for a Mattermost actor.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `resolve_role` | async-method | `(self, actor_id: str) -> str \| None` | [src/mattergram/security/rbac.py](../../src/mattergram/security/rbac.py#L24) |
+
+### `normalize_required_roles`
+
+Validate and normalize the value of the ``required_roles`` handler flag.
+
 ## `mattergram.contrib.admin_users`
 
 Dependency group: `core`.
@@ -914,14 +970,16 @@ Dependency group: `core`.
 | `ADMIN_USERS_SERVICE` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
 | `ASSIGN_ROLES` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
 | `AdminUser` | class | `(id: str, mattermost_user_id: str, username: str, role: str, enabled: bool = True) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L47) |
+| `AdminUserChange` | class | `(actor_id: str, action: str, previous: AdminUser \| None, current: AdminUser) -> None` | [src/mattergram/contrib/admin_users/events.py](../../src/mattergram/contrib/admin_users/events.py#L11) |
+| `AdminUserChangeSink` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/events.py](../../src/mattergram/contrib/admin_users/events.py#L21) |
 | `AdminUserRepository` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L12) |
-| `AdminUsersActions` | class | `(service: AdminUsersService) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L11) |
+| `AdminUsersActions` | class | `(service: AdminUsersService) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L12) |
 | `AdminUsersGetters` | class | `(service: AdminUsersService) -> None` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L15) |
-| `AdminUsersInputError` | class | `(field_errors: Mapping[str, str]) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L25) |
+| `AdminUsersInputError` | class | `(field_errors: Mapping[str, str]) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L26) |
 | `AdminUsersPanel` | class | `()` | [src/mattergram/contrib/admin_users/states.py](../../src/mattergram/contrib/admin_users/states.py#L4) |
-| `AdminUsersPlugin` | class | `(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] \| None = None, permissions: Sequence[PermissionSpec] \| None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink \| None = None) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L23) |
-| `AdminUsersRuntime` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L16) |
-| `AdminUsersService` | class | `(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink \| None = None) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L36) |
+| `AdminUsersPlugin` | class | `(*, repository: AdminUserRepository, directory: TeamUserDirectory, initial_admin_ids: Sequence[str], roles: Sequence[RoleSpec] \| None = None, permissions: Sequence[PermissionSpec] \| None = None, command: str = 'app-users', messages: Sequence[str] = ('Пользователи',), audit_sink: AuditSink \| None = None, change_sink: AdminUserChangeSink \| None = None, default_role: str \| None = None) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L25) |
+| `AdminUsersRuntime` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L17) |
+| `AdminUsersService` | class | `(repository: AdminUserRepository, directory: TeamUserDirectory, *, permissions: Sequence[PermissionSpec], roles: Sequence[RoleSpec], initial_admin_ids: Sequence[str], audit_sink: AuditSink \| None = None, change_sink: AdminUserChangeSink \| None = None, default_role: str \| None = None) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L37) |
 | `AuditRecord` | class | `(created_at: str, actor_id: str, action: str, target_user_id: str, details: tuple[tuple[str, str], ...] = ()) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L90) |
 | `AuditSink` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/repository.py](../../src/mattergram/contrib/admin_users/repository.py#L22) |
 | `DEFAULT_PERMISSIONS` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
@@ -934,11 +992,23 @@ Dependency group: `core`.
 | `TeamUser` | class | `(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None` | [src/mattergram/contrib/admin_users/models.py](../../src/mattergram/contrib/admin_users/models.py#L65) |
 | `TeamUserDirectory` | class | `(*args, **kwargs)` | [src/mattergram/contrib/admin_users/directory.py](../../src/mattergram/contrib/admin_users/directory.py#L13) |
 | `VIEW_USERS` | value | — | [src/mattergram/contrib/admin_users/__init__.py](../../src/mattergram/contrib/admin_users/__init__.py#L1) |
-| `build_admin_users_dialog` | function | `(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...]) -> Dialog` | [src/mattergram/contrib/admin_users/dialog.py](../../src/mattergram/contrib/admin_users/dialog.py#L48) |
+| `build_admin_users_dialog` | function | `(*, getters: AdminUsersGetters, actions: AdminUsersActions, roles: tuple[RoleSpec, ...], default_role: str) -> Dialog` | [src/mattergram/contrib/admin_users/dialog.py](../../src/mattergram/contrib/admin_users/dialog.py#L48) |
 
 ### `AdminUser`
 
 AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'str', enabled: 'bool' = True)
+
+### `AdminUserChange`
+
+One committed application-user change emitted without UI assumptions.
+
+### `AdminUserChangeSink`
+
+Consume committed changes, for example to reconcile external access surfaces.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `write` | async-method | `(self, change: AdminUserChange) -> None` | [src/mattergram/contrib/admin_users/events.py](../../src/mattergram/contrib/admin_users/events.py#L24) |
 
 ### `AdminUserRepository`
 
@@ -953,31 +1023,32 @@ AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'str', en
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L15) |
-| `edit` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L29) |
+| `add` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L16) |
+| `edit` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/admin_users/actions.py](../../src/mattergram/contrib/admin_users/actions.py#L33) |
 
 ### `AdminUsersGetters`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `available_user_options` | async-method | `(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L48) |
-| `selected_user` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L57) |
+| `available_user_options` | async-method | `(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L45) |
+| `form_permissions` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L54) |
+| `selected_user` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L58) |
 | `users` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/admin_users/getters.py](../../src/mattergram/contrib/admin_users/getters.py#L19) |
 
 ### `AdminUsersPlugin`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L59) |
-| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L72) |
-| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L64) |
+| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L79) |
+| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L92) |
+| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/admin_users/plugin.py](../../src/mattergram/contrib/admin_users/plugin.py#L84) |
 
 ### `AdminUsersRuntime`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `respond` | async-method | `(self, event: Message, state: object, data: object = None) -> DialogRef` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L27) |
-| `start` | async-method | `(self, event: SlashCommand, state: object, data: object = None, *, mode: StartMode = <StartMode.NORMAL: 'NORMAL'>) -> DialogRef \| None` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L18) |
+| `respond` | async-method | `(self, event: Message, state: object, data: object = None) -> DialogRef` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L28) |
+| `start` | async-method | `(self, event: SlashCommand, state: object, data: object = None, *, mode: StartMode = <StartMode.NORMAL: 'NORMAL'>) -> DialogRef \| None` | [src/mattergram/contrib/admin_users/router.py](../../src/mattergram/contrib/admin_users/router.py#L19) |
 
 ### `AdminUsersService`
 
@@ -985,15 +1056,16 @@ Apply app permissions, team membership and the last-admin invariant.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L157) |
-| `bootstrap` | async-method | `(self) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L79) |
-| `get_user` | async-method | `(self, actor_id: str, user_id: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L136) |
-| `list_available_team_users` | async-method | `(self, actor_id: str) -> tuple[TeamUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L145) |
-| `list_users` | async-method | `(self, actor_id: str) -> tuple[AdminUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L124) |
-| `permissions_for` | async-method | `(self, actor_id: str) -> frozenset[str]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L106) |
-| `require_permission` | async-method | `(self, actor_id: str, permission: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L113) |
-| `role` | method | `(self, role_id: str) -> RoleSpec` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L228) |
-| `update_user` | async-method | `(self, actor_id: str, user_id: str, *, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L191) |
+| `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L177) |
+| `bootstrap` | async-method | `(self) -> None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L92) |
+| `get_user` | async-method | `(self, actor_id: str, user_id: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L157) |
+| `list_available_team_users` | async-method | `(self, actor_id: str) -> tuple[TeamUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L166) |
+| `list_users` | async-method | `(self, actor_id: str) -> tuple[AdminUser, ...]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L145) |
+| `permissions_for` | async-method | `(self, actor_id: str) -> frozenset[str]` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L119) |
+| `require_permission` | async-method | `(self, actor_id: str, permission: str) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L134) |
+| `resolve_role` | async-method | `(self, actor_id: str) -> str \| None` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L126) |
+| `role` | method | `(self, role_id: str) -> RoleSpec` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L265) |
+| `update_user` | async-method | `(self, actor_id: str, user_id: str, *, role: str, enabled: bool) -> AdminUser` | [src/mattergram/contrib/admin_users/service.py](../../src/mattergram/contrib/admin_users/service.py#L220) |
 
 ### `AuditRecord`
 
@@ -1050,6 +1122,30 @@ One active Mattermost account returned by the configured team directory.
 
 Build one reusable users dialog without embedding service implementation.
 
+## `mattergram.contrib.admin_users.sqlalchemy`
+
+Dependency group: `sqlalchemy`.
+
+| Export | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `SQLAlchemyAdminUserRepository` | class | `(sessions: async_sessionmaker[AsyncSession]) -> None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L51) |
+| `admin_users_metadata` | value | — | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L25) |
+
+### `SQLAlchemyAdminUserRepository`
+
+Durable async repository and audit sink backed by SQLAlchemy 2.0.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `create_schema` | static-method | `(engine: AsyncEngine) -> None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L71) |
+| `from_engine` | class-method | `(cls, engine: AsyncEngine) -> SQLAlchemyAdminUserRepository` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L63) |
+| `get_by_mattermost_user_id` | async-method | `(self, mattermost_user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L93) |
+| `get_user` | async-method | `(self, user_id: str) -> AdminUser \| None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L85) |
+| `list_audit_records` | async-method | `(self) -> tuple[AuditRecord, ...]` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L151) |
+| `list_users` | async-method | `(self) -> tuple[AdminUser, ...]` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L80) |
+| `save_user` | async-method | `(self, user: AdminUser) -> None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L107) |
+| `write` | async-method | `(self, record: AuditRecord) -> None` | [src/mattergram/contrib/admin_users/sqlalchemy.py](../../src/mattergram/contrib/admin_users/sqlalchemy.py#L135) |
+
 ## `mattergram.contrib.composer_keyboard`
 
 Dependency group: `core`.
@@ -1065,9 +1161,12 @@ Install one complete keyboard in explicitly configured direct channels.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L40) |
-| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L70) |
-| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L43) |
+| `install` | async-method | `(self, channel_id: str, *, keyboard: ComposerKeyboard \| None = None) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L70) |
+| `prune_owned` | async-method | `(self, active_channel_ids: set[str]) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L100) |
+| `setup` | method | `(self, builder: PluginBuilder) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L43) |
+| `shutdown` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L63) |
+| `startup` | async-method | `(self, context: PluginContext) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L46) |
+| `uninstall` | async-method | `(self, channel_id: str) -> None` | [src/mattergram/contrib/composer_keyboard/plugin.py](../../src/mattergram/contrib/composer_keyboard/plugin.py#L113) |
 
 ## `mattergram.contrib.game_accounts_admin`
 
@@ -1075,62 +1174,145 @@ Dependency group: `core`.
 
 | Export | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `AccountCredentials` | class | `(login: str, password: SecretStr, cookies: tuple[StoredCookie, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L94) |
+| `ActiveJobConflict` | class | `(job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L101) |
+| `AccountCredentials` | class | `(login: str, password: SecretStr, cookies: tuple[StoredCookie, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L103) |
+| `AccountCardData` | class | `(id: str, login: str, has_password: bool, cookies: tuple[CookieMetadata, ...] = (), environment: AccountEnvironment = <factory>, status: AccountStatus = 'unchecked', last_checked_at: str \| None = None, last_error: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L125) |
+| `AccountCheck` | class | `(*, id: str, check: str, on_cancel: CheckHandler \| None = None, when: WhenCondition = None) -> None` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py#L99) |
+| `AccountCheckData` | class | `(account_id: str, job_id: str, state: AccountCheckState, stage: str, current: int = 0, total: int \| None = None, started_at: str \| None = None, finished_at: str \| None = None, valid: int = 0, invalid: int = 0, errors: int = 0, error: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L137) |
+| `AccountCheckState` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
+| `AccountEnvironment` | class | `(ip: str = '', country: str = '', region: str = '', city: str = '', user_agent: str = '') -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L110) |
+| `AccountCard` | class | `(*, id: str, card: str, on_check: CheckHandler, check: str \| None = None, on_cancel: CheckHandler \| None = None, edit_state: State \| None = None, delete_state: State \| None = None, when: WhenCondition = None) -> None` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py#L190) |
+| `AccountList` | class | `(*, id: str, page: str, when: WhenCondition = None) -> None` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py#L70) |
+| `AccountListFilter` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
+| `AccountListItem` | class | `(id: str, login: str, has_credentials: bool, cookie_count: int, country: str) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L201) |
+| `AccountListPage` | class | `(items: tuple[AccountListItem, ...], page: int, pages: int, total: int, query: AccountListQuery) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L210) |
+| `AccountListQuery` | class | `(page: int = 0, page_size: int = 5, filter: AccountListFilter = 'all', sort: AccountListSort = 'newest') -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L183) |
+| `AccountListSort` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `AccountStatus` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `AccountVerifier` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L11) |
 | `AdminInputError` | class | `(field_errors: Mapping[str, str]) -> None` | [src/mattergram/contrib/game_accounts_admin/errors.py](../../src/mattergram/contrib/game_accounts_admin/errors.py#L6) |
 | `AdminPanel` | class | `()` | [src/mattergram/contrib/game_accounts_admin/states.py](../../src/mattergram/contrib/game_accounts_admin/states.py#L6) |
 | `AdminRole` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `AdminUser` | class | `(id: str, mattermost_user_id: str, username: str, role: AdminRole, enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L46) |
-| `CheckRun` | class | `(id: str, created_at: str, actor_id: str, scope: str, total: int, valid: int, invalid: int, errors: int, status: RunStatus) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L131) |
-| `CheckAllAccountsJob` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L32) |
-| `CheckImportedAccountsJob` | class | `(import_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L37) |
-| `CoalescingDialogJobUpdater` | class | `(updater: CoalescingDialogUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L121) |
-| `DialogJobUpdater` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L111) |
-| `EphemeralMemoryGameAdminJobQueue` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L242) |
-| `EphemeralMemoryGameAdminJobRepository` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L171) |
-| `GameAccount` | class | `(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str \| None = None, last_error: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L101) |
-| `GameAdminJob` | class | `(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int \| None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L46) |
+| `AdminUser` | class | `(id: str, mattermost_user_id: str, username: str, role: AdminRole, enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L55) |
+| `CheckRun` | class | `(id: str, created_at: str, actor_id: str, scope: str, total: int, valid: int, invalid: int, errors: int, status: RunStatus) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L239) |
+| `CheckAccountJob` | class | `(account_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L32) |
+| `CookieMetadata` | class | `(domain: str, name: str) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L119) |
+| `CheckAllAccountsJob` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L37) |
+| `CheckImportedAccountsJob` | class | `(import_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L42) |
+| `CoalescingDialogJobUpdater` | class | `(updater: CoalescingDialogUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L139) |
+| `CredentialRevealPolicy` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L27) |
+| `DenyCredentialRevealPolicy` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/credentials.py](../../src/mattergram/contrib/game_accounts_admin/credentials.py#L10) |
+| `DialogJobUpdater` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L129) |
+| `EphemeralMemoryGameAdminJobQueue` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L273) |
+| `EphemeralMemoryGameAdminJobRepository` | class | `() -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L189) |
+| `GameAccount` | class | `(id: str, game: str, credentials: AccountCredentials, status: AccountStatus = 'unchecked', last_checked_at: str \| None = None, last_error: str \| None = None, environment: AccountEnvironment = <factory>, created_at: str = <factory>) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L171) |
+| `GameAdminJob` | class | `(id: str, actor_id: str, dialog_ref: DialogRef, payload: GameAdminJobPayload, created_at: str, updated_at: str, started_at: str \| None = None, finished_at: str \| None = None, single_flight_key: str \| None = None, revision: int = 0, state: GameAdminJobState = 'queued', current: int = 0, total: int \| None = None, stage: str = 'queued', cancel_requested: bool = False, dialog_outdated: bool = False, result: GameAdminJobResult = None, error_type: str \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L53) |
 | `GameAdminJobPayload` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `GameAdminJobQueue` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L105) |
-| `GameAdminJobRepository` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L91) |
+| `GameAdminJobQueue` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L123) |
+| `GameAdminJobRepository` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L109) |
 | `GameAdminJobResult` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `GameAdminJobRunner` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, updater: DialogJobUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L332) |
+| `GameAdminJobRunner` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, updater: DialogJobUpdater) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L419) |
 | `GameAdminJobState` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `GameAdminJobs` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, queue: GameAdminJobQueue) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L258) |
-| `GameAccountsAdminService` | class | `(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory) -> None` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L31) |
-| `GameAdminActions` | class | `(service: GameAccountsAdminService, jobs: GameAdminJobs \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L15) |
-| `GameAdminGetters` | class | `(service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L13) |
-| `GameAdminHandlerContext` | class | `(runtime: DialogRuntime, service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L26) |
+| `GameAdminJobs` | class | `(service: GameAccountsAdminService, repository: GameAdminJobRepository, queue: GameAdminJobQueue) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L289) |
+| `GameAccountsAdminService` | class | `(repository: MemoryAdminRepository, *, games: Sequence[str], verifier: AccountVerifier, import_reader: ImportFileReader, push_dispatcher: PushDispatcher, user_directory: TeamUserDirectory, credential_reveal_policy: CredentialRevealPolicy \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L53) |
+| `GameAdminActions` | class | `(service: GameAccountsAdminService, jobs: GameAdminJobs \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L21) |
+| `GameAdminGetters` | class | `(service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L16) |
+| `GameAdminHandlerContext` | class | `(runtime: DialogRuntime, service: GameAccountsAdminService) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L30) |
 | `GAME_ADMIN_KEYBOARD_ROUTES` | mapping | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `GAME_ADMIN_SLASH_ROUTES` | mapping | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `ImportFileReader` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L15) |
 | `ImportAccountsJob` | class | `(game: str, file_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L26) |
-| `ImportRun` | class | `(id: str, created_at: str, actor_id: str, game: str, total: int, imported: int, rejected: int, status: RunStatus, account_ids: tuple[str, ...] = (), issues: tuple[str, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L117) |
+| `ImportRun` | class | `(id: str, created_at: str, actor_id: str, game: str, total: int, imported: int, rejected: int, status: RunStatus, account_ids: tuple[str, ...] = (), issues: tuple[str, ...] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L225) |
 | `MemoryAdminRepository` | class | `(*, users: Sequence[AdminUser] = ()) -> None` | [src/mattergram/contrib/game_accounts_admin/repository.py](../../src/mattergram/contrib/game_accounts_admin/repository.py#L9) |
-| `JobRevisionConflict` | class | — | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L87) |
+| `MattermostDirectMessageCredentialPolicy` | class | `(bot: Bot) -> None` | [src/mattergram/contrib/game_accounts_admin/credentials.py](../../src/mattergram/contrib/game_accounts_admin/credentials.py#L17) |
+| `MattermostPushDispatcher` | class | `(bot: Bot, *, mentions: Sequence[str] = (), priority: MessagePriority \| None = None) -> None` | [src/mattergram/contrib/game_accounts_admin/push.py](../../src/mattergram/contrib/game_accounts_admin/push.py#L16) |
+| `JobRevisionConflict` | class | — | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L97) |
 | `PUSH_EVENTS` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `PushDestinationKind` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
 | `PushDispatcher` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L19) |
 | `PushEvent` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `PushRule` | class | `(id: str, destination_kind: PushDestinationKind, destination_id: str, events: tuple[PushEvent, ...], enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L78) |
+| `PushRule` | class | `(id: str, destination_kind: PushDestinationKind, destination_id: str, events: tuple[PushEvent, ...], enabled: bool = True) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L87) |
 | `RunStatus` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `StoredCookie` | class | `(domain: str, name: str, value: SecretStr) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L87) |
-| `TeamUser` | class | `(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L55) |
+| `StoredCookie` | class | `(domain: str, name: str, value: SecretStr) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L96) |
+| `TeamUser` | class | `(id: str, username: str, display_name: str = '', is_bot: bool = False) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L64) |
 | `TeamUserDirectory` | class | `(*args, **kwargs)` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L23) |
 | `TERMINAL_JOB_STATES` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `VerificationResult` | class | `(valid: bool, summary: str) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L111) |
-| `build_admin_dialog` | function | `(service: GameAccountsAdminService, *, jobs: GameAdminJobs \| None = None) -> Dialog` | [src/mattergram/contrib/game_accounts_admin/dialog.py](../../src/mattergram/contrib/game_accounts_admin/dialog.py#L53) |
-| `build_admin_keyboard` | function | `() -> ComposerKeyboard` | [src/mattergram/contrib/game_accounts_admin/keyboard.py](../../src/mattergram/contrib/game_accounts_admin/keyboard.py#L6) |
-| `dialog_ref_from_manager` | function | `(manager: DialogManager) -> DialogRef` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L150) |
+| `VerificationResult` | class | `(valid: bool, summary: str) -> None` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L219) |
+| `build_admin_dialog` | function | `(service: GameAccountsAdminService, *, jobs: GameAdminJobs \| None = None) -> Dialog` | [src/mattergram/contrib/game_accounts_admin/dialog.py](../../src/mattergram/contrib/game_accounts_admin/dialog.py#L57) |
+| `build_account_check_blocks` | function | `(check: AccountCheckData, *, cancel: Block \| None = None, embedded: bool = False) -> tuple[Block, ...]` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py#L28) |
+| `build_account_card_blocks` | function | `(card: AccountCardData, *, check: Block \| None = None, edit: Block \| None = None, delete: Block \| None = None, progress: Block \| None = None) -> tuple[Block, ...]` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py#L50) |
+| `build_admin_keyboard` | function | `() -> ComposerKeyboard` | [src/mattergram/contrib/game_accounts_admin/keyboard.py](../../src/mattergram/contrib/game_accounts_admin/keyboard.py#L15) |
+| `build_operator_keyboard` | function | `() -> ComposerKeyboard` | [src/mattergram/contrib/game_accounts_admin/keyboard.py](../../src/mattergram/contrib/game_accounts_admin/keyboard.py#L30) |
+| `dialog_ref_from_manager` | function | `(manager: DialogManager) -> DialogRef` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L168) |
+| `account_check_dialog_data` | function | `(job: GameAdminJob) -> dict[str, object]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L380) |
 | `game_admin_router` | value | — | [src/mattergram/contrib/game_accounts_admin/__init__.py](../../src/mattergram/contrib/game_accounts_admin/__init__.py#L1) |
-| `open_game_admin` | async-function | `(event: SlashCommand, game_admin: GameAdminHandlerContext) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L43) |
-| `register_admin_panel` | function | `(dispatcher: Dispatcher, runtime: DialogRuntime, service: GameAccountsAdminService, *, command: str = 'game-admin') -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L67) |
-| `respond_to_game_admin_keyboard` | async-function | `(event: Message, game_admin: GameAdminHandlerContext) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L56) |
+| `open_game_admin` | async-function | `(event: SlashCommand, game_admin: GameAdminHandlerContext) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L47) |
+| `register_admin_panel` | function | `(dispatcher: Dispatcher, runtime: DialogRuntime, service: GameAccountsAdminService, *, command: str = 'game-admin') -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L82) |
+| `respond_to_game_admin_keyboard` | async-function | `(event: Message, game_admin: GameAdminHandlerContext) -> None` | [src/mattergram/contrib/game_accounts_admin/router.py](../../src/mattergram/contrib/game_accounts_admin/router.py#L69) |
+
+### `ActiveJobConflict`
+
+A job with the same atomic single-flight key is already active.
 
 ### `AccountCredentials`
 
 AccountCredentials(login: 'str', password: 'SecretStr', cookies: 'tuple[StoredCookie, ...]' = ())
+
+### `AccountCardData`
+
+AccountCardData(id: 'str', login: 'str', has_password: 'bool', cookies: 'tuple[CookieMetadata, ...]' = (), environment: 'AccountEnvironment' = <factory>, status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)
+
+### `AccountCheck`
+
+Render one account-check lifecycle and an optional cancellation action.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py#L159) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_check.py#L116) |
+
+### `AccountCheckData`
+
+Secret-free snapshot rendered by the reusable account-check component.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `active` | property | `(self) -> bool` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L166) |
+
+### `AccountEnvironment`
+
+AccountEnvironment(ip: 'str' = '', country: 'str' = '', region: 'str' = '', city: 'str' = '', user_agent: 'str' = '')
+
+### `AccountCard`
+
+Render one selected account and its local check action in the current post.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py#L330) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_card.py#L218) |
+
+### `AccountList`
+
+Backend-paged account table with per-dialog filter and sort state.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py#L276) |
+| `query` | method | `(self, manager: Any) -> AccountListQuery` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py#L94) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py](../../src/mattergram/contrib/game_accounts_admin/mattermost_ui/account_list.py#L169) |
+
+### `AccountListItem`
+
+AccountListItem(id: 'str', login: 'str', has_credentials: 'bool', cookie_count: 'int', country: 'str')
+
+### `AccountListPage`
+
+AccountListPage(items: 'tuple[AccountListItem, ...]', page: 'int', pages: 'int', total: 'int', query: 'AccountListQuery')
+
+### `AccountListQuery`
+
+AccountListQuery(page: 'int' = 0, page_size: 'int' = 5, filter: 'AccountListFilter' = 'all', sort: 'AccountListSort' = 'newest')
 
 ### `AccountVerifier`
 
@@ -1146,6 +1328,14 @@ AdminUser(id: 'str', mattermost_user_id: 'str', username: 'str', role: 'AdminRol
 
 CheckRun(id: 'str', created_at: 'str', actor_id: 'str', scope: 'str', total: 'int', valid: 'int', invalid: 'int', errors: 'int', status: 'RunStatus')
 
+### `CheckAccountJob`
+
+CheckAccountJob(account_id: 'str')
+
+### `CookieMetadata`
+
+CookieMetadata(domain: 'str', name: 'str')
+
 ### `CheckAllAccountsJob`
 
 CheckAllAccountsJob()
@@ -1160,13 +1350,27 @@ Adapt the shared dialog coalescer to background-job progress snapshots.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L127) |
+| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L145) |
+
+### `CredentialRevealPolicy`
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `allows` | async-method | `(self, actor_id: str, channel_id: str) -> bool` | [src/mattergram/contrib/game_accounts_admin/ports.py](../../src/mattergram/contrib/game_accounts_admin/ports.py#L28) |
+
+### `DenyCredentialRevealPolicy`
+
+DenyCredentialRevealPolicy()
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `allows` | async-method | `(self, actor_id: str, channel_id: str) -> bool` | [src/mattergram/contrib/game_accounts_admin/credentials.py](../../src/mattergram/contrib/game_accounts_admin/credentials.py#L12) |
 
 ### `DialogJobUpdater`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L112) |
+| `update` | async-method | `(self, ref: DialogRef, data: dict[str, object] \| None = None, *, revision: int \| None = None) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L130) |
 
 ### `EphemeralMemoryGameAdminJobQueue`
 
@@ -1174,9 +1378,9 @@ Process-local, non-durable queue for the owned local demo only.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `dequeue` | async-method | `(self) -> str` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L251) |
-| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L248) |
-| `task_done` | method | `(self) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L254) |
+| `dequeue` | async-method | `(self) -> str` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L282) |
+| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L279) |
+| `task_done` | method | `(self) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L285) |
 
 ### `EphemeralMemoryGameAdminJobRepository`
 
@@ -1184,16 +1388,16 @@ Process-local demo/test repository. Never use it as production persistence.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L180) |
-| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L189) |
-| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L193) |
-| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L207) |
-| `revisions` | async-method | `(self, job_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L235) |
-| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L229) |
+| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L198) |
+| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L218) |
+| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L222) |
+| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L236) |
+| `revisions` | async-method | `(self, job_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L266) |
+| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L260) |
 
 ### `GameAccount`
 
-GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None)
+GameAccount(id: 'str', game: 'str', credentials: 'AccountCredentials', status: 'AccountStatus' = 'unchecked', last_checked_at: 'str | None' = None, last_error: 'str | None' = None, environment: 'AccountEnvironment' = <factory>, created_at: 'str' = <factory>)
 
 ### `GameAdminJob`
 
@@ -1201,7 +1405,7 @@ Durable, secret-free snapshot of one background operation.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `terminal` | property | `(self) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L82) |
+| `terminal` | property | `(self) -> bool` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L92) |
 
 ### `GameAdminJobQueue`
 
@@ -1209,19 +1413,19 @@ Production queue port. Delivery may be at-least-once.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L108) |
+| `enqueue` | async-method | `(self, job_id: str) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L126) |
 
 ### `GameAdminJobRepository`
 
-Durable production port; implementations must use compare-and-swap revisions.
+Durable port with CAS revisions and atomic active single-flight keys.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L94) |
-| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L96) |
-| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L98) |
-| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L100) |
-| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L102) |
+| `create` | async-method | `(self, job: GameAdminJob) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L112) |
+| `get` | async-method | `(self, job_id: str) -> GameAdminJob \| None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L114) |
+| `replace` | async-method | `(self, job: GameAdminJob, *, expected_revision: int) -> None` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L116) |
+| `request_cancel` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L118) |
+| `terminal_history` | async-method | `(self, actor_id: str) -> tuple[GameAdminJob, ...]` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L120) |
 
 ### `GameAdminJobRunner`
 
@@ -1229,7 +1433,7 @@ Execute queued imports/checks and publish ordered, actor-scoped progress.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `run` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L427) |
+| `run` | async-method | `(self, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L517) |
 
 ### `GameAdminJobs`
 
@@ -1237,33 +1441,40 @@ Authorize and enqueue background work without choosing infrastructure adapters.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `cancel` | async-method | `(self, actor_id: str, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L318) |
-| `check_all` | async-method | `(self, actor_id: str, dialog_ref: DialogRef) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L303) |
-| `check_import` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, import_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L306) |
-| `import_accounts` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, *, game: str, file_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L293) |
+| `cancel` | async-method | `(self, actor_id: str, job_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L366) |
+| `check_account` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, account_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L340) |
+| `check_all` | async-method | `(self, actor_id: str, dialog_ref: DialogRef) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L337) |
+| `check_import` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, import_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L354) |
+| `import_accounts` | async-method | `(self, actor_id: str, dialog_ref: DialogRef, *, game: str, file_id: str) -> GameAdminJob` | [src/mattergram/contrib/game_accounts_admin/jobs.py](../../src/mattergram/contrib/game_accounts_admin/jobs.py#L327) |
 
 ### `GameAccountsAdminService`
 
-Administrator-only application service with an explicit secret boundary.
+Role-aware game-account service with an explicit secret boundary.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L101) |
-| `check_account` | async-method | `(self, actor_id: str, account_id: str) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L336) |
-| `check_all` | async-method | `(self, actor_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L339) |
-| `check_import` | async-method | `(self, actor_id: str, import_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L349) |
-| `dashboard` | async-method | `(self, actor_id: str) -> dict[str, int]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L59) |
-| `import_accounts` | async-method | `(self, actor_id: str, *, game: str, file_id: str, progress: OperationProgress \| None = None) -> ImportRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L236) |
-| `list_accounts` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L272) |
-| `list_available_team_users` | async-method | `(self, actor_id: str) -> list[TeamUser]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L87) |
-| `list_checks` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L384) |
-| `list_imports` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L368) |
-| `list_push_rules` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L172) |
-| `list_users` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L71) |
-| `require_admin` | method | `(self, actor_id: str) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L53) |
-| `save_push_rule` | async-method | `(self, actor_id: str, *, rule_id: str \| None, destination_kind: PushDestinationKind, destination_id: str, events: Sequence[str], enabled: bool) -> PushRule` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L194) |
-| `update_account` | async-method | `(self, actor_id: str, account_id: str, *, login: str, password: str \| None, cookies_json: str \| None) -> GameAccount` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L281) |
-| `update_user` | async-method | `(self, actor_id: str, user_id: str, *, username: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L135) |
+| `account_card` | async-method | `(self, actor_id: str, account_id: str) -> AccountCardData` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L388) |
+| `add_user` | async-method | `(self, actor_id: str, *, mattermost_user_id: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L140) |
+| `can_reveal_credentials` | async-method | `(self, actor_id: str, channel_id: str) -> bool` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L384) |
+| `check_account` | async-method | `(self, actor_id: str, account_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L474) |
+| `check_all` | async-method | `(self, actor_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L488) |
+| `check_import` | async-method | `(self, actor_id: str, import_id: str, *, progress: OperationProgress \| None = None) -> CheckRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L498) |
+| `dashboard` | async-method | `(self, actor_id: str) -> dict[str, int]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L97) |
+| `delete_account` | async-method | `(self, actor_id: str, account_id: str) -> GameAccount` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L445) |
+| `import_accounts` | async-method | `(self, actor_id: str, *, game: str, file_id: str, progress: OperationProgress \| None = None) -> ImportRun` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L277) |
+| `list_accounts` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L314) |
+| `list_available_team_users` | async-method | `(self, actor_id: str) -> list[TeamUser]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L126) |
+| `list_checks` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L533) |
+| `list_imports` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L517) |
+| `list_push_rules` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L211) |
+| `list_users` | async-method | `(self, actor_id: str) -> list[dict[str, Any]]` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L109) |
+| `query_accounts` | async-method | `(self, actor_id: str, query: AccountListQuery) -> AccountListPage` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L323) |
+| `require_admin` | method | `(self, actor_id: str) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L77) |
+| `require_operator` | method | `(self, actor_id: str) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L83) |
+| `resolve_role` | async-method | `(self, actor_id: str) -> str \| None` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L89) |
+| `save_push_rule` | async-method | `(self, actor_id: str, *, rule_id: str \| None, destination_kind: PushDestinationKind, destination_id: str, events: Sequence[str], enabled: bool) -> PushRule` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L235) |
+| `update_account` | async-method | `(self, actor_id: str, account_id: str, *, login: str, password: str \| None, cookies_json: str \| None) -> GameAccount` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L409) |
+| `update_user` | async-method | `(self, actor_id: str, user_id: str, *, username: str, role: AdminRole, enabled: bool) -> AdminUser` | [src/mattergram/contrib/game_accounts_admin/service.py](../../src/mattergram/contrib/game_accounts_admin/service.py#L174) |
 
 ### `GameAdminActions`
 
@@ -1271,18 +1482,20 @@ Apply business actions and form submissions for the dialog declaration.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `add_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L131) |
-| `add_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L75) |
-| `cancel_job` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L192) |
-| `check_all` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L46) |
-| `check_imported` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L57) |
-| `check_selected` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L37) |
-| `edit_account` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L137) |
-| `edit_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L134) |
-| `edit_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L89) |
-| `import_accounts` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L156) |
-| `refresh_home` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L34) |
-| `save_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager, *, edit: bool) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L108) |
+| `add_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L207) |
+| `add_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L151) |
+| `cancel_job` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L288) |
+| `cancel_selected_check` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L111) |
+| `check_all` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L120) |
+| `check_imported` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L132) |
+| `check_selected` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L54) |
+| `delete_account` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L232) |
+| `edit_account` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L213) |
+| `edit_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L210) |
+| `edit_user` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L165) |
+| `import_accounts` | async-method | `(self, event: DialogSubmission, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L252) |
+| `refresh_home` | async-method | `(self, manager: DialogManager) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L51) |
+| `save_push` | async-method | `(self, event: DialogSubmission, manager: DialogManager, *, edit: bool) -> None` | [src/mattergram/contrib/game_accounts_admin/actions.py](../../src/mattergram/contrib/game_accounts_admin/actions.py#L184) |
 
 ### `GameAdminGetters`
 
@@ -1290,16 +1503,16 @@ Load render-only data without owning navigation or form side effects.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `accounts` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L44) |
-| `available_user_options` | async-method | `(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L32) |
-| `checks` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L50) |
-| `home` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L19) |
-| `imports` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L47) |
-| `pushes` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L41) |
-| `selected_account` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L63) |
-| `selected_push` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L58) |
-| `selected_user` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L53) |
-| `users` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L25) |
+| `accounts` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L90) |
+| `available_user_options` | async-method | `(self, data: Mapping[str, Any], manager: DialogManager) -> tuple[Option, ...]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L78) |
+| `checks` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L117) |
+| `home` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L62) |
+| `imports` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L114) |
+| `pushes` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L87) |
+| `selected_account` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L130) |
+| `selected_push` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L125) |
+| `selected_user` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L120) |
+| `users` | async-method | `(self, manager: DialogManager) -> Mapping[str, Any]` | [src/mattergram/contrib/game_accounts_admin/getters.py](../../src/mattergram/contrib/game_accounts_admin/getters.py#L71) |
 
 ### `GameAdminHandlerContext`
 
@@ -1322,6 +1535,23 @@ ImportRun(id: 'str', created_at: 'str', actor_id: 'str', game: 'str', total: 'in
 ### `MemoryAdminRepository`
 
 Explicit non-durable repository for tests and local development.
+
+### `MattermostDirectMessageCredentialPolicy`
+
+MattermostDirectMessageCredentialPolicy(bot: 'Bot')
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `allows` | async-method | `(self, actor_id: str, channel_id: str) -> bool` | [src/mattergram/contrib/game_accounts_admin/credentials.py](../../src/mattergram/contrib/game_accounts_admin/credentials.py#L21) |
+
+### `MattermostPushDispatcher`
+
+Deliver enabled Game Admin events as ordinary non-silent Mattermost posts.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `deliver` | async-method | `(self, rule: PushRule, event: PushEvent, text: str) -> Message` | [src/mattergram/contrib/game_accounts_admin/push.py](../../src/mattergram/contrib/game_accounts_admin/push.py#L45) |
+| `send` | async-method | `(self, rule: PushRule, event: PushEvent, text: str) -> None` | [src/mattergram/contrib/game_accounts_admin/push.py](../../src/mattergram/contrib/game_accounts_admin/push.py#L42) |
 
 ### `JobRevisionConflict`
 
@@ -1347,7 +1577,7 @@ One active human Mattermost account available to this application.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `option_label` | property | `(self) -> str` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L68) |
+| `option_label` | property | `(self) -> str` | [src/mattergram/contrib/game_accounts_admin/models.py](../../src/mattergram/contrib/game_accounts_admin/models.py#L77) |
 
 ### `TeamUserDirectory`
 
@@ -1363,13 +1593,29 @@ VerificationResult(valid: 'bool', summary: 'str')
 
 Build the complete administrator panel against one application service.
 
+### `build_account_check_blocks`
+
+Build a secret-free status card from factual backend metrics.
+
+### `build_account_card_blocks`
+
+Build an expanded safe card without password or session-cookie values.
+
 ### `build_admin_keyboard`
 
-Declare the persistent global navigation for the administrator panel.
+Declare only the three primary administrator destinations.
+
+### `build_operator_keyboard`
+
+Declare primary account destinations without user administration.
 
 ### `dialog_ref_from_manager`
 
 Capture durable coordinates for the active Mattermost dialog post.
+
+### `account_check_dialog_data`
+
+Return JSON-compatible dialog state for one selected-account check.
 
 ### `open_game_admin`
 
@@ -1392,7 +1638,7 @@ Dependency group: `core`.
 | `Capability` | class | `(status: Support, source: str, checked_at: str = '2026-11-12', reason: str = '') -> None` | [src/mattergram/ui/capabilities.py](../../src/mattergram/ui/capabilities.py#L28) |
 | `ComposerButton` | class | `(*, id: Annotated[str, _PydanticGeneralMetadata(pattern='^[A-Za-z0-9_-]{1,64}$')], text: Annotated[str, MinLen(min_length=1)], message: Annotated[str, MinLen(min_length=1)], style: Literal['default', 'primary', 'danger'] = 'default', disabled: bool = False) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L19) |
 | `ComposerKeyboard` | class | `(*, schema_version: Literal[1] = 1, title: Annotated[str, MinLen(min_length=1)] = 'Choose an action', rows: Annotated[tuple[Annotated[tuple[mattergram.ui.composer.ComposerButton, Ellipsis], BeforeValidator(func=<function sequence>, json_schema_input_type=PydanticUndefined)], Ellipsis], BeforeValidator(func=<function _rows>, json_schema_input_type=PydanticUndefined)]) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L46) |
-| `ComposerKeyboardState` | class | `(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], keyboard: mattergram.ui.composer.ComposerKeyboard) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L77) |
+| `ComposerKeyboardState` | class | `(*, channel_id: Annotated[str, MinLen(min_length=1)], revision: Annotated[int, Ge(ge=1)], owner_id: Annotated[str \| None, MinLen(min_length=1)] = None, keyboard: mattergram.ui.composer.ComposerKeyboard) -> None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L77) |
 | `Form` | class | `(*, callback_id: Annotated[str, MinLen(min_length=1)], title: Annotated[str, MinLen(min_length=1)], elements: Annotated[tuple[mattergram.ui.forms.TextInput \| mattergram.ui.forms.TextArea \| mattergram.ui.forms.Select \| mattergram.ui.forms.MultiSelect \| mattergram.ui.forms.Checkbox \| mattergram.ui.forms.Radio \| mattergram.ui.forms.CheckboxGroup \| mattergram.ui.forms.CheckboxMatrix \| mattergram.ui.forms.DatePicker \| mattergram.ui.forms.DateTimePicker \| mattergram.ui.forms.FileInput \| mattergram.ui.forms.DialogButton \| mattergram.ui.forms.Collapsible, Ellipsis], BeforeValidator(func=<function sequence>, json_schema_input_type=PydanticUndefined)] = (), introduction_text: str \| None = None, icon_url: str \| None = None, submit_label: str \| None = None, notify_on_cancel: bool = False, state: str = '', source_url: str \| None = None) -> None` | [src/mattergram/ui/forms.py](../../src/mattergram/ui/forms.py#L402) |
 | `Option` | class | `(*, text: Annotated[str, MinLen(min_length=1)], value: Annotated[str, MinLen(min_length=1)]) -> None` | [src/mattergram/ui/forms.py](../../src/mattergram/ui/forms.py#L15) |
 | `UIConversionError` | class | `(path: str, reason: str) -> None` | [src/mattergram/ui/input_base.py](../../src/mattergram/ui/input_base.py#L33) |
@@ -1429,7 +1675,7 @@ Plugin-confirmed keyboard state and its monotonically increasing revision.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `valid_channel_id` | class-method | `(cls, value: str) -> str` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L84) |
+| `valid_native_id` | class-method | `(cls, value: str \| None) -> str \| None` | [src/mattergram/ui/composer.py](../../src/mattergram/ui/composer.py#L85) |
 
 ### `Form`
 
@@ -1788,22 +2034,22 @@ Dependency group: `core`.
 | `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L184) |
 | `ActionTable` | class | `(*columns: ActionColumn, id: str, title: str, items: ItemsGetter, item_id: CellGetter, selection_key: str, actions: tuple[RowAction, ...], color: str = '#3d85c6', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L156) |
 | `ActionWidget` | class | `(*args, **kwargs)` | [src/mattergram_dialog/widgets/common/action.py](../../src/mattergram_dialog/widgets/common/action.py#L24) |
-| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L363) |
 | `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L82) |
 | `ButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
-| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
+| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
 | `ButtonResult` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
-| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L305) |
 | `Case` | class | `(texts: Mapping[Any, Text], selector: Selector, *, default: Text \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/multi.py](../../src/mattergram_dialog/widgets/text/multi.py#L12) |
 | `Checkbox` | class | `(*, id: str, label: str, default: bool \| None \| DynamicFormValue = None, help_text: str \| None = None, placeholder: str \| None = None, label_position: Literal['before', 'after'] \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L108) |
 | `CheckboxGroup` | class | `(*, id: str, label: str, options: tuple[Option, ...], default_values: tuple[str, ...] \| DynamicFormValue = (), help_text: str \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L267) |
 | `CoalescingDialogUpdater` | class | `(runtime: DialogRuntime, *, interval: float = 1.0) -> None` | [src/mattergram_dialog/updates.py](../../src/mattergram_dialog/updates.py#L24) |
-| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L480) |
+| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L490) |
 | `Const` | class | `(text: str, *, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L20) |
 | `CursorList` | class | `(item_text: Text, *, id: str, loader: CursorLoader, page_size: int = 20, empty: Text \| None = None, sep: str = '\n', page_label: str \| None = 'Page {page}', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/cursor.py](../../src/mattergram_dialog/widgets/cursor.py#L24) |
 | `CursorPage` | class | `(items: Sequence[Any], next_cursor: str \| None = None) -> None` | [src/mattergram_dialog/widgets/cursor.py](../../src/mattergram_dialog/widgets/cursor.py#L13) |
-| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L734) |
-| `DataBlock` | class | `(title: str \| Text, content: Text, *widgets: Widget, id: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L63) |
+| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L744) |
+| `DataBlock` | class | `(title: str \| Text, content: Text, *widgets: Widget, id: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L64) |
 | `Dialog` | class | `(*windows: Window, launch_mode: LaunchMode = <LaunchMode.STANDARD: 'standard'>, on_start: Lifecycle \| None = None, on_process_result: Lifecycle \| None = None, on_close: Lifecycle \| None = None) -> None` | [src/mattergram_dialog/dialog.py](../../src/mattergram_dialog/dialog.py#L15) |
 | `DialogActions` | class | `(callback_url: str, context: ActionContext, *, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L50) |
 | `DialogManager` | class | `(storage: DialogStorage, key: StorageKey, registry: DialogRegistry, renderer: Renderer, *, actor_id: str, event: Any = None) -> None` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L25) |
@@ -1819,31 +2065,33 @@ Dependency group: `core`.
 | `FormWindow` | class | `(*items: Text \| FormElement \| NativeField, state: State, title: Text \| None = None, callback_id: str \| None = None, introduction: Text \| None = None, submit_label: str \| None = None, submit_text: Text \| None = None, on_submit: Any = None, getter: Getter \| None = None) -> None` | [src/mattergram_dialog/window.py](../../src/mattergram_dialog/window.py#L54) |
 | `FormValueGetter` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
 | `Format` | class | `(text: str, *, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/format.py](../../src/mattergram_dialog/widgets/text/format.py#L11) |
-| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L803) |
+| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L813) |
 | `FullButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
-| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L515) |
+| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L525) |
 | `LaunchMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/launch_mode.py](../../src/mattergram_dialog/api/entities/launch_mode.py#L4) |
-| `MattermostRenderer` | class | `(bot: Bot, channel_id: str, *, root_id: str \| None = None, open_form: Callable[[Form], Awaitable[object]] \| None = None, actions_factory: Callable[[tuple[PostControl, ...] \| tuple[PostControlGroup, ...]], Actions \| BoundActions] \| None = None, update_post: Callable[[str, Mapping[str, Any] \| None], Awaitable[object]] \| None = None, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L132) |
+| `MattermostRenderer` | class | `(bot: Bot, channel_id: str, *, root_id: str \| None = None, open_form: Callable[[Form], Awaitable[object]] \| None = None, actions_factory: Callable[[tuple[PostControl, ...] \| tuple[PostControlGroup, ...]], Actions \| BoundActions] \| None = None, update_post: Callable[[str, Mapping[str, Any] \| None], Awaitable[object]] \| None = None, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L202) |
 | `MarkdownColumn` | class | `(title: str, value: CellGetter, max_chars: int = 24, align: Alignment = 'left') -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L23) |
 | `Multi` | class | `(*texts: Text, sep: str = '\n', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L30) |
 | `MultiSelect` | class | `(*, id: str, label: str, options: tuple[Option, ...] \| DynamicFormValue = (), data_source: Literal['users', 'channels', 'dynamic'] \| None = None, data_source_url: str \| None = None, default_values: tuple[str, ...] \| DynamicFormValue = (), placeholder: str \| None = None, help_text: str \| None = None, refresh: bool = False, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L204) |
+| `NativeBlocks` | class | `(source: str, *, fallback: Text, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L151) |
 | `NativeField` | class | `(field: FormElement, *, dynamic_values: Mapping[str, DynamicFormValue] \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L40) |
 | `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
-| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L376) |
+| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L386) |
 | `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L151) |
 | `OpenFormActions` | class | `(callback_url: str, context: ActionContext, *, ui_profile: UIProfile \| None = None) -> None` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L50) |
 | `Or` | class | `(*texts: Text, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/text/base.py](../../src/mattergram_dialog/widgets/text/base.py#L40) |
-| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L606) |
+| `PostContainer` | class | `(border: bool = True, background: Literal['none', 'gray'] = 'gray', accent_color: str \| None = 'primary', gap: Literal['none', 'small', 'medium', 'large', 'xlarge'] = 'medium') -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L20) |
+| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L616) |
 | `PagedList` | class | `(item_text: Text, *, id: str, items: ItemsGetter, page_size: int = 10, filter_by: FilterGetter \| None = None, empty: Text \| None = None, sep: str = '\n', page_label: str \| None = 'Page {page}/{pages}', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/paged.py](../../src/mattergram_dialog/widgets/paged.py#L14) |
 | `PagedTable` | class | `(*columns: MarkdownColumn, id: str, items: ItemsGetter, page_size: int = 10, filter_by: FilterGetter \| None = None, empty: Text \| None = None, page_label: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L51) |
-| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L566) |
-| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L402) |
+| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L576) |
+| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L412) |
 | `Progress` | class | `(*, current: ProgressValue, total: ProgressValue \| None = None, label: str \| Text \| None = None, width: int = 12, filled: str = '█', empty: str = '░', show_percent: bool = True, show_count: bool = True, indeterminate_prefix: str = '⏳', id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/progress.py](../../src/mattergram_dialog/widgets/progress.py#L20) |
 | `Radio` | class | `(*, id: str, label: str, options: tuple[Option, ...], default: str \| None \| DynamicFormValue = None, help_text: str \| None = None, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L240) |
-| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L305) |
 | `SimpleButtonClick` | value | — | [src/mattergram_dialog/__init__.py](../../src/mattergram_dialog/__init__.py#L1) |
 | `RowAction` | class | `(id: str, label: str, state: State, style: str \| None = None) -> None` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L136) |
-| `Section` | class | `(title: str \| Text, *body: Text, level: int = 2, divider: bool = False, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L33) |
+| `Section` | class | `(title: str \| Text, *body: Text, level: int = 2, divider: bool = False, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L34) |
 | `Select` | class | `(*, id: str, label: str, options: tuple[Option, ...] \| DynamicFormValue = (), data_source: Literal['users', 'channels', 'dynamic'] \| None = None, data_source_url: str \| None = None, default: str \| None \| DynamicFormValue = None, placeholder: str \| None = None, help_text: str \| None = None, refresh: bool = False, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L168) |
 | `ShowMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/modes.py](../../src/mattergram_dialog/api/entities/modes.py#L4) |
 | `StartMode` | class | `(value: object) -> Self` | [src/mattergram_dialog/api/entities/modes.py](../../src/mattergram_dialog/api/entities/modes.py#L12) |
@@ -1854,7 +2102,7 @@ Dependency group: `core`.
 | `TextInput` | class | `(*, id: str, label: str, subtype: Literal['text', 'email', 'number', 'password', 'tel', 'url'] = 'text', default: str \| None \| DynamicFormValue = None, placeholder: str \| None = None, help_text: str \| None = None, min_length: int = 0, max_length: int = 150, optional: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/form.py](../../src/mattergram_dialog/widgets/form.py#L75) |
 | `WidgetAction` | class | `(type: str, value: str \| None = None, target_state: str \| None = None) -> None` | [src/mattergram_dialog/widgets/common/action.py](../../src/mattergram_dialog/widgets/common/action.py#L7) |
 | `WidgetActionResult` | class | `(accepted: bool = True, target_state: str \| None = None) -> None` | [src/mattergram_dialog/widgets/common/action.py](../../src/mattergram_dialog/widgets/common/action.py#L16) |
-| `Window` | class | `(text: Text, *widgets: Any, state: State, getter: Getter \| None = None) -> None` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L117) |
+| `Window` | class | `(text: Text, *widgets: Any, state: State, getter: Getter \| None = None, container: PostContainer \| None = None) -> None` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L117) |
 | `setup_dialogs` | function | `(router: Router, runtime: DialogRuntime) -> None` | [src/mattergram_dialog/runtime.py](../../src/mattergram_dialog/runtime.py#L434) |
 
 ### `AccessSettings`
@@ -1902,7 +2150,7 @@ Return to the actual previous window in this dialog context.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L360) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L370) |
 
 ### `Button`
 
@@ -1920,8 +2168,8 @@ Render explicitly declared action rows as one logical control group.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L289) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L265) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L294) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L269) |
 
 ### `ButtonRow`
 
@@ -1929,8 +2177,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L331) |
 
 ### `CoalescingDialogUpdater`
 
@@ -1949,7 +2197,7 @@ Stable three-control preset: < 1/25 >.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L483) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L493) |
 
 ### `CursorList`
 
@@ -1971,9 +2219,9 @@ Two-control preset for APIs that expose an opaque next cursor.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L792) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L795) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L761) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L802) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L805) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L771) |
 
 ### `DataBlock`
 
@@ -1981,8 +2229,8 @@ Keep one data object and all of its local actions in one attachment.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L126) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L83) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L132) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L88) |
 
 ### `Dialog`
 
@@ -1999,11 +2247,11 @@ Compile dialog transition controls to signed native Mattermost post actions.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `decode` | static-method | `(data: str \| None) -> DialogAction` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L270) |
-| `matches` | class-method | `(cls, data: str \| None) -> bool` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L306) |
-| `target_from_event` | class-method | `(cls, event: CallbackQuery) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L314) |
-| `target_state` | static-method | `(data: str \| None) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L256) |
-| `transition` | static-method | `(data: str \| None) -> tuple[str, str \| None, str \| None]` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L263) |
+| `decode` | static-method | `(data: str \| None) -> DialogAction` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L318) |
+| `matches` | class-method | `(cls, data: str \| None) -> bool` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L354) |
+| `target_from_event` | class-method | `(cls, event: CallbackQuery) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L362) |
+| `target_state` | static-method | `(data: str \| None) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L304) |
+| `transition` | static-method | `(data: str \| None) -> tuple[str, str \| None, str \| None]` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L311) |
 
 ### `DialogManager`
 
@@ -2073,9 +2321,9 @@ Render a fixed allowlist of filters for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L864) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L869) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L843) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L874) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L879) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L853) |
 
 ### `InlinePager`
 
@@ -2083,13 +2331,13 @@ Stable two-control preset for a DataBlock that also contains filters.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L535) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L545) |
 
 ### `MattermostRenderer`
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render` | async-method | `(self, plan: RenderPlan, stack: Stack, mode: ShowMode) -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L157) |
+| `render` | async-method | `(self, plan: RenderPlan, stack: Stack, mode: ShowMode) -> None` | [src/mattergram_dialog/rendering.py](../../src/mattergram_dialog/rendering.py#L227) |
 
 ### `MarkdownColumn`
 
@@ -2098,6 +2346,15 @@ MarkdownColumn(title: 'str', value: 'CellGetter', max_chars: 'int' = 24, align: 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `read` | method | `(self, item: Any) -> Any` | [src/mattergram_dialog/widgets/table.py](../../src/mattergram_dialog/widgets/table.py#L38) |
+
+### `NativeBlocks`
+
+Render an exact native block tree with a legacy text fallback.
+
+| Public member | Kind | Signature | Source |
+| --- | --- | --- | --- |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L182) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/layout.py](../../src/mattergram_dialog/widgets/layout.py#L168) |
 
 ### `NativeField`
 
@@ -2117,7 +2374,7 @@ Open the next declared window and record the current one for Back.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L383) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L393) |
 
 ### `OpenForm`
 
@@ -2132,11 +2389,15 @@ Compile dialog transition controls to signed native Mattermost post actions.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `decode` | static-method | `(data: str \| None) -> DialogAction` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L270) |
-| `matches` | class-method | `(cls, data: str \| None) -> bool` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L306) |
-| `target_from_event` | class-method | `(cls, event: CallbackQuery) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L314) |
-| `target_state` | static-method | `(data: str \| None) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L256) |
-| `transition` | static-method | `(data: str \| None) -> tuple[str, str \| None, str \| None]` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L263) |
+| `decode` | static-method | `(data: str \| None) -> DialogAction` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L318) |
+| `matches` | class-method | `(cls, data: str \| None) -> bool` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L354) |
+| `target_from_event` | class-method | `(cls, event: CallbackQuery) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L362) |
+| `target_state` | static-method | `(data: str \| None) -> str` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L304) |
+| `transition` | static-method | `(data: str \| None) -> tuple[str, str \| None, str \| None]` | [src/mattergram_dialog/bindings.py](../../src/mattergram_dialog/bindings.py#L311) |
+
+### `PostContainer`
+
+Native Blocks presentation for one visually unified post surface.
 
 ### `PageItemSelect`
 
@@ -2144,10 +2405,10 @@ Select one item from the visible page next to its pagination controls.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L719) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L727) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L662) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L694) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L729) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L737) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L672) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L704) |
 
 ### `PagedList`
 
@@ -2170,7 +2431,7 @@ Stable five-control preset: << < 1/25 > >>.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L569) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L579) |
 
 ### `Pager`
 
@@ -2178,9 +2439,9 @@ Render bounded previous/next controls for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L469) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L472) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L431) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L479) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L482) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L441) |
 
 ### `Progress`
 
@@ -2192,8 +2453,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L331) |
 
 ### `RowAction`
 
@@ -2235,8 +2496,8 @@ Post window that accepts single or grouped native navigation widgets.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L155) |
-| `render` | async-method | `(self, manager: Any) -> PostRender` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L137) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L163) |
+| `render` | async-method | `(self, manager: Any) -> PostRender` | [src/mattergram_dialog/navigation.py](../../src/mattergram_dialog/navigation.py#L145) |
 
 ## `mattergram_dialog.widgets.text`
 
@@ -2264,24 +2525,24 @@ Dependency group: `core`.
 | Export | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `ActionRow` | class | `(*widgets: Widget, id: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L184) |
-| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `Back` | class | `(text: Text, *, id: str = 'back', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L363) |
 | `Button` | class | `(text: Text, *, id: str, on_click: ButtonClick \| None = None, style: str \| None = None, disabled: bool = False, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L82) |
 | `ButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
 | `ButtonResult` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
-| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
-| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
-| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L480) |
-| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L734) |
-| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L803) |
+| `ButtonGrid` | class | `(*rows: ActionRow, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L245) |
+| `ButtonRow` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L305) |
+| `CompactPager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L490) |
+| `CursorPager` | class | `(*, id: str, target: str, previous: str = '< Newer', next: str = 'Older >', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L744) |
+| `Filter` | class | `(*, id: str, target: str, options: Mapping[str, str \| None], selected_prefix: str = '', selected_style: str \| None = 'primary', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L813) |
 | `FullButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
-| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L515) |
+| `InlinePager` | class | `(*, id: str, target: str, previous: str = '<', next: str = '>', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L525) |
 | `Navigate` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
-| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L376) |
+| `Next` | class | `(text: Text, *, id: str = 'next', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L386) |
 | `OpenForm` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L151) |
-| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L606) |
-| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L566) |
-| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L402) |
-| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L300) |
+| `PageItemSelect` | class | `(*, id: str, target: str, item_id: _ItemValue, item_label: _ItemValue, selection_key: str, placeholder: str = 'Select item', detail_title: str \| Text \| None = None, detail: str \| Text \| None = None, detail_color: str \| None = None, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L616) |
+| `PagePager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L576) |
+| `Pager` | class | `(*, id: str, target: str, previous: str = '← Previous', next: str = 'Next →', when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L412) |
+| `Row` | class | `(*widgets: Widget, id: str \| None = None, title: str \| None = None, color: str \| None = None, border: bool = True, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L305) |
 | `SimpleButtonClick` | value | — | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L1) |
 | `SwitchTo` | class | `(text: Text, *, id: str, state: State, when: WhenCondition = None) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L177) |
 
@@ -2302,7 +2563,7 @@ Return to the actual previous window in this dialog context.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L360) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L370) |
 
 ### `Button`
 
@@ -2320,8 +2581,8 @@ Render explicitly declared action rows as one logical control group.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L289) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L265) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L294) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L269) |
 
 ### `ButtonRow`
 
@@ -2329,8 +2590,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L331) |
 
 ### `CompactPager`
 
@@ -2338,7 +2599,7 @@ Stable three-control preset: < 1/25 >.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L483) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L493) |
 
 ### `CursorPager`
 
@@ -2346,9 +2607,9 @@ Two-control preset for APIs that expose an opaque next cursor.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L792) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L795) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L761) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L802) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L805) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L771) |
 
 ### `Filter`
 
@@ -2356,9 +2617,9 @@ Render a fixed allowlist of filters for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L864) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L869) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L843) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L874) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L879) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L853) |
 
 ### `InlinePager`
 
@@ -2366,7 +2627,7 @@ Stable two-control preset for a DataBlock that also contains filters.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L535) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L545) |
 
 ### `Navigate`
 
@@ -2378,7 +2639,7 @@ Open the next declared window and record the current one for Back.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L383) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L393) |
 
 ### `OpenForm`
 
@@ -2393,10 +2654,10 @@ Select one item from the visible page next to its pagination controls.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L719) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L727) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L662) |
-| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L694) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L729) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L737) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L672) |
+| `render_detail` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[str, str, str \| None] \| None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L704) |
 
 ### `PagePager`
 
@@ -2404,7 +2665,7 @@ Stable five-control preset: << < 1/25 > >>.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L569) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L579) |
 
 ### `Pager`
 
@@ -2412,9 +2673,9 @@ Render bounded previous/next controls for one PagedList.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L469) |
-| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L472) |
-| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L431) |
+| `apply` | method | `(self, value: str \| None, manager: Any) -> None` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L479) |
+| `process_action` | async-method | `(self, action: WidgetAction, event: Any, manager: Any) -> WidgetActionResult` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L482) |
+| `render_controls` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControl, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L441) |
 
 ### `Row`
 
@@ -2422,8 +2683,8 @@ Combine controls into one logical group that wraps at client width.
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L343) |
-| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L322) |
+| `find` | method | `(self, widget_id: str) -> Any` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L353) |
+| `render_control_groups` | async-method | `(self, data: Mapping[str, Any], manager: Any) -> tuple[PostControlGroup, ...]` | [src/mattergram_dialog/widgets/message.py](../../src/mattergram_dialog/widgets/message.py#L331) |
 
 ### `SwitchTo`
 

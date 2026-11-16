@@ -6,6 +6,7 @@ from mattergram.types import DialogSubmission
 from mattergram_dialog import DialogManager, ShowMode
 
 from .service import AdminUsersInputError, AdminUsersService
+from .states import AdminUsersPanel
 
 
 class AdminUsersActions:
@@ -17,14 +18,17 @@ class AdminUsersActions:
             await self.service.add_user(
                 manager.actor_id,
                 mattermost_user_id=event.values["mattermost_user_id"],
-                role=event.values["role"],
+                role=event.values.get("role", self.service.default_role),
                 enabled=event.values["enabled"],
             )
         except AdminUsersInputError as error:
             await event.field_errors(error.field_errors)
             return
+        except PermissionError:
+            await event.validation_error("Недостаточно прав для назначения выбранной роли")
+            return
         await event.answer()
-        await manager.back(show_mode=ShowMode.EDIT)
+        await manager.switch_to(AdminUsersPanel.users, show_mode=ShowMode.EDIT)
 
     async def edit(self, event: DialogSubmission, manager: DialogManager) -> None:
         selected = manager.dialog_data.get("admin_users_selected_id")
@@ -32,17 +36,21 @@ class AdminUsersActions:
             await event.validation_error("Выбранный пользователь больше недоступен")
             return
         try:
+            current = await self.service.get_user(manager.actor_id, selected)
             await self.service.update_user(
                 manager.actor_id,
                 selected,
-                role=event.values["role"],
+                role=event.values.get("role", current.role),
                 enabled=event.values["enabled"],
             )
         except AdminUsersInputError as error:
             await event.field_errors(error.field_errors)
             return
+        except PermissionError:
+            await event.validation_error("Недостаточно прав для изменения роли")
+            return
         await event.answer()
-        await manager.back(show_mode=ShowMode.EDIT)
+        await manager.switch_to(AdminUsersPanel.users, show_mode=ShowMode.EDIT)
 
 
 __all__ = ["AdminUsersActions"]

@@ -99,12 +99,54 @@ class OpenFormActions:
             def external(control: PostControl) -> External:
                 return External(url=self.callback_url, data=payload(control))
 
+            if use_blocks and declaration.native_blocks:
+                blocks.extend(declaration.native_blocks)
+                continue
+
+            if use_blocks and declaration.native_control_blocks is not None:
+                by_id = {control.id: control for control in declaration.controls}
+                if len(by_id) != len(declaration.controls):
+                    raise ValueError("Native control block IDs must be unique")
+                used: set[str] = set()
+
+                def bind(identifier: str) -> Block:
+                    control = by_id.get(identifier)
+                    if control is None:
+                        raise ValueError(f"Native control layout references unknown control {identifier!r}")
+                    if identifier in used:
+                        raise ValueError(f"Native control layout references {identifier!r} more than once")
+                    used.add(identifier)
+                    if control.options:
+                        return StaticSelect(
+                            action_id=control.id,
+                            placeholder=control.label,
+                            options=control.options,
+                            initial_option=control.initial_option,
+                            disabled=control.disabled,
+                            action=external(control),
+                        )
+                    return BlockButton(
+                        action_id=control.id,
+                        text=control.label,
+                        disabled=control.disabled,
+                        style=control.style,
+                        tooltip=control.tooltip,
+                        action=external(control),
+                    )
+
+                native_blocks = declaration.native_control_blocks(bind)
+                missing = set(by_id) - used
+                if missing:
+                    raise ValueError("Native control layout omitted controls: " + ", ".join(sorted(missing)))
+                blocks.extend(native_blocks)
+                continue
+
             group = (
                 Actions(
                     items=tuple(
                         ActionSelect(
                             id=control.id,
-                            name=control.label,
+                            name=control.legacy_label or control.label,
                             disabled=control.disabled,
                             style=control.style,
                             options=control.options,
@@ -114,7 +156,7 @@ class OpenFormActions:
                         if control.options
                         else Button(
                             id=control.id,
-                            name=control.label,
+                            name=control.legacy_label or control.label,
                             disabled=control.disabled,
                             style=control.style,
                             action=external(control),
@@ -161,6 +203,7 @@ class OpenFormActions:
                                         text=control.label,
                                         disabled=control.disabled,
                                         style=control.style,
+                                        tooltip=control.tooltip,
                                         action=External(
                                             url=self.callback_url,
                                             data=payload(control),
@@ -195,6 +238,7 @@ class OpenFormActions:
                                                 text=control.label,
                                                 disabled=control.disabled,
                                                 style=control.style,
+                                                tooltip=control.tooltip,
                                                 action=external(control),
                                             ),
                                         ),
@@ -213,9 +257,13 @@ class OpenFormActions:
                                 BlockText(text="**" + declaration.detail_title + "**"),
                                 BlockText(text=declaration.detail_text),
                             ),
-                            border=True,
-                            accent_color=declaration.detail_color or declaration.color or "primary",
-                            background="gray",
+                            border=declaration.border,
+                            accent_color=(
+                                declaration.detail_color or declaration.color or "primary"
+                                if declaration.border
+                                else None
+                            ),
+                            background="gray" if declaration.border else "none",
                             flow="vertical",
                             gap="small",
                         )
@@ -223,8 +271,8 @@ class OpenFormActions:
                 blocks.append(
                     Container(
                         content=tuple(content),
-                        border=True,
-                        accent_color=declaration.color or "primary",
+                        border=declaration.border,
+                        accent_color=(declaration.color or "primary" if declaration.border else None),
                         flow="vertical",
                         gap="small",
                     )

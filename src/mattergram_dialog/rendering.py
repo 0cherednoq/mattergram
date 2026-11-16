@@ -7,10 +7,28 @@ from typing import Any, Literal, Protocol
 from mattergram.bot import Bot
 from mattergram.ui.actions import ActionContext, Actions, Attachment
 from mattergram.ui.blocks import Block, compile_post_ui
+from mattergram.ui.blocks import Container as BlockContainer
+from mattergram.ui.blocks import Text as BlockText
 from mattergram.ui.capabilities import UIProfile
 from mattergram.ui.forms import Form, Option
 from mattergram_dialog.api.entities import ShowMode, Stack
 from mattergram_dialog.api.exceptions import RendererUnavailable
+
+NativeControlBlocks = Callable[[Callable[[str], Block]], tuple[Block, ...]]
+
+
+@dataclass(frozen=True, slots=True)
+class PostContainer:
+    """Native Blocks presentation for one visually unified post surface."""
+
+    border: bool = True
+    background: Literal["none", "gray"] = "gray"
+    accent_color: str | None = "primary"
+    gap: Literal["none", "small", "medium", "large", "xlarge"] = "medium"
+
+    def __post_init__(self) -> None:
+        if type(self.border) is not bool:
+            raise TypeError("Post container border must be a bool")
 
 
 @dataclass(frozen=True, slots=True)
@@ -27,6 +45,8 @@ class PostControl:
     disabled: bool = False
     options: tuple[Option, ...] = ()
     initial_option: str | None = None
+    tooltip: str | None = None
+    legacy_label: str | None = None
 
     def __post_init__(self) -> None:
         if self.initial_option is not None and self.initial_option not in {
@@ -50,7 +70,10 @@ class PostControlGroup:
     controls: tuple[PostControl, ...]
     title: str | None = None
     color: str | None = None
+    border: bool = True
     text: str | None = None
+    native_blocks: tuple[Block, ...] = ()
+    native_control_blocks: NativeControlBlocks | None = None
     rows: tuple[tuple[PostControl, ...], ...] = ()
     row_width: Literal["auto", "stretch"] = "auto"
     table_headers: tuple[str, ...] = ()
@@ -62,8 +85,31 @@ class PostControlGroup:
     detail_color: str | None = None
 
     def __post_init__(self) -> None:
+        if type(self.border) is not bool:
+            raise TypeError("Post control group border must be a bool")
         if self.row_width not in {"auto", "stretch"}:
             raise ValueError("Post control row width must be auto or stretch")
+        if self.native_blocks and (
+            self.controls
+            or self.native_control_blocks is not None
+            or self.title is not None
+            or self.color is not None
+            or self.rows
+            or self.table_rows
+            or self.detail_text is not None
+        ):
+            raise ValueError("Native block groups cannot mix raw blocks with generated controls")
+        if self.native_control_blocks is not None:
+            if not self.controls:
+                raise ValueError("Native control block groups require controls")
+            if (
+                self.title is not None
+                or self.color is not None
+                or self.rows
+                or self.table_rows
+                or self.detail_text is not None
+            ):
+                raise ValueError("Native control layouts own their complete block structure")
         if (self.detail_title is None) != (self.detail_text is None):
             raise ValueError("Post detail title and text must be declared together")
         if self.detail_color is not None and self.detail_text is None:
@@ -115,6 +161,30 @@ class PostRender:
     text: str
     controls: tuple[PostControl, ...] = ()
     control_groups: tuple[PostControlGroup, ...] = ()
+    container: PostContainer | None = None
+
+    def compose_native(self, blocks: tuple[Block, ...]) -> tuple[str, tuple[Block, ...]]:
+        """Move fallback text and all native groups into one outer container."""
+
+        if self.container is None:
+            return self.text, blocks
+        content: tuple[Block, ...] = (
+            *((BlockText(text=self.text),) if self.text else ()),
+            *blocks,
+        )
+        return (
+            "",
+            (
+                BlockContainer(
+                    border=self.container.border,
+                    background=self.container.background,
+                    accent_color=self.container.accent_color,
+                    flow="vertical",
+                    gap=self.container.gap,
+                    content=content,
+                ),
+            ),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -186,6 +256,14 @@ class MattermostRenderer:
                 )
             else:
                 actions = built
+        post_text = plan.text
+        use_native_container = (
+            plan.container is not None
+            and ui_profile is not None
+            and ui_profile.capability("blocks").status == "supported"
+        )
+        if use_native_container:
+            post_text, blocks = plan.compose_native(blocks or ())
         if mode in (ShowMode.AUTO, ShowMode.EDIT) and stack.last_post_id is not None:
             props = compile_post_ui(
                 actions=actions,
@@ -193,21 +271,21 @@ class MattermostRenderer:
                 attachments=attachments,
                 profile=ui_profile,
                 context=action_context,
-                message=plan.text,
+                message=post_text,
             )
             if self.update_post is not None:
-                await self.update_post(plan.text, props)
+                await self.update_post(post_text, props)
             else:
                 await self.bot.edit_message_text(
                     self.channel_id,
                     stack.last_post_id,
-                    plan.text,
+                    post_text,
                     props=props,
                 )
             return
         message = await self.bot.send_message(
             self.channel_id,
-            plan.text,
+            post_text,
             root_id=self.root_id,
             actions=actions,
             blocks=blocks,
@@ -224,6 +302,7 @@ __all__ = [
     "MattermostRenderer",
     "PostControl",
     "PostControlGroup",
+    "PostContainer",
     "PostTableRow",
     "PostRender",
     "RenderPlan",

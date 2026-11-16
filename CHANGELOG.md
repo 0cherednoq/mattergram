@@ -2,6 +2,17 @@
 
 ## Unreleased — 0.1.0a1
 
+- Add declarative application plugins, role-based handler metadata, reusable `AdminUsersPlugin`
+  with optional SQLAlchemy storage, and the game-account administration feature package.
+- Add native Mattermost Blocks composition for backend-filtered account lists, entity details,
+  checks, progress, forms and one coherent editable-post workflow.
+- Add the `com.mattergram.menu` Web/Desktop plugin and Python composer-keyboard API. Keyboard
+  buttons publish ordinary user messages and remain decoupled from feature routers.
+- Ship one complete runnable example, `examples/game_accounts_admin.py`; keep smaller behavioral
+  declarations as tests and fixtures instead of independent examples.
+- Ship the portable MIT `mattergram-bot-ux` Agent Skill under `.agents/skills` in the source
+  distribution.
+
 - Pin donor and protocol references with per-file SHA-256 checks.
 - Add read-only AST inventory and a reviewed routing/filter/middleware/FSM port manifest.
 - Add migration-tool tests and an installable development scaffold.
