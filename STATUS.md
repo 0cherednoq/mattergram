@@ -822,12 +822,10 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   `build/plugins/mattergram-menu-0.2.2.tar.gz`; plugin Web/Go tests прошли. Свежий local deploy
   Mattermost 12.0.2 завершился `READY`: browser smoke подтвердил три admin entry points, два operator
   entry points, новые post на reply message, единый Accounts container, nested check, edit/delete
-  формы и скрытое управление пользователями для оператора. Внешняя публикация в PyPI/GitHub Release
-  не выполнялась без выбранного registry и release credentials.
-- Следующий конкретный шаг: выбрать release destination, выполнить подписанный upload артефактов и
-  live smoke единственного demo на release candidate.
+  формы и скрытое управление пользователями для оператора. Артефакты этого среза опубликованы как
+  `v0.1.0a1`; подтверждения выпуска перечислены ниже.
 
-## GitHub/PyPI release workflow — настроен, prerelease проходит CI
+## GitHub/PyPI release `v0.1.0a1` — опубликован
 
 - Добавлен `.github/workflows/release.yml` для тегов `v<project.version>`: tag/version gate, Ruff,
   format, strict mypy, generated docs, pytest, воспроизводимая сборка wheel/sdist, installed-artifact
@@ -848,5 +846,17 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   готовы к promotion. Quality/release jobs теперь восстанавливают ignored immutable upstream
   snapshots и inventory перед тестами генераторов/extraction, поэтому clean GitHub checkout не
   зависит от локально сохранённых `upstream/snapshots` и `build/inventory`.
-- Следующий конкретный шаг: получить зелёный повторный GitHub CI, отправить тег `v0.1.0a1` и
-  проверить фактические PyPI/GitHub Release URLs.
+- Повторный CI run `43809531189` полностью прошёл: quality (`577 passed, 23 skipped`), distributions,
+  upstream audit, Mattermost stand, Redis/Mattermost и required gate. Аннотированный тег
+  `v0.1.0a1` указывает на проверенный commit `ddff4650a4f73263b893779d1fcc77adf06160d2`.
+- Release run `43809815950` успешно собрал артефакты и опубликовал Python distributions через PyPI
+  Trusted Publishing. Проект доступен по `https://pypi.org/project/mattergram/0.1.0a1/`; чистая
+  установка `mattergram==0.1.0a1` в отдельное окружение подтвердила metadata version и импорт из
+  `site-packages`.
+- Первое создание GitHub Release выявило отсутствие checkout в отдельном release job: `gh` не мог
+  определить repository. Workflow исправлен явным `--repo "${GITHUB_REPOSITORY}"` и проверен
+  actionlint; release восстановлен из неизменённых artifacts run и опубликован как prerelease:
+  `https://github.com/0cherednoq/mattergram/releases/tag/v0.1.0a1`. В нём находятся wheel, sdist,
+  `mattergram-menu-0.2.2.tar.gz` и `SHA256SUMS`.
+- Следующий конкретный шаг: собрать обратную связь по alpha, затем перед следующим тегом обновить
+  deprecated Node.js runtime у artifact actions и повторить полный release gate.
