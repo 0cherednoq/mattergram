@@ -121,7 +121,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
-          release_flags=(--verify-tag --generate-notes --title "mattergram ${GITHUB_REF_NAME}")
+          release_flags=(
+            --repo "${GITHUB_REPOSITORY}"
+            --verify-tag
+            --generate-notes
+            --title "mattergram ${GITHUB_REF_NAME}"
+          )
           if [[ "${GITHUB_REF_NAME}" =~ (a|b|rc)[0-9]+$ ]]; then
             release_flags+=(--prerelease)
           fi
