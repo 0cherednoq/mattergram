@@ -845,6 +845,8 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   реализованного API. Генератор теперь принимает source только из `src/`, исключает injected
   framework methods и даёт одинаковый результат на Windows/Linux. Core/dialog plans, semantic patch
   для публичного `flags` singleton и manifests синхронизированы; extraction и static audit снова
-  готовы к promotion.
+  готовы к promotion. Quality/release jobs теперь восстанавливают ignored immutable upstream
+  snapshots перед тестами генераторов и extraction, поэтому clean GitHub checkout не зависит от
+  локально сохранённого `upstream/snapshots`.
 - Следующий конкретный шаг: получить зелёный повторный GitHub CI, отправить тег `v0.1.0a1` и
   проверить фактические PyPI/GitHub Release URLs.

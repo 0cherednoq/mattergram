@@ -53,6 +53,7 @@ jobs:
           uv run --locked ruff format --check --config pyproject.toml tools src tests contracts examples
           uv run --locked mypy
           uv run --locked python -m tools.generate_documentation --check
+          uv run --locked python -m tools.fetch_upstream
           uv run --locked pytest
 
       - name: Build and verify Python distributions
