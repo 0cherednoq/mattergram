@@ -827,7 +827,7 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
 - Следующий конкретный шаг: выбрать release destination, выполнить подписанный upload артефактов и
   live smoke единственного demo на release candidate.
 
-## GitHub/PyPI release workflow — подготовлен
+## GitHub/PyPI release workflow — настроен, prerelease проходит CI
 
 - Добавлен `.github/workflows/release.yml` для тегов `v<project.version>`: tag/version gate, Ruff,
   format, strict mypy, generated docs, pytest, воспроизводимая сборка wheel/sdist, installed-artifact
@@ -836,9 +836,15 @@ Stand project: mattergram-native-stand; loopback only. Redis service запус�
   использует Trusted Publishing без API token. GitHub Release создаётся только после успешного PyPI
   upload и содержит Python artifacts, keyboard plugin и `SHA256SUMS`. Все third-party actions
   закреплены exact commit SHA; actionlint 1.7.8 прошёл.
-- GitHub destination: `0cherednoq/mettergram`. Локальный package name остаётся `mattergram`.
-  Настроенный Pending Publisher сейчас ошибочно назван `mettergram`; до его замены на `mattergram`
-  release tag не создаётся, чтобы не опубликовать проект с неверной идентичностью.
-- Следующий конкретный шаг: заменить Pending Publisher project name на `mattergram`, сохранив
-  repository `0cherednoq/mettergram`, workflow `release.yml` и environment `pypi`; затем отправить
-  тег `v0.1.0a1` и проверить PyPI/GitHub Release URLs.
+- GitHub destination и origin исправлены на `0cherednoq/mattergram`. PyPI Pending Publisher точно
+  совпадает с release identity: project `mattergram`, owner `0cherednoq`, repository `mattergram`,
+  workflow `release.yml`, environment `pypi`. GitHub Environment `pypi` допускает deployment только
+  из tag pattern `v*`.
+- Первый внешний CI run выявил два воспроизводимых drift-дефекта до выпуска тега: документация
+  принимала dependency-owned методы из project-local `.venv`, а native boundary hashes отставали от
+  реализованного API. Генератор теперь принимает source только из `src/`, исключает injected
+  framework methods и даёт одинаковый результат на Windows/Linux. Core/dialog plans, semantic patch
+  для публичного `flags` singleton и manifests синхронизированы; extraction и static audit снова
+  готовы к promotion.
+- Следующий конкретный шаг: получить зелёный повторный GitHub CI, отправить тег `v0.1.0a1` и
+  проверить фактические PyPI/GitHub Release URLs.

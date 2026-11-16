@@ -20,7 +20,7 @@ class DocumentationGenerationTests(unittest.TestCase):
             self.assertIsNone(ADDRESS.search(content), relative)
         self.assertEqual(report["public_modules"], 26)
         self.assertEqual(report["public_exports"], 390)
-        self.assertEqual(report["public_members"], 589)
+        self.assertEqual(report["public_members"], 573)
         self.assertEqual(report["guides"], 30)
         self.assertEqual(report["examples"], 1)
         self.assertEqual(report["network_access"], "none")
@@ -52,8 +52,13 @@ class DocumentationGenerationTests(unittest.TestCase):
         for module in modules.values():
             for export in module["exports"]:
                 source = export["source"]
+                self.assertTrue(source["path"].startswith("src/"), source)
                 self.assertTrue((ROOT / source["path"]).is_file())
                 self.assertGreaterEqual(source["line"], 1)
+                for member in export.get("members", []):
+                    member_source = member["source"]
+                    self.assertTrue(member_source["path"].startswith("src/"), member_source)
+                    self.assertTrue((ROOT / member_source["path"]).is_file())
 
     def test_registered_markdown_links_resolve_locally(self) -> None:
         manifest = json.loads((ROOT / "manifests/documentation.json").read_text(encoding="utf-8"))

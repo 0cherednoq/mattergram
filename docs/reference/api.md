@@ -147,7 +147,6 @@ Dependency group: `core`.
 | `error` | async-method | `(self, text: str) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L145) |
 | `from_user` | property | `(self) -> User` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L131) |
 | `message` | property | `(self) -> PostRef` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L135) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `navigate` | async-method | `(self, url: str) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L148) |
 | `open_dialog` | async-method | `(self, form: Form) -> DialogHandle` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L151) |
 | `update_message` | async-method | `(self, text: str, *, props: Mapping[str, Any] \| None = None) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L142) |
@@ -159,7 +158,6 @@ Dependency group: `core`.
 | `answer` | async-method | `(self) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L158) |
 | `application_context` | property | `(self) -> Mapping[str, str]` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L154) |
 | `field_name` | property | `(self) -> str` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L148) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `open_dialog` | async-method | `(self, form: Form) -> DialogHandle` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L161) |
 
 ### `DialogCancel`
@@ -167,7 +165,6 @@ Dependency group: `core`.
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `answer` | async-method | `(self) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L137) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 
 ### `DialogEvent`
 
@@ -177,7 +174,6 @@ Dependency group: `core`.
 | `empty_team` | class-method | `(cls, value: Any) -> Any` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L30) |
 | `form` | property | `(self) -> Form` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L55) |
 | `from_user` | property | `(self) -> User` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L35) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `session_id` | property | `(self) -> str` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L39) |
 | `thread_id` | property | `(self) -> str \| None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L45) |
 | `values` | property | `(self) -> FormValues` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L49) |
@@ -187,7 +183,6 @@ Dependency group: `core`.
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `answer` | async-method | `(self, options: Sequence[Option]) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L126) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `query` | property | `(self) -> str` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L112) |
 | `selected_field` | property | `(self) -> str` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L119) |
 
@@ -196,7 +191,6 @@ Dependency group: `core`.
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `field_errors` | async-method | `(self, errors: Mapping[str, str]) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L98) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `replace_form` | async-method | `(self, form: Form) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L95) |
 | `validation_error` | async-method | `(self, message: str) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L101) |
 
@@ -206,15 +200,8 @@ Dependency group: `core`.
 | --- | --- | --- | --- |
 | `answer` | async-method | `(self) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L74) |
 | `field_errors` | async-method | `(self, errors: Mapping[str, str]) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L77) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `next` | async-method | `(self, form: Form) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L83) |
 | `validation_error` | async-method | `(self, message: str) -> None` | [src/mattergram/types/dialogs.py](../../src/mattergram/types/dialogs.py#L80) |
-
-### `Channel`
-
-| Public member | Kind | Signature | Source |
-| --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 
 ### `BufferedInputFile`
 
@@ -223,12 +210,6 @@ Dependency group: `core`.
 | `from_file` | class-method | `(cls, path: str \| Path, filename: str \| None = None, *, content_type: str \| None = None, chunk_size: int = 65536) -> BufferedInputFile` | [src/mattergram/types/input_file.py](../../src/mattergram/types/input_file.py#L73) |
 | `read` | method | `(self) -> AsyncGenerator[bytes, None]` | [src/mattergram/types/input_file.py](../../src/mattergram/types/input_file.py#L90) |
 
-### `ErrorEvent`
-
-| Public member | Kind | Signature | Source |
-| --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
-
 ### `Event`
 
 Native event base; its local correlation identity is never a platform update ID.
@@ -236,7 +217,6 @@ Native event base; its local correlation identity is never a platform update ID.
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
 | `context` | property | `(self) -> EventContext \| None` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L80) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 
 ### `EventContext`
 
@@ -246,7 +226,6 @@ EventContext(instance_id: 'str', bot_id: 'str', source: 'str', received_at: 'dat
 
 | Public member | Kind | Signature | Source |
 | --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `raw` | property | `(self) -> Mapping[str, Any]` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L35) |
 | `unsafe_raw` | method | `(self) -> Mapping[str, Any]` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L55) |
 
@@ -278,7 +257,6 @@ One reusable upload source; each read owns and closes its own local handle.
 | `from_user` | property | `(self) -> User` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L139) |
 | `from_wire` | class-method | `(cls, payload: Mapping[str, Any], *, bot: Bot \| None = None) -> Self` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L121) |
 | `message_id` | property | `(self) -> str` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L127) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `reply` | async-method | `(self, text: str) -> Message` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L161) |
 | `text` | property | `(self) -> str` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L131) |
 | `valid_timestamp` | class-method | `(cls, value: int) -> int` | [src/mattergram/types/base.py](../../src/mattergram/types/base.py#L112) |
@@ -295,16 +273,6 @@ Priority metadata for one root post.
 
 Confirmed post/channel identities only; missing text/root are not fabricated.
 
-| Public member | Kind | Signature | Source |
-| --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
-
-### `RawEvent`
-
-| Public member | Kind | Signature | Source |
-| --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
-
 ### `SlashCommand`
 
 | Public member | Kind | Signature | Source |
@@ -314,17 +282,10 @@ Confirmed post/channel identities only; missing text/root are not fabricated.
 | `empty_scope` | class-method | `(cls, value: Any) -> Any` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L74) |
 | `followup` | async-method | `(self, text: str, *, ephemeral: bool = True) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L100) |
 | `from_user` | property | `(self) -> User` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L90) |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 | `name` | property | `(self) -> str` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L86) |
 | `native_command` | class-method | `(cls, value: str) -> str` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L79) |
 | `navigate` | async-method | `(self, url: str) -> None` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L103) |
 | `open_dialog` | async-method | `(self, form: Form) -> DialogHandle` | [src/mattergram/types/http.py](../../src/mattergram/types/http.py#L106) |
-
-### `User`
-
-| Public member | Kind | Signature | Source |
-| --- | --- | --- | --- |
-| `model_post_init` | method | `(self: BaseModel, context: Any, /) -> None` | [.venv/Lib/site-packages/pydantic/_internal/_model_construction.py](../../.venv/Lib/site-packages/pydantic/_internal/_model_construction.py#L361) |
 
 ## `mattergram.filters`
 

@@ -478,7 +478,7 @@
       "target": "src/mattergram_dialog/__init__.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "bcfb2b12720824dad4d54d0021cb93bbd9ff124507c946a2c5531451e8486950"
+      "source_sha256": "bba1e934921ece1c5be6075e2cbd3363d9eee16c102cd0ac0d6f8c5b2dc5d68e"
     },
     {
       "target": "src/mattergram_dialog/api/__init__.py",
@@ -520,7 +520,7 @@
       "target": "src/mattergram_dialog/navigation.py",
       "action": "implement",
       "reason": "Provide persisted path-aware navigation and a native multi-control Window without modifying adapted donor files.",
-      "source_sha256": "15b6f3825f0010a21dee3c4ddc0379e4990b785439baf2ccfedfc36032ab6389"
+      "source_sha256": "b061296a16887caacb8d443a5adbc5c075bf0b72e929c12d9fcffd54dff9529d"
     },
     {
       "target": "src/mattergram_dialog/py.typed",
@@ -538,13 +538,13 @@
       "target": "src/mattergram_dialog/rendering.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "2226444d1dafb3e000020c710999480da1cf01768ad2d16184f97786313fee88"
+      "source_sha256": "f664611b14a29e20402ed1e80837f7c347eb3db569a1ea3212a3b9a7eb7ad11c"
     },
     {
       "target": "src/mattergram_dialog/widgets/__init__.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "291932e5cad52565f089ec62f6bfeaf8ef12f46c29978147d4a8aefcb5bdbff5"
+      "source_sha256": "862f3b88b4bce9dfa451da44ab9f8ffa5e46f5cd847c3773557c950d714d9f03"
     },
     {
       "target": "src/mattergram_dialog/widgets/common/__init__.py",
@@ -586,7 +586,7 @@
       "target": "src/mattergram_dialog/widgets/layout.py",
       "action": "implement",
       "reason": "Provide declarative Markdown sections and data blocks that keep local actions attached to their object.",
-      "source_sha256": "e4c420c4998ccbc011f3f748f274983df7a1e2b8fb0967fe856aaf807d29a394"
+      "source_sha256": "b4b1579769a4a870dc9236cd85db172832bd29756f9e6f1c5c12683255d6de04"
     },
     {
       "target": "src/mattergram_dialog/widgets/progress.py",
@@ -610,13 +610,13 @@
       "target": "src/mattergram_dialog/widgets/message.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "2d0e276df0ddd3ee672ba9d347e23fd4dc6de5de2bc4612a711bb9de1f742ddd"
+      "source_sha256": "d2875d3553d81ba47830e22b56a8a7e281afd52321d10cde2b22d79e71ccc78e"
     },
     {
       "target": "src/mattergram_dialog/bindings.py",
       "action": "implement",
       "reason": "Native Mattermost dialog renderer, typed form boundary, registry or explicit package export.",
-      "source_sha256": "1ac61d3309fd6612acc0220b01e860cef8993f56f937b283ea5665d009a582c6"
+      "source_sha256": "6519015b6753e0da5b3009bbe8db699e59f1803b5bc1f4d6c1ba149b7bbe951a"
     },
     {
       "target": "src/mattergram_dialog/runtime.py",

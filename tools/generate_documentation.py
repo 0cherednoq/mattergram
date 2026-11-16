@@ -211,7 +211,11 @@ def _relative_source(obj: Any, root: Path, module: ModuleType, export_name: str)
         candidate = getattr(module, "__file__", None)
         if isinstance(candidate, str):
             source_path = Path(candidate).resolve()
-    if source_path is None or not source_path.is_relative_to(root.resolve()):
+    # A project-local virtual environment also lives below ``root`` on many
+    # developer machines and CI runners.  Treating it as repository source
+    # made generated references depend on the host OS and virtualenv layout.
+    source_root = (root / "src").resolve()
+    if source_path is None or not source_path.is_relative_to(source_root):
         raise ValueError(f"Public export has no repository source: {module.__name__}.{export_name}")
     if line is None:
         source = source_path.read_text(encoding="utf-8")
@@ -248,13 +252,20 @@ def _public_members(cls: type[Any], root: Path) -> list[dict[str, Any]]:
             continue
         source_value = inspect.unwrap(value)
         source_module = importlib.import_module(source_value.__module__)
+        try:
+            source = _relative_source(source_value, root, source_module, name)
+        except ValueError:
+            # Framework metaclasses may inject public methods into a project
+            # class (Pydantic's ``model_post_init`` is one example).  Those
+            # dependency-owned methods are not part of mattergram's API.
+            continue
         result.append(
             {
                 "name": name,
                 "kind": kind,
                 "signature": _signature(value),
                 "summary": _summary(value),
-                "source": _relative_source(source_value, root, source_module, name),
+                "source": source,
             }
         )
     return sorted(result, key=lambda item: item["name"])

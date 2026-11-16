@@ -413,7 +413,7 @@
         "patches": [
           {
             "path": "manifests/patches/dispatcher-flags.json",
-            "sha256": "de85244c104628d6a440a4bebe3e17b8dea07306c642a027782497816767e16d"
+            "sha256": "b2e26e95e39097d50409a173b66e1ef90df36e8781bdf76bde205e8cf0f53798"
           }
         ]
       },
@@ -5135,13 +5135,13 @@
       "target": "src/mattergram/__init__.py",
       "action": "implement",
       "reason": "Explicit Bot/Dispatcher/Router/F and generated low-level NativeAPI surface without Telegram reexports.",
-      "source_sha256": "95477b969ca07940f227d138403842291087a983e27d36fe47aff988ebdc8514"
+      "source_sha256": "9bc07b40864f93eeca84ab15dc7549e0b140b06a410b17f4ed4f9f7f99558c5c"
     },
     {
       "target": "src/mattergram/types/__init__.py",
       "action": "implement",
       "reason": "Native Event/User/Channel/Message, string IDs, aliases, preserved wire payload.",
-      "source_sha256": "b1a7db3203c284572882d11dfc6094c7e6a329767479cde28b2bcb428897b52d"
+      "source_sha256": "7b73ca73aaadfc17d64c1d2639c85a608127e2b7a7324e0acf45903f18fc852f"
     },
     {
       "target": "src/mattergram/filters/__init__.py",
@@ -5165,7 +5165,7 @@
       "target": "src/mattergram/bot.py",
       "action": "implement",
       "reason": "Native aiohttp REST transport and createPost only for the first slice; explicit lifecycle.",
-      "source_sha256": "dab04bf3f7cdf46f33e6c3a4590f70a20985010ff6c9a7f3ed75b15b91265744"
+      "source_sha256": "feb8360c87919aa2ab750112966211adc30093c4ebe440e9b657c712f8c96cf0"
     },
     {
       "target": "src/mattergram/dispatcher/dispatcher.py",
@@ -5261,7 +5261,7 @@
       "target": "src/mattergram/types/base.py",
       "action": "implement",
       "reason": "Native Mattermost HTTP events, auth, response lifecycle or explicit namespace boundary.",
-      "source_sha256": "2b7b1571ae8680eb9c37546daad1c679eadb31714172f30d8144f4a64707ee34"
+      "source_sha256": "f18b83cdb4f8663e3671312676a4b89d4f01bc96b7b384888c21bcbecbbec0ca"
     },
     {
       "target": "src/mattergram/types/http.py",
@@ -5273,7 +5273,7 @@
       "target": "src/mattergram/http/adapter.py",
       "action": "implement",
       "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
-      "source_sha256": "01c899454219e02e8a680605bd74294b3154ddd3fe18978283e6c7143fb4b129"
+      "source_sha256": "fe4de2c0fdf9b3ef208791b5ab9d095a2be96ae231eb074cdf13ae113f3bc4b7"
     },
     {
       "target": "src/mattergram/http/asgi.py",
@@ -5291,7 +5291,7 @@
       "target": "src/mattergram/ui/__init__.py",
       "action": "implement",
       "reason": "Native Mattermost event/ingress/lifecycle or explicit package export boundary.",
-      "source_sha256": "e79d3e02f61d88bda60f1ddd3e9f98d4b70bbde8595a0ea9063006b6fe90a252"
+      "source_sha256": "d04b1a07fca58b6f17cda0e76064bc3d57b96692c3644155e031b8b9ff1e3524"
     },
     {
       "target": "src/mattergram/ui/actions.py",
@@ -5411,7 +5411,7 @@
       "target": "src/mattergram/_http_client.py",
       "action": "implement",
       "reason": "Mechanically extracted maintained Bot HTTP/session algorithm shared by separately instantiated runtime/setup clients; preserve lifecycle/auth/redirect/no-retry semantics and generalize indeterminate transport failure to all writes.",
-      "source_sha256": "06ab614867dad921f0ee2607c8b0384bc32adfe894f19bce39fe4a1622b9e75a"
+      "source_sha256": "2accdb9340e074b8f8536ad61332d49c60d39e6e38ed927e7b6183f25b57938c"
     },
     {
       "target": "src/mattergram/provisioning/client.py",
@@ -5496,6 +5496,18 @@
       "action": "implement",
       "reason": "Manual immutable operation metadata and exact percent-encoded path rendering; rejects unreviewed and unsafe endpoint shapes before I/O.",
       "source_sha256": "a9b960cef72b59047d02546a7373ff3cf3b6f69752c06d90e58ff72ee4ba77ea"
+    },
+    {
+      "target": "src/mattergram/ui/composer.py",
+      "action": "implement",
+      "reason": "Native persistent composer-keyboard declarations and plugin wire model.",
+      "source_sha256": "435a29f09c5283e3170ccdae0d03c007bc4f8a1e007509be7acdf397fdb12964"
+    },
+    {
+      "target": "src/mattergram/types/message_priority.py",
+      "action": "implement",
+      "reason": "Typed native Mattermost priority metadata for important and urgent root posts.",
+      "source_sha256": "567b8f67612f310239290565443a54dd677e8e609f912f95f2db38210f593438"
     }
   ],
   "excluded_scopes": [

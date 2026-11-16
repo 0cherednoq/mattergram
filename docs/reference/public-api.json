@@ -622,16 +622,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "navigate",
               "kind": "async-method",
               "signature": "(self, url: str) -> None",
@@ -708,16 +698,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "open_dialog",
               "kind": "async-method",
               "signature": "(self, form: Form) -> DialogHandle",
@@ -751,16 +731,6 @@
               "source": {
                 "path": "src/mattergram/types/dialogs.py",
                 "line": 137
-              }
-            },
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
               }
             }
           ]
@@ -820,16 +790,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "session_id",
               "kind": "property",
               "signature": "(self) -> str",
@@ -886,16 +846,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "query",
               "kind": "property",
               "signature": "(self) -> str",
@@ -939,16 +889,6 @@
               "source": {
                 "path": "src/mattergram/types/dialogs.py",
                 "line": 98
-              }
-            },
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
               }
             },
             {
@@ -1008,16 +948,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "next",
               "kind": "async-method",
               "signature": "(self, form: Form) -> None",
@@ -1051,18 +981,6 @@
           },
           "bases": [
             "mattergram.types.base.WireModel"
-          ],
-          "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            }
           ]
         },
         {
@@ -1113,18 +1031,6 @@
           },
           "bases": [
             "mattergram.types.base.Event"
-          ],
-          "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            }
           ]
         },
         {
@@ -1149,16 +1055,6 @@
               "source": {
                 "path": "src/mattergram/types/base.py",
                 "line": 80
-              }
-            },
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
               }
             }
           ]
@@ -1189,16 +1085,6 @@
             "mattergram.types.base.Event"
           ],
           "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
             {
               "name": "raw",
               "kind": "property",
@@ -1388,16 +1274,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "reply",
               "kind": "async-method",
               "signature": "(self, text: str) -> Message",
@@ -1465,18 +1341,6 @@
           },
           "bases": [
             "mattergram.types.base.WireModel"
-          ],
-          "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            }
           ]
         },
         {
@@ -1491,18 +1355,6 @@
           },
           "bases": [
             "mattergram.types.base.Event"
-          ],
-          "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            }
           ]
         },
         {
@@ -1570,16 +1422,6 @@
               }
             },
             {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            },
-            {
               "name": "name",
               "kind": "property",
               "signature": "(self) -> str",
@@ -1633,18 +1475,6 @@
           },
           "bases": [
             "mattergram.types.base.WireModel"
-          ],
-          "members": [
-            {
-              "name": "model_post_init",
-              "kind": "method",
-              "signature": "(self: BaseModel, context: Any, /) -> None",
-              "summary": "This function is meant to behave like a BaseModel method to initialize private attributes.",
-              "source": {
-                "path": ".venv/Lib/site-packages/pydantic/_internal/_model_construction.py",
-                "line": 361
-              }
-            }
           ]
         }
       ]
